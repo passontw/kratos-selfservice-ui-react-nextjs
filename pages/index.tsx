@@ -5,7 +5,6 @@ import Head from "next/head"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 
-import { api } from "../axios/api"
 import { DocsButton, MarginCard, LogoutLink } from "../pkg"
 import ory from "../pkg/sdk"
 
@@ -18,10 +17,6 @@ const Home: NextPage = () => {
   const onLogout = LogoutLink()
 
   useEffect(() => {
-    ory.toSession().then(({ data }) => {
-      console.log("ory session data:", data)
-    })
-
     ory
       .toSession()
       .then(({ data }) => {

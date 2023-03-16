@@ -1,4 +1,6 @@
-import { LoginFlow, UpdateLoginFlowBody } from "@ory/client"
+import queryString from "query-string"
+import isEmpty from 'lodash/isEmpty';
+import { LoginFlow } from "@ory/client"
 import { CardTitle } from "@ory/themes"
 import { AxiosError } from "axios"
 import type { NextPage } from "next"
@@ -14,6 +16,50 @@ import ory from "../pkg/sdk"
 import {loginFormSchema} from '../util/schemas';
 import {handleYupSchema, handleYupErrors} from '../util/yupHelpers';
 
+const getSessionData = async () => {
+  try {
+    return await ory.toSession();
+  }catch(err) {
+    return {};
+  }
+};
+
+const validateLoginFlow = async (router, options) => {
+  const {
+    refresh,
+    aal,
+    returnTo,
+    setFlow,
+  } = options;
+  try {
+    const sessionData = await getSessionData();
+    if (isEmpty(sessionData)) {
+      const { data } = await ory
+      .createBrowserLoginFlow({
+        refresh: Boolean(refresh),
+        aal: aal ? String(aal) : undefined,
+        returnTo: returnTo ? String(returnTo) : undefined,
+      });
+
+      if (router.query.login_challenge) {
+        data.oauth2_login_challenge = router.query.login_challenge as string
+      }
+      console.log("🚀 ~ file: login.tsx:83 ~ .then ~ data:", data)
+      setFlow(data)
+    } else {
+      const qs = queryString.stringify(router.query);
+      const nextUri = isEmpty(qs)
+     ? '/sso'
+     : `/sso?${qs}`
+      router.push(nextUri);
+      return;
+    }
+  }catch(error) {
+    handleFlowError(router, "login", setFlow)
+    console.log("🚀 ~ file: login.tsx:23 ~ validateLoginFlow ~ error:", error)
+    
+  }
+}
 const Login: NextPage = () => {
   const [flow, setFlow] = useState<LoginFlow>()
 
@@ -36,13 +82,16 @@ const Login: NextPage = () => {
 
   const hydraLoginService = async () => {
     const login_challenge = router.query.login_challenge
-    const response = await fetch(
-      "/api/hydra/login?login_challenge=" + login_challenge,
-      {
-        method: "GET",
-      },
-    )
-    return response
+    if (login_challenge) {
+      const response = await fetch(
+        "/api/hydra/login?login_challenge=" + login_challenge,
+        {
+          method: "GET",
+        },
+      )
+      console.log("🚀 ~ file: login.tsx:46 ~ hydraLoginService ~ response:", response)
+      return response
+    }
   }
 
   useEffect(() => {
@@ -63,31 +112,33 @@ const Login: NextPage = () => {
         .catch(handleGetFlowError(router, "login", setFlow))
       return
     }
+    const options = {
+      refresh,
+    aal,
+    returnTo,
+    setFlow,
+    };
+
+    validateLoginFlow(router, options);
 
     // Otherwise we initialize it
-    ory
-      .createBrowserLoginFlow({
-        refresh: Boolean(refresh),
-        aal: aal ? String(aal) : undefined,
-        returnTo: returnTo ? String(returnTo) : undefined,
-      })
-      .then(({ data }) => {
-        if (router.query.login_challenge) {
-          data.oauth2_login_challenge = router.query.login_challenge as string
-        }
-        console.log(data)
-        setFlow(data)
-      })
-      .catch(handleFlowError(router, "login", setFlow))
+    // ory
+    //   .createBrowserLoginFlow({
+    //     refresh: Boolean(refresh),
+    //     aal: aal ? String(aal) : undefined,
+    //     returnTo: returnTo ? String(returnTo) : undefined,
+    //   })
+    //   .then(({ data }) => {
+    //     if (router.query.login_challenge) {
+    //       data.oauth2_login_challenge = router.query.login_challenge as string
+    //     }
+    //     console.log("🚀 ~ file: login.tsx:83 ~ .then ~ data:", data)
+    //     setFlow(data)
+    //   })
+    //   .catch(handleFlowError(router, "login", setFlow))
   }, [flowId, router, router.isReady, aal, refresh, returnTo, flow])
 
   const doConsentProcess = async (login_challenge: string, subject: string) => {
-    console.log(
-      "[@login_challenge-doConsentProcess] login_challenge",
-      login_challenge,
-    )
-    console.log(subject)
-
     // new OAuth2.0 flow with hydra
     const response = await api
       .post("/api/hydra/login", {
@@ -120,7 +171,7 @@ const Login: NextPage = () => {
       if (!values.provider) {
         await handleYupSchema(loginFormSchema, values);
       }
-      
+
       return (
         ory
           .updateLoginFlow({
@@ -162,27 +213,32 @@ const Login: NextPage = () => {
       )
     } catch (error) {
       const errors = handleYupErrors(error);
-      const nextFlow = cloneDeep(flow);
-      if (errors.identifier) {
-        const message = {
-          id:  4000002,
-          text: errors.identifier,
-          type: 'error',
-        };
-        const identifierIndex = nextFlow.ui.nodes.findIndex(node => node.attributes.name === 'identifier')
-        nextFlow.ui.nodes[identifierIndex].messages = [message];
+      if (flow) {
+        const nextFlow = cloneDeep(flow);
+        if (errors.identifier) {
+          const message = {
+            id:  4000002,
+            text: errors.identifier,
+            type: 'error',
+          };
+          const idNodes = nextFlow?.ui?.nodes || []
+          const identifierIndex = idNodes.findIndex(node => node?.attributes?.name === 'identifier')
+          nextFlow.ui.nodes[identifierIndex].messages = [message];
+        }
+  
+        if (errors.password) {
+          const passwordMessage = {
+            id:  4000002,
+            text: errors.password,
+            type: 'error',
+          };
+          const passwordNodes = nextFlow.ui.nodes || [];
+          const passwordIndex = passwordNodes.findIndex(node => node?.attributes?.name === 'password')
+          nextFlow.ui.nodes[passwordIndex].messages = [passwordMessage];
+        }
+        setFlow(nextFlow);
       }
-
-      if (errors.password) {
-        const passwordMessage = {
-          id:  4000002,
-          text: errors.password,
-          type: 'error',
-        };
-        const passwordIndex = nextFlow.ui.nodes.findIndex(node => node.attributes.name === 'password')
-        nextFlow.ui.nodes[passwordIndex].messages = [passwordMessage];
-      }
-      setFlow(nextFlow);
+      
       // setErrors(errors);
       return false;
     }
