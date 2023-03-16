@@ -1,15 +1,15 @@
 import { SettingsFlow, UpdateSettingsFlowBody } from "@ory/client"
 import { CardTitle, H3, P } from "@ory/themes"
-import { AxiosError } from "axios"
 import type { NextPage } from "next"
 import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { ReactNode, useEffect, useState } from "react"
-
+import axios from "axios";
 import { Flow, Methods, Messages, ActionCard, CenterLink } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
+import UAParser from 'ua-parser-js';
 
 interface Props {
   flow?: SettingsFlow
@@ -36,14 +36,55 @@ function SettingsCard({
   return <ActionCard wide>{children}</ActionCard>
 }
 
+const SessionList = (props) => {
+  const {sessions} = props;
+  if (sessions.length === 0) {
+    return (
+      <div>
+        <p>無其他裝置登入資訊</p>
+      </div>
+    );
+  }
+
+  return sessions.map(session => {
+    const [device] = session.devices;
+    const agent = new UAParser(device.user_agent);
+    const agentResult = agent.getResult();
+
+    return (
+      <div key={session.id}>
+        
+        <p>Location: {device.location}</p>
+        <p>Device: {agentResult.os.name}</p>
+        <p>Browser: {agentResult.browser.name}</p>
+        <p>最近登入: {session.authenticated_at}</p>
+
+      </div>
+    );
+  })
+}
+
+const refreshSessions = (setSessions) => {
+  axios.get('/api/.ory/sessions', {
+    headers: { withCredentials: true },
+  }).then(resp => {
+    const {data} = resp;
+    setSessions(data);
+  }).catch(error => {
+    setSessions([]);
+  });
+}
 const Settings: NextPage = () => {
+  const [sessions, setSessions] = useState([])
   const [flow, setFlow] = useState<SettingsFlow>()
+
 
   // Get ?flow=... from the URL
   const router = useRouter()
   const { flow: flowId, return_to: returnTo } = router.query
 
   useEffect(() => {
+    refreshSessions(setSessions);
     // If the router is not ready yet, or we already have a flow, do nothing.
     if (!router.isReady || flow) {
       return
@@ -111,6 +152,11 @@ const Settings: NextPage = () => {
       <CardTitle style={{ marginTop: 80 }}>
         Profile Management and Security Settings
       </CardTitle>
+      <SettingsCard only="profile" flow={flow}>
+        <H3>Session Management</H3>
+        <SessionList sessions={sessions} />
+      </SettingsCard>
+      
       <SettingsCard only="profile" flow={flow}>
         <H3>Profile Settings</H3>
         <Messages messages={flow?.ui.messages} />
