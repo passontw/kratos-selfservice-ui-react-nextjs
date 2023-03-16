@@ -36,8 +36,29 @@ function SettingsCard({
   return <ActionCard wide>{children}</ActionCard>
 }
 
+const refreshSessions = (setSessions) => {
+  axios.get('/api/.ory/sessions', {
+    headers: { withCredentials: true },
+  }).then(resp => {
+    const {data} = resp;
+    setSessions(data);
+  }).catch(error => {
+    setSessions([]);
+  });
+}
+
+const deactiveSession = (sessionId, setSessions) => {
+  return axios.delete(`/api/.ory/sessions/${sessionId}`, {
+    headers: { withCredentials: true },
+  }).then(resp => {
+    refreshSessions(setSessions);
+  }).catch(error => {
+    alert(error.message);
+  });
+}
+
 const SessionList = (props) => {
-  const {sessions} = props;
+  const {sessions, setSessions} = props;
   if (sessions.length === 0) {
     return (
       <div>
@@ -50,30 +71,22 @@ const SessionList = (props) => {
     const [device] = session.devices;
     const agent = new UAParser(device.user_agent);
     const agentResult = agent.getResult();
-
+    const deviceName = agentResult.device.type
+      ? agentResult.device.model
+      : agentResult.os.name;
     return (
       <div key={session.id}>
         
         <p>Location: {device.location}</p>
-        <p>Device: {agentResult.os.name}</p>
+        <p>Device: {deviceName}</p>
         <p>Browser: {agentResult.browser.name}</p>
         <p>最近登入: {session.authenticated_at}</p>
-
+        <button onClick={() => deactiveSession(session.id, setSessions)}>Sign out</button>
       </div>
     );
   })
 }
 
-const refreshSessions = (setSessions) => {
-  axios.get('/api/.ory/sessions', {
-    headers: { withCredentials: true },
-  }).then(resp => {
-    const {data} = resp;
-    setSessions(data);
-  }).catch(error => {
-    setSessions([]);
-  });
-}
 const Settings: NextPage = () => {
   const [sessions, setSessions] = useState([])
   const [flow, setFlow] = useState<SettingsFlow>()
@@ -154,7 +167,7 @@ const Settings: NextPage = () => {
       </CardTitle>
       <SettingsCard only="profile" flow={flow}>
         <H3>Session Management</H3>
-        <SessionList sessions={sessions} />
+        <SessionList sessions={sessions} setSessions={setSessions} />
       </SettingsCard>
       
       <SettingsCard only="profile" flow={flow}>
