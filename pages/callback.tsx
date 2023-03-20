@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useEffect } from "react"
 
 import { getCodeGrantToken } from "../util/oauth2"
-
+ 
 // Custom implementation of code grant token swap
 const Callback: NextPage = () => {
   const router = useRouter()

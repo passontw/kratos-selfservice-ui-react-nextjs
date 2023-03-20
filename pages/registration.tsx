@@ -72,7 +72,6 @@ const Registration: NextPage = () => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   const onSubmit = async (values: any) => {
-    console.log("🚀 ~ file: registration.tsx:75 ~ onSubmit ~ values:", values)
     try {
       if (!values.provider) {
         await handleYupSchema(registrationFormSchema, values);

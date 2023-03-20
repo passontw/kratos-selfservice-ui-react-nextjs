@@ -153,6 +153,25 @@ const Settings: NextPage = () => {
           }),
       )
 
+      const deleteAccount = async (identityId) => {
+        const confirmResult = confirm('是否確定刪除帳號?');
+        if (confirmResult) {
+          const {data} = await axios.get('/api/.ory/sessions/whoami', {
+            headers: { withCredentials: true },
+          })
+
+          return axios.delete(`https://auth.passon.tw/admin/identities/${data.identity.id}`, {
+            headers: {
+              Accept: 'application/json',
+              Authorization: `Bearer ${process.env.ORY_PAT}`
+            },
+          }).then(resp => {
+            router.replace('/');
+          }).catch(error => {
+            alert(error.message);
+          });
+        }
+      };
   return (
     <>
       <Head>
@@ -165,6 +184,9 @@ const Settings: NextPage = () => {
       <CardTitle style={{ marginTop: 80 }}>
         Profile Management and Security Settings
       </CardTitle>
+      <SettingsCard only="profile" flow={flow}>
+         <button onClick={() => deleteAccount('')}>刪除帳號</button>
+      </SettingsCard>
       <SettingsCard only="profile" flow={flow}>
         <H3>Session Management</H3>
         <SessionList sessions={sessions} setSessions={setSessions} />

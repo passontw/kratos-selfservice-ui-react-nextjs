@@ -33,7 +33,7 @@ const validateLoginFlow = async (router, options) => {
     aal,
     setFlow,
   } = options;
-  const returnTo = Boolean(login_challenge) ? NEXT_PUBLIC_REDIRECT_URI : undefined;
+
   try {
     const sessionData = await getSessionData();
     if (isEmpty(sessionData)) {
@@ -90,7 +90,6 @@ const Login: NextPage = () => {
           method: "GET",
         },
       )
-      console.log("🚀 ~ file: login.tsx:46 ~ hydraLoginService ~ response:", response)
       return response
     }
   }
@@ -107,7 +106,6 @@ const Login: NextPage = () => {
       ory
         .getLoginFlow({ id: String(flowId) })
         .then(({ data }) => {
-          console.log(data)
           setFlow(data)
         })
         .catch(handleGetFlowError(router, "login", setFlow))
@@ -134,7 +132,6 @@ const Login: NextPage = () => {
     //     if (router.query.login_challenge) {
     //       data.oauth2_login_challenge = router.query.login_challenge as string
     //     }
-    //     console.log("🚀 ~ file: login.tsx:83 ~ .then ~ data:", data)
     //     setFlow(data)
     //   })
     //   .catch(handleFlowError(router, "login", setFlow))
@@ -151,7 +148,6 @@ const Login: NextPage = () => {
         // login response was successful re-route to consent-page
         if (res.status === 200) {
           // redirect with challenge:
-          console.log("🚀 ~ file: login.tsx:154 ~ .then ~ res.data:", res.data)
           router.push(res.data?.redirect_to)
         }
       })
@@ -163,7 +159,6 @@ const Login: NextPage = () => {
   // const onSubmit = async (values: UpdateLoginFlowBody) => {
   const onSubmit = async (values: any) => {
     const login_challenge = router.query.login_challenge
-    console.log("🚀 ~ file: login.tsx:165 ~ onSubmit ~ login_challenge:", login_challenge)
 
     // TODO - this is temp method to add subject, need to get subject from account
     let subject = ""
@@ -206,7 +201,6 @@ const Login: NextPage = () => {
             if (err.response?.status === 400) {
               // Yup, it is!
               if (err && err.response) {
-                console.log("🚀 ~ file: login.tsx:161 ~ onSubmit ~ err.response?.data:", err.response?.data)
                 setFlow(err.response?.data)
               }
               return
