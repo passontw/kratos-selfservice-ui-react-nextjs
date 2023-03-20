@@ -38,7 +38,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         .then(async ({ data: body }) => {
           // If hydra was already able to authenticate the user, skip will be true and we do not need to re-authenticate
           // the user.
-	  console.log("🚀 ~ file: login.ts:40 ~ .then ~ body:", body)
           if (body.skip) {
             // 2) authorize the very last step via hydra if skip was true
             return hydraAdmin

@@ -1,11 +1,12 @@
 import isEmpty from 'lodash/isEmpty'
-import axios from 'axios';
 import { NextPage } from "next"
 import { useEffect, useState } from "react"
 import { useRouter } from 'next/router'
 import queryString from 'query-string';
 import ory from "../pkg/sdk"
 import { LogoutLink } from "../pkg"
+
+const {NEXT_PUBLIC_REDIRECT_URI} = process.env;
 
 const deactiveSession = (qs, router, onLogout) => {
   onLogout()
@@ -25,7 +26,6 @@ const Sso: NextPage = () => {
 
   useEffect(() => {
     ory.toSession().then(({ data }) => {
-      console.log(JSON.stringify(data))
       setUser(data?.identity?.traits || {});
       setLoading(false);
     }).catch(error => {
@@ -46,7 +46,9 @@ const Sso: NextPage = () => {
   return (
     <>
       <img src={user.avatar} />
-      <button>是否要以 {user.name} 繼續登入？</button>
+      <button onClick={() => {
+        router.push(NEXT_PUBLIC_REDIRECT_URI);
+      }}>是否要以 {user.name} 繼續登入？</button>
       <button onClick={() => {
         deactiveSession(qs, router, onLogout);
       }}>以其他帳號登入</button>

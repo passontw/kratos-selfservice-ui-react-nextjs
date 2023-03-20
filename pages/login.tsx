@@ -13,51 +13,52 @@ import { api } from "../axios/api"
 import { ActionCard, CenterLink, LogoutLink, Flow, MarginCard } from "../pkg"
 import { handleGetFlowError, handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
-import {loginFormSchema} from '../util/schemas';
-import {handleYupSchema, handleYupErrors} from '../util/yupHelpers';
+import { loginFormSchema } from '../util/schemas';
+import { handleYupSchema, handleYupErrors } from '../util/yupHelpers';
+
+const { NEXT_PUBLIC_REDIRECT_URI } = process.env;
 
 const getSessionData = async () => {
   try {
     return await ory.toSession();
-  }catch(err) {
+  } catch (err) {
     return {};
   }
 };
 
 const validateLoginFlow = async (router, options) => {
   const {
+    login_challenge,
     refresh,
     aal,
-    returnTo,
     setFlow,
   } = options;
+  const returnTo = Boolean(login_challenge) ? NEXT_PUBLIC_REDIRECT_URI : undefined;
   try {
     const sessionData = await getSessionData();
     if (isEmpty(sessionData)) {
       const { data } = await ory
-      .createBrowserLoginFlow({
-        refresh: Boolean(refresh),
-        aal: aal ? String(aal) : undefined,
-        returnTo: returnTo ? String(returnTo) : undefined,
-      });
+        .createBrowserLoginFlow({
+          refresh: Boolean(refresh),
+          aal: aal ? String(aal) : undefined,
+          returnTo: Boolean(login_challenge) ? NEXT_PUBLIC_REDIRECT_URI : undefined,
+        });
 
       if (router.query.login_challenge) {
         data.oauth2_login_challenge = router.query.login_challenge as string
       }
-      console.log("🚀 ~ file: login.tsx:83 ~ .then ~ data:", data)
       setFlow(data)
     } else {
       const qs = queryString.stringify(router.query);
       const nextUri = isEmpty(qs)
-     ? '/sso'
-     : `/sso?${qs}`
+        ? '/sso'
+        : `/sso?${qs}`
       router.push(nextUri);
       return;
     }
-  }catch(error) {
+  } catch (error) {
     handleFlowError(router, "login", setFlow)
-    console.log("🚀 ~ file: login.tsx:23 ~ validateLoginFlow ~ error:", error)
-    
+
   }
 }
 const Login: NextPage = () => {
@@ -66,6 +67,7 @@ const Login: NextPage = () => {
   // Get ?flow=... from the URL
   const router = useRouter()
   const {
+    login_challenge,
     return_to: returnTo,
     flow: flowId,
     // Refresh means we want to refresh the session. This is needed, for example, when we want to update the password
@@ -81,7 +83,6 @@ const Login: NextPage = () => {
   const onLogout = LogoutLink([aal, refresh])
 
   const hydraLoginService = async () => {
-    const login_challenge = router.query.login_challenge
     if (login_challenge) {
       const response = await fetch(
         "/api/hydra/login?login_challenge=" + login_challenge,
@@ -113,10 +114,11 @@ const Login: NextPage = () => {
       return
     }
     const options = {
+      login_challenge,
       refresh,
-    aal,
-    returnTo,
-    setFlow,
+      aal,
+      returnTo,
+      setFlow,
     };
 
     validateLoginFlow(router, options);
@@ -149,6 +151,7 @@ const Login: NextPage = () => {
         // login response was successful re-route to consent-page
         if (res.status === 200) {
           // redirect with challenge:
+          console.log("🚀 ~ file: login.tsx:154 ~ .then ~ res.data:", res.data)
           router.push(res.data?.redirect_to)
         }
       })
@@ -160,6 +163,7 @@ const Login: NextPage = () => {
   // const onSubmit = async (values: UpdateLoginFlowBody) => {
   const onSubmit = async (values: any) => {
     const login_challenge = router.query.login_challenge
+    console.log("🚀 ~ file: login.tsx:165 ~ onSubmit ~ login_challenge:", login_challenge)
 
     // TODO - this is temp method to add subject, need to get subject from account
     let subject = ""
@@ -178,7 +182,7 @@ const Login: NextPage = () => {
             flow: String(flow?.id),
             updateLoginFlowBody: values,
           })
-  
+
           // We logged in successfully! Let's bring the user home.
           .then((data) => {
             // new flow
@@ -195,7 +199,6 @@ const Login: NextPage = () => {
               router.push("/")
             }
           })
-          .then(() => {})
           .catch(handleFlowError(router, "login", setFlow))
           .catch((err: any) => {
             // If the previous handler did not catch the error it's most likely a form validation error
@@ -217,7 +220,7 @@ const Login: NextPage = () => {
         const nextFlow = cloneDeep(flow);
         if (errors.identifier) {
           const message = {
-            id:  4000002,
+            id: 4000002,
             text: errors.identifier,
             type: 'error',
           };
@@ -225,10 +228,10 @@ const Login: NextPage = () => {
           const identifierIndex = idNodes.findIndex(node => node?.attributes?.name === 'identifier')
           nextFlow.ui.nodes[identifierIndex].messages = [message];
         }
-  
+
         if (errors.password) {
           const passwordMessage = {
-            id:  4000002,
+            id: 4000002,
             text: errors.password,
             type: 'error',
           };
@@ -238,12 +241,12 @@ const Login: NextPage = () => {
         }
         setFlow(nextFlow);
       }
-      
+
       // setErrors(errors);
       return false;
     }
 
-    
+
   }
 
   return (
