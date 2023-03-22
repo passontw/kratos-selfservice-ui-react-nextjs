@@ -22,6 +22,10 @@
   "module": "dist/index.mjs",
   "typings": "dist/index.d.ts",
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@fontsource/roboto": "^4.5.8",
+    "@mui/material": "^5.11.13",
     "@ory/client": "^1.1.5",
     "@ory/hydra-client": "^2.0.2",
     "@ory/integrations": "0.2.8",

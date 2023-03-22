@@ -153,7 +153,7 @@ const Settings: NextPage = () => {
           }),
       )
 
-      const deleteAccount = async (identityId) => {
+      const deleteAccount = async () => {
         const confirmResult = confirm('是否確定刪除帳號?');
         if (confirmResult) {
           const {data} = await axios.get('/api/.ory/sessions/whoami', {
@@ -185,7 +185,7 @@ const Settings: NextPage = () => {
         Profile Management and Security Settings
       </CardTitle>
       <SettingsCard only="profile" flow={flow}>
-         <button onClick={() => deleteAccount('')}>刪除帳號</button>
+         <button onClick={deleteAccount}>刪除帳號</button>
       </SettingsCard>
       <SettingsCard only="profile" flow={flow}>
         <H3>Session Management</H3>
