@@ -11,7 +11,7 @@ export function handleGetFlowError<S>(
 ) {
   console.log("error handler init")
   return async (err: any) => {
-    console.log("error handler within", err.response?.data)
+    console.log("error handler within", JSON.stringify(err.response?.data))
     switch (err.response?.data.error?.id) {
       case "session_aal2_required":
         console.log("reached 1")

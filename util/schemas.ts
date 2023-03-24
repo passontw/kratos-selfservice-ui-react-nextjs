@@ -15,5 +15,6 @@ export const loginFormSchema = yup.object().shape({
 
 export const registrationFormSchema = yup.object().shape({
   'traits.email': yup.string().email().required('信箱不可為空'),
+  'traits.name': yup.string().email().required('信箱不可為空'),
   password: passwordSchema,
 });
