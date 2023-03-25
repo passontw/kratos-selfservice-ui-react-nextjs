@@ -20,6 +20,7 @@ import { NodeInputSubmit } from "../../pkg/ui/NodeInputSubmit"
 import { NodeAnchor } from "../../pkg/ui/NodeAnchor"
 
 import { Messages } from "./Messages"
+import EmailNode from "./EmailNode";
 
 export type Values = Partial<
   | UpdateLoginFlowBody
@@ -95,7 +96,7 @@ const VerificationCodeNodes = (props = {}) => {
         setValue={setValue(submitNode)}
         dispatchSubmit={handleSubmit}
         />
-      <NodeInput
+      <EmailNode
         dispatchSubmit={handleSubmit}
         value={values[getNodeId(emailNode)]}
         setValue={setValue(emailNode)}
@@ -124,7 +125,7 @@ const VerificationNodes = (props = {}) => {
         disabled={isLoading}
         attributes={csrfTokenNode.attributes}
       />
-      <NodeInput
+      <EmailNode
         dispatchSubmit={handleSubmit}
         value={values[getNodeId(emailNode)]}
         setValue={setValue(emailNode)}
