@@ -1,3 +1,5 @@
+import isEmpty from "lodash/isEmpty"
+import queryString from "query-string"
 import { VerificationFlow, UpdateVerificationFlowBody } from "@ory/client"
 import { CardTitle } from "@ory/themes"
 import { AxiosError } from "axios"
@@ -17,8 +19,6 @@ const Verification: NextPage = () => {
   // Get ?flow=... from the URL
   const router = useRouter()
   const { flow: flowId, return_to: returnTo, user } = router.query
-
-  console.log("flow verification:", flow)
 
   // directly initializing verifcation flow by entering user's email carried here from previous step
   useEffect(() => {
@@ -49,7 +49,8 @@ const Verification: NextPage = () => {
               setFlow(err.response?.data)
               return
             case 410:
-              const newFlowID = err.response.data.use_flow_id
+              const newFlowID = err.response.data.use_flow_id;
+              const { redirect_to } = router.components.query;
               router
                 // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
                 // their data when they reload the page.
@@ -117,11 +118,11 @@ const Verification: NextPage = () => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   const onSubmit = async (values: UpdateVerificationFlowBody) => {
-    console.log("[@signupflow verification values]:", values)
+    
     await router
       // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
       // their data when they reload the page.
-      .push(`/verification?flow=${flow?.id}`, undefined, { shallow: true })
+      .push(`/verification?${queryString.stringify(router.query)}&flow=${flow?.id}`, undefined, { shallow: true })
 
     ory
       .updateVerificationFlow({
@@ -157,7 +158,6 @@ const Verification: NextPage = () => {
       })
   }
 
-  console.log("🚀 ~ file: verification.tsx:169 ~ flow:", flow)
   return (
     <>
       <Head>

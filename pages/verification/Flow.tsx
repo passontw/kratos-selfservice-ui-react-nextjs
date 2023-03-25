@@ -21,6 +21,7 @@ import { NodeAnchor } from "../../pkg/ui/NodeAnchor"
 
 import { Messages } from "./Messages"
 import EmailNode from "./EmailNode";
+import VerificationCodeNode from "./VerificationCodeNode"
 
 export type Values = Partial<
   | UpdateLoginFlowBody
@@ -70,11 +71,12 @@ type State<T> = {
 
 const VerificationCodeNodes = (props = {}) => {
   const {isLoading, values, nodes, setValue, handleSubmit} = props;
+  console.log("🚀 ~ file: Flow.tsx:74 ~ VerificationCodeNodes ~ values:", values)
   const [codeNode, codeHiddenNode, submitNode, emailNode, csrfTokenNode] = nodes
   console.log("🚀 ~ file: Flow.tsx:73 ~ VerificationCodeNodes ~ nodes:", nodes)
   return (
     <>
-      <NodeInput
+      <VerificationCodeNode
         dispatchSubmit={handleSubmit}
         value={values[getNodeId(codeNode)]}
         setValue={setValue(codeNode)}
@@ -96,7 +98,7 @@ const VerificationCodeNodes = (props = {}) => {
         setValue={setValue(submitNode)}
         dispatchSubmit={handleSubmit}
         />
-      <EmailNode
+      <NodeInput
         dispatchSubmit={handleSubmit}
         value={values[getNodeId(emailNode)]}
         setValue={setValue(emailNode)}
@@ -148,6 +150,7 @@ const VerificationNodes = (props = {}) => {
 const VerificationMessageNodes = (props = {}) => {
   const {isLoading, values, nodes} = props;
   const [csrfTokenNode, anchorNode] = nodes
+  console.log("🚀 ~ file: Flow.tsx:153 ~ VerificationMessageNodes ~ nodes:", nodes)
   return (
     <>
       <NodeInputHidden 
@@ -309,7 +312,7 @@ export default class Flow<T extends Values> extends Component<
               handleSubmit={this.handleSubmit}
             />
       );
-      return <VerificationMessageNodes nodes={nodes} isLoading={isLoading} />;
+      return <VerificationMessageNodes nodes={nodes} values={values} isLoading={isLoading} />;
     }
     return (
       <form

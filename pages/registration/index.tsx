@@ -20,7 +20,9 @@ const getNextFlow = (flow) => {
   if (!flow?.ui?.nodes) return flow;
 
   const nextNodes = flow.ui.nodes.filter(node => {
-    return node.attributes.name !== 'traits.avatar';
+    if (node.attributes.name === 'traits.avatar') return false;
+    if (node.attributes.name === 'traits.loginVerification') return false;
+    return true;
   });
 
   return {

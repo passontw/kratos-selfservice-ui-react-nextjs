@@ -1,3 +1,4 @@
+import axios from "axios"
 import queryString from "query-string"
 import isEmpty from 'lodash/isEmpty';
 import { LoginFlow } from "@ory/client"
@@ -171,6 +172,40 @@ const Login: NextPage = () => {
         await handleYupSchema(loginFormSchema, values);
       }
 
+      const sessionResult = await ory
+      .updateLoginFlow({
+        flow: String(flow?.id),
+        updateLoginFlowBody: values,
+      });
+
+      const myResult = await axios.get('/api/.ory/sessions/whoami', {
+        headers: { withCredentials: true },
+      })
+      const {traits} = myResult.data.identity;
+
+      if (traits.loginVerification) {
+        router
+          .push(
+            flow?.return_to ||
+            `/verification?user=${traits.email}&csrf=${values.csrf_token}}&return_to=/`,
+          )
+          .then(() => { })
+      } else {
+        if (login_challenge) {
+          doConsentProcess(login_challenge as string, subject)
+        } else {
+          // Original Kratos flow
+          // console.log("data", data)
+          // console.log("flow", flow)
+          if (flow?.return_to) {
+            window.location.href = flow?.return_to
+            return
+          }
+          router.push("/")
+        }
+      }
+      console.log("🚀 ~ file: login.tsx:183 ~ onSubmit ~ myResult:", myResult)
+      return;
       return (
         ory
           .updateLoginFlow({
@@ -180,6 +215,7 @@ const Login: NextPage = () => {
 
           // We logged in successfully! Let's bring the user home.
           .then((data) => {
+            console.log("🚀 ~ file: login.tsx:183 ~ .then ~ data:", data)
             // new flow
             if (login_challenge) {
               doConsentProcess(login_challenge as string, subject)
