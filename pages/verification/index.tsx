@@ -6,9 +6,9 @@ import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-
-import { Flow, ActionCard, CenterLink, MarginCard } from "../pkg"
-import ory from "../pkg/sdk"
+import Flow from "./Flow"
+import { ActionCard, CenterLink, MarginCard } from "../../pkg"
+import ory from "../../pkg/sdk"
 
 const Verification: NextPage = () => {
   const [initFlow, setInitFlow] = useState(false)
@@ -157,6 +157,7 @@ const Verification: NextPage = () => {
       })
   }
 
+  console.log("🚀 ~ file: verification.tsx:169 ~ flow:", flow)
   return (
     <>
       <Head>
