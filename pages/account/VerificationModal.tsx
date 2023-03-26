@@ -1,4 +1,3 @@
-import isEmpty from "lodash/isEmpty"
 import queryString from "query-string"
 import { VerificationFlow, UpdateVerificationFlowBody } from "@ory/client"
 import { CardTitle } from "@ory/themes"
@@ -8,11 +7,11 @@ import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import Flow from "./Flow"
+import Flow from "./VerificationFlow"
 import { ActionCard, CenterLink, MarginCard } from "../../pkg"
 import ory from "../../pkg/sdk"
 
-const Verification: NextPage = () => {
+const Verification: NextPage = (props) => {
   const [initFlow, setInitFlow] = useState(false)
   const [flow, setFlow] = useState<VerificationFlow>()
 
@@ -27,6 +26,9 @@ const Verification: NextPage = () => {
       'input[name="csrf_token"]',
     ) as HTMLInputElement
     const csrf_token = csrf?.value
+    console.log("🚀 ~ file: VerificationModal.tsx:30 ~ useEffect ~ csrf_token:", csrf_token)
+    console.log("🚀 ~ file: VerificationModal.tsx:31 ~ useEffect ~ flow:", flow)
+    console.log("🚀 ~ file: VerificationModal.tsx:32 ~ useEffect ~ user:", user)
     // if user email was attached then this followed from the correct previous step
     if (user && flow) {
       ory
@@ -50,11 +52,11 @@ const Verification: NextPage = () => {
               return
             case 410:
               const newFlowID = err.response.data.use_flow_id;
-              const { redirect_to } = router.components.query;
+              const { redirect_to } = router.query;
               router
                 // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
                 // their data when they reload the page.
-                .push(`/verification?flow=${newFlowID}`, undefined, {
+                .push(`/account?flow=${newFlowID}`, undefined, {
                   shallow: true,
                 })
 
@@ -67,7 +69,7 @@ const Verification: NextPage = () => {
           throw err
         })
     }
-  }, [initFlow])
+  }, [initFlow, flowId])
 
   useEffect(() => {
     // If the router is not ready yet, or we already have a flow, do nothing.
@@ -76,6 +78,7 @@ const Verification: NextPage = () => {
     }
 
     // If ?flow=.. was in the URL, we fetch it
+    console.log("🚀 ~ file: VerificationModal.tsx:81 ~ useEffect ~ flowId:", flowId)
     if (flowId) {
       ory
         .getVerificationFlow({ id: String(flowId) })
@@ -122,7 +125,7 @@ const Verification: NextPage = () => {
     await router
       // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
       // their data when they reload the page.
-      .push(`/verification?${queryString.stringify(router.query)}&flow=${flow?.id}`, undefined, { shallow: true })
+      .push(`/account?${queryString.stringify(router.query)}`, undefined, { shallow: true })
 
     ory
       .updateVerificationFlow({
@@ -130,8 +133,8 @@ const Verification: NextPage = () => {
         updateVerificationFlowBody: values,
       })
       .then(({ data }) => {
+        props.deleteAccount();
         // Form submission was successful, show the message to the user!
-        setFlow(data)
       })
       .catch((err: any) => {
         switch (err.response?.status) {

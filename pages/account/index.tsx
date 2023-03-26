@@ -9,6 +9,7 @@ import ProfileFlow from "./ProfileFlow"
 import { Methods, ActionCard, Messages } from "../../pkg"
 import { handleFlowError } from "../../pkg/errors"
 import ory from "../../pkg/sdk"
+import VerificationModal from "./VerificationModal";
 
 interface Props {
   flow?: SettingsFlow
@@ -52,31 +53,45 @@ function SettingsCard({
 const Account: NextPage = () => {
   const [sessions, setSessions] = useState([])
   const [flow, setFlow] = useState<SettingsFlow>()
-  console.log("🚀 ~ file: account.tsx:52 ~ flow:", flow)
   const router = useRouter()
 
   const { flow: flowId, return_to: returnTo } = router.query
 
   const deleteAccount = async () => {
+    const { data } = await axios.get("/api/.ory/sessions/whoami", {
+      headers: { withCredentials: true },
+    })
+    return axios
+    .delete(`https://auth.passon.tw/admin/identities/${data.identity.id}`, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.ORY_PAT}`,
+      },
+    })
+    .then((resp) => {
+      router.replace("/")
+    })
+    .catch((error) => {
+      alert(error.message)
+    })
+  }
+
+  const deleteAccountPromt = async () => {
     const confirmResult = confirm("是否確定刪除帳號?")
     if (confirmResult) {
       const { data } = await axios.get("/api/.ory/sessions/whoami", {
         headers: { withCredentials: true },
       })
 
-      return axios
-        .delete(`https://auth.passon.tw/admin/identities/${data.identity.id}`, {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${process.env.ORY_PAT}`,
-          },
-        })
-        .then((resp) => {
-          router.replace("/")
-        })
-        .catch((error) => {
-          alert(error.message)
-        })
+      const {traits} = data.identity;
+      // console.log("🚀 ~ file: index.tsx:66 ~ deleteAccount ~ data.identity.traits.email:", data.identity.traits.email)
+      // return;
+      return router
+                  .push(
+                    flow?.return_to ||
+                    `/account?flow=${flowId || flow.id}&user=${traits.email}`,
+                  )
+                  .then(() => { })
     }
   }
 
@@ -159,7 +174,8 @@ const Account: NextPage = () => {
       </SettingsCard>
 
       <SettingsCard only="profile" flow={flow}>
-        <button onClick={deleteAccount}>刪除帳號</button>
+        <button onClick={deleteAccountPromt}>刪除帳號</button>
+        <VerificationModal deleteAccount={deleteAccount}/>
       </SettingsCard>
 
     </>
