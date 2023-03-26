@@ -84,7 +84,7 @@ const Account: NextPage = () => {
     router
       // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
       // his data when she/he reloads the page.
-      .push(`/settings?flow=${flow?.id}`, undefined, { shallow: true })
+      .push(`/account?flow=${flow?.id}`, undefined, { shallow: true })
       .then(() =>
         ory
           .updateSettingsFlow({
@@ -95,7 +95,7 @@ const Account: NextPage = () => {
             // The settings have been saved and the flow was updated. Let's show it to the user!
             setFlow(data)
           })
-          .catch(handleFlowError(router, "settings", setFlow))
+          .catch(handleFlowError(router, "account", setFlow))
           .catch(async (err: any) => {
             // If the previous handler did not catch the error it's most likely a form validation error
             if (err.response?.status === 400) {
@@ -122,7 +122,7 @@ const Account: NextPage = () => {
         .then(({ data }) => {
           setFlow(data)
         })
-        .catch(handleFlowError(router, "settings", setFlow))
+        .catch(handleFlowError(router, "account", setFlow))
       return
     }
 
@@ -134,7 +134,7 @@ const Account: NextPage = () => {
       .then(({ data }) => {
         setFlow(data)
       })
-      .catch(handleFlowError(router, "settings", setFlow))
+      .catch(handleFlowError(router, "account", setFlow))
   }, [flowId, router, router.isReady, returnTo, flow])
 
   return (

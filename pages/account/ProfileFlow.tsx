@@ -144,8 +144,6 @@ export default class Flow<T extends Values> extends Component<
       isLoading: true,
     }))
 
-    console.log("🚀 ~ file: ProfileFlow.tsx:148 ~ returnthis.props.onSubmit ~ this.state.values:", this.state.values)
-    return;
     return this.props.onSubmit(this.state.values).finally(() => {
       // We wait for reconciliation and update the state after 50ms
       // Done submitting - update loading status
