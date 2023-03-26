@@ -204,46 +204,6 @@ const Login: NextPage = () => {
           router.push("/")
         }
       }
-      console.log("🚀 ~ file: login.tsx:183 ~ onSubmit ~ myResult:", myResult)
-      return;
-      return (
-        ory
-          .updateLoginFlow({
-            flow: String(flow?.id),
-            updateLoginFlowBody: values,
-          })
-
-          // We logged in successfully! Let's bring the user home.
-          .then((data) => {
-            console.log("🚀 ~ file: login.tsx:183 ~ .then ~ data:", data)
-            // new flow
-            if (login_challenge) {
-              doConsentProcess(login_challenge as string, subject)
-            } else {
-              // Original Kratos flow
-              // console.log("data", data)
-              // console.log("flow", flow)
-              if (flow?.return_to) {
-                window.location.href = flow?.return_to
-                return
-              }
-              router.push("/")
-            }
-          })
-          .catch(handleFlowError(router, "login", setFlow))
-          .catch((err: any) => {
-            // If the previous handler did not catch the error it's most likely a form validation error
-            console.log("handleFlowError errored with:", err)
-            if (err.response?.status === 400) {
-              // Yup, it is!
-              if (err && err.response) {
-                setFlow(err.response?.data)
-              }
-              return
-            }
-            return Promise.reject(err)
-          })
-      )
     } catch (error) {
       const errors = handleYupErrors(error);
       if (flow) {
