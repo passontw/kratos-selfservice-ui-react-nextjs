@@ -6,7 +6,8 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { ReactNode, useEffect, useState } from "react"
 import axios from "axios";
-import { Flow, Methods, Messages, ActionCard, CenterLink } from "../pkg"
+
+import { ActionCard, CenterLink, Flow, Messages, Methods } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import UAParser from 'ua-parser-js';
@@ -139,6 +140,18 @@ const Settings: NextPage = () => {
           .then(({ data }) => {
             // The settings have been saved and the flow was updated. Let's show it to the user!
             setFlow(data)
+
+            // continue_with is a list of actions that the user might need to take before the settings update is complete.
+            // It could, for example, contain a link to the verification form.
+            if (data.continue_with) {
+              for (const item of data.continue_with) {
+                switch (item.action) {
+                  case "show_verification_ui":
+                    router.push("/verification?flow=" + item.flow.id)
+                    return
+                }
+              }
+            }
           })
           .catch(handleFlowError(router, "settings", setFlow))
           .catch(async (err: any) => {

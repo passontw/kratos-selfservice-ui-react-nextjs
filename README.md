@@ -52,3 +52,12 @@ commands to set the port number:
 ```sh
 npm run dev -- -p 4455
 ```
+
+
+**Branches**
+
+- develop  開發分支   => 自動 deploy 到開發環境
+- testing  分支      => 自動 deploy 到測試環境
+- master   主幹      => 自動 deploy 到正式環境
+- feature/{name}  從 develop 開分支測試完成後 合併回 develop
+- hotfix/{name}  從 master 開分支測試後 cherry-pick 到 develop，測試後，合併回 master

@@ -3,7 +3,7 @@ import {
   RecoveryFlow,
   RegistrationFlow,
   SettingsFlow,
-  VerificationFlow,
+  UiNode,
   UpdateLoginFlowBody,
   UpdateRecoveryFlowBody,
   UpdateRegistrationFlowBody,
@@ -13,9 +13,8 @@ import {
   UiNodeGroupEnum,
   UiTextTypeEnum,
 } from "@ory/client"
-import { getNodeId } from "@ory/integrations/ui"
-import { isUiNodeInputAttributes } from "@ory/integrations/ui"
-import { Component, FormEvent } from "react"
+import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
+import { Component, FormEvent, MouseEvent } from "react"
 
 import { Messages } from "./Messages"
 import { Node } from "./Node"
@@ -125,14 +124,38 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   }
 
   // Handles form submission
-  handleSubmit = (e: MouseEvent | FormEvent) => {
+  handleSubmit = (event: FormEvent<HTMLFormElement> | MouseEvent) => {
     // Prevent all native handlers
-    e.stopPropagation()
-    e.preventDefault()
+    event.stopPropagation()
+    event.preventDefault()
 
     // Prevent double submission!
     if (this.state.isLoading) {
       return Promise.resolve()
+    }
+
+    const form = event.currentTarget
+
+    let body: T | undefined
+
+    if (form && form instanceof HTMLFormElement) {
+      const formData = new FormData(form)
+
+      // map the entire form data to JSON for the request body
+      body = Object.fromEntries(formData) as T
+
+      const hasSubmitter = (evt: any): evt is { submitter: HTMLInputElement } =>
+        "submitter" in evt
+
+      // We need the method specified from the name and value of the submit button.
+      // when multiple submit buttons are present, the clicked one's value is used.
+      if (hasSubmitter(event.nativeEvent)) {
+        const method = event.nativeEvent.submitter
+        body = {
+          ...body,
+          ...{ [method.name]: method.value },
+        }
+      }
     }
 
     this.setState((state) => ({
@@ -140,14 +163,16 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       isLoading: true,
     }))
 
-    return this.props.onSubmit(this.state.values).finally(() => {
-      // We wait for reconciliation and update the state after 50ms
-      // Done submitting - update loading status
-      this.setState((state) => ({
-        ...state,
-        isLoading: false,
-      }))
-    })
+    return this.props
+      .onSubmit({ ...body, ...this.state.values })
+      .finally(() => {
+        // We wait for reconciliation and update the state after 50ms
+        // Done submitting - update loading status
+        this.setState((state) => ({
+          ...state,
+          isLoading: false,
+        }))
+      })
   }
 
   render() {
