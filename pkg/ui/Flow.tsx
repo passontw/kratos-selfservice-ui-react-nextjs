@@ -9,7 +9,6 @@ import {
   UpdateRegistrationFlowBody,
   UpdateSettingsFlowBody,
   UpdateVerificationFlowBody,
-  UiNode,
   UiNodeGroupEnum,
   UiTextTypeEnum,
 } from "@ory/client"
