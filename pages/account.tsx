@@ -4,12 +4,12 @@ import axios from "axios"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { ReactNode, useEffect, useState } from "react"
-import Flow from "./Flow"
-import ProfileFlow from "./ProfileFlow"
-import { Methods, ActionCard, Messages } from "../../pkg"
-import { handleFlowError } from "../../pkg/errors"
-import ory from "../../pkg/sdk"
-import VerificationModal from "./VerificationModal";
+import Flow from "../components/account/Flow"
+import ProfileFlow from "../components/account/ProfileFlow"
+import { Methods, ActionCard, Messages } from "../pkg"
+import { handleFlowError } from "../pkg/errors"
+import ory from "../pkg/sdk"
+import VerificationModal from "../components/account/VerificationModal";
 
 interface Props {
   flow?: SettingsFlow
