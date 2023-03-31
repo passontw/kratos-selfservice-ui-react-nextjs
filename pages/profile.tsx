@@ -1,10 +1,11 @@
-import Avatar from "@mui/material/Avatar"
-import { SettingsFlow, UpdateSettingsFlowBody } from "@ory/client"
-import { H3 } from "@ory/themes"
 import { NextPage } from "next"
+import { H3 } from "@ory/themes"
+import { Messages } from "../components/profile/Messages"
+import Flow from "../components/profile/Flow"
+import { ActionCard, Methods } from "../pkg"
+import { RegistrationFlow, SettingsFlow, UpdateSettingsFlowBody } from "@ory/client"
+import { useState } from "react"
 import { useRouter } from "next/router"
-import { ReactNode, useState, useEffect } from "react"
-import { Flow, Methods, Messages, ActionCard } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 
@@ -34,42 +35,8 @@ function SettingsCard({
 }
 
 const Profile: NextPage = () => {
+  const [flow, setFlow] = useState<RegistrationFlow>()
   const router = useRouter()
-  const [flow, setFlow] = useState<SettingsFlow>()
-  const [profile, setProfile] = useState({
-    name: "",
-    avatar: "",
-  })
-
-  const { flow: flowId, return_to: returnTo } = router.query
-
-  useEffect(() => {
-    // If the router is not ready yet, or we already have a flow, do nothing.
-    if (!router.isReady || flow) {
-      return
-    }
-
-    // If ?flow=.. was in the URL, we fetch it
-    if (flowId) {
-      ory
-        .getSettingsFlow({ id: String(flowId) })
-        .then(({ data }) => {
-          setFlow(data)
-        })
-        .catch(handleFlowError(router, "settings", setFlow))
-      return
-    }
-
-    // Otherwise we initialize it
-    ory
-      .createBrowserSettingsFlow({
-        returnTo: returnTo ? String(returnTo) : undefined,
-      })
-      .then(({ data }) => {
-        setFlow(data)
-      })
-      .catch(handleFlowError(router, "settings", setFlow))
-  }, [flowId, router, router.isReady, returnTo, flow])
 
   const onSubmit = (values: UpdateSettingsFlowBody) =>
     router
@@ -111,23 +78,6 @@ const Profile: NextPage = () => {
           flow={flow}
         />
       </SettingsCard>
-      {/* <Stack direction="row" spacing={2}>
-        <Stack>
-          <Avatar src={profile.avatar} />
-        </Stack>
-        <Stack>
-          <List>
-            <ListItem>
-              <TextField
-                required
-                label="UserName"
-                defaultValue={profile.name}
-              />
-            </ListItem>
-          </List>
-        </Stack>
-        <Button variant="contained">Save</Button>
-      </Stack> */}
     </>
   )
 }

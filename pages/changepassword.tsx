@@ -6,13 +6,13 @@ import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { ReactNode, useEffect, useState } from "react"
 
-import { Methods, Messages, ActionCard } from "../../pkg"
-import { handleFlowError } from "../../pkg/errors"
-import ory from "../../pkg/sdk"
-import { updatePasswordSchema } from "../../util/schemas"
-import { handleYupSchema, handleYupErrors } from "../../util/yupHelpers"
+import { Methods, Messages, ActionCard } from "../pkg"
+import { handleFlowError } from "../pkg/errors"
+import ory from "../pkg/sdk"
+import { updatePasswordSchema } from "../util/schemas"
+import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 
-import Flow from "./Flow"
+import Flow from "../components/changepassword/Flow"
 
 interface Props {
   flow?: SettingsFlow

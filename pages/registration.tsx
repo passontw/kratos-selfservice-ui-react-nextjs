@@ -5,15 +5,15 @@ import type { NextPage } from "next"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { registrationFormSchema } from '../../util/schemas';
-import { handleYupSchema, handleYupErrors } from '../../util/yupHelpers';
+import { registrationFormSchema } from '../util/schemas';
+import { handleYupSchema, handleYupErrors } from '../util/yupHelpers';
 
 // Import render helpers
-import Flow from './Flow';
-import { ActionCard, CenterLink, MarginCard } from "../../pkg"
-import { handleFlowError } from "../../pkg/errors"
+import Flow from '../components/registration/Flow';
+import { ActionCard, CenterLink, MarginCard } from "../pkg"
+import { handleFlowError } from "../pkg/errors"
 // Import the SDK
-import ory from "../../pkg/sdk"
+import ory from "../pkg/sdk"
 
 const getNextFlow = (flow) => {
   if (!flow) return flow;
