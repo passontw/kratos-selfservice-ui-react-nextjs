@@ -76,6 +76,7 @@ const Registration: NextPage = () => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   const onSubmit = async (values: any) => {
+    console.log("🚀 ~ file: registration.tsx:82 ~ onSubmit ~ values.provider:", values.provider)
     try {
       if (!values.provider) {
         await handleYupSchema(registrationFormSchema, values);
@@ -122,7 +123,6 @@ const Registration: NextPage = () => {
           )
       )
     }catch(error) {
-      console.log("🚀 ~ file: index.tsx:123 ~ error:", error)
       const errors = handleYupErrors(error);
       const nextFlow = cloneDeep(flow);
 
