@@ -4,7 +4,7 @@ import { Messages } from "../components/profile/Messages"
 import Flow from "../components/profile/Flow"
 import { ActionCard, Methods } from "../pkg"
 import { RegistrationFlow, SettingsFlow, UpdateSettingsFlowBody } from "@ory/client"
-import { useState } from "react"
+import { ReactNode, useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
@@ -38,11 +38,40 @@ const Profile: NextPage = () => {
   const [flow, setFlow] = useState<RegistrationFlow>()
   const router = useRouter()
 
+  const { flow: flowId, return_to: returnTo } = router.query
+  
+  useEffect(() => {
+    // If the router is not ready yet, or we already have a flow, do nothing.
+    if (!router.isReady || flow) {
+      return
+    }
+
+    // If ?flow=.. was in the URL, we fetch it
+    if (flowId) {
+      ory
+        .getSettingsFlow({ id: String(flowId) })
+        .then(({ data }) => {
+          setFlow(data)
+        })
+        .catch(handleFlowError(router, "profile", setFlow))
+      return
+    }
+
+    // Otherwise we initialize it
+    ory
+      .createBrowserSettingsFlow({
+        returnTo: returnTo ? String(returnTo) : undefined,
+      })
+      .then(({ data }) => {
+        setFlow(data)
+      })
+      .catch(handleFlowError(router, "profile", setFlow))
+  }, [flowId, router, router.isReady, returnTo, flow])
   const onSubmit = (values: UpdateSettingsFlowBody) =>
     router
       // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
       // his data when she/he reloads the page.
-      .push(`/settings?flow=${flow?.id}`, undefined, { shallow: true })
+      .push(`/profile?flow=${flow?.id}`, undefined, { shallow: true })
       .then(() =>
         ory
           .updateSettingsFlow({
@@ -53,7 +82,7 @@ const Profile: NextPage = () => {
             // The settings have been saved and the flow was updated. Let's show it to the user!
             setFlow(data)
           })
-          .catch(handleFlowError(router, "settings", setFlow))
+          .catch(handleFlowError(router, "profile", setFlow))
           .catch(async (err: any) => {
             // If the previous handler did not catch the error it's most likely a form validation error
             if (err.response?.status === 400) {
