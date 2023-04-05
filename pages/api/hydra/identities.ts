@@ -7,8 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         Accept: "application/json",
         Authorization: `Bearer ${process.env.ORY_PAT}`,
       },
-    }).then(response => {
-      console.log("🚀 ~ file: index.tsx:24 ~ useEffect ~ response:", response)
+    }).then((response) => {
       return (
         res
           .status(200)
