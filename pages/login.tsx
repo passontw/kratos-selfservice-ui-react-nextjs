@@ -168,42 +168,86 @@ const Login: NextPage = () => {
     }
 
     try {
-      if (!values.provider) {
+      const isEmailSignin = isEmpty(values.provider);
+      if (isEmailSignin) {
         await handleYupSchema(loginFormSchema, values);
       }
 
-      const sessionResult = await ory
-      .updateLoginFlow({
-        flow: String(flow?.id),
-        updateLoginFlowBody: values,
-      });
+      if (isEmailSignin) {
+        const sessionResult = await ory
+          .updateLoginFlow({
+            flow: String(flow?.id),
+            updateLoginFlowBody: values,
+          });
 
-      const myResult = await axios.get('/api/.ory/sessions/whoami', {
-        headers: { withCredentials: true },
-      })
-      const {traits} = myResult.data.identity;
+        const myResult = await axios.get('/api/.ory/sessions/whoami', {
+          headers: { withCredentials: true },
+        })
+        const { traits } = myResult.data.identity;
 
-      if (traits.loginVerification) {
-        router
-          .push(
-            flow?.return_to ||
-            `/verification?user=${traits.email}&csrf=${values.csrf_token}}&return_to=/`,
-          )
-          .then(() => { })
-      } else {
-        if (login_challenge) {
-          doConsentProcess(login_challenge as string, subject)
+        if (traits.loginVerification) {
+          router
+            .push(
+              flow?.return_to ||
+              `/verification?user=${traits.email}&csrf=${values.csrf_token}}&return_to=/`,
+            )
+            .then(() => { })
         } else {
-          // Original Kratos flow
-          // console.log("data", data)
-          // console.log("flow", flow)
-          if (flow?.return_to) {
-            window.location.href = flow?.return_to
-            return
+          if (login_challenge) {
+            doConsentProcess(login_challenge as string, subject)
+          } else {
+            // Original Kratos flow
+            // console.log("data", data)
+            // console.log("flow", flow)
+            if (flow?.return_to) {
+              window.location.href = flow?.return_to
+              return
+            }
+            router.push("/")
           }
-          router.push("/")
         }
+        return;
       }
+      return (
+        ory
+          .updateLoginFlow({
+            flow: String(flow?.id),
+            updateLoginFlowBody: values,
+          })
+
+          // We logged in successfully! Let's bring the user home.
+          .then((data) => {
+            // new flow
+            if (login_challenge) {
+              doConsentProcess(login_challenge as string, subject)
+            } else {
+              // Original Kratos flow
+              // console.log("data", data)
+              // console.log("flow", flow)
+              if (flow?.return_to) {
+                window.location.href = flow?.return_to
+                return
+              }
+              router.push("/")
+            }
+          })
+          .then(() => { })
+          .catch(handleFlowError(router, "login", setFlow))
+          .catch((err: any) => {
+            // If the previous handler did not catch the error it's most likely a form validation error
+            console.log("handleFlowError errored with:", err)
+            if (err.response?.status === 400) {
+              // Yup, it is!
+              if (err && err.response) {
+                console.log("🚀 ~ file: login.tsx:161 ~ onSubmit ~ err.response?.data:", err.response?.data)
+                setFlow(err.response?.data)
+              }
+              return
+            }
+            return Promise.reject(err)
+          })
+      )
+
     } catch (error) {
       const errors = handleYupErrors(error);
       if (flow) {
