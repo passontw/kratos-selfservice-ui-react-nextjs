@@ -110,7 +110,7 @@ const Settings: NextPage = () => {
         .then(({ data }) => {
           setFlow(data)
         })
-        .catch(handleFlowError(router, "settings", setFlow))
+        .catch(handleFlowError(router, "setting", setFlow))
       return
     }
 
@@ -122,7 +122,7 @@ const Settings: NextPage = () => {
       .then(({ data }) => {
         setFlow(data)
       })
-      .catch(handleFlowError(router, "settings", setFlow))
+      .catch(handleFlowError(router, "setting", setFlow))
   }, [flowId, router, router.isReady, returnTo, flow])
 
   const onSubmit = (values: UpdateSettingsFlowBody) =>
@@ -140,7 +140,7 @@ const Settings: NextPage = () => {
             // The settings have been saved and the flow was updated. Let's show it to the user!
             setFlow(data)
           })
-          .catch(handleFlowError(router, "settings", setFlow))
+          .catch(handleFlowError(router, "setting", setFlow))
           .catch(async (err: any) => {
             // If the previous handler did not catch the error it's most likely a form validation error
             if (err.response?.status === 400) {

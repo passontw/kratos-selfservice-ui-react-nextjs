@@ -61,7 +61,9 @@ export type Props<T> = {
 }
 
 function emptyState<T>() {
-  return {} as T
+  return {
+    method: "password",
+  } as T
 }
 
 type State<T> = {
