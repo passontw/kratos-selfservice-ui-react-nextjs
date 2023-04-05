@@ -1,4 +1,3 @@
-import csrf from "csurf"
 import { NextApiRequest, NextApiResponse } from "next"
 import url from "url"
 
