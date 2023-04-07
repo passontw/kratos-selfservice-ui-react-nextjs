@@ -2,9 +2,14 @@ import * as yup from 'yup';
 
 export const passwordSchema = yup
   .string()
+  .length(8, 'Need at least 8 characters')
   .matches(
-    /^(?=.{8,20}$)([a-zA-Z]+\d+|\d+[a-zA-Z]+)\w*$/,
-    '請設置8至20碼英數組合'
+    /^([0-9]+)\w*$/,
+    'Need at least 1 number'
+  )
+  .matches(
+    /^([a-zA-Z]+)\w*$/,
+    'Need at least 1 alphabet letter'
   )
   .required('密碼不可為空');
 
