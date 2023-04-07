@@ -16,6 +16,7 @@ const ExportUserData: NextPage = () => {
   }, []);
   return (
     <>
+      <a href="/response.xls">Export User Data</a>
       <h1>Export User Data</h1>
       <div>you redirected to export user data page</div>
       {users.map((user, index) => {

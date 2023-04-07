@@ -167,7 +167,6 @@ export default class Flow<T extends Values> extends Component<
 
     // Filter the nodes - only show the ones we want
     const nodes = this.filterNodes()
-    console.log("🚀 ~ file: Flow.tsx:157 ~ Flow<T ~ render ~ nodes:", nodes)
 
     if (!flow) {
       // No flow was set yet? It's probably still loading...

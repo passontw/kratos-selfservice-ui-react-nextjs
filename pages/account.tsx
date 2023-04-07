@@ -84,7 +84,6 @@ const Account: NextPage = () => {
       })
 
       const {traits} = data.identity;
-      // console.log("🚀 ~ file: index.tsx:66 ~ deleteAccount ~ data.identity.traits.email:", data.identity.traits.email)
       // return;
       return router
                   .push(

@@ -239,7 +239,6 @@ const Login: NextPage = () => {
             if (err.response?.status === 400) {
               // Yup, it is!
               if (err && err.response) {
-                console.log("🚀 ~ file: login.tsx:161 ~ onSubmit ~ err.response?.data:", err.response?.data)
                 setFlow(err.response?.data)
               }
               return

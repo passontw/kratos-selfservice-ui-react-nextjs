@@ -148,7 +148,6 @@ const VerificationNodes = (props = {}) => {
 const VerificationMessageNodes = (props = {}) => {
   const {isLoading, values, nodes} = props;
   const [csrfTokenNode, anchorNode] = nodes
-  console.log("🚀 ~ file: Flow.tsx:153 ~ VerificationMessageNodes ~ nodes:", nodes)
   return (
     <>
       <NodeInputHidden 

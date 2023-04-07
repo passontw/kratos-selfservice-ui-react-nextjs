@@ -70,7 +70,6 @@ const ResetPassword: NextPage = () => {
           .then(({ data }) => {
             // Form submission was successful, show the message to the user!
             setFlow(data)
-            console.log("🚀 ~ file: resetpassword.tsx:74 ~ .then ~ data:", data)
           })
           .catch(handleFlowError(router, 'resetpassword', setFlow))
           .catch((err: any) => {

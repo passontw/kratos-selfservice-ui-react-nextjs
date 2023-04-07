@@ -37,6 +37,7 @@
     "hydra-js": "^0.1.5",
     "next": "12.1.6",
     "node-fetch": "^3.3.0",
+    "node-xlsx": "^0.21.0",
     "pkce-challenge": "^3.0.0",
     "query-string": "^8.1.0",
     "react": "17.0.2",

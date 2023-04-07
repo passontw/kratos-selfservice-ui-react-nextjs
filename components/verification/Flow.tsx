@@ -71,9 +71,8 @@ type State<T> = {
 
 const VerificationCodeNodes = (props = {}) => {
   const {isLoading, values, nodes, setValue, handleSubmit} = props;
-  console.log("🚀 ~ file: Flow.tsx:74 ~ VerificationCodeNodes ~ values:", values)
   const [codeNode, codeHiddenNode, submitNode, emailNode, csrfTokenNode] = nodes
-  console.log("🚀 ~ file: Flow.tsx:73 ~ VerificationCodeNodes ~ nodes:", nodes)
+
   return (
     <>
       <VerificationCodeNode
@@ -150,7 +149,7 @@ const VerificationNodes = (props = {}) => {
 const VerificationMessageNodes = (props = {}) => {
   const {isLoading, values, nodes} = props;
   const [csrfTokenNode, anchorNode] = nodes
-  console.log("🚀 ~ file: Flow.tsx:153 ~ VerificationMessageNodes ~ nodes:", nodes)
+
   return (
     <>
       <NodeInputHidden 

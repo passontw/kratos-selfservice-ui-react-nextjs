@@ -26,9 +26,6 @@ const Verification: NextPage = (props) => {
       'input[name="csrf_token"]',
     ) as HTMLInputElement
     const csrf_token = csrf?.value
-    console.log("🚀 ~ file: VerificationModal.tsx:30 ~ useEffect ~ csrf_token:", csrf_token)
-    console.log("🚀 ~ file: VerificationModal.tsx:31 ~ useEffect ~ flow:", flow)
-    console.log("🚀 ~ file: VerificationModal.tsx:32 ~ useEffect ~ user:", user)
     // if user email was attached then this followed from the correct previous step
     if (user && flow) {
       ory
@@ -78,7 +75,6 @@ const Verification: NextPage = (props) => {
     }
 
     // If ?flow=.. was in the URL, we fetch it
-    console.log("🚀 ~ file: VerificationModal.tsx:81 ~ useEffect ~ flowId:", flowId)
     if (flowId) {
       ory
         .getVerificationFlow({ id: String(flowId) })
