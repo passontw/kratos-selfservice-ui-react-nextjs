@@ -9,8 +9,8 @@ import { registrationFormSchema } from '../util/schemas';
 import { handleYupSchema, handleYupErrors } from '../util/yupHelpers';
 
 // Import render helpers
-import Flow from '../components/registration/Flow';
-import { ActionCard, CenterLink, MarginCard } from "../pkg"
+// import Flow from '../components/registration/Flow';
+import { ActionCard, Flow, CenterLink, MarginCard } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 // Import the SDK
 import ory from "../pkg/sdk"
@@ -85,7 +85,7 @@ const Registration: NextPage = () => {
         router
           // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
           // his data when she/he reloads the page.
-          .push(`/registration?flow=${flow?.id}}`, undefined, { shallow: true })
+          .push(`/registration?flow=${flow?.id}`, undefined, { shallow: true })
           .then(() =>
             ory
               .updateRegistrationFlow({
