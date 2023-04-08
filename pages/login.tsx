@@ -235,7 +235,6 @@ const Login: NextPage = () => {
           .catch(handleFlowError(router, "login", setFlow))
           .catch((err: any) => {
             // If the previous handler did not catch the error it's most likely a form validation error
-            console.log("handleFlowError errored with:", err)
             if (err.response?.status === 400) {
               // Yup, it is!
               if (err && err.response) {

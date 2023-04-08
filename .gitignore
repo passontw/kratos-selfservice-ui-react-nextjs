@@ -40,7 +40,7 @@ cypress/videos
 cypress/screenshots
 
 # yaml
-identity-config.yaml
+identity-config*.yaml
 
 # excel file
 response.xls
