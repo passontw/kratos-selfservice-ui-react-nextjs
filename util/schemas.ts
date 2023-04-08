@@ -2,9 +2,9 @@ import * as yup from 'yup';
 
 export const passwordSchema = yup
   .string()
-  .length(8, 'Need at least 8 characters')
+  .min(8, 'Need at least 8 characters')
   .matches(
-    /^([0-9]+)\w*$/,
+    /^(?=.*\d)/,
     'Need at least 1 number'
   )
   .matches(
