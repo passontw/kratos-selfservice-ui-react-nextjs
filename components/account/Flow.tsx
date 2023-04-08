@@ -3,22 +3,20 @@ import {
   RecoveryFlow,
   RegistrationFlow,
   SettingsFlow,
-  VerificationFlow,
+  UiNode,
   UpdateLoginFlowBody,
   UpdateRecoveryFlowBody,
   UpdateRegistrationFlowBody,
   UpdateSettingsFlowBody,
   UpdateVerificationFlowBody,
-  UiNode,
+  UiNodeGroupEnum,
+  UiTextTypeEnum,
 } from "@ory/client"
-import { getNodeId } from "@ory/integrations/ui"
-import { isUiNodeInputAttributes } from "@ory/integrations/ui"
-import { Component, FormEvent } from "react"
-
-import { NodeInputHidden } from "../../pkg/ui/NodeInputHidden"
+import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
+import { Component, FormEvent, MouseEvent } from "react"
 
 import { Messages } from "./Messages"
-import SocialLoginNode from "./SocialLoginNode"
+import { Node } from "./Node"
 
 export type Values = Partial<
   | UpdateLoginFlowBody
@@ -66,10 +64,7 @@ type State<T> = {
   isLoading: boolean
 }
 
-export default class Flow<T extends Values> extends Component<
-  Props<T>,
-  State<T>
-> {
+export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   constructor(props: Props<T>) {
     super(props)
     this.state = {
@@ -128,14 +123,38 @@ export default class Flow<T extends Values> extends Component<
   }
 
   // Handles form submission
-  handleSubmit = (e: MouseEvent | FormEvent) => {
+  handleSubmit = (event: FormEvent<HTMLFormElement> | MouseEvent) => {
     // Prevent all native handlers
-    e.stopPropagation()
-    e.preventDefault()
+    event.stopPropagation()
+    event.preventDefault()
 
     // Prevent double submission!
     if (this.state.isLoading) {
       return Promise.resolve()
+    }
+
+    const form = event.currentTarget
+
+    let body: T | undefined
+
+    if (form && form instanceof HTMLFormElement) {
+      const formData = new FormData(form)
+
+      // map the entire form data to JSON for the request body
+      body = Object.fromEntries(formData) as T
+
+      const hasSubmitter = (evt: any): evt is { submitter: HTMLInputElement } =>
+        "submitter" in evt
+
+      // We need the method specified from the name and value of the submit button.
+      // when multiple submit buttons are present, the clicked one's value is used.
+      if (hasSubmitter(event.nativeEvent)) {
+        const method = event.nativeEvent.submitter
+        body = {
+          ...body,
+          ...{ [method.name]: method.value },
+        }
+      }
     }
 
     this.setState((state) => ({
@@ -143,14 +162,16 @@ export default class Flow<T extends Values> extends Component<
       isLoading: true,
     }))
 
-    return this.props.onSubmit(this.state.values).finally(() => {
-      // We wait for reconciliation and update the state after 50ms
-      // Done submitting - update loading status
-      this.setState((state) => ({
-        ...state,
-        isLoading: false,
-      }))
-    })
+    return this.props
+      .onSubmit({ ...body, ...this.state.values })
+      .finally(() => {
+        // We wait for reconciliation and update the state after 50ms
+        // Done submitting - update loading status
+        this.setState((state) => ({
+          ...state,
+          isLoading: false,
+        }))
+      })
   }
 
   render() {
@@ -168,8 +189,6 @@ export default class Flow<T extends Values> extends Component<
       return null
     }
 
-    const [csrfTokenNode, appleNode, googleNode] = nodes
-
     return (
       <form
         action={flow.ui.action}
@@ -177,52 +196,36 @@ export default class Flow<T extends Values> extends Component<
         onSubmit={this.handleSubmit}
       >
         {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
-        <NodeInputHidden
-          value={values[getNodeId(csrfTokenNode)]}
-          node={csrfTokenNode}
-          disabled={isLoading}
-          attributes={csrfTokenNode.attributes}
-        />
-        <SocialLoginNode
-          dispatchSubmit={this.handleSubmit}
-          value={values[getNodeId(appleNode)]}
-          setValue={(value) =>
-            new Promise((resolve) => {
-              this.setState(
-                (state) => ({
-                  ...state,
-                  values: {
-                    ...state.values,
-                    [getNodeId(appleNode)]: value,
-                  },
-                }),
-                resolve,
-              )
-            })
-          }
-          node={appleNode}
-          attributes={appleNode.attributes}
-        />
-        <SocialLoginNode
-          dispatchSubmit={this.handleSubmit}
-          value={values[getNodeId(googleNode)]}
-          setValue={(value) =>
-            new Promise((resolve) => {
-              this.setState(
-                (state) => ({
-                  ...state,
-                  values: {
-                    ...state.values,
-                    [getNodeId(googleNode)]: value,
-                  },
-                }),
-                resolve,
-              )
-            })
-          }
-          node={googleNode}
-          attributes={googleNode.attributes}
-        />
+        {nodes.map((node, k) => {
+          // console.log(node)
+          const id = getNodeId(node) as keyof Values
+          // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
+          // if (node.meta.label?.text === "E-Mail") return
+
+          return (
+            <Node
+              key={`${id}-${k}`}
+              disabled={isLoading}
+              node={node}
+              value={values[id]}
+              dispatchSubmit={this.handleSubmit}
+              setValue={(value) =>
+                new Promise((resolve) => {
+                  this.setState(
+                    (state) => ({
+                      ...state,
+                      values: {
+                        ...state.values,
+                        [getNodeId(node)]: value,
+                      },
+                    }),
+                    resolve,
+                  )
+                })
+              }
+            />
+          )
+        })}
       </form>
     )
   }
