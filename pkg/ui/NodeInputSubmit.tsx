@@ -11,11 +11,17 @@ export function NodeInputSubmit<T>({
   return (
     <>
       <Button
+        style={{
+          backgroundColor: "#A62BC3",
+          borderRadius: "8px",
+          height: "44px",
+        }}
         name={attributes.name}
         value={attributes.value || ""}
         disabled={attributes.disabled || disabled}
       >
-        {getNodeLabel(node)}
+        {/* {getNodeLabel(node)} */}
+        {getNodeLabel(node) === "Sign in" ? "Login" : getNodeLabel(node)}
       </Button>
     </>
   )

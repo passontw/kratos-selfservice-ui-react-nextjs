@@ -24,8 +24,10 @@
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@fontsource/open-sans": "^4.5.14",
     "@fontsource/roboto": "^4.5.8",
-    "@mui/material": "^5.11.13",
+    "@fontsource/teko": "^4.5.9",
+    "@mui/material": "^5.11.16",
     "@ory/client": "^1.1.5",
     "@ory/hydra-client": "^2.0.2",
     "@ory/integrations": "0.2.8",
