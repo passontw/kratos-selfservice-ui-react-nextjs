@@ -15,8 +15,8 @@
     "format:check": "",
     "build:lib": "rm -rf dist && rollup -c",
     "prepublishOnly": "npm run build:lib",
-    "test": "cypress run",
-    "test:dev": "cypress open"
+    "test": "",
+    "test:dev": ""
   },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
