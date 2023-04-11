@@ -4,7 +4,7 @@ import axios from "axios"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { ReactNode, useEffect, useState } from "react"
-import Flow from "../components/account/Flow"
+import {Flow} from "../components/account/Flow"
 import ProfileFlow from "../components/account/ProfileFlow"
 import { Methods, ActionCard, Messages } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
@@ -94,33 +94,36 @@ const Account: NextPage = () => {
     }
   }
 
-  const onSubmit = (values: UpdateSettingsFlowBody) =>
-    router
-      // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
-      // his data when she/he reloads the page.
-      .push(`/account?flow=${flow?.id}`, undefined, { shallow: true })
-      .then(() =>
-        ory
-          .updateSettingsFlow({
-            flow: String(flow?.id),
-            updateSettingsFlowBody: values,
-          })
-          .then(({ data }) => {
-            // The settings have been saved and the flow was updated. Let's show it to the user!
-            setFlow(data)
-          })
-          .catch(handleFlowError(router, "account", setFlow))
-          .catch(async (err: any) => {
-            // If the previous handler did not catch the error it's most likely a form validation error
-            if (err.response?.status === 400) {
-              // Yup, it is!
-              setFlow(err.response?.data)
-              return
-            }
+  const onSubmit = (values: UpdateSettingsFlowBody) => {
+    console.log("🚀 ~ file: account.tsx:98 ~ onSubmit ~ values:", values)
+    return router
+    // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
+    // his data when she/he reloads the page.
+    .push(`/account?flow=${flow?.id}`, undefined, { shallow: true })
+    .then(() =>
+      ory
+        .updateSettingsFlow({
+          flow: String(flow?.id),
+          updateSettingsFlowBody: values,
+        })
+        .then(({ data }) => {
+          // The settings have been saved and the flow was updated. Let's show it to the user!
+          setFlow(data)
+        })
+        .catch(handleFlowError(router, "account", setFlow))
+        .catch(async (err: any) => {
+          // If the previous handler did not catch the error it's most likely a form validation error
+          if (err.response?.status === 400) {
+            // Yup, it is!
+            setFlow(err.response?.data)
+            return
+          }
 
-            return Promise.reject(err)
-          }),
-      )
+          return Promise.reject(err)
+        }),
+    );
+  }
+    
 
   useEffect(() => {
     refreshSessions(setSessions)

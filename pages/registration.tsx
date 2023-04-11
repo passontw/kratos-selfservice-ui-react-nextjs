@@ -1,37 +1,39 @@
+import Box from "@mui/material/Box"
 import { RegistrationFlow, UpdateRegistrationFlowBody } from "@ory/client"
 import { CardTitle } from "@ory/themes"
-import cloneDeep from 'lodash/cloneDeep';
+import cloneDeep from "lodash/cloneDeep"
 import type { NextPage } from "next"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { registrationFormSchema } from '../util/schemas';
-import { handleYupSchema, handleYupErrors } from '../util/yupHelpers';
 
+import CmidHead from "../components/CmidHead"
 // Import render helpers
-import Flow from '../components/registration/Flow';
-import { ActionCard, CenterLink, MarginCard } from "../pkg"
+// import Flow from '../components/registration/Flow';
+import { ActionCard, Flow, CenterLink, MarginCard } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 // Import the SDK
 import ory from "../pkg/sdk"
+import { registrationFormSchema } from "../util/schemas"
+import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 
 const getNextFlow = (flow) => {
-  if (!flow) return flow;
-  if (!flow?.ui?.nodes) return flow;
+  if (!flow) return flow
+  if (!flow?.ui?.nodes) return flow
 
-  const nextNodes = flow.ui.nodes.filter(node => {
-    if (node.attributes.name === 'traits.avatar') return false;
-    if (node.attributes.name === 'traits.loginVerification') return false;
-    return true;
-  });
+  const nextNodes = flow.ui.nodes.filter((node) => {
+    if (node.attributes.name === "traits.avatar") return false
+    if (node.attributes.name === "traits.loginVerification") return false
+    return true
+  })
 
   return {
     ...flow,
     ui: {
       ...flow.ui,
       nodes: nextNodes,
-    }
-  };
+    },
+  }
 }
 
 // Renders the registration page
@@ -78,14 +80,14 @@ const Registration: NextPage = () => {
   const onSubmit = async (values: any) => {
     try {
       if (!values.provider) {
-        await handleYupSchema(registrationFormSchema, values);
+        await handleYupSchema(registrationFormSchema, values)
       }
 
       return (
         router
           // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
           // his data when she/he reloads the page.
-          .push(`/registration?flow=${flow?.id}}`, undefined, { shallow: true })
+          .push(`/registration?flow=${flow?.id}`, undefined, { shallow: true })
           .then(() =>
             ory
               .updateRegistrationFlow({
@@ -102,9 +104,9 @@ const Registration: NextPage = () => {
                 return router
                   .push(
                     flow?.return_to ||
-                    `/verification?user=${values["traits.email"]}&csrf=${values.csrf_token}}`,
+                      `/verification?user=${values["traits.email"]}&csrf=${values.csrf_token}}`,
                   )
-                  .then(() => { })
+                  .then(() => {})
               })
               .catch(handleFlowError(router, "registration", setFlow))
               .catch((err: any) => {
@@ -121,62 +123,113 @@ const Registration: NextPage = () => {
               }),
           )
       )
-    }catch(error) {
-      const errors = handleYupErrors(error);
-      const nextFlow = cloneDeep(flow);
+    } catch (error) {
+      const errors = handleYupErrors(error)
+      const nextFlow = cloneDeep(flow)
 
       if (errors['["traits.email"]']) {
         const message = {
           id: 4000002,
           text: errors['["traits.email"]'],
-          type: 'error',
-        };
-        const identifierIndex = nextFlow.ui.nodes.findIndex(node => node.attributes.name === 'traits.email')
-        const preMessages = nextFlow.ui.nodes[identifierIndex].messages;
-        nextFlow.ui.nodes[identifierIndex].messages = [...preMessages, message];
+          type: "error",
+        }
+        const identifierIndex = nextFlow.ui.nodes.findIndex(
+          (node) => node.attributes.name === "traits.email",
+        )
+        const preMessages = nextFlow.ui.nodes[identifierIndex].messages
+        nextFlow.ui.nodes[identifierIndex].messages = [...preMessages, message]
       } else {
-        const identifierIndex = nextFlow.ui.nodes.findIndex(node => node.attributes.name === 'traits.email')
-        const nextMessages = nextFlow.ui.nodes[identifierIndex].messages.filter(message => message.type !== 'error');
-        nextFlow.ui.nodes[identifierIndex].messages = nextMessages;
+        const identifierIndex = nextFlow.ui.nodes.findIndex(
+          (node) => node.attributes.name === "traits.email",
+        )
+        const nextMessages = nextFlow.ui.nodes[identifierIndex].messages.filter(
+          (message) => message.type !== "error",
+        )
+        nextFlow.ui.nodes[identifierIndex].messages = nextMessages
       }
 
       if (errors.password) {
         const passwordMessage = {
           id: 4000002,
           text: errors.password,
-          type: 'error',
-        };
-        const passwordIndex = nextFlow.ui.nodes.findIndex(node => node.attributes.name === 'password')
-        nextFlow.ui.nodes[passwordIndex].messages = [passwordMessage];
-      }else {
-        const passwordIndex = nextFlow.ui.nodes.findIndex(node => node.attributes.name === 'password')
-        nextFlow.ui.nodes[passwordIndex].messages = [];
+          type: "error",
+        }
+        const passwordIndex = nextFlow.ui.nodes.findIndex(
+          (node) => node.attributes.name === "password",
+        )
+        nextFlow.ui.nodes[passwordIndex].messages = [passwordMessage]
+      } else {
+        const passwordIndex = nextFlow.ui.nodes.findIndex(
+          (node) => node.attributes.name === "password",
+        )
+        nextFlow.ui.nodes[passwordIndex].messages = []
       }
 
-      setFlow(nextFlow);
+      setFlow(nextFlow)
       // setErrors(errors);
-      return false;
+      return false
     }
   }
 
-  const nextFlow = getNextFlow(flow);
+  const nextFlow = getNextFlow(flow)
 
-  
   return (
     <>
-      <Head>
+      <div className="signupWrapper">
+        {/* <Head>
         <title>Create account - Ory NextJS Integration Example</title>
         <meta name="description" content="NextJS + React + Vercel + Ory" />
-      </Head>
-      <MarginCard>
-        <CardTitle>Create account</CardTitle>
+      </Head> */}
+        <div>
+          <title>Create account - Ory NextJS Integration Example</title>
+          <meta name="description" content="NextJS + React + Vercel + Ory" />
+        </div>
+        {/* <MarginCard> */}
+        {/* <CardTitle>Create account</CardTitle> */}
+        <CmidHead />
+        <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
+          Join us
+        </Box>
         <Flow onSubmit={onSubmit} flow={nextFlow} />
-      </MarginCard>
-      <ActionCard>
-        <CenterLink data-testid="cta-link" href="/login">
-          Sign in
-        </CenterLink>
-      </ActionCard>
+        {/* </MarginCard> */}
+        <Box
+          mt="8px"
+          mb="38px"
+          // textAlign="center"
+          color="#A5A5A9"
+          fontSize="14px"
+          fontFamily="open sans"
+          display="flex"
+          justifyContent="center"
+          gap="4px"
+        >
+          <Box>Already have an account?</Box>
+          <Box
+            color="#CA4AE8"
+            sx={{
+              cursor: "pointer",
+            }}
+            onClick={() => router.push("/login")}
+          >
+            Login
+          </Box>
+        </Box>
+        <Box
+          color="#A5A5A9"
+          fontSize="14px"
+          fontFamily="open sans"
+          display="flex"
+          justifyContent="center"
+        >
+          ------------------------- Or Sign up with other accounts
+          -------------------------
+        </Box>
+        {/* <ActionCard>
+          <CenterLink data-testid="cta-link" href="/login">
+            Sign in
+          </CenterLink>
+        </ActionCard> */}
+      </div>
     </>
   )
 }

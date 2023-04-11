@@ -1,65 +1,61 @@
-import axios from "axios"
-import queryString from "query-string"
-import isEmpty from 'lodash/isEmpty';
+import Box from "@mui/material/Box"
 import { LoginFlow } from "@ory/client"
 import { CardTitle } from "@ory/themes"
+import axios from "axios"
 import { AxiosError } from "axios"
+import cloneDeep from "lodash/cloneDeep"
+import isEmpty from "lodash/isEmpty"
 import type { NextPage } from "next"
 import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import queryString from "query-string"
 import { useEffect, useState } from "react"
-import cloneDeep from 'lodash/cloneDeep';
+
 import { api } from "../axios/api"
+import CmidHead from "../components/CmidHead"
 import { ActionCard, CenterLink, LogoutLink, Flow, MarginCard } from "../pkg"
 import { handleGetFlowError, handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
-import { loginFormSchema } from '../util/schemas';
-import { handleYupSchema, handleYupErrors } from '../util/yupHelpers';
+import { loginFormSchema } from "../util/schemas"
+import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 
-const { NEXT_PUBLIC_REDIRECT_URI } = process.env;
+const { NEXT_PUBLIC_REDIRECT_URI } = process.env
 
 const getSessionData = async () => {
   try {
-    return await ory.toSession();
+    return await ory.toSession()
   } catch (err) {
-    return {};
+    return {}
   }
-};
+}
 
 const validateLoginFlow = async (router, options) => {
-  const {
-    login_challenge,
-    refresh,
-    aal,
-    setFlow,
-  } = options;
+  const { login_challenge, refresh, aal, setFlow } = options
 
   try {
-    const sessionData = await getSessionData();
+    const sessionData = await getSessionData()
     if (isEmpty(sessionData)) {
-      const { data } = await ory
-        .createBrowserLoginFlow({
-          refresh: Boolean(refresh),
-          aal: aal ? String(aal) : undefined,
-          returnTo: Boolean(login_challenge) ? NEXT_PUBLIC_REDIRECT_URI : undefined,
-        });
+      const { data } = await ory.createBrowserLoginFlow({
+        refresh: Boolean(refresh),
+        aal: aal ? String(aal) : undefined,
+        returnTo: Boolean(login_challenge)
+          ? NEXT_PUBLIC_REDIRECT_URI
+          : undefined,
+      })
 
       if (router.query.login_challenge) {
         data.oauth2_login_challenge = router.query.login_challenge as string
       }
       setFlow(data)
     } else {
-      const qs = queryString.stringify(router.query);
-      const nextUri = isEmpty(qs)
-        ? '/sso'
-        : `/sso?${qs}`
-      router.push(nextUri);
-      return;
+      const qs = queryString.stringify(router.query)
+      const nextUri = isEmpty(qs) ? "/sso" : `/sso?${qs}`
+      router.push(nextUri)
+      return
     }
   } catch (error) {
     handleFlowError(router, "login", setFlow)
-
   }
 }
 const Login: NextPage = () => {
@@ -118,9 +114,9 @@ const Login: NextPage = () => {
       aal,
       returnTo,
       setFlow,
-    };
+    }
 
-    validateLoginFlow(router, options);
+    validateLoginFlow(router, options)
 
     // Otherwise we initialize it
     // ory
@@ -168,30 +164,29 @@ const Login: NextPage = () => {
     }
 
     try {
-      const isEmailSignin = isEmpty(values.provider);
+      const isEmailSignin = isEmpty(values.provider)
       if (isEmailSignin) {
-        await handleYupSchema(loginFormSchema, values);
+        await handleYupSchema(loginFormSchema, values)
       }
 
       if (isEmailSignin) {
-        const sessionResult = await ory
-          .updateLoginFlow({
-            flow: String(flow?.id),
-            updateLoginFlowBody: values,
-          });
+        const sessionResult = await ory.updateLoginFlow({
+          flow: String(flow?.id),
+          updateLoginFlowBody: values,
+        })
 
-        const myResult = await axios.get('/api/.ory/sessions/whoami', {
+        const myResult = await axios.get("/api/.ory/sessions/whoami", {
           headers: { withCredentials: true },
         })
-        const { traits } = myResult.data.identity;
+        const { traits } = myResult.data.identity
 
         if (traits.loginVerification) {
           router
             .push(
               flow?.return_to ||
-              `/verification?user=${traits.email}&csrf=${values.csrf_token}}&return_to=/`,
+                `/verification?user=${traits.email}&csrf=${values.csrf_token}}&return_to=/`,
             )
-            .then(() => { })
+            .then(() => {})
         } else {
           if (login_challenge) {
             doConsentProcess(login_challenge as string, subject)
@@ -206,7 +201,7 @@ const Login: NextPage = () => {
             router.push("/")
           }
         }
-        return;
+        return
       }
       return (
         ory
@@ -231,7 +226,7 @@ const Login: NextPage = () => {
               router.push("/")
             }
           })
-          .then(() => { })
+          .then(() => {})
           .catch(handleFlowError(router, "login", setFlow))
           .catch((err: any) => {
             // If the previous handler did not catch the error it's most likely a form validation error
@@ -245,89 +240,125 @@ const Login: NextPage = () => {
             return Promise.reject(err)
           })
       )
-
     } catch (error) {
-      const errors = handleYupErrors(error);
+      const errors = handleYupErrors(error)
       if (flow) {
-        const nextFlow = cloneDeep(flow);
+        const nextFlow = cloneDeep(flow)
         if (errors.identifier) {
           const message = {
             id: 4000002,
             text: errors.identifier,
-            type: 'error',
-          };
+            type: "error",
+          }
           const idNodes = nextFlow?.ui?.nodes || []
-          const identifierIndex = idNodes.findIndex(node => node?.attributes?.name === 'identifier')
-          nextFlow.ui.nodes[identifierIndex].messages = [message];
+          const identifierIndex = idNodes.findIndex(
+            (node) => node?.attributes?.name === "identifier",
+          )
+          nextFlow.ui.nodes[identifierIndex].messages = [message]
         }
 
         if (errors.password) {
           const passwordMessage = {
             id: 4000002,
             text: errors.password,
-            type: 'error',
-          };
-          const passwordNodes = nextFlow.ui.nodes || [];
-          const passwordIndex = passwordNodes.findIndex(node => node?.attributes?.name === 'password')
-          nextFlow.ui.nodes[passwordIndex].messages = [passwordMessage];
+            type: "error",
+          }
+          const passwordNodes = nextFlow.ui.nodes || []
+          const passwordIndex = passwordNodes.findIndex(
+            (node) => node?.attributes?.name === "password",
+          )
+          nextFlow.ui.nodes[passwordIndex].messages = [passwordMessage]
         }
-        setFlow(nextFlow);
+        setFlow(nextFlow)
       }
 
       // setErrors(errors);
-      return false;
+      return false
     }
-
-
   }
 
   return (
     <>
       {/* CUSTOMIZE UI BASED ON CLIENT ID */}
-      <Head>
+      {/* <Head>
         <title>Sign in - Ory NextJS Integration Example</title>
         <meta name="description" content="NextJS + React + Vercel + Ory" />
-      </Head>
-      <MarginCard>
-        <CardTitle>
-          {(() => {
-            if (flow?.refresh) {
-              return "Confirm Action"
-            } else if (flow?.requested_aal === "aal2") {
-              return "Two-Factor Authentication"
-            }
-            return "Sign In (ID can be Email or Username)"
-          })()}
-        </CardTitle>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <img
-            src="https://res.cloudinary.com/dfkw9hdq3/image/upload/v1675237431/CI-Temp/CMID_ubofj6.png"
-            width={150}
-          />
+      </Head> */}
+      <div className="loginWrapper">
+        <div>
+          <title>Sign in - Ory NextJS Integration Example</title>
+          <meta name="description" content="NextJS + React + Vercel + Ory" />
         </div>
-
+        {/* <MarginCard> */}
+        {/* <CardTitle>
+        {(() => {
+          if (flow?.refresh) {
+            return "Confirm Action"
+          } else if (flow?.requested_aal === "aal2") {
+            return "Two-Factor Authentication"
+          }
+          return "Sign In (ID can be Email or Username)"
+        })()}
+        </CardTitle> */}
+        <CmidHead />
+        <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
+          Welcome back
+        </Box>
         <Flow onSubmit={onSubmit} flow={flow} />
-      </MarginCard>
-      {aal || refresh ? (
-        <ActionCard>
-          <CenterLink data-testid="logout-link" onClick={onLogout}>
-            Log out
-          </CenterLink>
-        </ActionCard>
-      ) : (
-        <>
+        <Box
+          mt="8px"
+          mb="38px"
+          // textAlign="center"
+          color="#A5A5A9"
+          fontSize="14px"
+          fontFamily="open sans"
+          display="flex"
+          justifyContent="center"
+          gap="4px"
+        >
+          <Box>Don’t have an account?</Box>
+          <Box
+            color="#CA4AE8"
+            sx={{
+              cursor: "pointer",
+            }}
+            onClick={() => router.push("/registration")}
+          >
+            Sign up
+          </Box>
+        </Box>
+        <Box
+          color="#A5A5A9"
+          fontSize="14px"
+          fontFamily="open sans"
+          display="flex"
+          justifyContent="center"
+        >
+          --------------------------- Or login with other accounts
+          ---------------------------
+        </Box>
+        {/* </MarginCard> */}
+        {/* {aal || refresh ? (
           <ActionCard>
-            <Link href="/registration" passHref>
-              <CenterLink>Create account</CenterLink>
-            </Link>
+            <CenterLink data-testid="logout-link" onClick={onLogout}>
+              Log out
+            </CenterLink>
           </ActionCard>
-          <ActionCard>
-            <Link href="/recovery" passHref>
-              <CenterLink>Recover your account</CenterLink>
-            </Link>
-          </ActionCard>
-        </>
-      )}
+        ) : (
+          <>
+            <ActionCard>
+              <Link href="/registration" passHref>
+                <CenterLink>Create account</CenterLink>
+              </Link>
+            </ActionCard>
+            <ActionCard>
+              <Link href="/recovery" passHref>
+                <CenterLink>Recover your account</CenterLink>
+              </Link>
+            </ActionCard>
+          </>
+        )} */}
+      </div>
     </>
   )
 }

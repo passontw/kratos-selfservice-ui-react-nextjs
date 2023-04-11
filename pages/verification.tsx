@@ -1,4 +1,3 @@
-import isEmpty from "lodash/isEmpty"
 import queryString from "query-string"
 import { VerificationFlow, UpdateVerificationFlowBody } from "@ory/client"
 import { CardTitle } from "@ory/themes"
@@ -8,7 +7,7 @@ import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import Flow from "../components/verification/Flow"
+import {Flow} from "../components/verification/Flow"
 import { ActionCard, CenterLink, MarginCard } from "../pkg"
 import ory from "../pkg/sdk"
 
