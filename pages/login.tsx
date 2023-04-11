@@ -1,20 +1,17 @@
 import Box from "@mui/material/Box"
 import { LoginFlow } from "@ory/client"
-import { CardTitle } from "@ory/themes"
 import axios from "axios"
 import { AxiosError } from "axios"
 import cloneDeep from "lodash/cloneDeep"
 import isEmpty from "lodash/isEmpty"
 import type { NextPage } from "next"
-import Head from "next/head"
-import Link from "next/link"
 import { useRouter } from "next/router"
 import queryString from "query-string"
 import { useEffect, useState } from "react"
 
 import { api } from "../axios/api"
 import CmidHead from "../components/CmidHead"
-import { ActionCard, CenterLink, LogoutLink, Flow, MarginCard } from "../pkg"
+import { LogoutLink, Flow } from "../pkg"
 import { handleGetFlowError, handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import { loginFormSchema } from "../util/schemas"
@@ -170,6 +167,7 @@ const Login: NextPage = () => {
       }
 
       if (isEmailSignin) {
+        console.log("🚀 ~ file: login.tsx:174 ~ onSubmit ~ flow?.id:", flow?.id)
         const sessionResult = await ory.updateLoginFlow({
           flow: String(flow?.id),
           updateLoginFlowBody: values,
@@ -181,12 +179,12 @@ const Login: NextPage = () => {
         const { traits } = myResult.data.identity
 
         if (traits.loginVerification) {
-          router
-            .push(
-              flow?.return_to ||
-                `/verification?user=${traits.email}&csrf=${values.csrf_token}&return_to=/`,
-            )
-            .then(() => {})
+          await router
+          .push(
+            flow?.return_to ||
+              `/verification?user=${traits.email}&csrf=${values.csrf_token}&return_to=/`,
+          )
+            return;
         } else {
           if (login_challenge) {
             doConsentProcess(login_challenge as string, subject)
@@ -203,6 +201,7 @@ const Login: NextPage = () => {
         }
         return
       }
+
       return (
         ory
           .updateLoginFlow({
@@ -212,6 +211,7 @@ const Login: NextPage = () => {
 
           // We logged in successfully! Let's bring the user home.
           .then((data) => {
+            console.log("🚀 ~ file: login.tsx:213 ~ .then ~ data:", data)
             // new flow
             if (login_challenge) {
               doConsentProcess(login_challenge as string, subject)
