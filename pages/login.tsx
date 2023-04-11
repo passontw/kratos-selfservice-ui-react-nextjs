@@ -166,42 +166,6 @@ const Login: NextPage = () => {
         await handleYupSchema(loginFormSchema, values)
       }
 
-      if (isEmailSignin) {
-        console.log("🚀 ~ file: login.tsx:174 ~ onSubmit ~ flow?.id:", flow?.id)
-        const sessionResult = await ory.updateLoginFlow({
-          flow: String(flow?.id),
-          updateLoginFlowBody: values,
-        })
-
-        const myResult = await axios.get("/api/.ory/sessions/whoami", {
-          headers: { withCredentials: true },
-        })
-        const { traits } = myResult.data.identity
-
-        if (traits.loginVerification) {
-          await router
-          .push(
-            flow?.return_to ||
-              `/verification?user=${traits.email}&csrf=${values.csrf_token}&return_to=/`,
-          )
-            return;
-        } else {
-          if (login_challenge) {
-            doConsentProcess(login_challenge as string, subject)
-          } else {
-            // Original Kratos flow
-            // console.log("data", data)
-            // console.log("flow", flow)
-            if (flow?.return_to) {
-              window.location.href = flow?.return_to
-              return
-            }
-            router.push("/")
-          }
-        }
-        return
-      }
-
       return (
         ory
           .updateLoginFlow({
@@ -210,8 +174,13 @@ const Login: NextPage = () => {
           })
 
           // We logged in successfully! Let's bring the user home.
-          .then((data) => {
-            console.log("🚀 ~ file: login.tsx:213 ~ .then ~ data:", data)
+          .then((result) => {
+            const {traits} =result.data.session.identity;
+            if (isEmailSignin && traits.loginVerification) {
+              window.location.href = `/verification?${queryString.stringify(router.query)}&user=${traits.email}&csrf=${values.csrf_token}&return_to=/`;
+              return;
+            }
+
             // new flow
             if (login_challenge) {
               doConsentProcess(login_challenge as string, subject)
