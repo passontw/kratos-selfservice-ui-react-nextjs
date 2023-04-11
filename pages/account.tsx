@@ -95,7 +95,6 @@ const Account: NextPage = () => {
   }
 
   const onSubmit = (values: UpdateSettingsFlowBody) => {
-    console.log("🚀 ~ file: account.tsx:98 ~ onSubmit ~ values:", values)
     return router
     // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
     // his data when she/he reloads the page.

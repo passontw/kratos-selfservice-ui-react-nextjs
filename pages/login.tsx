@@ -184,7 +184,7 @@ const Login: NextPage = () => {
           router
             .push(
               flow?.return_to ||
-                `/verification?user=${traits.email}&csrf=${values.csrf_token}}&return_to=/`,
+                `/verification?user=${traits.email}&csrf=${values.csrf_token}&return_to=/`,
             )
             .then(() => {})
         } else {

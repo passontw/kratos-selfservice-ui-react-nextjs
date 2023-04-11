@@ -104,7 +104,7 @@ const Registration: NextPage = () => {
                 return router
                   .push(
                     flow?.return_to ||
-                      `/verification?user=${values["traits.email"]}&csrf=${values.csrf_token}}`,
+                      `/verification?user=${values["traits.email"]}&csrf=${values.csrf_token}`,
                   )
                   .then(() => {})
               })

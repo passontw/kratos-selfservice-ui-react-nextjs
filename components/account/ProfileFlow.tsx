@@ -42,11 +42,11 @@ export type Methods =
 export type Props<T> = {
   // The flow
   flow?:
-    | LoginFlow
-    | RegistrationFlow
-    | SettingsFlow
-    | VerificationFlow
-    | RecoveryFlow
+  | LoginFlow
+  | RegistrationFlow
+  | SettingsFlow
+  | VerificationFlow
+  | RecoveryFlow
   // Only show certain nodes. We will always render the default nodes for CSRF tokens.
   only?: Methods
   // Is triggered on submission
@@ -180,7 +180,7 @@ export default class Flow<T extends Values> extends Component<Props<T>, State<T>
 
     // Filter the nodes - only show the ones we want
     const nodes = this.filterNodes()
-
+    
     if (!flow) {
       // No flow was set yet? It's probably still loading...
       //
@@ -197,33 +197,33 @@ export default class Flow<T extends Values> extends Component<Props<T>, State<T>
       >
         {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
         {nodes.map((node, k) => {
-          // console.log(node)
           const id = getNodeId(node) as keyof Values
-          // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
-          // if (node.meta.label?.text === "E-Mail") return
-
+          const isShow = node.attributes.name === "csrf_token" || node.attributes.name === "traits.loginVerification" || node.attributes.type === "submit";
           return (
-            <Node
-              key={`${id}-${k}`}
-              disabled={isLoading}
-              node={node}
-              value={values[id]}
-              dispatchSubmit={this.handleSubmit}
-              setValue={(value) =>
-                new Promise((resolve) => {
-                  this.setState(
-                    (state) => ({
-                      ...state,
-                      values: {
-                        ...state.values,
-                        [getNodeId(node)]: value,
-                      },
-                    }),
-                    resolve,
-                  )
-                })
-              }
-            />
+            <span style={isShow ? {} : {display: "none"}}>
+              <Node
+                key={`${id}-${k}`}
+                disabled={isLoading}
+                node={node}
+                value={values[id]}
+                dispatchSubmit={this.handleSubmit}
+                setValue={(value) =>
+                  new Promise((resolve) => {
+                    this.setState(
+                      (state) => ({
+                        ...state,
+                        values: {
+                          ...state.values,
+                          [getNodeId(node)]: value,
+                        },
+                      }),
+                      resolve,
+                    )
+                  })
+                }
+              />
+            </span>
+
           )
         })}
       </form>

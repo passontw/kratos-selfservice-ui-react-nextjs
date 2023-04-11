@@ -13,6 +13,7 @@ export function NodeInputCheckbox<T>({
   return (
     <>
       <Checkbox
+        style={{display: "block"}}
         name={attributes.name}
         defaultChecked={attributes.value}
         onChange={(e) => setValue(e.target.checked)}
@@ -28,3 +29,4 @@ export function NodeInputCheckbox<T>({
     </>
   )
 }
+  
