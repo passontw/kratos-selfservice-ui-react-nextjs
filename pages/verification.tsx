@@ -1,4 +1,4 @@
-import queryString from "query-string"
+import { Box } from "@mui/material"
 import { VerificationFlow, UpdateVerificationFlowBody } from "@ory/client"
 import { CardTitle } from "@ory/themes"
 import { AxiosError } from "axios"
@@ -6,8 +6,11 @@ import type { NextPage } from "next"
 import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import queryString from "query-string"
 import { useEffect, useState } from "react"
-import {Flow} from "../components/verification/Flow"
+
+import CmidHead from "../components/CmidHead"
+import { Flow } from "../components/verification/Flow"
 import { ActionCard, CenterLink, MarginCard } from "../pkg"
 import ory from "../pkg/sdk"
 
@@ -48,8 +51,8 @@ const Verification: NextPage = () => {
               setFlow(err.response?.data)
               return
             case 410:
-              const newFlowID = err.response.data.use_flow_id;
-              const { redirect_to } = router.components.query;
+              const newFlowID = err.response.data.use_flow_id
+              const { redirect_to } = router.components.query
               router
                 // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
                 // their data when they reload the page.
@@ -117,11 +120,14 @@ const Verification: NextPage = () => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   const onSubmit = async (values: UpdateVerificationFlowBody) => {
-    
     await router
       // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
       // their data when they reload the page.
-      .push(`/verification?${queryString.stringify(router.query)}&flow=${flow?.id}`, undefined, { shallow: true })
+      .push(
+        `/verification?${queryString.stringify(router.query)}&flow=${flow?.id}`,
+        undefined,
+        { shallow: true },
+      )
 
     ory
       .updateVerificationFlow({
@@ -159,19 +165,38 @@ const Verification: NextPage = () => {
 
   return (
     <>
-      <Head>
-        <title>Verify your account - Ory NextJS Integration Example</title>
-        <meta name="description" content="NextJS + React + Vercel + Ory" />
-      </Head>
-      <MarginCard>
-        <CardTitle>Verify your account</CardTitle>
+      <div className="verifyWrapper">
+        <div>
+          <title>Verify your account - Ory NextJS Integration Example</title>
+          <meta name="description" content="NextJS + React + Vercel + Ory" />
+        </div>
+        <CmidHead />
+        <Box mt="62px" display="flex" flexDirection="column">
+          <span style={{ color: "#FFF", fontSize: "36px", fontFamily: "Teko" }}>
+            Verify Account
+          </span>
+          <span
+            style={{
+              color: "#A5A5A9",
+              marginBottom: "48px",
+              fontFamily: "open sans",
+            }}
+          >
+            Enter the 6-digit code we sent to master123@gmail.com to verify
+            account.
+          </span>
+        </Box>
         <Flow onSubmit={onSubmit} flow={flow} />
-      </MarginCard>
-      <ActionCard>
-        <Link href="/" passHref>
-          <CenterLink>Go back</CenterLink>
-        </Link>
-      </ActionCard>
+        {/* <MarginCard>
+          <CardTitle>Verify your account</CardTitle>
+          <Flow onSubmit={onSubmit} flow={flow} />
+        </MarginCard> */}
+        {/* <ActionCard>
+          <Link href="/" passHref>
+            <CenterLink>Go back</CenterLink>
+          </Link>
+        </ActionCard> */}
+      </div>
     </>
   )
 }

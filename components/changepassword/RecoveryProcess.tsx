@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box"
 import { RecoveryFlow, UpdateRecoveryFlowBody } from "@ory/client"
 import { CardTitle } from "@ory/themes"
 import { AxiosError } from "axios"
@@ -88,19 +89,21 @@ const RecoveryProcess: NextPage = () => {
 
   return (
     <>
-      <Head>
-        <title>Recover your account - Ory NextJS Integration Example</title>
-        <meta name="description" content="NextJS + React + Vercel + Ory" />
-      </Head>
-      <MarginCard>
-        <CardTitle>Recover your account</CardTitle>
-        <Flow onSubmit={onSubmit} flow={flow} />
-      </MarginCard>
-      <ActionCard>
+      <Box>
+        <Head>
+          <title>Recover your account - Ory NextJS Integration Example</title>
+          <meta name="description" content="NextJS + React + Vercel + Ory" />
+        </Head>
+        <Box bgcolor="#272735">
+          <CardTitle>Check Email</CardTitle>
+          <Flow onSubmit={onSubmit} flow={flow} />
+        </Box>
+        {/* <ActionCard>
         <Link href="/" passHref>
           <CenterLink>Go back</CenterLink>
         </Link>
-      </ActionCard>
+      </ActionCard> */}
+      </Box>
     </>
   )
 }

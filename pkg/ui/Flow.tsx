@@ -201,6 +201,9 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           const id = getNodeId(node) as keyof Values
           // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
           // if (node.meta.label?.text === "E-Mail") return
+          console.log("@node.meta", node.meta)
+          console.log(node.meta.label?.text)
+          if (node.meta.label?.text === "Resend code") return
 
           return (
             <Node

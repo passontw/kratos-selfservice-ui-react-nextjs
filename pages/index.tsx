@@ -6,6 +6,7 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
+import RecoveryProcess from "../components/changepassword/RecoveryProcess"
 import { DocsButton, MarginCard, LogoutLink } from "../pkg"
 import ory from "../pkg/sdk"
 import { setDialog } from "../state/store/slice/layoutSlice"
@@ -51,10 +52,10 @@ const Home: NextPage = () => {
       setDialog({
         title: "Modal Name",
         titleHeight: "30px",
-        width: 440,
-        height: 232,
+        width: 480,
+        height: 358,
         center: true,
-        children: <div>hello</div>,
+        children: <RecoveryProcess />,
       }),
     )
   }

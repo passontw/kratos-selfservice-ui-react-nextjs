@@ -8,13 +8,16 @@ import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import queryString from "query-string"
 import { useEffect, useState } from "react"
-import styled from 'styled-components'
+import { useDispatch, useSelector } from "react-redux"
+import styled from "styled-components"
 
 import { api } from "../axios/api"
 import CmidHead from "../components/CmidHead"
 import { LogoutLink, Flow } from "../pkg"
 import { handleGetFlowError, handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
+import { selectActiveNav, setActiveNav } from "../state/store/slice/layoutSlice"
+import { Navs } from "../types/enum"
 import { loginFormSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 
@@ -58,43 +61,50 @@ const validateLoginFlow = async (router, options) => {
 }
 
 const StyledLine = styled.div`
-position: relative;
-display: flex;
-justify-content: center;
-align-items: center;
-width: 100%;
-.text {
   position: relative;
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
+  .text {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 100%;
 
     &:after {
       position: absolute;
       content: "";
       height: 2px;
-      background-color: #A5A5A9;
-      width: calc(50% - 92px - 12px );
+      background-color: #a5a5a9;
+      width: calc(50% - 92px - 12px);
       top: 50%;
       right: 0px;
       margin-left: 12px;
     }
-    
+
     &:before {
       position: absolute;
       content: "";
       height: 2px;
-      background-color: #A5A5A9;
-      width: calc(50% - 92px - 12px );
+      background-color: #a5a5a9;
+      width: calc(50% - 92px - 12px);
       top: 50%;
       left: 0px;
       margin-right: 12px;
     }
-  } 
+  }
 `
 
 const Login: NextPage = () => {
   const [flow, setFlow] = useState<LoginFlow>()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(setActiveNav(Navs.LOGIN))
+  }, [])
+
+  console.log(useSelector(selectActiveNav))
 
   // Get ?flow=... from the URL
   const router = useRouter()
@@ -213,10 +223,12 @@ const Login: NextPage = () => {
 
           // We logged in successfully! Let's bring the user home.
           .then((result) => {
-            const {traits} =result.data.session.identity;
+            const { traits } = result.data.session.identity
             if (isEmailSignin && traits.loginVerification) {
-              window.location.href = `/verification?${queryString.stringify(router.query)}&user=${traits.email}&csrf=${values.csrf_token}&return_to=/`;
-              return;
+              window.location.href = `/verification?${queryString.stringify(
+                router.query,
+              )}&user=${traits.email}&csrf=${values.csrf_token}&return_to=/`
+              return
             }
 
             // new flow
@@ -284,9 +296,6 @@ const Login: NextPage = () => {
     }
   }
 
-
-
-
   return (
     <>
       {/* CUSTOMIZE UI BASED ON CLIENT ID */}
@@ -344,7 +353,9 @@ const Login: NextPage = () => {
           display="flex"
           justifyContent="center"
         >
-          <StyledLine><span className='text'>Or login with other accounts</span></StyledLine>
+          <StyledLine>
+            <span className="text">Or login with other accounts</span>
+          </StyledLine>
         </Box>
         {/* </MarginCard> */}
         {/* {aal || refresh ? (
