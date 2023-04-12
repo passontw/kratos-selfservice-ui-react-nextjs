@@ -200,9 +200,8 @@ export default class Flow<T extends Values> extends Component<Props<T>, State<T>
           const id = getNodeId(node) as keyof Values
           const isShow = node.attributes.name === "csrf_token" || node.attributes.name === "traits.loginVerification" || node.attributes.type === "submit";
           return (
-            <span style={isShow ? {} : {display: "none"}}>
+            <span key={`${id}-${k}`} style={isShow ? {} : {display: "none"}}>
               <Node
-                key={`${id}-${k}`}
                 disabled={isLoading}
                 node={node}
                 value={values[id]}

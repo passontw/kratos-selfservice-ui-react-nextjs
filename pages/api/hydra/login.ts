@@ -72,7 +72,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         .getOAuth2LoginRequest({ loginChallenge: challenge })
         .then(async ({ data: body }) => {
           try {
-            console.log("Body:", body)
             const hydraLoginAcceptRes = await hydraAdmin.acceptOAuth2LoginRequest(
               {
                 loginChallenge: challenge,
@@ -83,7 +82,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
               },
             )
             const { data } = hydraLoginAcceptRes
-            console.log("hydraLoginAcceptRes:", data)
             // redirect to hydra's next step by providing frontend the hydra redirect url along with the required parameters
             return (
               res
@@ -92,10 +90,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
                 .json({ status: 200, redirect_to: String(data.redirect_to) })
             )
           } catch (err: any) {
-            console.log(
-              "Err caught hydraLoginAcceptRes err.response:",
-              err.response.data,
-            )
             const { status, data } = err.response
             return res.status(err.response.status).json({
               status,
