@@ -1,3 +1,4 @@
+import isEmpty from "lodash/isEmpty"
 import { SettingsFlow } from "@ory/client"
 import { H3 } from "@ory/themes"
 import { NextPage } from "next"
@@ -19,6 +20,17 @@ const refreshSessions = (setSessions) => {
     setSessions([]);
   });
 }
+
+const deacitveAllSession = async (sessions, setSessions) => {
+  const promisesResult = sessions.map(session => {
+    return axios.delete(`/api/.ory/sessions/${session.id}`, {
+      headers: { withCredentials: true },
+    });
+  });
+
+  await Promise.all(promisesResult);
+  refreshSessions(setSessions);
+};
 
 const deactiveSession = (sessionId, setSessions) => {
   return axios.delete(`/api/.ory/sessions/${sessionId}`, {
@@ -71,8 +83,8 @@ const SessionList = (props) => {
     const agent = new UAParser(device.user_agent);
     const agentResult = agent.getResult();
     const deviceName = agentResult.device.type
-      ? agentResult.device.model
-      : agentResult.os.name;
+    ? agentResult.device.model
+    : agentResult.os.name;
     return (
       <div key={session.id}>
         
@@ -86,8 +98,28 @@ const SessionList = (props) => {
   })
 }
 
+const SessionListItem = (props) => {
+  const {session} = props;
+  if (isEmpty(session)) return null;
+
+  const [device] = session.devices;
+  const agent = new UAParser(device.user_agent);
+  const agentResult = agent.getResult();
+    const deviceName = agentResult.device.type
+  return (
+    <div key={session.id}>
+        <p>Self Session: </p>
+        <p>Location: {device.location}</p>
+        <p>Device: {deviceName}</p>
+        <p>Browser: {agentResult.browser.name}</p>
+        <p>最近登入: {session.authenticated_at}</p>
+      </div>
+  )
+};
+
 const Services: NextPage = () => {
   const [sessions, setSessions] = useState([])
+  const [selfSession, setSelfSession] = useState({});
   const [flow, setFlow] = useState<SettingsFlow>()
   const router = useRouter()
   const { flow: flowId, return_to: returnTo } = router.query
@@ -110,6 +142,11 @@ const Services: NextPage = () => {
       return
     }
 
+    axios.get("/api/.ory/sessions/whoami", {
+      headers: { withCredentials: true },
+    }).then(({data}) => {
+      setSelfSession(data);
+    })
     // Otherwise we initialize it
     ory
       .createBrowserSettingsFlow({
@@ -123,8 +160,12 @@ const Services: NextPage = () => {
 
   return (
     <>
+    <button onClick={() => {
+    deacitveAllSession(sessions, setSessions);
+    }}>remove all session</button>
       <SettingsCard only="profile" flow={flow}>
         <H3>Session Management</H3>
+        <SessionListItem session={selfSession} />
         <SessionList sessions={sessions} setSessions={setSessions} />
       </SettingsCard>
     </>
