@@ -1,18 +1,69 @@
 import { Box } from "@mui/material"
 import { TextInput } from "@ory/themes"
 import { useEffect, useState } from "react"
-
+import styled from 'styled-components'
 import { NodeInputProps } from "./helpers"
+import Eye from "../../public/images/eyes"
+import { useRouter } from 'next/router'
+
+
+const StyledDefaultInput = styled.div`
+  position: relative;
+  input:-webkit-autofill,
+  textarea:-webkit-autofill,
+  select:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #37374F inset !important;
+    -webkit-text-fill-color: white !important;
+  }
+
+
+  input {
+    padding: 12px 16px 12px 82px;
+  } 
+}
+`
+const StyledDefaultLabel = styled.label`
+font-family: 'Open Sans';
+font-weight: 400;
+font-size: 13px;
+line-height: 20px;
+position: absolute;
+pointer-events: none;
+left: 16px;
+top:  ${ props => props?.isError ? '40%' : '45%' };
+transform: translate( 0%, -50% );
+color: #717197;
+`;
+
+const StyledPasswordIcon = styled.span`
+  display: inline-block;  
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  position: absolute;
+  right: 16px;
+  top:  ${props => props?.isError ? '40%' : '45%' };
+  transform: translate(0%, -50%);
+  cursor: pointer;
+`
 
 export function NodeInputDefault<T>(props: NodeInputProps) {
+  const router = useRouter()
   const { node, attributes, value = "", setValue, disabled } = props
   const [isError, setIsError] = useState(node.messages.length > 0)
+  console.log('router', router);
+  const path = router.pathname
 
   useEffect(() => {
     setIsError(node.messages.length > 0)
   }, [node.messages.length])
+  
+  useEffect(()=>{
+    console.log('props', props)
+  },[props])
 
   // Some attributes have dynamic JavaScript - this is for example required for WebAuthn.
+
   const onClick = () => {
     // This section is only used for WebAuthn. The script is loaded via a <script> node
     // and the functions are available on the global window level. Unfortunately, there
@@ -22,10 +73,16 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
       run()
     }
   }
+  
+  const SelectComponent = () => {
+    
+  }
+
 
   // Render a generic text input field.
   return (
-    <div style={{ position: "relative" }}>
+    <StyledDefaultInput>
+      <StyledDefaultLabel isError={isError}>{node.meta.label?.text}</StyledDefaultLabel>
       <TextInput
         className="my-text-input"
         style={{
@@ -36,7 +93,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           caretColor: "#fff",
           borderRadius: "8px",
         }}
-        placeholder={node.meta.label?.text}
+        // placeholder={node.meta.label?.text}
         // title={node.meta.label?.text}
         onClick={onClick}
         onChange={(e) => {
@@ -73,17 +130,13 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           </>
         }
       />
-      <span
-        style={{
-          color: "#CA4AE8",
-          fontSize: "16px",
-          fontFamily: "open sans",
-          position: "absolute",
-          top: "55px",
-        }}
-      >
-        {attributes.name === "password" ? "Forgot password?" : ""}
-      </span>
-    </div>
+      {
+        attributes.type === 'password' &&       
+        <StyledPasswordIcon isError={isError} >
+          <Eye/>
+        </StyledPasswordIcon>
+      }
+
+    </StyledDefaultInput>
   )
 }

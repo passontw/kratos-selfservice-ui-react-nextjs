@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { NodeInputProps } from "./helpers"
 
 export function NodeInputHidden<T>({ attributes }: NodeInputProps) {
