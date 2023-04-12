@@ -4,9 +4,11 @@ import type { NextPage } from "next"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 
 import { DocsButton, MarginCard, LogoutLink } from "../pkg"
 import ory from "../pkg/sdk"
+import { setDialog } from "../state/store/slice/layoutSlice"
 
 const Home: NextPage = () => {
   const [session, setSession] = useState<string>(
@@ -15,6 +17,7 @@ const Home: NextPage = () => {
   const [hasSession, setHasSession] = useState<boolean>(false)
   const router = useRouter()
   const onLogout = LogoutLink()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     ory
@@ -43,6 +46,19 @@ const Home: NextPage = () => {
       })
   }, [router])
 
+  const openDialog = () => {
+    dispatch(
+      setDialog({
+        title: "Modal Name",
+        titleHeight: "30px",
+        width: 440,
+        height: 232,
+        center: true,
+        children: <div>hello</div>,
+      }),
+    )
+  }
+
   return (
     <div className={"container-fluid"}>
       <Head>
@@ -52,50 +68,7 @@ const Home: NextPage = () => {
 
       <MarginCard wide>
         <CardTitle>Welcome to Ory! - Cooler Master</CardTitle>
-        <P>
-          Welcome to the Ory Managed UI. This UI implements a run-of-the-mill
-          user interface for all self-service flows (login, registration,
-          recovery, verification, settings). The purpose of this UI is to help
-          you get started quickly. In the long run, you probably want to
-          implement your own custom user interface.
-        </P>
         <div className="row">
-          <div className="col-md-4 col-xs-12">
-            <div className="box">
-              <H3>Documentation</H3>
-              <P>
-                Here are some useful documentation pieces that help you get
-                started.
-              </P>
-              <div className="row">
-                <DocsButton
-                  title="Get Started"
-                  href="https://www.ory.sh/docs/get-started"
-                  testid="get-started"
-                />
-                <DocsButton
-                  title="User Flows"
-                  href="https://www.ory.sh/docs/concepts/self-service"
-                  testid="user-flows"
-                />
-                <DocsButton
-                  title="Identities"
-                  href="https://www.ory.sh/docs/concepts/identity"
-                  testid="identities"
-                />
-                <DocsButton
-                  title="Sessions"
-                  href="https://www.ory.sh/docs/concepts/session"
-                  testid="sessions"
-                />
-                <DocsButton
-                  title="Bring Your Own UI"
-                  href="https://www.ory.sh/docs/guides/bring-your-user-interface"
-                  testid="customize-ui"
-                />
-              </div>
-            </div>
-          </div>
           <div className="col-md-8 col-xs-12">
             <div className="box">
               <H3>Session Information</H3>
@@ -110,8 +83,8 @@ const Home: NextPage = () => {
       </MarginCard>
 
       <Card wide>
-        <H2>Other User Interface Screens</H2>
         <div className={"row"}>
+          <button onClick={() => openDialog()}>open modal</button>
           <DocsButton
             unresponsive
             testid="login"
