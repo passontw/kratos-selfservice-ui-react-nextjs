@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box"
 import {
   RegistrationFlow,
   SettingsFlow,
@@ -40,7 +41,7 @@ function SettingsCard({
     return null
   }
 
-  return <ActionCard wide>{children}</ActionCard>
+  return <Box bgcolor="transparent">{children}</Box>
 }
 
 const Profile: NextPage = () => {
@@ -113,7 +114,7 @@ const Profile: NextPage = () => {
   return (
     <AccountLayout>
       <SettingsCard only="profile" flow={flow}>
-        <H3>Profile Settings</H3>
+        {/* <H3>Profile Settings</H3> */}
         <Messages messages={flow?.ui.messages} />
         <Flow
           hideGlobalMessages
