@@ -89,13 +89,10 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   initializeValues = (nodes: Array<UiNode> = []) => {
     // Compute the values
     const values = emptyState<T>()
-    const query = window.location.pathname
-    console.log("@filterNodes query:", query)
 
     nodes.forEach((node) => {
       // This only makes sense for text nodes
       if (isUiNodeInputAttributes(node.attributes)) {
-        console.log("@filterNodes node:", node)
         if (
           node.attributes.type === "button" ||
           node.attributes.type === "submit"
@@ -203,7 +200,26 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       >
         {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
         {nodes.map((node, k) => {
-          // console.log(node)
+          console.log("@filterNodes node:", node)
+
+          // list excludedFields
+          const excludedFields = {
+            registration: [
+              "phone",
+              "traits.birthdayYear",
+              "traits.birthdayMonth",
+              "gender",
+            ],
+          }
+
+          // grab the pathname remove the slash and type it to be a key of excludedFields
+          const pathname = window.location.pathname.slice(
+            1,
+          ) as keyof typeof excludedFields
+
+          // filter all nodes that are in the excludedFields belonging to this path route
+          if (excludedFields[pathname].includes(node.attributes.name)) return
+
           const id = getNodeId(node) as keyof Values
           // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
           // if (node.meta.label?.text === "E-Mail") return
