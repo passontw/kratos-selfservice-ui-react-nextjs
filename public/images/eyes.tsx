@@ -7,12 +7,9 @@ interface EyeProps {
 
 const Eye: React.FC<EyeProps> = ({ setInputType }) => {
   const [toggle, setToggle] = useState(false)
-
   const handleToggle = useCallback(()=>{
     setInputType();
     setToggle(!toggle);
-    
-    
   },[toggle]) 
 
   const ShowEye = () => (
@@ -31,7 +28,7 @@ const Eye: React.FC<EyeProps> = ({ setInputType }) => {
   return (
     <div onClick={handleToggle}>
       {
-        toggle === true? <ShowEye />: <CloseEye/>
+        toggle? <ShowEye /> : <CloseEye/>
       }
     </div>
   )
