@@ -39,7 +39,19 @@ function SettingsCard({
     return null
   }
 
-  return <Box bgcolor="#272735">{children}</Box>
+  return (
+    <Box
+      width="100%"
+      height="100%"
+      maxWidth="564px"
+      maxHeight="375px"
+      bgcolor="#272735"
+      borderRadius="12px"
+      p="32px"
+    >
+      {children}
+    </Box>
+  )
 }
 
 const refreshSessions = (setSessions) => {
@@ -164,15 +176,7 @@ const Settings: NextPage = () => {
     <>
       <div className="resetWrapper">
         <SettingsCard only="password" flow={flow}>
-          <Box
-            width="100%"
-            height="100%"
-            maxWidth="564px"
-            maxHeight="375px"
-            bgcolor="#272735"
-            borderRadius="12px"
-            p="32px"
-          >
+          <Box>
             <Box fontSize="20px" fontFamily="open sans" color="#FFF">
               Change Password
             </Box>
