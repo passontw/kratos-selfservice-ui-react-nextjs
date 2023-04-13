@@ -4,4 +4,6 @@ const StyledWrapper = styled("div")(() => ({
   display: "flex",
 }))
 
-export { StyledWrapper }
+const StyledContent = styled("div")(() => ({}))
+
+export { StyledWrapper, StyledContent }

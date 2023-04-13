@@ -2,17 +2,17 @@ import { ReactNode } from "react"
 
 import AccountMenu from "../../AccountMenu"
 
-import { StyledWrapper } from "./styles"
+import { StyledWrapper, StyledContent } from "./styles"
 
 interface AccountLayoutProps {
   children: ReactNode
 }
 
-const AccountLayout: React.FC<AccountLayoutProps> = (children: ReactNode) => {
+const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
   return (
     <StyledWrapper>
       <AccountMenu />
-      {children}
+      <StyledContent>{children}</StyledContent>
     </StyledWrapper>
   )
 }
