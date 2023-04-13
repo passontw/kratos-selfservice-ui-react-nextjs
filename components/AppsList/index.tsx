@@ -1,10 +1,30 @@
 import Box from "@mui/material/Box"
-
 import AppItem from "../AppItem"
+import styled from "styled-components"
 
 interface AppsListProps {}
-
 const AppsList: React.FC<AppsListProps> = () => {
+  const StyledNav = styled.div`
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+  `
+  const StyledLink = styled.a`
+    font-family: 'Open Sans';
+    font-size: 14px;
+    line-height: 20px;
+    color: #C0C0C0;
+    cursor: pointer;
+  `
+  const StyledLine = styled.span`
+  display: inline-block;
+  width: 1px;
+  height: 12px;
+  padding-right: 16px;
+  margin-right: 16px;
+  border-right: 1px solid #C0C0C0;
+  `
+
   return (
     <Box
       mt="200px"
@@ -13,6 +33,7 @@ const AppsList: React.FC<AppsListProps> = () => {
       alignItems="center"
       width="61.2vw"
       fontFamily="open sans"
+      position="relative"
     >
       <Box fontSize="30px" color="#fff">
         Access Anywhere With Cooler Master ID
@@ -25,6 +46,11 @@ const AppsList: React.FC<AppsListProps> = () => {
         <AppItem appIcon="Stormplay" appName="Stormplay" />
         <AppItem appIcon="Cmodx" appName="CMODX" />
       </Box>
+      <StyledNav>
+        <StyledLink>Terms of Service</StyledLink>
+        <StyledLine />
+        <StyledLink>Privacy Policy</StyledLink>
+      </StyledNav>
     </Box>
   )
 }

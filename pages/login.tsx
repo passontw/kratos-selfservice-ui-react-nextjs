@@ -95,6 +95,15 @@ const StyledLine = styled.div`
     }
   }
 `
+const StyledCopyright = styled.span`
+  position: absolute;
+  bottom: 20px;
+  left: 32px;
+  color: #7E7E89;
+  font-family: 'Open Sans';
+  font-size: 14px;
+`
+
 
 const Login: NextPage = () => {
   const [flow, setFlow] = useState<LoginFlow>()
@@ -378,6 +387,7 @@ const Login: NextPage = () => {
             </ActionCard>
           </>
         )} */}
+        <StyledCopyright>Copyright© 2023 Cooler Master Inc. All rights reserved.</StyledCopyright>
       </div>
     </>
   )

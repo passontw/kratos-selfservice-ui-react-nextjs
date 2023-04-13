@@ -78,7 +78,6 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
 
   const handleEye = ()=>{
     inputType === 'password'? setInputType('text') : setInputType('password');
-    console.log('inputType', inputType)
   }
 
   const onClick = () => {
