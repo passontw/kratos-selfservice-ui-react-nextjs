@@ -54,8 +54,8 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
             </Box>
             {/* <Box>logout</Box> */}
           </Box>
+          <StyledContent>{children}</StyledContent>
         </Box>
-        <StyledContent>{children}</StyledContent>
       </Box>
     </StyledWrapper>
   )
