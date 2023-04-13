@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box"
 import { RecoveryFlow, UpdateRecoveryFlowBody } from "@ory/client"
 import { CardTitle } from "@ory/themes"
 import type { NextPage } from "next"
@@ -5,6 +6,7 @@ import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+
 import ChangePassword from "../components/resetpassword/ChangePassword"
 import { Flow, ActionCard, CenterLink, MarginCard } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
@@ -37,7 +39,7 @@ const ResetPassword: NextPage = () => {
     // Otherwise we initialize it
     ory
       .createBrowserRecoveryFlow({
-        returnTo: 'https://cmid-admin.passon.tw/changepassword',
+        returnTo: "https://cmid-admin.passon.tw/changepassword",
       })
       .then(({ data }) => {
         setFlow(data)
@@ -63,7 +65,8 @@ const ResetPassword: NextPage = () => {
       // his data when she/he reloads the page.
       .push(`/resetpassword?flow=${flow?.id}`, undefined, { shallow: true })
       .then(() =>
-        ory.updateRecoveryFlow({
+        ory
+          .updateRecoveryFlow({
             flow: String(flow?.id),
             updateRecoveryFlowBody: values,
           })
@@ -71,7 +74,7 @@ const ResetPassword: NextPage = () => {
             // Form submission was successful, show the message to the user!
             setFlow(data)
           })
-          .catch(handleFlowError(router, 'resetpassword', setFlow))
+          .catch(handleFlowError(router, "resetpassword", setFlow))
           .catch((err: any) => {
             if (err && err.response) {
               switch (err.response?.status) {
@@ -87,22 +90,32 @@ const ResetPassword: NextPage = () => {
       )
 
   return (
-    <>
+    <div className="resetWrapper">
       {/* <ChangePassword /> */}
-      <Head>
+      {/* <Head>
         <title>Reset Password - Ory NextJS Integration Example</title>
         <meta name="description" content="NextJS + React + Vercel + Ory" />
-      </Head>
-      <MarginCard>
-        <CardTitle>Reset Password</CardTitle>
+      </Head> */}
+      <Box
+        width="100%"
+        height="100%"
+        maxWidth="564px"
+        maxHeight="375px"
+        bgcolor="#272735"
+        borderRadius="12px"
+        p="32px"
+      >
+        <Box fontSize="20px" fontFamily="open sans" color="#FFF">
+          Change Password
+        </Box>
         <Flow onSubmit={onSubmit} flow={flow} />
-      </MarginCard>
-      <ActionCard>
+      </Box>
+      {/* <ActionCard>
         <Link href="/" passHref>
           <CenterLink>Go back</CenterLink>
         </Link>
-      </ActionCard>
-    </>
+      </ActionCard> */}
+    </div>
   )
 }
 
