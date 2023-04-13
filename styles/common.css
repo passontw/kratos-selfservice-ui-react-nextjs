@@ -42,11 +42,11 @@ body {
   margin: 0;
 }
 
-/* input {
-  background-color: #37374f !important;
+div,
+span {
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
 }
-
-input:-internal-autofill-selected {
-  background-color: #37374f !important;
-  -webkit-box-shadow: 0 0 0 1000px white inset !important;
-} */
