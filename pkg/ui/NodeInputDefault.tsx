@@ -39,7 +39,6 @@ const StyledDefaultLabel = styled.label`
   transform: translate(0%, -50%);
   color: #717197;
 `
-
 const StyledPasswordIcon = styled.span`
   display: inline-block;
   background-size: cover;
@@ -58,8 +57,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   const { node, attributes, value = "", setValue, disabled } = props
   const [isError, setIsError] = useState(node.messages.length > 0)
   const nav = useSelector(selectActiveNav)
-  console.log("router", router)
-  
+  const label =  node.meta.label?.text === 'ID' ? 'Email' : node.meta.label?.text;
 
   useEffect(() => {
     setIsError(node.messages.length > 0)
@@ -108,7 +106,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
         {
           isInputLabel &&         
           <StyledDefaultLabel isError={ isError }>
-            {node.meta.label?.text}
+            {label}
           </StyledDefaultLabel>
         }
         <TextInput
@@ -121,7 +119,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             caretColor: "#fff",
             borderRadius: "8px",
           }}
-          placeholder={isInputLabel ? "" : node.meta.label?.text}
+          placeholder={isInputLabel ? "" : label}
           // title={node.meta.label?.text}
           onClick={onClick}
           onChange={(e) => {
