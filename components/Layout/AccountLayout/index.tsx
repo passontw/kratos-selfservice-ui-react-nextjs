@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box"
 import { ReactNode } from "react"
 
 import AccountMenu from "../../AccountMenu"
@@ -12,8 +13,10 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
   return (
     <StyledWrapper>
       <StyledHeader>Cooler Master ID</StyledHeader>
-      <AccountMenu />
-      <StyledContent>{children}</StyledContent>
+      <Box display="flex">
+        <AccountMenu />
+        <StyledContent>{children}</StyledContent>
+      </Box>
     </StyledWrapper>
   )
 }
