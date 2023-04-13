@@ -218,7 +218,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           ) as keyof typeof excludedFields
 
           // filter all nodes that are in the excludedFields belonging to this path route
-          if (excludedFields[pathname].includes(node.attributes.name)) return
+          if (excludedFields[pathname]?.includes(node.attributes.name)) return
 
           const id = getNodeId(node) as keyof Values
           // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
