@@ -228,9 +228,22 @@ const Registration: NextPage = () => {
           fontFamily="open sans"
           display="flex"
           justifyContent="center"
+          lineHeight="30px"
+          whiteSpace="nowrap"
         >
-          ------------------------- Or Sign up with other accounts
-          -------------------------
+          <Box
+            borderBottom="1px solid #A5A5A9"
+            width="25%"
+            marginRight="20px"
+            marginBottom="15px"
+          ></Box>
+          Or Sign up with other accounts
+          <Box
+            borderBottom="1px solid #A5A5A9"
+            width="25%"
+            marginLeft="20px"
+            marginBottom="15px"
+          ></Box>
         </Box>
         {/* <ActionCard>
           <CenterLink data-testid="cta-link" href="/login">
