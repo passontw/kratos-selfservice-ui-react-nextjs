@@ -13,10 +13,8 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
   return (
     <StyledWrapper>
       <StyledHeader>Cooler Master ID</StyledHeader>
-      <Box display="flex">
-        <AccountMenu />
-        <StyledContent>{children}</StyledContent>
-      </Box>
+      <AccountMenu />
+      <StyledContent>{children}</StyledContent>
     </StyledWrapper>
   )
 }
