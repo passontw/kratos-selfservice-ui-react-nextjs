@@ -8,12 +8,16 @@ import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import queryString from "query-string"
 import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import styled from "styled-components"
 
 import { api } from "../axios/api"
 import CmidHead from "../components/CmidHead"
 import { LogoutLink, Flow } from "../pkg"
 import { handleGetFlowError, handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
+import { selectActiveNav, setActiveNav } from "../state/store/slice/layoutSlice"
+import { Navs } from "../types/enum"
 import { loginFormSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 
@@ -55,8 +59,61 @@ const validateLoginFlow = async (router, options) => {
     handleFlowError(router, "login", setFlow)
   }
 }
+
+const StyledLine = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  .text {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    &:after {
+      position: absolute;
+      content: "";
+      height: 2px;
+      background-color: #a5a5a9;
+      width: calc(50% - 92px - 12px);
+      top: 50%;
+      right: 0px;
+      margin-left: 12px;
+    }
+
+    &:before {
+      position: absolute;
+      content: "";
+      height: 2px;
+      background-color: #a5a5a9;
+      width: calc(50% - 92px - 12px);
+      top: 50%;
+      left: 0px;
+      margin-right: 12px;
+    }
+  }
+`
+const StyledCopyright = styled.span`
+  position: absolute;
+  bottom: 20px;
+  left: 32px;
+  color: #7E7E89;
+  font-family: 'Open Sans';
+  font-size: 14px;
+`
+
+
 const Login: NextPage = () => {
   const [flow, setFlow] = useState<LoginFlow>()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(setActiveNav(Navs.LOGIN))
+  }, [])
+
+  console.log(useSelector(selectActiveNav))
 
   // Get ?flow=... from the URL
   const router = useRouter()
@@ -175,10 +232,12 @@ const Login: NextPage = () => {
 
           // We logged in successfully! Let's bring the user home.
           .then((result) => {
-            const {traits} =result.data.session.identity;
+            const { traits } = result.data.session.identity
             if (isEmailSignin && traits.loginVerification) {
-              window.location.href = `/verification?${queryString.stringify(router.query)}&user=${traits.email}&csrf=${values.csrf_token}&return_to=/`;
-              return;
+              window.location.href = `/verification?${queryString.stringify(
+                router.query,
+              )}&user=${traits.email}&csrf=${values.csrf_token}&return_to=/`
+              return
             }
 
             // new flow
@@ -303,8 +362,9 @@ const Login: NextPage = () => {
           display="flex"
           justifyContent="center"
         >
-          --------------------------- Or login with other accounts
-          ---------------------------
+          <StyledLine>
+            <span className="text">Or login with other accounts</span>
+          </StyledLine>
         </Box>
         {/* </MarginCard> */}
         {/* {aal || refresh ? (
@@ -327,6 +387,7 @@ const Login: NextPage = () => {
             </ActionCard>
           </>
         )} */}
+        <StyledCopyright>Copyright© 2023 Cooler Master Inc. All rights reserved.</StyledCopyright>
       </div>
     </>
   )

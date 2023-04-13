@@ -6,6 +6,7 @@ import type { NextPage } from "next"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 
 import CmidHead from "../components/CmidHead"
 // Import render helpers
@@ -14,6 +15,8 @@ import { ActionCard, Flow, CenterLink, MarginCard } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 // Import the SDK
 import ory from "../pkg/sdk"
+import { setActiveNav } from "../state/store/slice/layoutSlice"
+import { Navs } from "../types/enum"
 import { registrationFormSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 
@@ -39,6 +42,11 @@ const getNextFlow = (flow) => {
 // Renders the registration page
 const Registration: NextPage = () => {
   const router = useRouter()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(setActiveNav(Navs.REGISTER))
+  }, [])
 
   // The "flow" represents a registration process and contains
   // information about the form we need to render (e.g. username + password)

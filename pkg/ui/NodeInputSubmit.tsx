@@ -14,7 +14,7 @@ export function NodeInputSubmit<T>({
   console.log(getNodeLabel(node))
   const type = getNodeLabel(node).includes("Google")
     ? "Google"
-    : getNodeLabel(node).includes("Facebook")
+    : getNodeLabel(node).includes("Apple")
     ? "Apple"
     : "default"
   // console.log(attributes.name)
@@ -61,7 +61,7 @@ export function NodeInputSubmit<T>({
           "Login"
         ) : getNodeLabel(node).includes("Google") ? (
           <Google />
-        ) : getNodeLabel(node).includes("Facebook") ? (
+        ) : getNodeLabel(node).includes("Apple") ? (
           <Apple />
         ) : (
           getNodeLabel(node)
