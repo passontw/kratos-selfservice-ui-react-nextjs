@@ -39,7 +39,7 @@ function SettingsCard({
     return null
   }
 
-  return <ActionCard wide>{children}</ActionCard>
+  return <Box bgcolor="#272735">{children}</Box>
 }
 
 const refreshSessions = (setSessions) => {
