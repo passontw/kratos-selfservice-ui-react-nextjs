@@ -1,7 +1,7 @@
 import { Box, Link } from "@mui/material"
 import { TextInput } from "@ory/themes"
 import { useRouter } from "next/router"
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 
@@ -52,12 +52,14 @@ const StyledPasswordIcon = styled.span`
 `
 
 export function NodeInputDefault<T>(props: NodeInputProps) {
-  const router = useRouter()
-  const dispatch = useDispatch()
-  const { node, attributes, value = "", setValue, disabled } = props
-  const [isError, setIsError] = useState(node.messages.length > 0)
-  const nav = useSelector(selectActiveNav)
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const nav = useSelector(selectActiveNav);
+  const { node, attributes, value = "", setValue, disabled } = props;
   const label =  node.meta.label?.text === 'ID' ? 'Email' : node.meta.label?.text;
+  const [isError, setIsError] = useState( node.messages.length > 0 );
+  const [inputType, setInputType] = useState( attributes.type );
+
 
   useEffect(() => {
     setIsError(node.messages.length > 0)
@@ -73,6 +75,11 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   },[router.pathname])
 
   // Some attributes have dynamic JavaScript - this is for example required for WebAuthn.
+
+  const handleEye = ()=>{
+    inputType === 'password'? setInputType('text') : setInputType('password');
+    console.log('inputType', inputType)
+  }
 
   const onClick = () => {
     // This section is only used for WebAuthn. The script is loaded via a <script> node
@@ -125,7 +132,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           onChange={(e) => {
             setValue(e.target.value)
           }}
-          type={attributes.type}
+          type={inputType}
           name={attributes.name}
           value={value}
           disabled={attributes.disabled || disabled}
@@ -158,7 +165,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
         />
         {attributes.type === "password" && (
           <StyledPasswordIcon isError={ isError }>
-            <Eye />
+            <Eye setInputType={ handleEye }/>
           </StyledPasswordIcon>
         )}
       </StyledDefaultInput>

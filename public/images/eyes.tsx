@@ -1,14 +1,18 @@
-import { useCallback, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 
 interface EyeProps {
-  color?: string
+  color?: string,
+  setInputType: Function
 }
 
-const Eye: React.FC<EyeProps> = ({ color = "#FFF" }) => {
-  const [toggle, setToggle] = useState(true)
+const Eye: React.FC<EyeProps> = ({ setInputType }) => {
+  const [toggle, setToggle] = useState(false)
 
   const handleToggle = useCallback(()=>{
-    setToggle(!toggle)
+    setInputType();
+    setToggle(!toggle);
+    
+    
   },[toggle]) 
 
   const ShowEye = () => (
