@@ -17,7 +17,6 @@ jobs:
       with:
         folder-name: cmid-admin-demo
         branch-name: develop
-        env-key: dev
         env-value: ${{ secrets.DEV_ENV }}
         host-name: ${{ secrets.CMID_DEV_HOST }}
         ssh-key: ${{ secrets.SSH_KEY_CMID_DEV_VALUE }}
