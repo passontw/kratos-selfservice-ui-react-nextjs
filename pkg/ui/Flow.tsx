@@ -13,7 +13,9 @@ import {
   UiTextTypeEnum,
 } from "@ory/client"
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
+import { useRouter } from "next/router"
 import { Component, FormEvent, MouseEvent } from "react"
+import { useSelector } from "react-redux"
 
 import { Messages } from "./Messages"
 import { Node } from "./Node"
@@ -87,9 +89,13 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   initializeValues = (nodes: Array<UiNode> = []) => {
     // Compute the values
     const values = emptyState<T>()
+    const query = window.location.pathname
+    console.log("@filterNodes query:", query)
+
     nodes.forEach((node) => {
       // This only makes sense for text nodes
       if (isUiNodeInputAttributes(node.attributes)) {
+        console.log("@filterNodes node:", node)
         if (
           node.attributes.type === "button" ||
           node.attributes.type === "submit"
