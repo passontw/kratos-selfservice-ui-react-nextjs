@@ -1,11 +1,17 @@
-import { NextPage } from "next"
+import {
+  RegistrationFlow,
+  SettingsFlow,
+  UpdateSettingsFlowBody,
+} from "@ory/client"
 import { H3 } from "@ory/themes"
-import { Messages } from "../components/profile/Messages"
-import Flow from "../components/profile/Flow"
-import { ActionCard, Methods } from "../pkg"
-import { RegistrationFlow, SettingsFlow, UpdateSettingsFlowBody } from "@ory/client"
-import { ReactNode, useState, useEffect } from "react"
+import { NextPage } from "next"
 import { useRouter } from "next/router"
+import { ReactNode, useState, useEffect } from "react"
+
+import AccountLayout from "../components/Layout/AccountLayout"
+import Flow from "../components/profile/Flow"
+import { Messages } from "../components/profile/Messages"
+import { ActionCard, Methods } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 
@@ -39,7 +45,7 @@ const Profile: NextPage = () => {
   const router = useRouter()
 
   const { flow: flowId, return_to: returnTo } = router.query
-  
+
   useEffect(() => {
     // If the router is not ready yet, or we already have a flow, do nothing.
     if (!router.isReady || flow) {
@@ -67,6 +73,7 @@ const Profile: NextPage = () => {
       })
       .catch(handleFlowError(router, "profile", setFlow))
   }, [flowId, router, router.isReady, returnTo, flow])
+
   const onSubmit = (values: UpdateSettingsFlowBody) =>
     router
       // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
@@ -96,7 +103,7 @@ const Profile: NextPage = () => {
       )
 
   return (
-    <>
+    <AccountLayout>
       <SettingsCard only="profile" flow={flow}>
         <H3>Profile Settings</H3>
         <Messages messages={flow?.ui.messages} />
@@ -107,7 +114,7 @@ const Profile: NextPage = () => {
           flow={flow}
         />
       </SettingsCard>
-    </>
+    </AccountLayout>
   )
 }
 
