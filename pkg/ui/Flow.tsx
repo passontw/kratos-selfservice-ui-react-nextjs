@@ -205,10 +205,10 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           // list excludedFields
           const excludedFields = {
             registration: [
-              "phone",
+              "traits.phone",
               "traits.birthdayYear",
               "traits.birthdayMonth",
-              "gender",
+              "traits.gender",
             ],
           }
 
