@@ -34,7 +34,7 @@ runs:
           cd ./${{ inputs.folder-name }}
           git fetch
           git reset --hard
-          git checkout passon/${{ inputs.branch-name }}
+          git checkout origin/${{ inputs.branch-name }}
           echo "${{ inputs.env-value }}" > .env
           npm install
           node_modules/next/dist/bin/next build
