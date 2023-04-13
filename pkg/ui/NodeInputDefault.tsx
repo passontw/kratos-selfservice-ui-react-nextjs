@@ -1,7 +1,7 @@
 import { Box, Link } from "@mui/material"
 import { TextInput } from "@ory/themes"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 
@@ -21,9 +21,9 @@ const StyledDefaultInput = styled.div`
     -webkit-text-fill-color: white !important;
   }
 
-
+  
   input {
-    padding: 12px 16px 12px 82px;
+    padding: ${(props)=> (props.isInputLabel ? '12px 16px 12px 82px' : '12px 16px')};
   } 
 }
 `
@@ -59,7 +59,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   const [isError, setIsError] = useState(node.messages.length > 0)
   const nav = useSelector(selectActiveNav)
   console.log("router", router)
-  const path = router.pathname
+  
 
   useEffect(() => {
     setIsError(node.messages.length > 0)
@@ -68,6 +68,11 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   useEffect(() => {
     console.log("props", props)
   }, [props])
+
+  const isInputLabel = useMemo(()=> {
+    const list = ['/login', '/registration'];
+    return list.includes(router.pathname)
+  },[router.pathname])
 
   // Some attributes have dynamic JavaScript - this is for example required for WebAuthn.
 
@@ -99,10 +104,13 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   // Render a generic text input field.
   return (
     <>
-      <StyledDefaultInput>
-        <StyledDefaultLabel isError={isError}>
-          {node.meta.label?.text}
-        </StyledDefaultLabel>
+      <StyledDefaultInput isInputLabel={ isInputLabel }>
+        {
+          isInputLabel &&         
+          <StyledDefaultLabel isError={ isError }>
+            {node.meta.label?.text}
+          </StyledDefaultLabel>
+        }
         <TextInput
           className="my-text-input"
           style={{
@@ -113,7 +121,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             caretColor: "#fff",
             borderRadius: "8px",
           }}
-          // placeholder={node.meta.label?.text}
+          placeholder={isInputLabel ? "" : node.meta.label?.text}
           // title={node.meta.label?.text}
           onClick={onClick}
           onChange={(e) => {
@@ -151,7 +159,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           }
         />
         {attributes.type === "password" && (
-          <StyledPasswordIcon isError={isError}>
+          <StyledPasswordIcon isError={ isError }>
             <Eye />
           </StyledPasswordIcon>
         )}
