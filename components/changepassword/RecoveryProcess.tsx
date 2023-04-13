@@ -7,10 +7,12 @@ import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
 
 import { Flow, ActionCard, CenterLink, MarginCard } from "../../pkg"
 import { handleFlowError } from "../../pkg/errors"
 import ory from "../../pkg/sdk"
+import { selectActiveNav } from "../../state/store/slice/layoutSlice"
 
 const RecoveryProcess: NextPage = () => {
   const [flow, setFlow] = useState<RecoveryFlow>()
@@ -87,15 +89,32 @@ const RecoveryProcess: NextPage = () => {
           }),
       )
 
+  // const dialogMessage =
+  //   useSelector(selectActiveNav) === "RECOVERY"
+  //     ? "An email containing a recovery code has been sent to the email address you provided."
+  //     : "Enter your registered email below and we’ll send you a reset link."
+
   return (
     <>
       <Box>
-        <Head>
+        {/* <Head>
           <title>Recover your account - Ory NextJS Integration Example</title>
           <meta name="description" content="NextJS + React + Vercel + Ory" />
-        </Head>
+        </Head> */}
         <Box bgcolor="#272735">
-          <CardTitle>Check Email</CardTitle>
+          <Box
+            color="#A5A5A9"
+            fontSize="14px"
+            fontFamily="open sans"
+            mb="24px"
+            lineHeight="20px"
+          >
+            Enter your registered email below and we’ll send you a reset link.
+          </Box>
+          {/* <CardTitle>Check Email</CardTitle> */}
+          <Box color="#A5A5A9" fontSize="14px" fontFamily="open sans">
+            Email *
+          </Box>
           <Flow onSubmit={onSubmit} flow={flow} />
         </Box>
         {/* <ActionCard>
