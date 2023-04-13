@@ -5,8 +5,9 @@ import { BACKGROUND_DARK, WHITE } from "../../../constants/colors"
 const StyledWrapper = styled("div")(() => ({
   display: "flex",
   backgroundColor: BACKGROUND_DARK,
-  flexDirection: "column",
+  // flexDirection: "column",
   height: "100vh",
+  width: "100%",
 }))
 
 const StyledHeader = styled("div")(() => ({

@@ -12,8 +12,10 @@ interface AccountLayoutProps {
 const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
   return (
     <StyledWrapper>
-      <StyledHeader>Cooler Master ID</StyledHeader>
-      <AccountMenu />
+      <Box display="flex" flexDirection="column">
+        <StyledHeader>Cooler Master ID</StyledHeader>
+        <AccountMenu />
+      </Box>
       <StyledContent>{children}</StyledContent>
     </StyledWrapper>
   )
