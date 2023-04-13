@@ -6,11 +6,14 @@ import cloneDeep from "lodash/cloneDeep"
 import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import { ReactNode, useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 
 import Flow from "../components/changepassword/Flow"
 import { ActionCard, Messages, Methods, LogoutLink } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
+import { setActiveNav } from "../state/store/slice/layoutSlice"
+import { Navs } from "../types/enum"
 import { updatePasswordSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 
@@ -54,6 +57,7 @@ const refreshSessions = (setSessions) => {
 }
 
 const Settings: NextPage = () => {
+  const dispatch = useDispatch()
   const [confirmPasswordError, setConfirmPasswordError] = useState("")
   const [flow, setFlow] = useState<SettingsFlow>()
 
@@ -62,6 +66,10 @@ const Settings: NextPage = () => {
   // Get ?flow=... from the URL
   const router = useRouter()
   const { flow: flowId, return_to: returnTo } = router.query
+
+  useEffect(() => {
+    dispatch(setActiveNav(Navs.SETTINGS))
+  }, [])
 
   useEffect(() => {
     // If the router is not ready yet, or we already have a flow, do nothing.
@@ -168,7 +176,7 @@ const Settings: NextPage = () => {
             <Box fontSize="20px" fontFamily="open sans" color="#FFF">
               Change Password
             </Box>
-            <Messages messages={flow?.ui.messages} />
+            {/* <Messages messages={flow?.ui.messages} /> */}
             <Flow
               hideGlobalMessages
               onSubmit={onSubmit}

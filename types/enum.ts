@@ -13,4 +13,5 @@ export enum Navs {
   ACCOUNT = 'ACCOUNT',
   SERVICES = 'SERVICES',
   RECOVERY = 'RECOVERY',
+  SETTINGS = 'SETTINGS',
 }
