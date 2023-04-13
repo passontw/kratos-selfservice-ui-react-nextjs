@@ -21,7 +21,7 @@ const GlobalStyle = createGlobalStyle((props: ThemeProps) =>
 )
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const activeNav = useSelector(selectActiveNav)
+  // const activeNav = useSelector(selectActiveNav)
 
   return (
     <div data-testid="app-react">
@@ -33,7 +33,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             </div>
             <Box display="flex">
               <Component {...pageProps} />
-              {activeNav !== Navs.SETTINGS && <AppsList />}
+              <AppsList />
             </Box>
             <ToastContainer />
           </PopupLayout>
