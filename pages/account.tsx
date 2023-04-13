@@ -4,12 +4,14 @@ import axios from "axios"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { ReactNode, useEffect, useState } from "react"
-import {Flow} from "../components/account/Flow"
+
+import AccountLayout from "../components/Layout/AccountLayout"
+import { Flow } from "../components/account/Flow"
 import ProfileFlow from "../components/account/ProfileFlow"
+import VerificationModal from "../components/account/VerificationModal"
 import { Methods, ActionCard, Messages } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
-import VerificationModal from "../components/account/VerificationModal";
 
 interface Props {
   flow?: SettingsFlow
@@ -62,18 +64,18 @@ const Account: NextPage = () => {
       headers: { withCredentials: true },
     })
     return axios
-    .delete(`https://auth.passon.tw/admin/identities/${data.identity.id}`, {
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${process.env.ORY_PAT}`,
-      },
-    })
-    .then((resp) => {
-      router.replace("/")
-    })
-    .catch((error) => {
-      alert(error.message)
-    })
+      .delete(`https://auth.passon.tw/admin/identities/${data.identity.id}`, {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${process.env.ORY_PAT}`,
+        },
+      })
+      .then((resp) => {
+        router.replace("/")
+      })
+      .catch((error) => {
+        alert(error.message)
+      })
   }
 
   const deleteAccountPromt = async () => {
@@ -83,47 +85,48 @@ const Account: NextPage = () => {
         headers: { withCredentials: true },
       })
 
-      const {traits} = data.identity;
+      const { traits } = data.identity
       // return;
       return router
-                  .push(
-                    flow?.return_to ||
-                    `/account?flow=${flowId || flow.id}&user=${traits.email}`,
-                  )
-                  .then(() => { })
+        .push(
+          flow?.return_to ||
+            `/account?flow=${flowId || flow.id}&user=${traits.email}`,
+        )
+        .then(() => {})
     }
   }
 
   const onSubmit = (values: UpdateSettingsFlowBody) => {
-    return router
-    // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
-    // his data when she/he reloads the page.
-    .push(`/account?flow=${flow?.id}`, undefined, { shallow: true })
-    .then(() =>
-      ory
-        .updateSettingsFlow({
-          flow: String(flow?.id),
-          updateSettingsFlowBody: values,
-        })
-        .then(({ data }) => {
-          console.log("🚀 ~ file: account.tsx:109 ~ .then ~ data:", data)
-          // The settings have been saved and the flow was updated. Let's show it to the user!
-          setFlow(data)
-        })
-        .catch(handleFlowError(router, "account", setFlow))
-        .catch(async (err: any) => {
-          // If the previous handler did not catch the error it's most likely a form validation error
-          if (err.response?.status === 400) {
-            // Yup, it is!
-            setFlow(err.response?.data)
-            return
-          }
+    return (
+      router
+        // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
+        // his data when she/he reloads the page.
+        .push(`/account?flow=${flow?.id}`, undefined, { shallow: true })
+        .then(() =>
+          ory
+            .updateSettingsFlow({
+              flow: String(flow?.id),
+              updateSettingsFlowBody: values,
+            })
+            .then(({ data }) => {
+              console.log("🚀 ~ file: account.tsx:109 ~ .then ~ data:", data)
+              // The settings have been saved and the flow was updated. Let's show it to the user!
+              setFlow(data)
+            })
+            .catch(handleFlowError(router, "account", setFlow))
+            .catch(async (err: any) => {
+              // If the previous handler did not catch the error it's most likely a form validation error
+              if (err.response?.status === 400) {
+                // Yup, it is!
+                setFlow(err.response?.data)
+                return
+              }
 
-          return Promise.reject(err)
-        }),
-    );
+              return Promise.reject(err)
+            }),
+        )
+    )
   }
-    
 
   useEffect(() => {
     refreshSessions(setSessions)
@@ -155,8 +158,7 @@ const Account: NextPage = () => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   return (
-    <>
-
+    <AccountLayout>
       <SettingsCard only="oidc" flow={flow}>
         <H3>Manage Social Sign In</H3>
 
@@ -177,10 +179,9 @@ const Account: NextPage = () => {
 
       <SettingsCard only="profile" flow={flow}>
         <button onClick={deleteAccountPromt}>刪除帳號</button>
-        <VerificationModal deleteAccount={deleteAccount}/>
+        <VerificationModal deleteAccount={deleteAccount} />
       </SettingsCard>
-
-    </>
+    </AccountLayout>
   )
 }
 
