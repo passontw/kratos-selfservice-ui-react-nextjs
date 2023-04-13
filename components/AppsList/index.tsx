@@ -33,7 +33,9 @@ const AppsList: React.FC<AppsListProps> = () => {
 
   return (
     <>
-      {activeNav !== Navs.SETTINGS && activeNav !== Navs.PROFILE ? (
+      {activeNav !== Navs.SETTINGS &&
+      activeNav !== Navs.PROFILE &&
+      activeNav !== Navs.ACCOUNT ? (
         <Box
           mt="200px"
           display="flex"

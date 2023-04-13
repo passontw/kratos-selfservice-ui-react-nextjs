@@ -4,6 +4,7 @@ import axios from "axios"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { ReactNode, useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 
 import AccountLayout from "../components/Layout/AccountLayout"
 import { Flow } from "../components/account/Flow"
@@ -12,6 +13,8 @@ import VerificationModal from "../components/account/VerificationModal"
 import { Methods, ActionCard, Messages } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
+import { setActiveNav } from "../state/store/slice/layoutSlice"
+import { Navs } from "../types/enum"
 
 interface Props {
   flow?: SettingsFlow
@@ -53,6 +56,7 @@ function SettingsCard({
 }
 
 const Account: NextPage = () => {
+  const dispatch = useDispatch()
   const [sessions, setSessions] = useState([])
   const [flow, setFlow] = useState<SettingsFlow>()
   const router = useRouter()
@@ -127,6 +131,9 @@ const Account: NextPage = () => {
         )
     )
   }
+  useEffect(() => {
+    dispatch(setActiveNav(Navs.ACCOUNT))
+  }, [])
 
   useEffect(() => {
     refreshSessions(setSessions)
