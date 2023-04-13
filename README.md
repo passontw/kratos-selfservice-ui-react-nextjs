@@ -1,63 +1,18 @@
-# Ory Kratos ReactJS / NextJS User Interface Reference Implementation
+# Cmid-admin-demo
 
-This repository contains a reference implementation for Ory Kratos' in ReactJS /
-NextJS. It implements all Ory Kratos flows (login, registration, account
-settings, account recovery, account verification).
+## 環境變數
 
-If you only want to add authentication to your app, and not customize the login,
-registration, account recovery, ... screens, please check out the
-[Ory Kratos Quickstart](https://www.ory.sh/kratos/docs/quickstart).
-
-To learn more about using this app, how it is built, and how to customize it
-head over to the
-[accompanying blog post](https://www.ory.sh/nextjs-authentication-spa-custom-flows-open-source)
-which will be released soon!
-
-The app itself you can see live at
-**[kratos-reference-ui-react-nextjs.vercel.app](https://kratos-reference-ui-react-nextjs.vercel.app)**.
-
-<br />
-
-## Usage
-
-<br />
-
-**Environment**
-
-This application can be configured with the following environment variables
-_(refer to the
-[NextJS documentation](https://nextjs.org/docs/basic-features/environment-variables)
-to learn how to configure the application)_:
-
-- `ORY_SDK_URL` _(required)_<br />The URL where ORY Kratos's Public API is
-  located. If this app and ORY Kratos are running in the same private network,
-  this should be the private network address _(e.g.
-  `kratos-public.svc.cluster.local`)_.
-
-Example `.env.local`:
+**.env**
 
 ```
-ORY_SDK_URL=http://localhost:4433/
+ORY_SDK_URL= // Ory Sdk url Example: https://{projectId}.projects.oryapis.com
+HYDRA_ADMIN_URL=// Ory Sdk url Example: https://{projectId}.projects.oryapis.com
+ORY_PAT= // ORY Pat Client Secret key
+NEXT_PUBLIC_REDIRECT_URI= // Client 端登入後呼叫的 callbak url 網址 Example: https://example.com/api/auth/callback
 ```
 
-<br />
+## Questions
 
-**Running Locally**
-
-The [quickstart documentation](https://www.ory.sh/kratos/docs/quickstart) guides
-developers to use port `4455` for the self-service UI. By default, NextJS uses
-port `3000`. Use the `-p` or `--port` option of the `next dev` / `next start`
-commands to set the port number:
-
-```sh
-npm run dev -- -p 4455
-```
-
-
-**Branches**
-
-- develop  開發分支   => 自動 deploy 到開發環境
-- testing  分支      => 自動 deploy 到測試環境
-- master   主幹      => 自動 deploy 到正式環境
-- feature/{name}  從 develop 開分支測試完成後 合併回 develop
-- hotfix/{name}  從 master 開分支測試後 cherry-pick 到 develop，測試後，合併回 master
+* Services Managment
+  * 因為這是 session 列表，並沒有紀錄來源的網址，所以無法顯示此 session 屬於哪一個網站
+  
