@@ -1,5 +1,5 @@
 interface AppleProps {
-  color?: string
+  color?: string,
 }
 
 const Apple: React.FC<AppleProps> = ({ color = "#FFF" }) => {

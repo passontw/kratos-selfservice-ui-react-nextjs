@@ -183,7 +183,7 @@ const Registration: NextPage = () => {
 
   return (
     <>
-      <div className="signupWrapper">
+      <div className="mainWrapper">
         {/* <Head>
         <title>Create account - Ory NextJS Integration Example</title>
         <meta name="description" content="NextJS + React + Vercel + Ory" />
