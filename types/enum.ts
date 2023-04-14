@@ -6,11 +6,12 @@ export enum request_type {
 }
 
 export enum Navs {
-  HOME = 'HOME',
-  LOGIN = 'LOGIN',
-  REGISTER = 'REGISTER',
-  PROFILE = 'PROFILE',
-  ACCOUNT = 'ACCOUNT',
-  SERVICES = 'SERVICES',
-  RECOVERY = 'RECOVERY',
+  HOME = "HOME",
+  LOGIN = "LOGIN",
+  REGISTER = "REGISTER",
+  PROFILE = "PROFILE",
+  ACCOUNT = "ACCOUNT",
+  SERVICES = "SERVICES",
+  RECOVERY = "RECOVERY",
+  SETTINGS = "SETTINGS",
 }
