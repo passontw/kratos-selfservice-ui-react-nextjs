@@ -1,9 +1,7 @@
 import Box from "@mui/material/Box"
-import { RegistrationFlow, UpdateRegistrationFlowBody } from "@ory/client"
-import { CardTitle } from "@ory/themes"
+import { RegistrationFlow } from "@ory/client"
 import cloneDeep from "lodash/cloneDeep"
 import type { NextPage } from "next"
-import Head from "next/head"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
@@ -146,7 +144,20 @@ const Registration: NextPage = () => {
         )
         const preMessages = nextFlow.ui.nodes[identifierIndex].messages
         nextFlow.ui.nodes[identifierIndex].messages = [...preMessages, message]
-      } else {
+      } else if (errors['["traits.name"]']) {
+        const message = {
+          id: 4000002,
+          text: errors['["traits.name"]'],
+          type: "error",
+        }
+        console.log("🚀 ~ file: registration.tsx:146 ~ onSubmit ~ message:", message)
+        const identifierIndex = nextFlow.ui.nodes.findIndex(
+          (node) => node.attributes.name === "traits.name",
+        )
+        console.log("🚀 ~ file: registration.tsx:150 ~ onSubmit ~ identifierIndex:", identifierIndex)
+        const preMessages = nextFlow.ui.nodes[identifierIndex].messages
+        nextFlow.ui.nodes[identifierIndex].messages = [...preMessages, message]
+      }else {
         const identifierIndex = nextFlow.ui.nodes.findIndex(
           (node) => node.attributes.name === "traits.email",
         )
@@ -173,6 +184,7 @@ const Registration: NextPage = () => {
         nextFlow.ui.nodes[passwordIndex].messages = []
       }
 
+      console.log("🚀 ~ file: registration.tsx:184 ~ onSubmit ~ nextFlow:", nextFlow)
       setFlow(nextFlow)
       // setErrors(errors);
       return false
