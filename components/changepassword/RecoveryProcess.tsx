@@ -7,13 +7,18 @@ import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
 
 import { Flow, ActionCard, CenterLink, MarginCard } from "../../pkg"
 import { handleFlowError } from "../../pkg/errors"
 import ory from "../../pkg/sdk"
+import { selectActiveNav } from "../../state/store/slice/layoutSlice"
 
 const RecoveryProcess: NextPage = () => {
   const [flow, setFlow] = useState<RecoveryFlow>()
+  const [dialogMsg, setDialogMsg] = useState<string>(
+    "Enter your registered email below and we’ll send you a reset link.",
+  )
 
   // Get ?flow=... from the URL
   const router = useRouter()
@@ -57,45 +62,64 @@ const RecoveryProcess: NextPage = () => {
       })
   }, [flowId, router, router.isReady, returnTo, flow])
 
-  const onSubmit = (values: UpdateRecoveryFlowBody) =>
-    router
-      // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
-      // his data when she/he reloads the page.
-      .push(`/recovery?flow=${flow?.id}`, undefined, { shallow: true })
-      .then(() =>
-        ory
-          .updateRecoveryFlow({
-            flow: String(flow?.id),
-            updateRecoveryFlowBody: values,
-          })
-          .then(({ data }) => {
-            // Form submission was successful, show the message to the user!
-            setFlow(data)
-          })
-          .catch(handleFlowError(router, "recovery", setFlow))
-          .catch((err: any) => {
-            if (err && err.response) {
-              switch (err.response?.status) {
-                case 400:
-                  // Status code 400 implies the form validation had an error
-                  setFlow(err.response?.data)
-                  return
-              }
+  const onSubmit = (values: UpdateRecoveryFlowBody) => {
+    return (
+      router
+        // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
+        // his data when she/he reloads the page.
+        .push(`/recovery?flow=${flow?.id}`, undefined, { shallow: true })
+        .then(() =>
+          ory
+            .updateRecoveryFlow({
+              flow: String(flow?.id),
+              updateRecoveryFlowBody: values,
+            })
+            .then(({ data }) => {
+              // Form submission was successful, show the message to the user!
+              setFlow(data)
+              setDialogMsg(
+                "An email containing a recovery code has been sent to the email address you provided.",
+              )
+            })
+            .catch(handleFlowError(router, "recovery", setFlow))
+            .catch((err: any) => {
+              // console.log("@Q@", err.response)
+              if (err && err.response) {
+                switch (err.response?.status) {
+                  case 400:
+                    // Status code 400 implies the form validation had an error
+                    setFlow(err.response?.data)
+                    return
+                }
 
-              throw err
-            }
-          }),
-      )
+                throw err
+              }
+            }),
+        )
+    )
+  }
 
   return (
     <>
       <Box>
-        <Head>
+        {/* <Head>
           <title>Recover your account - Ory NextJS Integration Example</title>
           <meta name="description" content="NextJS + React + Vercel + Ory" />
-        </Head>
+        </Head> */}
         <Box bgcolor="#272735">
-          <CardTitle>Check Email</CardTitle>
+          <Box
+            color="#A5A5A9"
+            fontSize="14px"
+            fontFamily="open sans"
+            mb="24px"
+            lineHeight="20px"
+          >
+            {dialogMsg}
+          </Box>
+          {/* <CardTitle>Check Email</CardTitle> */}
+          <Box color="#A5A5A9" fontSize="14px" fontFamily="open sans">
+            Email *
+          </Box>
           <Flow onSubmit={onSubmit} flow={flow} />
         </Box>
         {/* <ActionCard>

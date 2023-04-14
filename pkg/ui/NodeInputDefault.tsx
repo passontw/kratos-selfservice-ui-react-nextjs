@@ -23,7 +23,8 @@ const StyledDefaultInput = styled.div`
 
   
   input {
-    padding: ${(props)=> (props.isInputLabel ? '12px 16px 12px 82px' : '12px 16px')};
+    padding: ${(props) =>
+      props.isInputLabel ? "12px 16px 12px 82px" : "12px 16px"};
   } 
 }
 `
@@ -52,14 +53,13 @@ const StyledPasswordIcon = styled.span`
 `
 
 export function NodeInputDefault<T>(props: NodeInputProps) {
-  const router = useRouter();
-  const dispatch = useDispatch();
-  const nav = useSelector(selectActiveNav);
-  const { node, attributes, value = "", setValue, disabled } = props;
-  const label =  node.meta.label?.text === 'ID' ? 'Email' : node.meta.label?.text;
-  const [isError, setIsError] = useState( node.messages.length > 0 );
-  const [inputType, setInputType] = useState( attributes.type );
-
+  const router = useRouter()
+  const dispatch = useDispatch()
+  const nav = useSelector(selectActiveNav)
+  const { node, attributes, value = "", setValue, disabled } = props
+  const label = node.meta.label?.text === "ID" ? "Email" : node.meta.label?.text
+  const [isError, setIsError] = useState(node.messages.length > 0)
+  const [inputType, setInputType] = useState(attributes.type)
 
   useEffect(() => {
     setIsError(node.messages.length > 0)
@@ -69,15 +69,15 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     console.log("props", props)
   }, [props])
 
-  const isInputLabel = useMemo(()=> {
-    const list = ['/login', '/registration'];
+  const isInputLabel = useMemo(() => {
+    const list = ["/login", "/registration"]
     return list.includes(router.pathname)
-  },[router.pathname])
+  }, [router.pathname])
 
   // Some attributes have dynamic JavaScript - this is for example required for WebAuthn.
 
-  const handleEye = ()=>{
-    inputType === 'password'? setInputType('text') : setInputType('password');
+  const handleEye = () => {
+    inputType === "password" ? setInputType("text") : setInputType("password")
   }
 
   const onClick = () => {
@@ -93,8 +93,8 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   const openDialog = () => {
     dispatch(
       setDialog({
-        title: "Modal Name",
-        titleHeight: "30px",
+        title: "Forgot Password",
+        titleHeight: "58px",
         width: 480,
         height: 358,
         center: true,
@@ -108,13 +108,10 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   // Render a generic text input field.
   return (
     <>
-      <StyledDefaultInput isInputLabel={ isInputLabel }>
-        {
-          isInputLabel &&         
-          <StyledDefaultLabel isError={ isError }>
-            {label}
-          </StyledDefaultLabel>
-        }
+      <StyledDefaultInput isInputLabel={isInputLabel}>
+        {isInputLabel && (
+          <StyledDefaultLabel isError={isError}>{label}</StyledDefaultLabel>
+        )}
         <TextInput
           className="my-text-input"
           style={{
@@ -163,8 +160,8 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           }
         />
         {attributes.type === "password" && (
-          <StyledPasswordIcon isError={ isError }>
-            <Eye setInputType={ handleEye }/>
+          <StyledPasswordIcon isError={isError}>
+            <Eye setInputType={handleEye} />
           </StyledPasswordIcon>
         )}
       </StyledDefaultInput>

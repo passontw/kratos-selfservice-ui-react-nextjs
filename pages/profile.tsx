@@ -1,13 +1,23 @@
-import { NextPage } from "next"
+import Box from "@mui/material/Box"
+import {
+  RegistrationFlow,
+  SettingsFlow,
+  UpdateSettingsFlowBody,
+} from "@ory/client"
 import { H3 } from "@ory/themes"
-import { Messages } from "../components/profile/Messages"
-import Flow from "../components/profile/Flow"
-import { ActionCard, Methods } from "../pkg"
-import { RegistrationFlow, SettingsFlow, UpdateSettingsFlowBody } from "@ory/client"
-import { ReactNode, useState, useEffect } from "react"
+import { NextPage } from "next"
 import { useRouter } from "next/router"
+import { ReactNode, useState, useEffect } from "react"
+import { useDispatch } from "react-redux"
+
+import AccountLayout from "../components/Layout/AccountLayout"
+import Flow from "../components/profile/Flow"
+import { Messages } from "../components/profile/Messages"
+import { ActionCard, Methods } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
+import { setActiveNav } from "../state/store/slice/layoutSlice"
+import { Navs } from "../types/enum"
 
 interface Props {
   flow?: SettingsFlow
@@ -31,15 +41,20 @@ function SettingsCard({
     return null
   }
 
-  return <ActionCard wide>{children}</ActionCard>
+  return <Box bgcolor="transparent">{children}</Box>
 }
 
 const Profile: NextPage = () => {
+  const dispatch = useDispatch()
   const [flow, setFlow] = useState<RegistrationFlow>()
   const router = useRouter()
 
   const { flow: flowId, return_to: returnTo } = router.query
-  
+
+  useEffect(() => {
+    dispatch(setActiveNav(Navs.PROFILE))
+  }, [])
+
   useEffect(() => {
     // If the router is not ready yet, or we already have a flow, do nothing.
     if (!router.isReady || flow) {
@@ -67,6 +82,7 @@ const Profile: NextPage = () => {
       })
       .catch(handleFlowError(router, "profile", setFlow))
   }, [flowId, router, router.isReady, returnTo, flow])
+
   const onSubmit = (values: UpdateSettingsFlowBody) =>
     router
       // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
@@ -96,9 +112,9 @@ const Profile: NextPage = () => {
       )
 
   return (
-    <>
+    <AccountLayout>
       <SettingsCard only="profile" flow={flow}>
-        <H3>Profile Settings</H3>
+        {/* <H3>Profile Settings</H3> */}
         <Messages messages={flow?.ui.messages} />
         <Flow
           hideGlobalMessages
@@ -107,7 +123,7 @@ const Profile: NextPage = () => {
           flow={flow}
         />
       </SettingsCard>
-    </>
+    </AccountLayout>
   )
 }
 

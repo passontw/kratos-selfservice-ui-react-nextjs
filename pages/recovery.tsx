@@ -90,7 +90,7 @@ const Recovery: NextPage = () => {
 
   return (
     <>
-      <div className="loginWrapper">
+      <div className="mainWrapper">
         <div>
           <title>Sign in - Ory NextJS Integration Example</title>
           <meta name="description" content="NextJS + React + Vercel + Ory" />

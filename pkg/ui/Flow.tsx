@@ -14,9 +14,17 @@ import {
 } from "@ory/client"
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
 import { Component, FormEvent, MouseEvent } from "react"
+import { useSelector } from "react-redux"
 
+
+import Box from "@mui/material/Box"
 import { Messages } from "./Messages"
 import { Node } from "./Node"
+import { StyledMenuLine } from '../../styles/share'
+
+import Apple from "../../public/images/login_icons/Apple"
+import Google from "../../public/images/login_icons/Google"
+import { Button } from '@ory/themes'
 
 export type Values = Partial<
   | UpdateLoginFlowBody
@@ -52,7 +60,8 @@ export type Props<T> = {
   // Is triggered on submission
   onSubmit: (values: T) => Promise<void>
   // Do not show the global messages. Useful when rendering them elsewhere.
-  hideGlobalMessages?: boolean
+  hideGlobalMessages?: boolean,
+  
 }
 
 function emptyState<T>() {
@@ -63,6 +72,7 @@ type State<T> = {
   values: T
   isLoading: boolean
 }
+
 
 export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   constructor(props: Props<T>) {
@@ -87,6 +97,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   initializeValues = (nodes: Array<UiNode> = []) => {
     // Compute the values
     const values = emptyState<T>()
+
     nodes.forEach((node) => {
       // This only makes sense for text nodes
       if (isUiNodeInputAttributes(node.attributes)) {
@@ -139,7 +150,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
 
     if (form && form instanceof HTMLFormElement) {
       const formData = new FormData(form)
-
       // map the entire form data to JSON for the request body
       body = Object.fromEntries(formData) as T
 
@@ -157,6 +167,8 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       }
     }
 
+    
+
     this.setState((state) => ({
       ...state,
       isLoading: true,
@@ -173,6 +185,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         }))
       })
   }
+
 
   render() {
     const { hideGlobalMessages, flow } = this.props
@@ -197,7 +210,26 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       >
         {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
         {nodes.map((node, k) => {
-          // console.log(node)
+          console.log("@filterNodes node:", node)
+
+          // list excludedFields
+          const excludedFields = {
+            registration: [
+              "traits.phone",
+              "traits.birthdayYear",
+              "traits.birthdayMonth",
+              "traits.gender",
+            ],
+          }
+
+          // grab the pathname remove the slash and type it to be a key of excludedFields
+          const pathname = window.location.pathname.slice(
+            1,
+          ) as keyof typeof excludedFields
+
+          // filter all nodes that are in the excludedFields belonging to this path route
+          if (excludedFields[pathname]?.includes(node.attributes.name)) return
+
           const id = getNodeId(node) as keyof Values
           // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
           // if (node.meta.label?.text === "E-Mail") return
@@ -226,10 +258,86 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                   )
                 })
               }
-            />
+            />            
           )
         })}
+                    <Box
+          mt="8px"
+          mb="38px"
+          // textAlign="center"
+          color="#A5A5A9"
+          fontSize="14px"
+          fontFamily="open sans"
+          display="flex"
+          justifyContent="center"
+          gap="4px"
+        >
+          <Box> {this.props.router.pathname === '/login' ?'Don’t have an account?': 'Already have an account?'}</Box>
+          <Box
+            color="#CA4AE8"
+            sx={{
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              const redirrectPath = this.props.router.pathname === '/login' ?  '/registration': '/login';
+              this.props.router.push(redirrectPath)}}
+          >
+            {this.props.router.pathname === '/login' ?' Sign up': ' Sign in'}
+           
+          </Box>
+        </Box>
+        <Box
+          color="#A5A5A9"
+          fontSize="14px"
+          fontFamily="open sans"
+          display="flex"
+          justifyContent="center"
+        >
+          <StyledMenuLine>
+            <span className="text">Or login with other accounts</span>
+          </StyledMenuLine>
+        </Box>
+        <Box display="flex" gap="24px" justifyContent='center' my="24px">
+        <Button
+          name="provider"
+          value="google"
+          disabled={false}
+          type="submit"
+          style={{
+            padding: '0px',
+            margin: '0px',
+            bordeRadius: '0px',
+            borderWidth: '0px',
+            borderStyle: 'none',
+            borderColor: 'transparent',
+            backgroundColor: 'transparent',
+          }}
+        >
+            <Google />
+          </Button>
+          <Button
+          name="provider"
+          value="apple"
+          disabled={false}
+          type="submit"
+          style={{
+            padding: '0px',
+            margin: '0px',
+            bordeRadius: '0px',
+            borderWidth: '0px',
+            borderStyle: 'none',
+            borderColor: 'transparent',
+            backgroundColor: 'transparent',
+          }}
+        >
+            <Apple />
+          </Button>
+        </Box>
+
+
+
       </form>
+
     )
   }
 }

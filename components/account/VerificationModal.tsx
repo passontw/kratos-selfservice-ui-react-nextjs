@@ -1,4 +1,3 @@
-import queryString from "query-string"
 import { VerificationFlow, UpdateVerificationFlowBody } from "@ory/client"
 import { CardTitle } from "@ory/themes"
 import { AxiosError } from "axios"
@@ -6,10 +5,13 @@ import type { NextPage } from "next"
 import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import queryString from "query-string"
 import { useEffect, useState } from "react"
-import Flow from "./VerificationFlow"
+
 import { ActionCard, CenterLink, MarginCard } from "../../pkg"
 import ory from "../../pkg/sdk"
+
+import Flow from "./VerificationFlow"
 
 const Verification: NextPage = (props) => {
   const [initFlow, setInitFlow] = useState(false)
@@ -48,8 +50,8 @@ const Verification: NextPage = (props) => {
               setFlow(err.response?.data)
               return
             case 410:
-              const newFlowID = err.response.data.use_flow_id;
-              const { redirect_to } = router.query;
+              const newFlowID = err.response.data.use_flow_id
+              const { redirect_to } = router.query
               router
                 // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
                 // their data when they reload the page.
@@ -117,11 +119,12 @@ const Verification: NextPage = (props) => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   const onSubmit = async (values: UpdateVerificationFlowBody) => {
-    
     await router
       // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
       // their data when they reload the page.
-      .push(`/account?${queryString.stringify(router.query)}`, undefined, { shallow: true })
+      .push(`/account?${queryString.stringify(router.query)}`, undefined, {
+        shallow: true,
+      })
 
     ory
       .updateVerificationFlow({
@@ -129,7 +132,7 @@ const Verification: NextPage = (props) => {
         updateVerificationFlowBody: values,
       })
       .then(({ data }) => {
-        props.deleteAccount();
+        props.deleteAccount()
         // Form submission was successful, show the message to the user!
       })
       .catch((err: any) => {

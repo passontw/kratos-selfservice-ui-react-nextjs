@@ -1,18 +1,21 @@
+import Box from "@mui/material/Box"
 import { SettingsFlow, UpdateSettingsFlowBody } from "@ory/client"
 import { H3, P } from "@ory/themes"
+import axios from "axios"
 import cloneDeep from "lodash/cloneDeep"
 import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import { ReactNode, useEffect, useState } from "react"
-import axios from "axios";
+import { useDispatch } from "react-redux"
 
+import Flow from "../components/changepassword/Flow"
 import { ActionCard, Messages, Methods, LogoutLink } from "../pkg"
-
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
-import Flow from "../components/changepassword/Flow"
-import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
+import { setActiveNav } from "../state/store/slice/layoutSlice"
+import { Navs } from "../types/enum"
 import { updatePasswordSchema } from "../util/schemas"
+import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 
 interface Props {
   flow?: SettingsFlow
@@ -36,21 +39,37 @@ function SettingsCard({
     return null
   }
 
-  return <ActionCard wide>{children}</ActionCard>
+  return (
+    <Box
+      width="100%"
+      height="100%"
+      maxWidth="564px"
+      maxHeight="375px"
+      bgcolor="#272735"
+      borderRadius="12px"
+      p="32px"
+    >
+      {children}
+    </Box>
+  )
 }
 
 const refreshSessions = (setSessions) => {
-  axios.get('/api/.ory/sessions', {
-    headers: { withCredentials: true },
-  }).then(resp => {
-    const { data } = resp;
-    setSessions(data);
-  }).catch(error => {
-    setSessions([]);
-  });
+  axios
+    .get("/api/.ory/sessions", {
+      headers: { withCredentials: true },
+    })
+    .then((resp) => {
+      const { data } = resp
+      setSessions(data)
+    })
+    .catch((error) => {
+      setSessions([])
+    })
 }
 
 const Settings: NextPage = () => {
+  const dispatch = useDispatch()
   const [confirmPasswordError, setConfirmPasswordError] = useState("")
   const [flow, setFlow] = useState<SettingsFlow>()
 
@@ -59,6 +78,10 @@ const Settings: NextPage = () => {
   // Get ?flow=... from the URL
   const router = useRouter()
   const { flow: flowId, return_to: returnTo } = router.query
+
+  useEffect(() => {
+    dispatch(setActiveNav(Navs.SETTINGS))
+  }, [])
 
   useEffect(() => {
     // If the router is not ready yet, or we already have a flow, do nothing.
@@ -107,8 +130,8 @@ const Settings: NextPage = () => {
             .then(({ data }) => {
               // The settings have been saved and the flow was updated. Let's show it to the user!
               setFlow(data)
-              onLogout();
-              router.push("/login");
+              onLogout()
+              router.push("/login")
             })
             .catch(handleFlowError(router, "login", setFlow))
             .catch(async (err: any) => {
@@ -151,17 +174,22 @@ const Settings: NextPage = () => {
 
   return (
     <>
-      <SettingsCard only="password" flow={flow}>
-        <H3>Reset Password</H3>
-
-        <Messages messages={flow?.ui.messages} />
-        <Flow
-          hideGlobalMessages
-          onSubmit={onSubmit}
-          only="password"
-          flow={flow}
-        />
-      </SettingsCard>
+      <div className="resetWrapper">
+        <SettingsCard only="password" flow={flow}>
+          <Box>
+            <Box fontSize="20px" fontFamily="open sans" color="#FFF">
+              Change Password
+            </Box>
+            {/* <Messages messages={flow?.ui.messages} /> */}
+            <Flow
+              hideGlobalMessages
+              onSubmit={onSubmit}
+              only="password"
+              flow={flow}
+            />
+          </Box>
+        </SettingsCard>
+      </div>
     </>
   )
 }

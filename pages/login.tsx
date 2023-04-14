@@ -7,9 +7,10 @@ import isEmpty from "lodash/isEmpty"
 import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import queryString from "query-string"
-import { useEffect, useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import styled from "styled-components"
+import { Button } from "@ory/themes"
+import { StyledCopyright, StyledFooter, StyledNav, StyledLink, StyledLine, StyledTags, StyledTagWrapper } from './../styles/share'
 
 import { api } from "../axios/api"
 import CmidHead from "../components/CmidHead"
@@ -20,6 +21,10 @@ import { selectActiveNav, setActiveNav } from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
 import { loginFormSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
+import CmidMobile from "../public/images/app_icons/CmidMobile"
+import MasterControlMobile from "../public/images/app_icons/MasterControlMobile"
+
+
 
 const { NEXT_PUBLIC_REDIRECT_URI } = process.env
 
@@ -60,54 +65,10 @@ const validateLoginFlow = async (router, options) => {
   }
 }
 
-const StyledLine = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  .text {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-
-    &:after {
-      position: absolute;
-      content: "";
-      height: 2px;
-      background-color: #a5a5a9;
-      width: calc(50% - 92px - 12px);
-      top: 50%;
-      right: 0px;
-      margin-left: 12px;
-    }
-
-    &:before {
-      position: absolute;
-      content: "";
-      height: 2px;
-      background-color: #a5a5a9;
-      width: calc(50% - 92px - 12px);
-      top: 50%;
-      left: 0px;
-      margin-right: 12px;
-    }
-  }
-`
-const StyledCopyright = styled.span`
-  position: absolute;
-  bottom: 20px;
-  left: 32px;
-  color: #7E7E89;
-  font-family: 'Open Sans';
-  font-size: 14px;
-`
-
-
 const Login: NextPage = () => {
   const [flow, setFlow] = useState<LoginFlow>()
   const dispatch = useDispatch()
+  
 
   useEffect(() => {
     dispatch(setActiveNav(Navs.LOGIN))
@@ -251,7 +212,7 @@ const Login: NextPage = () => {
                 window.location.href = flow?.return_to
                 return
               }
-              router.push("/")
+              router.push("/profile")
             }
           })
           .then(() => {})
@@ -305,6 +266,10 @@ const Login: NextPage = () => {
     }
   }
 
+
+
+
+
   return (
     <>
       {/* CUSTOMIZE UI BASED ON CLIENT ID */}
@@ -312,7 +277,7 @@ const Login: NextPage = () => {
         <title>Sign in - Ory NextJS Integration Example</title>
         <meta name="description" content="NextJS + React + Vercel + Ory" />
       </Head> */}
-      <div className="loginWrapper">
+      <div className="mainWrapper">
         <div>
           <title>Sign in - Ory NextJS Integration Example</title>
           <meta name="description" content="NextJS + React + Vercel + Ory" />
@@ -332,62 +297,23 @@ const Login: NextPage = () => {
         <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
           Welcome back
         </Box>
-        <Flow onSubmit={onSubmit} flow={flow} />
-        <Box
-          mt="8px"
-          mb="38px"
-          // textAlign="center"
-          color="#A5A5A9"
-          fontSize="14px"
-          fontFamily="open sans"
-          display="flex"
-          justifyContent="center"
-          gap="4px"
-        >
-          <Box>Don’t have an account?</Box>
-          <Box
-            color="#CA4AE8"
-            sx={{
-              cursor: "pointer",
-            }}
-            onClick={() => router.push("/registration")}
-          >
-            Sign up
-          </Box>
-        </Box>
-        <Box
-          color="#A5A5A9"
-          fontSize="14px"
-          fontFamily="open sans"
-          display="flex"
-          justifyContent="center"
-        >
-          <StyledLine>
-            <span className="text">Or login with other accounts</span>
-          </StyledLine>
-        </Box>
-        {/* </MarginCard> */}
-        {/* {aal || refresh ? (
-          <ActionCard>
-            <CenterLink data-testid="logout-link" onClick={onLogout}>
-              Log out
-            </CenterLink>
-          </ActionCard>
-        ) : (
-          <>
-            <ActionCard>
-              <Link href="/registration" passHref>
-                <CenterLink>Create account</CenterLink>
-              </Link>
-            </ActionCard>
-            <ActionCard>
-              <Link href="/recovery" passHref>
-                <CenterLink>Recover your account</CenterLink>
-              </Link>
-            </ActionCard>
-          </>
-        )} */}
-        <StyledCopyright>Copyright© 2023 Cooler Master Inc. All rights reserved.</StyledCopyright>
+        <Flow onSubmit={onSubmit} flow={flow} router={router} />
+
+
+
+        <StyledTagWrapper>
+          <StyledTags><MasterControlMobile/>Master Control</StyledTags>
+          <StyledTags><CmidMobile/>Stormplay</StyledTags>
+          <StyledTags><MasterControlMobile/>Master Control</StyledTags>
+        </StyledTagWrapper>
+        <StyledFooter>
+          <StyledNav className='mobie'>
+            <StyledLink>Terms of Service</StyledLink>
+            <StyledLine />
+            <StyledLink>Privacy Policy</StyledLink>
+          </StyledNav>
+          <StyledCopyright>Copyright© 2023 Cooler Master Inc. All rights reserved.</StyledCopyright>
+        </StyledFooter>
       </div>
     </>
   )

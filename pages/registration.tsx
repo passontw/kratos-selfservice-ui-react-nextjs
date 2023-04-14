@@ -195,7 +195,7 @@ const Registration: NextPage = () => {
 
   return (
     <>
-      <div className="signupWrapper">
+      <div className="mainWrapper">
         {/* <Head>
         <title>Create account - Ory NextJS Integration Example</title>
         <meta name="description" content="NextJS + React + Vercel + Ory" />
@@ -210,45 +210,7 @@ const Registration: NextPage = () => {
         <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
           Join us
         </Box>
-        <Flow onSubmit={onSubmit} flow={nextFlow} />
-        {/* </MarginCard> */}
-        <Box
-          mt="8px"
-          mb="38px"
-          // textAlign="center"
-          color="#A5A5A9"
-          fontSize="14px"
-          fontFamily="open sans"
-          display="flex"
-          justifyContent="center"
-          gap="4px"
-        >
-          <Box>Already have an account?</Box>
-          <Box
-            color="#CA4AE8"
-            sx={{
-              cursor: "pointer",
-            }}
-            onClick={() => router.push("/login")}
-          >
-            Login
-          </Box>
-        </Box>
-        <Box
-          color="#A5A5A9"
-          fontSize="14px"
-          fontFamily="open sans"
-          display="flex"
-          justifyContent="center"
-        >
-          ------------------------- Or Sign up with other accounts
-          -------------------------
-        </Box>
-        {/* <ActionCard>
-          <CenterLink data-testid="cta-link" href="/login">
-            Sign in
-          </CenterLink>
-        </ActionCard> */}
+        <Flow onSubmit={onSubmit} flow={nextFlow} router={router} />
       </div>
     </>
   )
