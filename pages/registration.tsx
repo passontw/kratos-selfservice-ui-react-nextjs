@@ -110,9 +110,9 @@ const Registration: NextPage = () => {
                 return router
                   .push(
                     flow?.return_to ||
-                      `/verification?user=${values["traits.email"]}&csrf=${values.csrf_token}`,
+                    `/verification?user=${values["traits.email"]}&csrf=${values.csrf_token}`,
                   )
-                  .then(() => {})
+                  .then(() => { })
               })
               .catch(handleFlowError(router, "registration", setFlow))
               .catch((err: any) => {
@@ -131,6 +131,7 @@ const Registration: NextPage = () => {
       )
     } catch (error) {
       const errors = handleYupErrors(error)
+      console.log("🚀 ~ file: registration.tsx:134 ~ onSubmit ~ errors:", errors)
       const nextFlow = cloneDeep(flow)
 
       if (errors['["traits.email"]']) {
@@ -142,24 +143,39 @@ const Registration: NextPage = () => {
         const identifierIndex = nextFlow.ui.nodes.findIndex(
           (node) => node.attributes.name === "traits.email",
         )
-        const preMessages = nextFlow.ui.nodes[identifierIndex].messages
-        nextFlow.ui.nodes[identifierIndex].messages = [...preMessages, message]
-      } else if (errors['["traits.name"]']) {
+        const errorMessage = nextFlow.ui.nodes[identifierIndex].messages.find(msg => msg.id === message.id);
+        if (!errorMessage) {
+          const preMessages = nextFlow.ui.nodes[identifierIndex].messages
+          nextFlow.ui.nodes[identifierIndex].messages = [...preMessages, message]
+        }
+      } else {
+        const identifierIndex = nextFlow.ui.nodes.findIndex(
+          (node) => node.attributes.name === "traits.email",
+        )
+        const nextMessages = nextFlow.ui.nodes[identifierIndex].messages.filter(
+          (message) => message.type !== "error",
+        )
+        nextFlow.ui.nodes[identifierIndex].messages = nextMessages
+      }
+
+      if (errors['["traits.name"]']) {
         const message = {
           id: 4000002,
           text: errors['["traits.name"]'],
           type: "error",
         }
-        console.log("🚀 ~ file: registration.tsx:146 ~ onSubmit ~ message:", message)
         const identifierIndex = nextFlow.ui.nodes.findIndex(
           (node) => node.attributes.name === "traits.name",
         )
-        console.log("🚀 ~ file: registration.tsx:150 ~ onSubmit ~ identifierIndex:", identifierIndex)
-        const preMessages = nextFlow.ui.nodes[identifierIndex].messages
-        nextFlow.ui.nodes[identifierIndex].messages = [...preMessages, message]
-      }else {
+
+        const errorMessage = nextFlow.ui.nodes[identifierIndex].messages.find(msg => msg.id === message.id);
+        if (!errorMessage) {
+          const preMessages = nextFlow.ui.nodes[identifierIndex].messages
+          nextFlow.ui.nodes[identifierIndex].messages = [...preMessages, message]
+        }
+      } else {
         const identifierIndex = nextFlow.ui.nodes.findIndex(
-          (node) => node.attributes.name === "traits.email",
+          (node) => node.attributes.name === "traits.name",
         )
         const nextMessages = nextFlow.ui.nodes[identifierIndex].messages.filter(
           (message) => message.type !== "error",
