@@ -94,7 +94,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   const openDialog = () => {
     dispatch(
       setDialog({
-        title: "Forgot Password",
+        title: "Forgot Password ",
         titleHeight: "58px",
         width: 480,
         height: 358,
