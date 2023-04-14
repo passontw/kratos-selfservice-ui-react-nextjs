@@ -5,20 +5,17 @@ import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-import AppsList from '../components/AppsList'
 
-import CmidHead from "../components/CmidHead"
-import AccountLayout from '../components/Layout/AccountLayout'
-// Import render helpers
-// import Flow from '../components/registration/Flow';
-import { ActionCard, Flow, CenterLink, MarginCard } from "../pkg"
-import { handleFlowError } from "../pkg/errors"
+
+import { ActionCard, Flow, CenterLink, MarginCard } from "../../pkg"
+import { handleFlowError } from "../../pkg/errors"
 // Import the SDK
-import ory from "../pkg/sdk"
-import { setActiveNav } from "../state/store/slice/layoutSlice"
-import { Navs } from "../types/enum"
-import { registrationFormSchema } from "../util/schemas"
-import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
+import ory from "../../pkg/sdk"
+
+import { registrationFormSchema } from "../../util/schemas"
+import { handleYupSchema, handleYupErrors } from "../../util/yupHelpers"
+import { StyledWrapper } from "./styles"
+
 
 const getNextFlow = (flow) => {
   if (!flow) return flow
@@ -39,14 +36,9 @@ const getNextFlow = (flow) => {
   }
 }
 
-// Renders the registration page
-const Registration: NextPage = () => {
+interface RegistrationMenuProps {}
+const RegistrationMenu: React.FC<RegistrationMenuProps> = ({ children }) => {
   const router = useRouter()
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(setActiveNav(Navs.REGISTER))
-  }, [])
 
   // The "flow" represents a registration process and contains
   // information about the form we need to render (e.g. username + password)
@@ -196,25 +188,14 @@ const Registration: NextPage = () => {
   const nextFlow = getNextFlow(flow)
 
   return (
-    <>
-    
-      
-        {/* <Head>
-        <title>Create account - Ory NextJS Integration Example</title>
-        <meta name="description" content="NextJS + React + Vercel + Ory" />
-      </Head> */}
-        <div>
-          <title>Create account - Ory NextJS Integration Example</title>
-          <meta name="description" content="NextJS + React + Vercel + Ory" />
-        </div>
+    <StyledWrapper>
+      <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
+        Join us
+      </Box>
+      <Flow onSubmit={onSubmit} flow={nextFlow} router={router} />
+    </StyledWrapper>
 
-      <AccountLayout>
-        <AppsList />
-      </AccountLayout>
-
-      
-    </>
   )
 }
 
-export default Registration
+export default RegistrationMenu

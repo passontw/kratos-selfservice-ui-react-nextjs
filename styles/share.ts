@@ -38,9 +38,6 @@ export const StyledMenuLine = styled.div`
 `
 export const StyledFooter = styled.footer`
   border-top: 1px solid #37374f;
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
   width: calc(100% - 40px);
   padding: 20px;
   @media only screen and (min-width: 600px) {
@@ -97,8 +94,8 @@ export const StyledTagWrapper = styled.div`
   > :not(:first-child) {
     margin-left: 20px;
   }
-
   margin: 40px 0px 60px;
+  overflow: auto;
   @media only screen and (min-width: 600px) {
     display: none;
   }
