@@ -21,9 +21,6 @@ export function NodeInputSubmit<T>({
     backgroundColor: "#A62BC3",
     borderRadius: "8px",
     height: "44px",
-    margin: '20px 0px 0px',
-    color: '#FFFFFF',
-    font: 'Open Sans'
   }
   const hiddenStyle = {
     display: "none",

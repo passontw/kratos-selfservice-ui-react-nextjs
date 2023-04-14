@@ -5,10 +5,8 @@ import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-import AppsList from '../components/AppsList'
 
 import CmidHead from "../components/CmidHead"
-import AccountLayout from '../components/Layout/AccountLayout'
 // Import render helpers
 // import Flow from '../components/registration/Flow';
 import { ActionCard, Flow, CenterLink, MarginCard } from "../pkg"
@@ -152,14 +150,20 @@ const Registration: NextPage = () => {
           text: errors['["traits.name"]'],
           type: "error",
         }
-        console.log("🚀 ~ file: registration.tsx:146 ~ onSubmit ~ message:", message)
+        console.log(
+          "🚀 ~ file: registration.tsx:146 ~ onSubmit ~ message:",
+          message,
+        )
         const identifierIndex = nextFlow.ui.nodes.findIndex(
           (node) => node.attributes.name === "traits.name",
         )
-        console.log("🚀 ~ file: registration.tsx:150 ~ onSubmit ~ identifierIndex:", identifierIndex)
+        console.log(
+          "🚀 ~ file: registration.tsx:150 ~ onSubmit ~ identifierIndex:",
+          identifierIndex,
+        )
         const preMessages = nextFlow.ui.nodes[identifierIndex].messages
         nextFlow.ui.nodes[identifierIndex].messages = [...preMessages, message]
-      }else {
+      } else {
         const identifierIndex = nextFlow.ui.nodes.findIndex(
           (node) => node.attributes.name === "traits.email",
         )
@@ -186,7 +190,10 @@ const Registration: NextPage = () => {
         nextFlow.ui.nodes[passwordIndex].messages = []
       }
 
-      console.log("🚀 ~ file: registration.tsx:184 ~ onSubmit ~ nextFlow:", nextFlow)
+      console.log(
+        "🚀 ~ file: registration.tsx:184 ~ onSubmit ~ nextFlow:",
+        nextFlow,
+      )
       setFlow(nextFlow)
       // setErrors(errors);
       return false
@@ -197,8 +204,7 @@ const Registration: NextPage = () => {
 
   return (
     <>
-    
-      
+      <div className="mainWrapper">
         {/* <Head>
         <title>Create account - Ory NextJS Integration Example</title>
         <meta name="description" content="NextJS + React + Vercel + Ory" />
@@ -207,12 +213,14 @@ const Registration: NextPage = () => {
           <title>Create account - Ory NextJS Integration Example</title>
           <meta name="description" content="NextJS + React + Vercel + Ory" />
         </div>
-
-      <AccountLayout>
-        <AppsList />
-      </AccountLayout>
-
-      
+        {/* <MarginCard> */}
+        {/* <CardTitle>Create account</CardTitle> */}
+        <CmidHead />
+        <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
+          Join us
+        </Box>
+        <Flow onSubmit={onSubmit} flow={nextFlow} router={router} />
+      </div>
     </>
   )
 }
