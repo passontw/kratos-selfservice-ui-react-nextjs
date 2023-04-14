@@ -38,9 +38,13 @@ export function NodeInputSubmit<T>({
     marginTop: "11px",
   }
   console.log("@getNodeLabel(node)", getNodeLabel(node))
-  const showButton = ["Submit", "Resend code", "Sign in", "Sign up"].includes(
-    getNodeLabel(node),
-  )
+  const showButton = [
+    "Save",
+    "Submit",
+    "Resend code",
+    "Sign in",
+    "Sign up",
+  ].includes(getNodeLabel(node))
   const link = ["Resend code"].includes(getNodeLabel(node))
   const activeNav = useSelector(selectActiveNav)
   const buttonText =
