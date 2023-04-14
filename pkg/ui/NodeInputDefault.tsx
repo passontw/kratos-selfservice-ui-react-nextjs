@@ -8,6 +8,7 @@ import styled from "styled-components"
 import RecoveryProcess from "../../components/changepassword/RecoveryProcess"
 import Eye from "../../public/images/eyes"
 import { selectActiveNav, setDialog } from "../../state/store/slice/layoutSlice"
+import { Navs } from "../../types/enum"
 import { CenterLink } from "../styled"
 
 import { NodeInputProps } from "./helpers"
@@ -122,7 +123,13 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             caretColor: "#fff",
             borderRadius: "8px",
           }}
-          placeholder={isInputLabel ? "" : label}
+          placeholder={
+            isInputLabel
+              ? ""
+              : nav === Navs.SETTINGS && attributes.name === "password"
+              ? "Enter new password"
+              : label
+          }
           // title={node.meta.label?.text}
           onClick={onClick}
           onChange={(e) => {

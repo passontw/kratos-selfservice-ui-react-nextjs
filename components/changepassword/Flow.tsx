@@ -212,13 +212,14 @@ export default class Flow<T extends Values> extends Component<
           attributes={passwordNode.attributes}
         />
         <TextInput
-          title="ConfirmPassword"
+          title="Confirm New Password *"
           onChange={(e) => {
             this.setState((state) => ({
               ...state,
               confirmPassword: e.target.value,
             }))
           }}
+          placeholder="Confirm new password"
           name="confirmPassword"
           value={this.state.confirmPassword}
           state={isEmpty(confirmPasswordError) ? undefined : "error"}
