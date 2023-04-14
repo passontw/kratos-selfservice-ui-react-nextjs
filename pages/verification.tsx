@@ -195,7 +195,7 @@ const Verification: NextPage = () => {
             Enter the 6-digit code we sent to {email} to verify account.
           </span>
         </Box>
-        <Flow onSubmit={onSubmit} flow={flow} hideGlobalMessages />
+        <Flow onSubmit={onSubmit} flow={flow} />
       </div>
     </>
   )
