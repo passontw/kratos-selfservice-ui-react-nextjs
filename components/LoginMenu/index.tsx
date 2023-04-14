@@ -1,22 +1,31 @@
 import Box from "@mui/material/Box"
-import { StyledCopyright, StyledFooter, StyledNav, StyledLink, StyledLine, StyledTags, StyledTagWrapper } from '../../styles/share'
 import { LoginFlow } from "@ory/client"
 import { AxiosError } from "axios"
-import isEmpty from "lodash/isEmpty"
 import cloneDeep from "lodash/cloneDeep"
+import isEmpty from "lodash/isEmpty"
 import { useRouter } from "next/router"
 import queryString from "query-string"
-import {  useEffect, useState } from "react"
-import { api } from '../../axios/api'
+import { useEffect, useState } from "react"
+
+import { api } from "../../axios/api"
 import { LogoutLink, Flow } from "../../pkg"
 import { handleGetFlowError, handleFlowError } from "../../pkg/errors"
 import ory from "../../pkg/sdk"
-import { loginFormSchema } from "../../util/schemas"
-import { handleYupSchema, handleYupErrors } from "../../util/yupHelpers"
 import CmidMobile from "../../public/images/app_icons/CmidMobile"
 import MasterControlMobile from "../../public/images/app_icons/MasterControlMobile"
-import { StyledWrapper } from './styles'
+import {
+  StyledCopyright,
+  StyledFooter,
+  StyledNav,
+  StyledLink,
+  StyledLine,
+  StyledTags,
+  StyledTagWrapper,
+} from "../../styles/share"
+import { loginFormSchema } from "../../util/schemas"
+import { handleYupSchema, handleYupErrors } from "../../util/yupHelpers"
 
+import { StyledWrapper } from "./styles"
 
 interface LoginMenuProps {}
 
@@ -49,16 +58,16 @@ const validateLoginFlow = async (router, options) => {
       }
       setFlow(data)
     } else {
-      const qs = queryString.stringify(router.query)
-      const nextUri = isEmpty(qs) ? "/sso" : `/sso?${qs}`
-      router.push(nextUri)
+      console.log("sessionData", sessionData)
+      // const qs = queryString.stringify(router.query)
+      // const nextUri = isEmpty(qs) ? "/sso" : `/sso?${qs}`
+      // router.push(nextUri)
       return
     }
   } catch (error) {
     handleFlowError(router, "login", setFlow)
   }
 }
-
 
 const LoginMenu: React.FC<LoginMenuProps> = ({ children }) => {
   const [flow, setFlow] = useState<LoginFlow>()
@@ -253,32 +262,41 @@ const LoginMenu: React.FC<LoginMenuProps> = ({ children }) => {
   }
 
   return (
-  <StyledWrapper>
-    <div>
-      <title>Sign in - Ory NextJS Integration Example</title>
-      <meta name="description" content="NextJS + React + Vercel + Ory" />
-    </div>
-    <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px" mb="8px">
-      Welcome back
-    </Box>
-    <Flow onSubmit={onSubmit} flow={flow} router={router} />
-    <StyledTagWrapper>
-      <StyledTags><MasterControlMobile/>Master Control</StyledTags>
-      <StyledTags><CmidMobile/>Stormplay</StyledTags>
-      <StyledTags><MasterControlMobile/>Master Control</StyledTags>
-    </StyledTagWrapper>
-    <StyledFooter>
-      <StyledNav className='mobie'>
-        <StyledLink>Terms of Service</StyledLink>
-        <StyledLine />
-        <StyledLink>Privacy Policy</StyledLink>
-      </StyledNav>
-      <StyledCopyright>Copyright© 2023 Cooler Master Inc. All rights reserved.</StyledCopyright>
-    </StyledFooter>
-  </StyledWrapper>
+    <StyledWrapper>
+      <div>
+        <title>Sign in - Ory NextJS Integration Example</title>
+        <meta name="description" content="NextJS + React + Vercel + Ory" />
+      </div>
+      <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px" mb="8px">
+        Welcome back
+      </Box>
+      <Flow onSubmit={onSubmit} flow={flow} router={router} />
+      <StyledTagWrapper>
+        <StyledTags>
+          <MasterControlMobile />
+          Master Control
+        </StyledTags>
+        <StyledTags>
+          <CmidMobile />
+          Stormplay
+        </StyledTags>
+        <StyledTags>
+          <MasterControlMobile />
+          Master Control
+        </StyledTags>
+      </StyledTagWrapper>
+      <StyledFooter>
+        <StyledNav className="mobie">
+          <StyledLink>Terms of Service</StyledLink>
+          <StyledLine />
+          <StyledLink>Privacy Policy</StyledLink>
+        </StyledNav>
+        <StyledCopyright>
+          Copyright© 2023 Cooler Master Inc. All rights reserved.
+        </StyledCopyright>
+      </StyledFooter>
+    </StyledWrapper>
   )
 }
 
 export default LoginMenu
-
-
