@@ -2,11 +2,10 @@ import { styled } from "@mui/system"
 
 import { BACKGROUND_DARK, WHITE } from "../../../constants/colors"
 
-const StyledWrapper = styled("div")(() => ({
+const StyledWrapper = styled("div")(({ theme }) => ({
   display: "flex",
-  backgroundColor: '#1F1F2A',
-  // flexDirection: "column",
-  height: "100vh",
+  height: "100%",
+  minHeight: "100vh",
   width: "100%",
 }))
 
@@ -28,6 +27,24 @@ const StyledImg = styled("img")(() => ({
   flexAlign: "start",
 }))
 
-const StyledContent = styled("div")(() => ({}))
+const StyledContentWrapper = styled("div")(({ theme }) => ({
+  display: "none",
+  position: "relative",
+  width: "100%",
+  padding: "48px 48px 0px 48px",
+  [theme.breakpoints.up("sm")]: {
+    display: "inline-block",
+  },
+}))
 
-export { StyledWrapper, StyledContent, StyledHeader, StyledImg }
+const StyledContent = styled("div")(({ theme }) => ({
+  width: "100%",
+}))
+
+export {
+  StyledWrapper,
+  StyledContent,
+  StyledHeader,
+  StyledImg,
+  StyledContentWrapper,
+}

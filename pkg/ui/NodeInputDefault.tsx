@@ -122,6 +122,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             color: "#fff",
             caretColor: "#fff",
             borderRadius: "8px",
+            margin: '0px'
           }}
           placeholder={
             isInputLabel
