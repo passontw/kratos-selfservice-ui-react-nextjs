@@ -37,6 +37,7 @@ export function NodeInputSubmit<T>({
     fontSize: "14px",
     marginTop: "11px",
   }
+  console.log("@getNodeLabel(node)", getNodeLabel(node))
   const showButton = ["Submit", "Resend code", "Sign in", "Sign up"].includes(
     getNodeLabel(node),
   )
