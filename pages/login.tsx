@@ -1,15 +1,13 @@
 import Box from "@mui/material/Box"
 import { LoginFlow } from "@ory/client"
-import axios from "axios"
 import { AxiosError } from "axios"
 import cloneDeep from "lodash/cloneDeep"
 import isEmpty from "lodash/isEmpty"
 import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import queryString from "query-string"
-import { FormEvent, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Button } from "@ory/themes"
 import { StyledCopyright, StyledFooter, StyledNav, StyledLink, StyledLine, StyledTags, StyledTagWrapper } from './../styles/share'
 
 import { api } from "../axios/api"
@@ -244,6 +242,12 @@ const Login: NextPage = () => {
             (node) => node?.attributes?.name === "identifier",
           )
           nextFlow.ui.nodes[identifierIndex].messages = [message]
+        } else {
+          const idNodes = nextFlow?.ui?.nodes || []
+          const identifierIndex = idNodes.findIndex(
+            (node) => node?.attributes?.name === "identifier",
+          )
+          nextFlow.ui.nodes[identifierIndex].messages = nextFlow.ui.nodes[identifierIndex].messages.filter(msg => msg.id !== 4000002)
         }
 
         if (errors.password) {
@@ -257,6 +261,12 @@ const Login: NextPage = () => {
             (node) => node?.attributes?.name === "password",
           )
           nextFlow.ui.nodes[passwordIndex].messages = [passwordMessage]
+        } else {
+          const idNodes = nextFlow?.ui?.nodes || []
+          const identifierIndex = idNodes.findIndex(
+            (node) => node?.attributes?.name === "password",
+          )
+          nextFlow.ui.nodes[identifierIndex].messages = nextFlow.ui.nodes[identifierIndex].messages.filter(msg => msg.id !== 4000002)
         }
         setFlow(nextFlow)
       }

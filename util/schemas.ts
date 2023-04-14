@@ -11,16 +11,16 @@ export const passwordSchema = yup
     /^([a-zA-Z]+)\w*$/,
     'Need at least 1 alphabet letter'
   )
-  .required('密碼不可為空');
+  .required('password can not be empty.');
 
 export const updatePasswordSchema = yup.object().shape({
-  password: yup.string().required('密碼不可為空'),
+  password: yup.string().required('password can not be empty.'),
   confirmPassword: yup.string().when('password', (password, field) =>
   password ? field.required().oneOf([yup.ref('password')]) : field
 ),
 });
 export const loginFormSchema = yup.object().shape({
-  identifier: yup.string().email().required('信箱不可為空'),
+  identifier: yup.string().email().required('email can not be empty.'),
   password: passwordSchema,
 });
 
