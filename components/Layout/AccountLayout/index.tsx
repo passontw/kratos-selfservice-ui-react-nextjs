@@ -6,8 +6,10 @@ import Cmid from "../../../public/images/app_icons/Cmid"
 import { selectActiveNav } from "../../../state/store/slice/layoutSlice"
 import { Navs } from "../../../types/enum"
 import AccountMenu from "../../AccountMenu"
+import LoginMenu from '../../LoginMenu'
+import RegistrationMenu from '../../RegistrationMenu'
 
-import { StyledWrapper, StyledContent, StyledHeader } from "./styles"
+import { StyledWrapper, StyledContent, StyledHeader, StyledContentWrapper } from "./styles"
 
 interface AccountLayoutProps {
   children: ReactNode
@@ -15,7 +17,6 @@ interface AccountLayoutProps {
 
 const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
   const activeNav = useSelector(selectActiveNav)
-
   const renderTitle = (activeNav: string) => {
     let title = ""
     switch (activeNav) {
@@ -32,22 +33,29 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
     return title
   }
 
+  const renderSideContent = () => {
+    if ( activeNav === "LOGIN" ) {
+      return <LoginMenu />
+    }
+    if (activeNav === 'REGISTER') {
+      return <RegistrationMenu />
+    }
+    return <AccountMenu />
+  }
   return (
     <StyledWrapper>
-      <Box display="flex">
         <Box
           display="flex"
           flexDirection="column"
-          width="400px"
           bgcolor="#161622"
         >
           <StyledHeader>
             <Cmid />
             <div>Cooler Master ID</div>
           </StyledHeader>
-          <AccountMenu />
+            {renderSideContent()}
         </Box>
-        <Box px="48px" pt="48px">
+        <StyledContentWrapper>
           <Box display="flex">
             <Box fontFamily="Teko" fontSize="48px" color="#A2A1C6">
               {renderTitle(activeNav)}
@@ -55,8 +63,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
             {/* <Box>logout</Box> */}
           </Box>
           <StyledContent>{children}</StyledContent>
-        </Box>
-      </Box>
+        </StyledContentWrapper>
     </StyledWrapper>
   )
 }

@@ -94,7 +94,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   const openDialog = () => {
     dispatch(
       setDialog({
-        title: "Forgot Password",
+        title: "Forgot Password ",
         titleHeight: "58px",
         width: 480,
         height: 358,
@@ -122,6 +122,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             color: "#fff",
             caretColor: "#fff",
             borderRadius: "8px",
+            margin: '0px'
           }}
           placeholder={
             isInputLabel

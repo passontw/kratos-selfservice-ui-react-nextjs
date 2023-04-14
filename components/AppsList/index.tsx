@@ -1,30 +1,26 @@
 import Box from "@mui/material/Box"
 import AppItem from "../AppItem"
-import { StyledWrapper, StyledNav, StyledLink, StyledLine } from '../../styles/share'
+import {  StyledWrapper, StyledNav, StyledLink, StyledLine } from '../../styles/share'
 import { useSelector } from "react-redux"
-import styled from "styled-components"
-
 import { selectActiveNav } from "../../state/store/slice/layoutSlice"
 import { Navs } from "../../types/enum"
 
 
 interface AppsListProps {}
 const AppsList: React.FC<AppsListProps> = () => {
-
   const activeNav = useSelector(selectActiveNav)
-
   return (
     <>
       {activeNav !== Navs.SETTINGS &&
       activeNav !== Navs.PROFILE &&
       activeNav !== Navs.ACCOUNT ? (
-        <StyledWrapper>
-        <Box
+        <>
+          <Box
           mt="200px"
           display="flex"
           flexDirection="column"
           alignItems="center"
-          width="61.2vw"
+          width="100%"
           fontFamily="open sans"
           position="relative"
         >
@@ -39,13 +35,13 @@ const AppsList: React.FC<AppsListProps> = () => {
             <AppItem appIcon="Stormplay" appName="Stormplay" />
             <AppItem appIcon="Cmodx" appName="CMODX" />
           </Box>
-        </Box>
-        <StyledNav>
+          </Box>
+          <StyledNav>
             <StyledLink>Terms of Service</StyledLink>
             <StyledLine />
             <StyledLink>Privacy Policy</StyledLink>
           </StyledNav>
-        </StyledWrapper>
+        </>
 
       ) : null}
     </>
