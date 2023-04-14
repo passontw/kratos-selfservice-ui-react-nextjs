@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box"
 import {
   LoginFlow,
   RecoveryFlow,
@@ -13,18 +14,16 @@ import {
   UiTextTypeEnum,
 } from "@ory/client"
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
+import { Button } from "@ory/themes"
 import { Component, FormEvent, MouseEvent } from "react"
 import { useSelector } from "react-redux"
 
-
-import Box from "@mui/material/Box"
-import { Messages } from "./Messages"
-import { Node } from "./Node"
-import { StyledMenuLine } from '../../styles/share'
-
 import Apple from "../../public/images/login_icons/Apple"
 import Google from "../../public/images/login_icons/Google"
-import { Button } from '@ory/themes'
+import { StyledMenuLine } from "../../styles/share"
+
+import { Messages } from "./Messages"
+import { Node } from "./Node"
 
 export type Values = Partial<
   | UpdateLoginFlowBody
@@ -60,8 +59,7 @@ export type Props<T> = {
   // Is triggered on submission
   onSubmit: (values: T) => Promise<void>
   // Do not show the global messages. Useful when rendering them elsewhere.
-  hideGlobalMessages?: boolean,
-  
+  hideGlobalMessages?: boolean
 }
 
 function emptyState<T>() {
@@ -72,7 +70,6 @@ type State<T> = {
   values: T
   isLoading: boolean
 }
-
 
 export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   constructor(props: Props<T>) {
@@ -167,8 +164,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       }
     }
 
-    
-
     this.setState((state) => ({
       ...state,
       isLoading: true,
@@ -185,7 +180,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         }))
       })
   }
-
 
   render() {
     const { hideGlobalMessages, flow } = this.props
@@ -258,10 +252,10 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                   )
                 })
               }
-            />            
+            />
           )
         })}
-                    <Box
+        <Box
           mt="8px"
           mb="38px"
           // textAlign="center"
@@ -272,18 +266,26 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           justifyContent="center"
           gap="4px"
         >
-          <Box> {this.props.router.pathname === '/login' ?'Don’t have an account?': 'Already have an account?'}</Box>
+          <Box>
+            {" "}
+            {this.props.router?.pathname === "/login"
+              ? "Don’t have an account?"
+              : "Already have an account?"}
+          </Box>
           <Box
             color="#CA4AE8"
             sx={{
               cursor: "pointer",
             }}
             onClick={() => {
-              const redirrectPath = this.props.router.pathname === '/login' ?  '/registration': '/login';
-              this.props.router.push(redirrectPath)}}
+              const redirrectPath =
+                this.props.router?.pathname === "/login"
+                  ? "/registration"
+                  : "/login"
+              this.props.router.push(redirrectPath)
+            }}
           >
-            {this.props.router.pathname === '/login' ?' Sign up': ' Sign in'}
-           
+            {this.props.router?.pathname === "/login" ? " Sign up" : " Sign in"}
           </Box>
         </Box>
         <Box
@@ -297,47 +299,43 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
             <span className="text">Or login with other accounts</span>
           </StyledMenuLine>
         </Box>
-        <Box display="flex" gap="24px" justifyContent='center' my="24px">
-        <Button
-          name="provider"
-          value="google"
-          disabled={false}
-          type="submit"
-          style={{
-            padding: '0px',
-            margin: '0px',
-            bordeRadius: '0px',
-            borderWidth: '0px',
-            borderStyle: 'none',
-            borderColor: 'transparent',
-            backgroundColor: 'transparent',
-          }}
-        >
+        <Box display="flex" gap="24px" justifyContent="center" my="24px">
+          <Button
+            name="provider"
+            value="google"
+            disabled={false}
+            type="submit"
+            style={{
+              padding: "0px",
+              margin: "0px",
+              bordeRadius: "0px",
+              borderWidth: "0px",
+              borderStyle: "none",
+              borderColor: "transparent",
+              backgroundColor: "transparent",
+            }}
+          >
             <Google />
           </Button>
           <Button
-          name="provider"
-          value="apple"
-          disabled={false}
-          type="submit"
-          style={{
-            padding: '0px',
-            margin: '0px',
-            bordeRadius: '0px',
-            borderWidth: '0px',
-            borderStyle: 'none',
-            borderColor: 'transparent',
-            backgroundColor: 'transparent',
-          }}
-        >
+            name="provider"
+            value="apple"
+            disabled={false}
+            type="submit"
+            style={{
+              padding: "0px",
+              margin: "0px",
+              bordeRadius: "0px",
+              borderWidth: "0px",
+              borderStyle: "none",
+              borderColor: "transparent",
+              backgroundColor: "transparent",
+            }}
+          >
             <Apple />
           </Button>
         </Box>
-
-
-
       </form>
-
     )
   }
 }
