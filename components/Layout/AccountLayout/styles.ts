@@ -4,8 +4,10 @@ import { BACKGROUND_DARK, WHITE } from "../../../constants/colors"
 
 const StyledWrapper = styled("div")(({ theme }) => ({
   display: "flex",
-  height: "100%",
   minHeight: "100vh",
+  backgroundColor: "#1F1F2A",
+  // flexDirection: "column",
+  height: "100vh",
   width: "100%",
 }))
 
@@ -36,6 +38,8 @@ const StyledContentWrapper = styled("div")(({ theme }) => ({
     display: "inline-block",
   },
 }))
+
+// new stuff
 
 const StyledContent = styled("div")(({ theme }) => ({
   width: "100%",
