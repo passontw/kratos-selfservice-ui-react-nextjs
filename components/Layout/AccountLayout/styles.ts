@@ -7,7 +7,7 @@ const StyledWrapper = styled("div")(() => ({
   backgroundColor: '#1F1F2A',
   // flexDirection: "column",
   height: "100vh",
-  width: "100%",
+  width: "100vw",
 }))
 
 const StyledHeader = styled("div")(() => ({
