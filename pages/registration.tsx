@@ -198,58 +198,7 @@ const Registration: NextPage = () => {
         <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
           Join us
         </Box>
-        <Flow onSubmit={onSubmit} flow={nextFlow} />
-        {/* </MarginCard> */}
-        <Box
-          mt="8px"
-          mb="38px"
-          // textAlign="center"
-          color="#A5A5A9"
-          fontSize="14px"
-          fontFamily="open sans"
-          display="flex"
-          justifyContent="center"
-          gap="4px"
-        >
-          <Box>Already have an account?</Box>
-          <Box
-            color="#CA4AE8"
-            sx={{
-              cursor: "pointer",
-            }}
-            onClick={() => router.push("/login")}
-          >
-            Login
-          </Box>
-        </Box>
-        <Box
-          color="#A5A5A9"
-          fontSize="14px"
-          fontFamily="open sans"
-          display="flex"
-          justifyContent="center"
-          lineHeight="30px"
-          whiteSpace="nowrap"
-        >
-          <Box
-            borderBottom="1px solid #A5A5A9"
-            width="25%"
-            marginRight="20px"
-            marginBottom="15px"
-          ></Box>
-          Or Sign up with other accounts
-          <Box
-            borderBottom="1px solid #A5A5A9"
-            width="25%"
-            marginLeft="20px"
-            marginBottom="15px"
-          ></Box>
-        </Box>
-        {/* <ActionCard>
-          <CenterLink data-testid="cta-link" href="/login">
-            Sign in
-          </CenterLink>
-        </ActionCard> */}
+        <Flow onSubmit={onSubmit} flow={nextFlow} router={router} />
       </div>
     </>
   )

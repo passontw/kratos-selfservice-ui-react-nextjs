@@ -272,15 +272,18 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           justifyContent="center"
           gap="4px"
         >
-          <Box>Don’t have an account?</Box>
+          <Box> {this.props.router.pathname === '/login' ?'Don’t have an account?': 'Already have an account?'}</Box>
           <Box
             color="#CA4AE8"
             sx={{
               cursor: "pointer",
             }}
-            onClick={() => router.push("/registration")}
+            onClick={() => {
+              const redirrectPath = this.props.router.pathname === '/login' ?  '/registration': '/login';
+              this.props.router.push(redirrectPath)}}
           >
-            Sign up
+            {this.props.router.pathname === '/login' ?' Sign up': ' Sign in'}
+           
           </Box>
         </Box>
         <Box
@@ -295,6 +298,23 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           </StyledMenuLine>
         </Box>
         <Box display="flex" gap="24px" justifyContent='center' my="24px">
+        <Button
+          name="provider"
+          value="google"
+          disabled={false}
+          type="submit"
+          style={{
+            padding: '0px',
+            margin: '0px',
+            bordeRadius: '0px',
+            borderWidth: '0px',
+            borderStyle: 'none',
+            borderColor: 'transparent',
+            backgroundColor: 'transparent',
+          }}
+        >
+            <Google />
+          </Button>
           <Button
           name="provider"
           value="apple"
@@ -311,23 +331,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           }}
         >
             <Apple />
-          </Button>
-          <Button
-          name="provider"
-          value="google"
-          disabled={false}
-          type="submit"
-          style={{
-            padding: '0px',
-            margin: '0px',
-            bordeRadius: '0px',
-            borderWidth: '0px',
-            borderStyle: 'none',
-            borderColor: 'transparent',
-            backgroundColor: 'transparent',
-          }}
-        >
-            <Google />
           </Button>
         </Box>
 
