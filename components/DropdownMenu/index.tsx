@@ -62,6 +62,7 @@ function DropdownComponent() {
           justifyContent="center"
           alignItems="center"
           gap="10px"
+          zIndex={1}
           onClick={onLogout}
           sx={{
             cursor: "pointer",
