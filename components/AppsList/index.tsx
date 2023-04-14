@@ -39,12 +39,12 @@ const AppsList: React.FC<AppsListProps> = () => {
             <AppItem appIcon="Stormplay" appName="Stormplay" />
             <AppItem appIcon="Cmodx" appName="CMODX" />
           </Box>
-          <StyledNav>
+        </Box>
+        <StyledNav>
             <StyledLink>Terms of Service</StyledLink>
             <StyledLine />
             <StyledLink>Privacy Policy</StyledLink>
           </StyledNav>
-        </Box>
         </StyledWrapper>
 
       ) : null}
