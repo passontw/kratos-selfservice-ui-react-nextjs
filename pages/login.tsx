@@ -53,8 +53,7 @@ const validateLoginFlow = async (router, options) => {
       }
       setFlow(data)
     } else {
-      const qs = queryString.stringify(router.query)
-      const nextUri = isEmpty(qs) ? "/sso" : `/sso?${qs}`
+      const nextUri = "/profile"
       router.push(nextUri)
       return
     }

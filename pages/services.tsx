@@ -101,11 +101,11 @@ const SessionList = (props) => {
 const SessionListItem = (props) => {
   const {session} = props;
   if (isEmpty(session)) return null;
-
+  
   const [device] = session.devices;
   const agent = new UAParser(device.user_agent);
   const agentResult = agent.getResult();
-    const deviceName = agentResult.device.type
+  const deviceName = agentResult.device.type || agentResult.device.model;
   return (
     <div key={session.id}>
         <p>Self Session: </p>
