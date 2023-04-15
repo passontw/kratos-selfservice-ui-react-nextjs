@@ -61,16 +61,39 @@ input:-internal-autofill-selected {
   height: 100%;
   min-width: 375px;
   min-height: 100vh;
-  padding: 0px 20px;
 }
 
 @media only screen and (min-width: 600px) {
   .mainWrapper {
     position: relative;
     height: 100%;
-    width: 400px;
-    min-width: 400px;
-    min-height: calc(100vh - 80px);
-    padding: 80px 80px 0px;
+    width: 560px;
+    min-width: 560px;
   }
+}
+
+.my-text-input {
+  margin-top: 8px;
+}
+
+a:link {
+  color: #CA4AE8;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #CA4AE8;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #CA4AE8;
+  background-color: transparent;
+}
+
+a:active {
+  color: #CA4AE8;
+  background-color: transparent;
 }

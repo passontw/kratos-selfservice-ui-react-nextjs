@@ -1,35 +1,29 @@
 import Box from "@mui/material/Box"
 import { LoginFlow } from "@ory/client"
+import { Button } from "@ory/themes"
+import axios from "axios"
 import { AxiosError } from "axios"
 import cloneDeep from "lodash/cloneDeep"
 import isEmpty from "lodash/isEmpty"
 import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import queryString from "query-string"
-import { useEffect, useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import { api } from "../axios/api"
 import CmidHead from "../components/CmidHead"
+import MenuFooter from "../components/MenuFooter"
+import MenuTag from "../components/MenuTag"
 import { LogoutLink, Flow } from "../pkg"
 import { handleGetFlowError, handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
-import CmidMobile from "../public/images/app_icons/CmidMobile"
-import MasterControlMobile from "../public/images/app_icons/MasterControlMobile"
 import { selectActiveNav, setActiveNav } from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
 import { loginFormSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 
-import {
-  StyledCopyright,
-  StyledFooter,
-  StyledNav,
-  StyledLink,
-  StyledLine,
-  StyledTags,
-  StyledTagWrapper,
-} from "./../styles/share"
+import { StyledMenuWrapper } from "./../styles/share"
 
 const { NEXT_PUBLIC_REDIRECT_URI } = process.env
 
@@ -252,7 +246,9 @@ const Login: NextPage = () => {
           const identifierIndex = idNodes.findIndex(
             (node) => node?.attributes?.name === "identifier",
           )
-          nextFlow.ui.nodes[identifierIndex].messages = nextFlow.ui.nodes[identifierIndex].messages.filter(msg => msg.id !== 4000002)
+          nextFlow.ui.nodes[identifierIndex].messages = nextFlow.ui.nodes[
+            identifierIndex
+          ].messages.filter((msg) => msg.id !== 4000002)
         }
 
         if (errors.password) {
@@ -271,7 +267,9 @@ const Login: NextPage = () => {
           const identifierIndex = idNodes.findIndex(
             (node) => node?.attributes?.name === "password",
           )
-          nextFlow.ui.nodes[identifierIndex].messages = nextFlow.ui.nodes[identifierIndex].messages.filter(msg => msg.id !== 4000002)
+          nextFlow.ui.nodes[identifierIndex].messages = nextFlow.ui.nodes[
+            identifierIndex
+          ].messages.filter((msg) => msg.id !== 4000002)
         }
         setFlow(nextFlow)
       }
@@ -289,12 +287,13 @@ const Login: NextPage = () => {
         <meta name="description" content="NextJS + React + Vercel + Ory" />
       </Head> */}
       <div className="mainWrapper">
-        <div>
-          <title>Sign in - Ory NextJS Integration Example</title>
-          <meta name="description" content="NextJS + React + Vercel + Ory" />
-        </div>
-        {/* <MarginCard> */}
-        {/* <CardTitle>
+        <StyledMenuWrapper>
+          <div>
+            <title>Sign in - Ory NextJS Integration Example</title>
+            <meta name="description" content="NextJS + React + Vercel + Ory" />
+          </div>
+          {/* <MarginCard> */}
+          {/* <CardTitle>
         {(() => {
           if (flow?.refresh) {
             return "Confirm Action"
@@ -304,36 +303,15 @@ const Login: NextPage = () => {
           return "Sign In (ID can be Email or Username)"
         })()}
         </CardTitle> */}
-        <CmidHead />
-        <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
-          Welcome back
-        </Box>
-        <Flow onSubmit={onSubmit} flow={flow} router={router} />
+          <CmidHead />
+          <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
+            Welcome back
+          </Box>
+          <Flow onSubmit={onSubmit} flow={flow} router={router} />
 
-        <StyledTagWrapper>
-          <StyledTags>
-            <MasterControlMobile />
-            Master Control
-          </StyledTags>
-          <StyledTags>
-            <CmidMobile />
-            Stormplay
-          </StyledTags>
-          <StyledTags>
-            <MasterControlMobile />
-            Master Control
-          </StyledTags>
-        </StyledTagWrapper>
-        <StyledFooter>
-          <StyledNav className="mobie">
-            <StyledLink>Terms of Service</StyledLink>
-            <StyledLine />
-            <StyledLink>Privacy Policy</StyledLink>
-          </StyledNav>
-          <StyledCopyright>
-            Copyright© 2023 Cooler Master Inc. All rights reserved.
-          </StyledCopyright>
-        </StyledFooter>
+          <MenuTag />
+        </StyledMenuWrapper>
+        <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
       </div>
     </>
   )

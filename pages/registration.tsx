@@ -17,6 +17,9 @@ import { setActiveNav } from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
 import { registrationFormSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
+import { StyledMenuWrapper } from "../styles/share"
+import MenuFooter from "../components/MenuFooter"
+import Link from "next/link"
 
 const getNextFlow = (flow) => {
   if (!flow) return flow
@@ -215,6 +218,7 @@ const Registration: NextPage = () => {
   return (
     <>
       <div className="mainWrapper">
+        <StyledMenuWrapper>
         {/* <Head>
         <title>Create account - Ory NextJS Integration Example</title>
         <meta name="description" content="NextJS + React + Vercel + Ory" />
@@ -230,6 +234,21 @@ const Registration: NextPage = () => {
           Join us
         </Box>
         <Flow onSubmit={onSubmit} flow={nextFlow} router={router} />
+          <Box 
+          color="#A5A5A9" 
+          fontSize='14px' 
+          fontFamily="open sans" 
+          justifyContent="center"
+          display="flex"
+          flexWrap = "wrap">
+             <Box>By signing up for Cooler Master ID,</Box> 
+             <Box>you agree to our
+             <Link className="link" href="/">Terms of Service</Link> & 
+              <Link className="link" href="/">Privacy Policy</Link>.
+             </Box>
+          </Box>
+        </StyledMenuWrapper>
+        <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
       </div>
     </>
   )

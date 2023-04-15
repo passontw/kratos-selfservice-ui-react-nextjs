@@ -38,11 +38,11 @@ export const StyledMenuLine = styled.div`
 `
 export const StyledFooter = styled.footer`
   border-top: 1px solid #37374f;
+  width: calc(100% - 32px);
+  padding: 20px 0px 20px 32px;
   position: absolute;
   bottom: 0px;
   left: 0px;
-  width: calc(100% - 40px);
-  padding: 20px;
   @media only screen and (min-width: 600px) {
     border-top: 1px solid transparent;
   }
@@ -51,14 +51,19 @@ export const StyledFooter = styled.footer`
       display: none;
     }
   }
-  @media only screen and (min-width: 600px) {
-  }
 `
 export const StyledCopyright = styled.span`
   color: #7e7e89;
   font-family: "Open Sans";
   font-size: 14px;
 `
+export const StyledMenuWrapper = styled.div`
+    padding : 80px 20px 150px 20px;
+    @media only screen and (min-width: 600px) {
+      padding : 80px 80px 0px 80px;
+    }
+`
+
 // [right] login main Terms of ServicePrivacy Policy
 export const StyledWrapper = styled.div`
   display: none;
@@ -67,6 +72,19 @@ export const StyledWrapper = styled.div`
     position: relative;
     width: 100%;
   }
+`
+export const StyledTagPc = styled.div`
+margin-top: 200px;
+display: flex;
+flex-direction: column;
+align-items: center;
+width: calc(100% - 65px - 65px);
+font-family: open sans;
+position: relative;
+
+@media only screen and (min-width: 600px) {
+  padding: 0px 65px 0px;
+}
 `
 export const StyledNav = styled.div`
   @media only screen and (min-width: 600px) {
@@ -90,17 +108,30 @@ export const StyledLine = styled.span`
   margin-right: 16px;
   border-right: 1px solid #c0c0c0;
 `
+export const StyledTagPcWrapper = styled.div`
+  display: flex;
+  gap: 40px;
+  margin-top: 48px;
+`
+
 // mobile tag (Master Control, Stormplay, Master Control)
 export const StyledTagWrapper = styled.div`
   display: flex;
-  width: calc(100% - 40px);
+  width: 100%;
+  margin: 64px 0px 60px;
   > :not(:first-child) {
     margin-left: 20px;
   }
-
-  margin: 40px 0px 60px;
   @media only screen and (min-width: 600px) {
     display: none;
+  }
+
+  /* hide scrollbar but allow scrolling */
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
   }
 `
 export const StyledTags = styled.div`
@@ -116,4 +147,10 @@ export const StyledTags = styled.div`
   border-radius: 30px;
   padding: 0px 20px;
   cursor: pointer;
+`
+
+export const StyledLinkColor = styled.a`
+&:link, &:visited, &:hover, &:active {
+  color: #CA4AE8;
+}
 `
