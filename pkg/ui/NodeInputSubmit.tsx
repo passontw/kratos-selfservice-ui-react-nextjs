@@ -7,8 +7,12 @@ import { useSelector } from "react-redux"
 
 import Apple from "../../public/images/login_icons/Apple"
 import Google from "../../public/images/login_icons/Google"
-import { selectActiveNav } from "../../state/store/slice/layoutSlice"
-import { Navs } from "../../types/enum"
+import {
+  selectActiveNav,
+  selectActiveStage,
+  selectDialog,
+} from "../../state/store/slice/layoutSlice"
+import { Navs, Stage } from "../../types/enum"
 
 import { NodeInputProps } from "./helpers"
 
@@ -17,10 +21,19 @@ export function NodeInputSubmit<T>({
   attributes,
   disabled,
 }: NodeInputProps) {
+  const activeNav = useSelector(selectActiveNav)
+  const activeStage = useSelector(selectActiveStage)
+  const isDialogForgotPswd =
+    activeStage === Stage.FORGOT_PASSWORD && getNodeLabel(node) === "Submit"
+
   const defaultStyle = {
     backgroundColor: "#A62BC3",
     borderRadius: "8px",
     height: "44px",
+    width: isDialogForgotPswd ? "95px" : "100%",
+    position: isDialogForgotPswd ? "absolute" : "unset",
+    right: isDialogForgotPswd ? "30px" : "unset",
+    marginTop: isDialogForgotPswd ? "30px" : "unset",
   }
   const hiddenStyle = {
     display: "none",
@@ -37,7 +50,7 @@ export function NodeInputSubmit<T>({
     fontSize: "14px",
     marginTop: "11px",
   }
-  console.log("@getNodeLabel(node)", getNodeLabel(node))
+
   const showButton = [
     "Save",
     "Submit",
@@ -45,8 +58,8 @@ export function NodeInputSubmit<T>({
     "Sign in",
     "Sign up",
   ].includes(getNodeLabel(node))
+  console.log("ppp", getNodeLabel(node))
   const link = ["Resend code"].includes(getNodeLabel(node))
-  const activeNav = useSelector(selectActiveNav)
   const buttonText =
     activeNav === Navs.VERIFICATION && getNodeLabel(node) === "Submit"
       ? "Verify"
@@ -58,14 +71,16 @@ export function NodeInputSubmit<T>({
   const timerId = useRef(null)
 
   useEffect(() => {
-    if (timeRemaining > 0 && timerId.current === null) {
-      timerId.current = setTimeout(() => {
-        setTimeRemaining(timeRemaining - 1)
+    if (link) {
+      if (timeRemaining > 0 && timerId.current === null) {
+        timerId.current = setTimeout(() => {
+          setTimeRemaining(timeRemaining - 1)
+          timerId.current = null
+        }, 1000)
+      } else if (timeRemaining === 0) {
+        clearTimeout(timerId.current)
         timerId.current = null
-      }, 1000)
-    } else if (timeRemaining === 0) {
-      clearTimeout(timerId.current)
-      timerId.current = null
+      }
     }
 
     return () => {

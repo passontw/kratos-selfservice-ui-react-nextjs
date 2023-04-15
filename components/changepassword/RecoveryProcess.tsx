@@ -7,22 +7,34 @@ import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 import { Flow, ActionCard, CenterLink, MarginCard } from "../../pkg"
 import { handleFlowError } from "../../pkg/errors"
 import ory from "../../pkg/sdk"
-import { selectActiveNav } from "../../state/store/slice/layoutSlice"
+import {
+  selectActiveNav,
+  setDialog,
+  selectDialog,
+  setActiveStage,
+} from "../../state/store/slice/layoutSlice"
+import { Stage } from "../../types/enum"
 
 const RecoveryProcess: NextPage = () => {
+  // console.log(props)
   const [flow, setFlow] = useState<RecoveryFlow>()
   const [dialogMsg, setDialogMsg] = useState<string>(
     "Enter your registered email below and we’ll send you a reset link.",
   )
+  const dispatch = useDispatch()
 
   // Get ?flow=... from the URL
   const router = useRouter()
   const { flow: flowId, return_to: returnTo } = router.query
+
+  useEffect(() => {
+    dispatch(setActiveStage(Stage.FORGOT_PASSWORD))
+  }, [])
 
   useEffect(() => {
     // If the router is not ready yet, or we already have a flow, do nothing.
@@ -77,6 +89,7 @@ const RecoveryProcess: NextPage = () => {
             .then(({ data }) => {
               // Form submission was successful, show the message to the user!
               setFlow(data)
+              dispatch(setActiveStage(Stage.VERIFY_CODE))
               setDialogMsg(
                 "An email containing a recovery code has been sent to the email address you provided.",
               )
@@ -120,7 +133,7 @@ const RecoveryProcess: NextPage = () => {
           <Box color="#A5A5A9" fontSize="14px" fontFamily="open sans">
             Email *
           </Box>
-          <Flow onSubmit={onSubmit} flow={flow} />
+          <Flow onSubmit={onSubmit} flow={flow} hideSocialLogin />
         </Box>
         {/* <ActionCard>
         <Link href="/" passHref>

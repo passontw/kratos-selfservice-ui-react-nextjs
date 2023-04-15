@@ -1,8 +1,9 @@
 import { ReactElement, JSXElementConstructor, ReactNode } from 'react';
-import { Navs } from '../../types/enum';
+import { Navs, Stage } from '../../types/enum';
 
 export interface LayoutSliceStateI {
   activeNav: Navs;
+  activeStage: Stage;
   dialog?: DialogProps | null;
   dialog2?: DialogProps | null;
   dialogLayer: number;

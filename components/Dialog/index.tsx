@@ -1,10 +1,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import CloseIcon from "@mui/icons-material/Close"
+import Box from "@mui/material/Box"
 import MuiDialog from "@mui/material/Dialog"
 import IconButton from "@mui/material/IconButton"
 import Slide from "@mui/material/Slide"
 import Zoom from "@mui/material/Zoom"
 import { TransitionProps } from "@mui/material/transitions"
+import { useRouter } from "next/router"
 import React, {
   forwardRef,
   JSXElementConstructor,
@@ -13,7 +15,14 @@ import React, {
 } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
-import { selectDialog, setDialog } from "../../state/store/slice/layoutSlice"
+import {
+  selectActiveNav,
+  selectActiveStage,
+  selectDialog,
+  setActiveStage,
+  setDialog,
+} from "../../state/store/slice/layoutSlice"
+import { Navs, Stage } from "../../types/enum"
 
 import { StyledDialogContent, StyledDialogTitle } from "./styles"
 
@@ -48,12 +57,16 @@ const Dialog: React.FC<DialogProps> = ({
   children,
 }) => {
   const dispatch = useDispatch()
+  const router = useRouter()
   const handleClose = (event: React.SyntheticEvent, reason: string) => {
     // TODO: uncomment these 2 lines if you don't want the dialog to close when clicking outside of it or pressing the escape key
-    // if (reason === 'escapeKeyDown') return;
-    // if (reason === 'backdropClick') return;
+    if (reason === "escapeKeyDown") return
+    if (reason === "backdropClick") return
     dispatch(setDialog(null))
   }
+
+  const activeNav = useSelector(selectActiveNav)
+  const activeStage = useSelector(selectActiveStage)
 
   return (
     <MuiDialog
@@ -79,7 +92,13 @@ const Dialog: React.FC<DialogProps> = ({
         <StyledDialogTitle titleHeight={titleHeight}>
           <div>{title}</div>
           <IconButton
-            onClick={(e) => handleClose(e, "click")}
+            onClick={(e) => {
+              dispatch(setActiveStage(Stage.NONE))
+              if (activeNav === Navs.RECOVERY) {
+                router.push("/login")
+              }
+              return handleClose(e, "click")
+            }}
             sx={{
               "&:hover": {
                 background: "rgba(255, 255, 255, 0.15)",
@@ -97,6 +116,34 @@ const Dialog: React.FC<DialogProps> = ({
       )}
       <StyledDialogContent center={center}>
         {React.cloneElement(children, { onClick: handleClose })}
+        {activeStage === Stage.FORGOT_PASSWORD && (
+          <Box
+            width="95px"
+            height="44px"
+            position="absolute"
+            bgcolor="transparent"
+            border="1px solid #C0C0C0"
+            borderRadius="8px"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            color="#C0C0C0"
+            fontFamily="open sans"
+            fontSize="16px"
+            right="140px"
+            mt="30px"
+            sx={{
+              cursor: "pointer",
+            }}
+            onClick={(e) => {
+              router.push("/login")
+              handleClose(e, "")
+              dispatch(setActiveStage(Stage.NONE))
+            }}
+          >
+            Cancel
+          </Box>
+        )}
       </StyledDialogContent>
     </MuiDialog>
   )
