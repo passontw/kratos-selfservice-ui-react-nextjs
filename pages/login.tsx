@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box"
 import { LoginFlow } from "@ory/client"
-import { Button } from "@ory/themes"
 import axios from "axios"
 import { AxiosError } from "axios"
 import cloneDeep from "lodash/cloneDeep"
