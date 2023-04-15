@@ -21,7 +21,7 @@ export function handleGetFlowError<S>(
       case "session_already_available":
         console.log("reached 2")
         // User is already signed in, let's redirect them home!
-        await router.push("/")
+        await router.push("/profile")
         return
       case "session_refresh_required":
         console.log("reached 3")

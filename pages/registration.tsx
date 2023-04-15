@@ -200,7 +200,10 @@ const Registration: NextPage = () => {
         nextFlow.ui.nodes[passwordIndex].messages = []
       }
 
-      console.log("🚀 ~ file: registration.tsx:184 ~ onSubmit ~ nextFlow:", nextFlow)
+      console.log(
+        "🚀 ~ file: registration.tsx:184 ~ onSubmit ~ nextFlow:",
+        nextFlow,
+      )
       setFlow(nextFlow)
       // setErrors(errors);
       return false

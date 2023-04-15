@@ -8,21 +8,28 @@ import { useRouter } from "next/router"
 import queryString from "query-string"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { StyledCopyright, StyledFooter, StyledNav, StyledLink, StyledLine, StyledTags, StyledTagWrapper } from './../styles/share'
 
 import { api } from "../axios/api"
 import CmidHead from "../components/CmidHead"
 import { LogoutLink, Flow } from "../pkg"
 import { handleGetFlowError, handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
+import CmidMobile from "../public/images/app_icons/CmidMobile"
+import MasterControlMobile from "../public/images/app_icons/MasterControlMobile"
 import { selectActiveNav, setActiveNav } from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
 import { loginFormSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
-import CmidMobile from "../public/images/app_icons/CmidMobile"
-import MasterControlMobile from "../public/images/app_icons/MasterControlMobile"
 
-
+import {
+  StyledCopyright,
+  StyledFooter,
+  StyledNav,
+  StyledLink,
+  StyledLine,
+  StyledTags,
+  StyledTagWrapper,
+} from "./../styles/share"
 
 const { NEXT_PUBLIC_REDIRECT_URI } = process.env
 
@@ -65,7 +72,6 @@ const validateLoginFlow = async (router, options) => {
 const Login: NextPage = () => {
   const [flow, setFlow] = useState<LoginFlow>()
   const dispatch = useDispatch()
-  
 
   useEffect(() => {
     dispatch(setActiveNav(Navs.LOGIN))
@@ -275,10 +281,6 @@ const Login: NextPage = () => {
     }
   }
 
-
-
-
-
   return (
     <>
       {/* CUSTOMIZE UI BASED ON CLIENT ID */}
@@ -308,20 +310,29 @@ const Login: NextPage = () => {
         </Box>
         <Flow onSubmit={onSubmit} flow={flow} router={router} />
 
-
-
         <StyledTagWrapper>
-          <StyledTags><MasterControlMobile/>Master Control</StyledTags>
-          <StyledTags><CmidMobile/>Stormplay</StyledTags>
-          <StyledTags><MasterControlMobile/>Master Control</StyledTags>
+          <StyledTags>
+            <MasterControlMobile />
+            Master Control
+          </StyledTags>
+          <StyledTags>
+            <CmidMobile />
+            Stormplay
+          </StyledTags>
+          <StyledTags>
+            <MasterControlMobile />
+            Master Control
+          </StyledTags>
         </StyledTagWrapper>
         <StyledFooter>
-          <StyledNav className='mobie'>
+          <StyledNav className="mobie">
             <StyledLink>Terms of Service</StyledLink>
             <StyledLine />
             <StyledLink>Privacy Policy</StyledLink>
           </StyledNav>
-          <StyledCopyright>Copyright© 2023 Cooler Master Inc. All rights reserved.</StyledCopyright>
+          <StyledCopyright>
+            Copyright© 2023 Cooler Master Inc. All rights reserved.
+          </StyledCopyright>
         </StyledFooter>
       </div>
     </>

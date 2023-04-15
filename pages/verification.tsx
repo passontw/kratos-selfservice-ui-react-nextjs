@@ -8,19 +8,29 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import queryString from "query-string"
 import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 
 import CmidHead from "../components/CmidHead"
 import { Flow } from "../components/verification/Flow"
 import { ActionCard, CenterLink, MarginCard } from "../pkg"
 import ory from "../pkg/sdk"
+import { setActiveNav } from "../state/store/slice/layoutSlice"
+import { Navs } from "../types/enum"
 
 const Verification: NextPage = () => {
+  const dispatch = useDispatch()
   const [initFlow, setInitFlow] = useState(false)
   const [flow, setFlow] = useState<VerificationFlow>()
 
   // Get ?flow=... from the URL
   const router = useRouter()
   const { flow: flowId, return_to: returnTo, user } = router.query
+
+  const email = router.query.user as string
+
+  useEffect(() => {
+    dispatch(setActiveNav(Navs.VERIFICATION))
+  }, [])
 
   // directly initializing verifcation flow by entering user's email carried here from previous step
   useEffect(() => {
@@ -165,7 +175,7 @@ const Verification: NextPage = () => {
 
   return (
     <>
-      <div className="verifyWrapper">
+      <div className="mainWrapper">
         <div>
           <title>Verify your account - Ory NextJS Integration Example</title>
           <meta name="description" content="NextJS + React + Vercel + Ory" />
@@ -182,20 +192,10 @@ const Verification: NextPage = () => {
               fontFamily: "open sans",
             }}
           >
-            Enter the 6-digit code we sent to master123@gmail.com to verify
-            account.
+            Enter the 6-digit code we sent to {email} to verify account.
           </span>
         </Box>
         <Flow onSubmit={onSubmit} flow={flow} />
-        {/* <MarginCard>
-          <CardTitle>Verify your account</CardTitle>
-          <Flow onSubmit={onSubmit} flow={flow} />
-        </MarginCard> */}
-        {/* <ActionCard>
-          <Link href="/" passHref>
-            <CenterLink>Go back</CenterLink>
-          </Link>
-        </ActionCard> */}
       </div>
     </>
   )

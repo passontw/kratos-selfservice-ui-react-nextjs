@@ -2,10 +2,13 @@ import Box from "@mui/material/Box"
 import { ReactNode } from "react"
 import { useSelector } from "react-redux"
 
+import DefaultAvatar from "../../../public/images/DefaultAvatar"
+import Dropdown from "../../../public/images/Dropdown"
 import Cmid from "../../../public/images/app_icons/Cmid"
 import { selectActiveNav } from "../../../state/store/slice/layoutSlice"
 import { Navs } from "../../../types/enum"
 import AccountMenu from "../../AccountMenu"
+import DropdownMenu from "../../DropdownMenu"
 
 import { StyledWrapper, StyledContent, StyledHeader } from "./styles"
 
@@ -34,7 +37,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
 
   return (
     <StyledWrapper>
-      <Box display="flex">
+      <Box display="flex" width="100%">
         <Box
           display="flex"
           flexDirection="column"
@@ -47,12 +50,14 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
           </StyledHeader>
           <AccountMenu />
         </Box>
-        <Box px="48px" pt="48px">
-          <Box display="flex">
+        <Box px="48px" pt="48px" width="76%">
+          <Box display="flex" justifyContent="space-between">
             <Box fontFamily="Teko" fontSize="48px" color="#A2A1C6">
               {renderTitle(activeNav)}
             </Box>
-            {/* <Box>logout</Box> */}
+            <Box>
+              <DropdownMenu />
+            </Box>
           </Box>
           <StyledContent>{children}</StyledContent>
         </Box>
