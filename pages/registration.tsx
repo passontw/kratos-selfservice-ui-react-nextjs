@@ -2,24 +2,24 @@ import Box from "@mui/material/Box"
 import { RegistrationFlow } from "@ory/client"
 import cloneDeep from "lodash/cloneDeep"
 import type { NextPage } from "next"
+import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
 import CmidHead from "../components/CmidHead"
+import MenuFooter from "../components/MenuFooter"
 // Import render helpers
 // import Flow from '../components/registration/Flow';
 import { ActionCard, Flow, CenterLink, MarginCard } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 // Import the SDK
 import ory from "../pkg/sdk"
-import { setActiveNav } from "../state/store/slice/layoutSlice"
-import { Navs } from "../types/enum"
+import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
+import { StyledMenuWrapper } from "../styles/share"
+import { Navs, Stage } from "../types/enum"
 import { registrationFormSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
-import { StyledMenuWrapper } from "../styles/share"
-import MenuFooter from "../components/MenuFooter"
-import Link from "next/link"
 
 const getNextFlow = (flow) => {
   if (!flow) return flow
@@ -113,9 +113,11 @@ const Registration: NextPage = () => {
                 return router
                   .push(
                     flow?.return_to ||
-                    `/verification?user=${values["traits.email"]}&csrf=${values.csrf_token}`,
+                      `/verification?user=${values["traits.email"]}&csrf=${values.csrf_token}`,
                   )
-                  .then(() => { })
+                  .then(() => {
+                    dispatch(setActiveStage(Stage.VERIFY_CODE))
+                  })
               })
               .catch(handleFlowError(router, "registration", setFlow))
               .catch((err: any) => {
@@ -134,7 +136,10 @@ const Registration: NextPage = () => {
       )
     } catch (error) {
       const errors = handleYupErrors(error)
-      console.log("🚀 ~ file: registration.tsx:134 ~ onSubmit ~ errors:", errors)
+      console.log(
+        "🚀 ~ file: registration.tsx:134 ~ onSubmit ~ errors:",
+        errors,
+      )
       const nextFlow = cloneDeep(flow)
 
       if (errors['["traits.email"]']) {
@@ -146,10 +151,15 @@ const Registration: NextPage = () => {
         const identifierIndex = nextFlow.ui.nodes.findIndex(
           (node) => node.attributes.name === "traits.email",
         )
-        const errorMessage = nextFlow.ui.nodes[identifierIndex].messages.find(msg => msg.id === message.id);
+        const errorMessage = nextFlow.ui.nodes[identifierIndex].messages.find(
+          (msg) => msg.id === message.id,
+        )
         if (!errorMessage) {
           const preMessages = nextFlow.ui.nodes[identifierIndex].messages
-          nextFlow.ui.nodes[identifierIndex].messages = [...preMessages, message]
+          nextFlow.ui.nodes[identifierIndex].messages = [
+            ...preMessages,
+            message,
+          ]
         }
       } else {
         const identifierIndex = nextFlow.ui.nodes.findIndex(
@@ -171,10 +181,15 @@ const Registration: NextPage = () => {
           (node) => node.attributes.name === "traits.name",
         )
 
-        const errorMessage = nextFlow.ui.nodes[identifierIndex].messages.find(msg => msg.id === message.id);
+        const errorMessage = nextFlow.ui.nodes[identifierIndex].messages.find(
+          (msg) => msg.id === message.id,
+        )
         if (!errorMessage) {
           const preMessages = nextFlow.ui.nodes[identifierIndex].messages
-          nextFlow.ui.nodes[identifierIndex].messages = [...preMessages, message]
+          nextFlow.ui.nodes[identifierIndex].messages = [
+            ...preMessages,
+            message,
+          ]
         }
       } else {
         const identifierIndex = nextFlow.ui.nodes.findIndex(
@@ -219,33 +234,41 @@ const Registration: NextPage = () => {
     <>
       <div className="mainWrapper">
         <StyledMenuWrapper>
-        {/* <Head>
+          {/* <Head>
         <title>Create account - Ory NextJS Integration Example</title>
         <meta name="description" content="NextJS + React + Vercel + Ory" />
       </Head> */}
-        <div>
-          <title>Create account - Ory NextJS Integration Example</title>
-          <meta name="description" content="NextJS + React + Vercel + Ory" />
-        </div>
-        {/* <MarginCard> */}
-        {/* <CardTitle>Create account</CardTitle> */}
-        <CmidHead />
-        <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
-          Join us
-        </Box>
-        <Flow onSubmit={onSubmit} flow={nextFlow} router={router} />
-          <Box 
-          color="#A5A5A9" 
-          fontSize='14px' 
-          fontFamily="open sans" 
-          justifyContent="center"
-          display="flex"
-          flexWrap = "wrap">
-             <Box>By signing up for Cooler Master ID,</Box> 
-             <Box>you agree to our
-             <Link className="link" href="/">Terms of Service</Link> & 
-              <Link className="link" href="/">Privacy Policy</Link>.
-             </Box>
+          <div>
+            <title>Create account - Ory NextJS Integration Example</title>
+            <meta name="description" content="NextJS + React + Vercel + Ory" />
+          </div>
+          {/* <MarginCard> */}
+          {/* <CardTitle>Create account</CardTitle> */}
+          <CmidHead />
+          <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
+            Join us
+          </Box>
+          <Flow onSubmit={onSubmit} flow={nextFlow} router={router} />
+          <Box
+            color="#A5A5A9"
+            fontSize="14px"
+            fontFamily="open sans"
+            justifyContent="center"
+            display="flex"
+            flexWrap="wrap"
+          >
+            <Box>By signing up for Cooler Master ID,</Box>
+            <Box>
+              you agree to our
+              <Link className="link" href="/">
+                Terms of Service
+              </Link>{" "}
+              &
+              <Link className="link" href="/">
+                Privacy Policy
+              </Link>
+              .
+            </Box>
           </Box>
         </StyledMenuWrapper>
         <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
