@@ -113,7 +113,9 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   return (
     <>
       {/* <CodeInput /> */}
-      {activeStage === Stage.VERIFY_CODE && <CodeInput />}
+      {activeStage === Stage.VERIFY_CODE && nav !== Navs.RECOVERY && (
+        <CodeInput />
+      )}
       <StyledDefaultInput isInputLabel={isInputLabel}>
         {isInputLabel && (
           <StyledDefaultLabel isError={isError}>{label}</StyledDefaultLabel>
