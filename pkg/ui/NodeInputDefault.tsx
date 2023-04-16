@@ -1,14 +1,20 @@
 import { Box, Link } from "@mui/material"
 import { TextInput } from "@ory/themes"
 import { useRouter } from "next/router"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 
 import RecoveryProcess from "../../components/changepassword/RecoveryProcess"
+import CodeInput from "../../components/verification/CodeInput"
 import Eye from "../../public/images/eyes"
-import { selectActiveNav, setDialog } from "../../state/store/slice/layoutSlice"
-import { Navs } from "../../types/enum"
+import {
+  selectActiveNav,
+  selectActiveStage,
+  selectSixDigitCode,
+  setDialog,
+} from "../../state/store/slice/layoutSlice"
+import { Navs, Stage } from "../../types/enum"
 import { CenterLink } from "../styled"
 
 import { NodeInputProps } from "./helpers"
@@ -57,18 +63,17 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   const router = useRouter()
   const dispatch = useDispatch()
   const nav = useSelector(selectActiveNav)
+  const activeStage = useSelector(selectActiveStage)
+  const sixDigitCode = useSelector(selectSixDigitCode)
   const { node, attributes, value = "", setValue, disabled } = props
   const label = node.meta.label?.text === "ID" ? "Email" : node.meta.label?.text
   const [isError, setIsError] = useState(node.messages.length > 0)
   const [inputType, setInputType] = useState(attributes.type)
+  const inputRef = useRef(null)
 
   useEffect(() => {
     setIsError(node.messages.length > 0)
   }, [node.messages.length])
-
-  useEffect(() => {
-    console.log("props", props)
-  }, [props])
 
   const isInputLabel = useMemo(() => {
     const list = ["/login", "/registration"]
@@ -104,11 +109,11 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     )
   }
 
-  const SelectComponent = () => {}
-
   // Render a generic text input field.
   return (
     <>
+      {/* <CodeInput /> */}
+      {activeStage === Stage.VERIFY_CODE && <CodeInput />}
       <StyledDefaultInput isInputLabel={isInputLabel}>
         {isInputLabel && (
           <StyledDefaultLabel isError={isError}>{label}</StyledDefaultLabel>
@@ -138,6 +143,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           type={inputType}
           name={attributes.name}
           value={value}
+          // value={label === "Verify code" ? sixDigitCode : value}
           disabled={attributes.disabled || disabled}
           help={node.messages.length > 0}
           state={

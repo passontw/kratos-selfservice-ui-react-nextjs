@@ -8,17 +8,21 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import queryString from "query-string"
 import { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 import CmidHead from "../components/CmidHead"
 import { Flow } from "../components/verification/Flow"
 import { ActionCard, CenterLink, MarginCard } from "../pkg"
 import ory from "../pkg/sdk"
-import { setActiveNav } from "../state/store/slice/layoutSlice"
+import {
+  selectSixDigitCode,
+  setActiveNav,
+} from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
 
 const Verification: NextPage = () => {
   const dispatch = useDispatch()
+  const sixDigitCode = useSelector(selectSixDigitCode)
   const [initFlow, setInitFlow] = useState(false)
   const [flow, setFlow] = useState<VerificationFlow>()
 
@@ -195,7 +199,7 @@ const Verification: NextPage = () => {
             Enter the 6-digit code we sent to {email} to verify account.
           </span>
         </Box>
-        <Flow onSubmit={onSubmit} flow={flow} />
+        <Flow onSubmit={onSubmit} flow={flow} code={sixDigitCode} />
       </div>
     </>
   )

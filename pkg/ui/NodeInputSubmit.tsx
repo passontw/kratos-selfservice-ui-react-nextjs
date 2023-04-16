@@ -11,6 +11,7 @@ import {
   selectActiveNav,
   selectActiveStage,
   selectDialog,
+  selectSixDigitCode,
 } from "../../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../../types/enum"
 
@@ -23,6 +24,7 @@ export function NodeInputSubmit<T>({
 }: NodeInputProps) {
   const activeNav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
+  const sixDigitCode = useSelector(selectSixDigitCode)
   const isDialogForgotPswd =
     activeStage === Stage.FORGOT_PASSWORD && getNodeLabel(node) === "Submit"
 
@@ -70,31 +72,31 @@ export function NodeInputSubmit<T>({
       ? "Resend"
       : getNodeLabel(node)
 
-  const [timeRemaining, setTimeRemaining] = useState(60)
-  const timerId = useRef(null)
+  // const [timeRemaining, setTimeRemaining] = useState(60)
+  // const timerId = useRef(null)
 
-  useEffect(() => {
-    if (link) {
-      if (timeRemaining > 0 && timerId.current === null) {
-        timerId.current = setTimeout(() => {
-          setTimeRemaining(timeRemaining - 1)
-          timerId.current = null
-        }, 1000)
-      } else if (timeRemaining === 0) {
-        clearTimeout(timerId.current)
-        timerId.current = null
-      }
-    }
+  // useEffect(() => {
+  //   if (link) {
+  //     if (timeRemaining > 0 && timerId.current === null) {
+  //       timerId.current = setTimeout(() => {
+  //         setTimeRemaining(timeRemaining - 1)
+  //         timerId.current = null
+  //       }, 1000)
+  //     } else if (timeRemaining === 0) {
+  //       clearTimeout(timerId.current)
+  //       timerId.current = null
+  //     }
+  //   }
 
-    return () => {
-      clearTimeout(timerId.current)
-    }
-  }, [timeRemaining])
+  //   return () => {
+  //     clearTimeout(timerId.current)
+  //   }
+  // }, [timeRemaining])
 
-  const resetTimer = () => {
-    clearTimeout(timerId.current)
-    setTimeRemaining(60)
-  }
+  // const resetTimer = () => {
+  //   clearTimeout(timerId.current)
+  //   setTimeRemaining(60)
+  // }
 
   return (
     <>
@@ -113,13 +115,13 @@ export function NodeInputSubmit<T>({
             name={attributes.name}
             value={attributes.value || ""}
             disabled={attributes.disabled || disabled}
-            onClick={resetTimer}
+            // onClick={resetTimer}
           >
             {buttonText}
           </Button>
-          <Box fontFamily="open sans" color="#A5A5A9" fontSize="14px">
+          {/* <Box fontFamily="open sans" color="#A5A5A9" fontSize="14px">
             ({timeRemaining})
-          </Box>
+          </Box> */}
         </Box>
       ) : (
         <Button
@@ -127,6 +129,11 @@ export function NodeInputSubmit<T>({
           name={attributes.name}
           value={attributes.value || ""}
           disabled={attributes.disabled || disabled}
+          // disabled={
+          //   buttonText === "Verify" && sixDigitCode.length !== 6
+          //     ? true
+          //     : attributes.disabled || disabled
+          // }
         >
           {buttonText}
         </Button>

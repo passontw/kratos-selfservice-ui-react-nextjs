@@ -17,6 +17,7 @@ const initialState: LayoutSliceStateI = {
   dialog: null,
   dialog2: null,
   dialogLayer: 0,
+  sixDigitCode: '',
 };
 
 export const layoutSlice = createSlice({
@@ -34,6 +35,12 @@ export const layoutSlice = createSlice({
       { payload }: PayloadAction<Stage>
     ) => {
       state.activeStage = payload;
+    },
+    setSixDigitCode: (
+      state: LayoutSliceStateI,
+      { payload }: PayloadAction<string>
+    ) => {
+      state.sixDigitCode = payload;
     },
     setDialog: (state: any, { payload }: PayloadAction<DialogProps | null>) => {
       if (payload === null) {
@@ -76,6 +83,12 @@ export const selectActiveStage = (state: {
   };
 }) => state.layout.activeStage;
 
+export const selectSixDigitCode = (state: {
+  layout: {
+    sixDigitCode: string;
+  };
+}) => state.layout.sixDigitCode;
+
 export const selectDialog = (state: {
   layout: {
     dialog: DialogProps;
@@ -92,6 +105,7 @@ export const selectDialog2 = (state: {
 export const {
   setActiveNav,
   setActiveStage,
+  setSixDigitCode,
   setDialog,
 } = layoutSlice.actions;
 

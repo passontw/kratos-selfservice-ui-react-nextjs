@@ -7,6 +7,7 @@ export interface LayoutSliceStateI {
   dialog?: DialogProps | null;
   dialog2?: DialogProps | null;
   dialogLayer: number;
+  sixDigitCode: string;
 }
 
 export interface DialogProps {
