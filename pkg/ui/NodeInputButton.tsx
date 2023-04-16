@@ -39,7 +39,7 @@ export function NodeInputButton<T>({
         value={attributes.value || ""}
         disabled={attributes.disabled || disabled}
       >
-        {getNodeLabel(node) === "continue"
+        {getNodeLabel(node) === "Continue"
           ? "Redirect now"
           : getNodeLabel(node)}
       </Button>

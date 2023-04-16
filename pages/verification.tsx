@@ -152,7 +152,7 @@ const Verification: NextPage = () => {
       .then(({ data }) => {
         // Form submission was successful, show the message to the user!
         console.log("data", data)
-        setVerifySuccess(true)
+        setVerifySuccess(data.state === "passed_challenge")
         setFlow(data)
       })
       .catch((err: any) => {
