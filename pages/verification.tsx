@@ -25,6 +25,7 @@ const Verification: NextPage = () => {
   const sixDigitCode = useSelector(selectSixDigitCode)
   const [initFlow, setInitFlow] = useState(false)
   const [flow, setFlow] = useState<VerificationFlow>()
+  const [verifySuccess, setVerifySuccess] = useState(false)
 
   // Get ?flow=... from the URL
   const router = useRouter()
@@ -150,6 +151,8 @@ const Verification: NextPage = () => {
       })
       .then(({ data }) => {
         // Form submission was successful, show the message to the user!
+        console.log("data", data)
+        setVerifySuccess(true)
         setFlow(data)
       })
       .catch((err: any) => {
@@ -187,7 +190,7 @@ const Verification: NextPage = () => {
         <CmidHead />
         <Box mt="62px" display="flex" flexDirection="column">
           <span style={{ color: "#FFF", fontSize: "36px", fontFamily: "Teko" }}>
-            Verify Account
+            {verifySuccess ? "Verified Success" : "Verify Account"}
           </span>
           <span
             style={{
@@ -196,7 +199,9 @@ const Verification: NextPage = () => {
               fontFamily: "open sans",
             }}
           >
-            Enter the 6-digit code we sent to {email} to verify account.
+            {verifySuccess
+              ? "Congratulation, your account is approved"
+              : `Enter the 6-digit code we sent to ${email} to verify account.`}
           </span>
         </Box>
         <Flow onSubmit={onSubmit} flow={flow} code={sixDigitCode} />
