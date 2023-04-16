@@ -121,7 +121,10 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
         <TextInput
           className="my-text-input"
           style={{
-            display: label === "Verify code" ? "none" : "unset",
+            display:
+              label === "Verify code" && nav !== Navs.RECOVERY
+                ? "none"
+                : "unset",
             border: isError ? "1px solid #F24867" : "none",
             backgroundColor: "#37374F",
             height: "44px",
