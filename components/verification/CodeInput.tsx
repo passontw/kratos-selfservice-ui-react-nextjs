@@ -9,6 +9,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
+  margin-bottom: 30px;
 `
 
 const InputsWrapper = styled.div`
@@ -19,7 +20,7 @@ const InputsWrapper = styled.div`
 `
 
 const Input = styled.input`
-  width: 52px;
+  width: 48px;
   height: 54px;
   background: #37374f;
   border: 1px solid #37374f;
