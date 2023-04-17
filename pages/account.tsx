@@ -14,6 +14,7 @@ import VerificationModal from "../components/account/VerificationModal"
 import { Methods, ActionCard, Messages } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
+import Bin from "../public/images/Bin"
 import { setActiveNav } from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
 
@@ -204,7 +205,24 @@ const Account: NextPage = () => {
           <Box color="#717197" fontFamily="open sans" fontSize="22px">
             Account Management
           </Box>
-          <button onClick={deleteAccountPromt}>刪除帳號</button>
+          <Box
+            display="flex"
+            gap="15px"
+            mt="12px"
+            width="100%"
+            height="74px"
+            bgcolor="#272735"
+            borderRadius="12px"
+            onClick={deleteAccountPromt}
+          >
+            <Box>
+              <Bin />
+            </Box>
+            <Box color="#F24867" fontSize="20px" fontFamily="open sans">
+              Delete my account
+            </Box>
+          </Box>
+          {/* <button onClick={deleteAccountPromt}>刪除帳號</button> */}
           <VerificationModal deleteAccount={deleteAccount} />
         </SettingsCard>
       </Box>

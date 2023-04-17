@@ -1,4 +1,3 @@
-import Box from "@mui/material/Box"
 import { SettingsFlow, UpdateSettingsFlowBody } from "@ory/client"
 import { CardTitle, H3, P } from "@ory/themes"
 import axios from "axios"
@@ -12,7 +11,6 @@ import UAParser from "ua-parser-js"
 import { Flow, Methods, Messages, ActionCard, CenterLink } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
-import Bin from "../public/images/Bin"
 
 interface Props {
   flow?: SettingsFlow
@@ -197,15 +195,7 @@ const Settings: NextPage = () => {
         Profile Management and Security Settings
       </CardTitle>
       <SettingsCard only="profile" flow={flow}>
-        <Box display="flex" gap="15px">
-          <Box width="100%" height="74px" bgcolor="#272735" borderRadius="12px">
-            <Bin />
-          </Box>
-          <Box color="#F24867" fontSize="20px" fontFamily="open sans">
-            Delete my account
-          </Box>
-        </Box>
-        {/* <button onClick={deleteAccount}>刪除帳號</button> */}
+        <button onClick={deleteAccount}>刪除帳號</button>
       </SettingsCard>
       <SettingsCard only="profile" flow={flow}>
         <H3>Session Management</H3>
