@@ -10,7 +10,7 @@ export function NodeInputCheckbox<T>({
   setValue,
   disabled,
 }: NodeInputProps) {
-  console.log("@checklabel", getNodeLabel(node))
+  console.log("@checklabel", attributes.name)
   // Render a checkbox.s
   return (
     <Box
@@ -22,6 +22,7 @@ export function NodeInputCheckbox<T>({
       borderRadius="12px"
       justifyContent="space-between"
       alignItems="center"
+      px="26px"
     >
       <Box display="flex">
         <Box>logo</Box>
