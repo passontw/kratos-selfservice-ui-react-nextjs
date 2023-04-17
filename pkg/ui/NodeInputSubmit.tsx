@@ -36,8 +36,14 @@ export function NodeInputSubmit<T>({
     fontSize: "16px",
     fontFamily: "Open Sans",
     width: isDialogForgotPswd || activeNav === Navs.SETTINGS ? "95px" : "100%",
-    position: isDialogForgotPswd ? "absolute" : "unset",
-    right: isDialogForgotPswd ? "30px" : "unset",
+    position:
+      isDialogForgotPswd || activeNav === Navs.SETTINGS ? "absolute" : "unset",
+    right:
+      activeNav === Navs.SETTINGS
+        ? "0px"
+        : isDialogForgotPswd
+        ? "30px"
+        : "unset",
     marginTop: isDialogForgotPswd ? "30px" : "unset",
   }
   const hiddenStyle = {
