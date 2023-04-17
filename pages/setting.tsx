@@ -1,15 +1,18 @@
+import Box from "@mui/material/Box"
 import { SettingsFlow, UpdateSettingsFlowBody } from "@ory/client"
 import { CardTitle, H3, P } from "@ory/themes"
+import axios from "axios"
 import type { NextPage } from "next"
 import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { ReactNode, useEffect, useState } from "react"
-import axios from "axios";
+import UAParser from "ua-parser-js"
+
 import { Flow, Methods, Messages, ActionCard, CenterLink } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
-import UAParser from 'ua-parser-js';
+import Bin from "../public/images/Bin"
 
 interface Props {
   flow?: SettingsFlow
@@ -37,53 +40,60 @@ function SettingsCard({
 }
 
 const refreshSessions = (setSessions) => {
-  axios.get('/api/.ory/sessions', {
-    headers: { withCredentials: true },
-  }).then(resp => {
-    const {data} = resp;
-    setSessions(data);
-  }).catch(error => {
-    setSessions([]);
-  });
+  axios
+    .get("/api/.ory/sessions", {
+      headers: { withCredentials: true },
+    })
+    .then((resp) => {
+      const { data } = resp
+      setSessions(data)
+    })
+    .catch((error) => {
+      setSessions([])
+    })
 }
 
 const deactiveSession = (sessionId, setSessions) => {
-  return axios.delete(`/api/.ory/sessions/${sessionId}`, {
-    headers: { withCredentials: true },
-  }).then(resp => {
-    refreshSessions(setSessions);
-  }).catch(error => {
-    alert(error.message);
-  });
+  return axios
+    .delete(`/api/.ory/sessions/${sessionId}`, {
+      headers: { withCredentials: true },
+    })
+    .then((resp) => {
+      refreshSessions(setSessions)
+    })
+    .catch((error) => {
+      alert(error.message)
+    })
 }
 
 const SessionList = (props) => {
-  const {sessions, setSessions} = props;
+  const { sessions, setSessions } = props
   if (sessions.length === 0) {
     return (
       <div>
         <p>無其他裝置登入資訊</p>
       </div>
-    );
+    )
   }
 
-  return sessions.map(session => {
-    const [device] = session.devices;
-    const agent = new UAParser(device.user_agent);
-    const agentResult = agent.getResult();
+  return sessions.map((session) => {
+    const [device] = session.devices
+    const agent = new UAParser(device.user_agent)
+    const agentResult = agent.getResult()
     const deviceName = agentResult.device.type
       ? agentResult.device.model
-      : agentResult.os.name;
+      : agentResult.os.name
     return (
       <div key={session.id}>
-        
         <p>Location: {device.location}</p>
         <p>Device: {deviceName}</p>
         <p>Browser: {agentResult.browser.name}</p>
         <p>最近登入: {session.authenticated_at}</p>
-        <button onClick={() => deactiveSession(session.id, setSessions)}>Sign out</button>
+        <button onClick={() => deactiveSession(session.id, setSessions)}>
+          Sign out
+        </button>
       </div>
-    );
+    )
   })
 }
 
@@ -91,13 +101,12 @@ const Settings: NextPage = () => {
   const [sessions, setSessions] = useState([])
   const [flow, setFlow] = useState<SettingsFlow>()
 
-
   // Get ?flow=... from the URL
   const router = useRouter()
   const { flow: flowId, return_to: returnTo } = router.query
 
   useEffect(() => {
-    refreshSessions(setSessions);
+    refreshSessions(setSessions)
     // If the router is not ready yet, or we already have a flow, do nothing.
     if (!router.isReady || flow) {
       return
@@ -153,25 +162,28 @@ const Settings: NextPage = () => {
           }),
       )
 
-      const deleteAccount = async () => {
-        const confirmResult = confirm('是否確定刪除帳號?');
-        if (confirmResult) {
-          const {data} = await axios.get('/api/.ory/sessions/whoami', {
-            headers: { withCredentials: true },
-          })
+  const deleteAccount = async () => {
+    const confirmResult = confirm("是否確定刪除帳號?")
+    if (confirmResult) {
+      const { data } = await axios.get("/api/.ory/sessions/whoami", {
+        headers: { withCredentials: true },
+      })
 
-          return axios.delete(`https://auth.passon.tw/admin/identities/${data.identity.id}`, {
-            headers: {
-              Accept: 'application/json',
-              Authorization: `Bearer ${process.env.ORY_PAT}`
-            },
-          }).then(resp => {
-            router.replace('/');
-          }).catch(error => {
-            alert(error.message);
-          });
-        }
-      };
+      return axios
+        .delete(`https://auth.passon.tw/admin/identities/${data.identity.id}`, {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${process.env.ORY_PAT}`,
+          },
+        })
+        .then((resp) => {
+          router.replace("/")
+        })
+        .catch((error) => {
+          alert(error.message)
+        })
+    }
+  }
   return (
     <>
       <Head>
@@ -185,13 +197,21 @@ const Settings: NextPage = () => {
         Profile Management and Security Settings
       </CardTitle>
       <SettingsCard only="profile" flow={flow}>
-         <button onClick={deleteAccount}>刪除帳號</button>
+        <Box display="flex" gap="15px">
+          <Box width="100%" height="74px" bgcolor="#272735" borderRadius="12px">
+            <Bin />
+          </Box>
+          <Box color="#F24867" fontSize="20px" fontFamily="open sans">
+            Delete my account
+          </Box>
+        </Box>
+        {/* <button onClick={deleteAccount}>刪除帳號</button> */}
       </SettingsCard>
       <SettingsCard only="profile" flow={flow}>
         <H3>Session Management</H3>
         <SessionList sessions={sessions} setSessions={setSessions} />
       </SettingsCard>
-      
+
       <SettingsCard only="profile" flow={flow}>
         <H3>Profile Settings</H3>
         <Messages messages={flow?.ui.messages} />
