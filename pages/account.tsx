@@ -173,7 +173,13 @@ const Account: NextPage = () => {
           <Box color="#717197" fontFamily="open sans" fontSize="22px">
             Account Linking
           </Box>
-          <Box color="#A5A5A9" fontFamily="open sans" fontSize="14px">
+          <Box
+            color="#A5A5A9"
+            fontFamily="open sans"
+            fontSize="14px"
+            mt="4px"
+            mb="12px"
+          >
             Connect your account with one of these third parties to sign in
             quickly and easily.
           </Box>
@@ -189,7 +195,13 @@ const Account: NextPage = () => {
           <Box color="#717197" fontFamily="open sans" fontSize="22px">
             2-step Verification
           </Box>
-          <Box color="#A5A5A9" fontFamily="open sans" fontSize="14px">
+          <Box
+            color="#A5A5A9"
+            fontFamily="open sans"
+            fontSize="14px"
+            mt="4px"
+            mb="12px"
+          >
             Each time you sign in to Cooler Master service, we’ll send you a
             verification code to prevent unauthorized access.
           </Box>

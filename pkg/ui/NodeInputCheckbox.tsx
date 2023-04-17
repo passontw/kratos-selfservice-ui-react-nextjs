@@ -10,6 +10,7 @@ export function NodeInputCheckbox<T>({
   setValue,
   disabled,
 }: NodeInputProps) {
+  console.log("@checklabel", getNodeLabel(node))
   // Render a checkbox.s
   return (
     <Box
@@ -33,7 +34,7 @@ export function NodeInputCheckbox<T>({
           defaultChecked={attributes.value}
           onChange={(e) => setValue(e.target.checked)}
           disabled={attributes.disabled || disabled}
-          label={getNodeLabel(node)}
+          // label={getNodeLabel(node)}
           state={
             node.messages.find(({ type }) => type === "error")
               ? "error"
