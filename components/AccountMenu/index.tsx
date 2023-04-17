@@ -3,6 +3,7 @@ import { useRouter } from "next/router"
 import { useEffect } from "react"
 
 import { StyledWrapper, StyledMenuItem, StyledImg } from "./styles"
+import User from "../../public/images/Menu/User"
 
 interface AccountMenuProps {}
 
@@ -19,12 +20,12 @@ const AccountMenu: React.FC<AccountMenuProps> = () => {
   return (
     <StyledWrapper>
       {accountMenuData.map((item) => (
-        <Link key={item.name} href={item.path} passHref>
-          <StyledMenuItem active={item.path === router.pathname}>
-            {/* <StyledImg src="/images/app_icons/menu-start.png" /> */}
-            {item.name}
-          </StyledMenuItem>
-        </Link>
+          <Link key={item.name} href={item.path} passHref>
+            <StyledMenuItem active={item.path === router.pathname}>
+              {/* <StyledImg src="/images/app_icons/menu-start.png" /> */}
+              {item.name}
+            </StyledMenuItem>
+          </Link>
       ))}
     </StyledWrapper>
   )

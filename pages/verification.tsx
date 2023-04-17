@@ -20,6 +20,9 @@ import {
 } from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
 
+import { StyledMenuWrapper } from "./../styles/share"
+
+
 const Verification: NextPage = () => {
   const dispatch = useDispatch()
   const sixDigitCode = useSelector(selectSixDigitCode)
@@ -183,6 +186,7 @@ const Verification: NextPage = () => {
   return (
     <>
       <div className="mainWrapper">
+        <StyledMenuWrapper>
         <div>
           <title>Verify your account - Ory NextJS Integration Example</title>
           <meta name="description" content="NextJS + React + Vercel + Ory" />
@@ -205,6 +209,7 @@ const Verification: NextPage = () => {
           </span>
         </Box>
         <Flow onSubmit={onSubmit} flow={flow} code={sixDigitCode} />
+        </StyledMenuWrapper>
       </div>
     </>
   )
