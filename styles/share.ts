@@ -58,10 +58,10 @@ export const StyledCopyright = styled.span`
   font-size: 14px;
 `
 export const StyledMenuWrapper = styled.div`
-    padding : 80px 20px 150px 20px;
-    @media only screen and (min-width: 600px) {
-      padding : 80px 80px 0px 80px;
-    }
+  padding: 80px 20px 150px 20px;
+  @media only screen and (min-width: 600px) {
+    padding: 80px 80px 0px 80px;
+  }
 `
 
 // [right] login main Terms of ServicePrivacy Policy
@@ -74,17 +74,17 @@ export const StyledWrapper = styled.div`
   }
 `
 export const StyledTagPc = styled.div`
-margin-top: 200px;
-display: flex;
-flex-direction: column;
-align-items: center;
-width: calc(100% - 65px - 65px);
-font-family: open sans;
-position: relative;
+  margin-top: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(100% - 65px - 65px);
+  font-family: open sans;
+  position: relative;
 
-@media only screen and (min-width: 600px) {
-  padding: 0px 65px 0px;
-}
+  @media only screen and (min-width: 600px) {
+    padding: 0px 65px 0px;
+  }
 `
 export const StyledNav = styled.div`
   @media only screen and (min-width: 600px) {
@@ -150,7 +150,50 @@ export const StyledTags = styled.div`
 `
 
 export const StyledLinkColor = styled.a`
-&:link, &:visited, &:hover, &:active {
-  color: #CA4AE8;
+  &:link,
+  &:visited,
+  &:hover,
+  &:active {
+    color: #ca4ae8;
+  }
+`
+// DefaultInput
+export const StyledDefaultInput = styled.div`
+  position: relative;
+  input:-webkit-autofill,
+  textarea:-webkit-autofill,
+  select:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #37374F inset !important;
+    -webkit-text-fill-color: white !important;
+  }
+
+  
+  input {
+    padding: ${(props) =>
+      props.isInputLabel ? "12px 16px 12px 82px" : "12px 16px"};
+  } 
 }
+`
+export const StyledDefaultLabel = styled.label`
+  font-family: "Open Sans";
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 20px;
+  position: absolute;
+  pointer-events: none;
+  left: 16px;
+  top: 22px;
+  transform: translate(0%, -50%);
+  color: #717197;
+`
+export const StyledPasswordIcon = styled.span`
+  display: inline-block;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  position: absolute;
+  right: 16px;
+  top: 24px;
+  transform: translate(0%, -50%);
+  cursor: pointer;
 `

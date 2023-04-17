@@ -21,6 +21,8 @@ import { Component, FormEvent } from "react"
 import { NodeInputDefault } from "../../pkg/ui/NodeInputDefault"
 import { NodeInputHidden } from "../../pkg/ui/NodeInputHidden"
 import { NodeInputSubmit } from "../../pkg/ui/NodeInputSubmit"
+import { StyledDefaultInput, StyledPasswordIcon } from '../../styles/share'
+
 
 import { Messages } from "./Messages"
 
@@ -221,20 +223,38 @@ export default class Flow<T extends Values> extends Component<
         <Box color="#717197" fontSize="14px" fontFamily="open sans" mt="24px">
           Confirm New Password *
         </Box>
-        <TextInput
-          // title="Confirm New Password *"
-          onChange={(e) => {
-            this.setState((state) => ({
-              ...state,
-              confirmPassword: e.target.value,
-            }))
-          }}
-          placeholder="Confirm new password"
-          name="confirmPassword"
-          value={this.state.confirmPassword}
-          state={isEmpty(confirmPasswordError) ? undefined : "error"}
-          subtitle={<span>{confirmPasswordError}</span>}
-        />
+
+        <StyledDefaultInput>
+          <TextInput
+            // title="Confirm New Password *"
+            onChange={(e) => {
+              this.setState((state) => ({
+                ...state,
+                confirmPassword: e.target.value,
+              }))
+            }}
+            className="my-text-input"
+            placeholder="Confirm new password"
+            name="confirmPassword"
+            value={this.state.confirmPassword}
+            state={isEmpty(confirmPasswordError) ? undefined : "error"}
+            subtitle={<span>{confirmPasswordError}</span>}
+            style={{
+              display: "unset",
+              border: confirmPasswordError ? "1px solid #F24867" : "none",
+              backgroundColor: "#37374F",
+              height: "44px",
+              color: "#fff",
+              caretColor: "#fff",
+              borderRadius: "8px",
+              padding: '12px 16px',
+              margin: "0px"
+            }}
+          />
+          <StyledPasswordIcon isError={confirmPasswordError}>
+            <Eye setInputType={handleEye} />
+          </StyledPasswordIcon>
+        </StyledDefaultInput>
         <Box position="relative">
           <NodeInputSubmit
             value={values[getNodeId(submitNode)]}

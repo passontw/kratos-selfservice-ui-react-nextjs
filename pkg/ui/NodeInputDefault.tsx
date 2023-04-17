@@ -18,46 +18,7 @@ import { Navs, Stage } from "../../types/enum"
 import { CenterLink } from "../styled"
 
 import { NodeInputProps } from "./helpers"
-
-const StyledDefaultInput = styled.div`
-  position: relative;
-  input:-webkit-autofill,
-  textarea:-webkit-autofill,
-  select:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 1000px #37374F inset !important;
-    -webkit-text-fill-color: white !important;
-  }
-
-  
-  input {
-    padding: ${(props) =>
-      props.isInputLabel ? "12px 16px 12px 82px" : "12px 16px"};
-  } 
-}
-`
-const StyledDefaultLabel = styled.label`
-  font-family: "Open Sans";
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 20px;
-  position: absolute;
-  pointer-events: none;
-  left: 16px;
-  top: 22px;
-  transform: translate(0%, -50%);
-  color: #717197;
-`
-const StyledPasswordIcon = styled.span`
-  display: inline-block;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  position: absolute;
-  right: 16px;
-  top: 24px;
-  transform: translate(0%, -50%);
-  cursor: pointer;
-`
+import { StyledDefaultInput, StyledDefaultLabel, StyledPasswordIcon } from '../../styles/share'
 
 export function NodeInputDefault<T>(props: NodeInputProps) {
   const router = useRouter()
@@ -215,7 +176,6 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           A combination of numbers and characters. (min 8 characters)
         </span>
       )}
-
     </>
   )
 }
