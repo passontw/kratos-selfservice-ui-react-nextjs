@@ -76,7 +76,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   }, [node.messages.length])
 
   const isInputLabel = useMemo(() => {
-    const list = ["/login", "/registration", "/recovery", "/settings"];
+    const list = ["/login", "/registration"];
     return list.includes(router.pathname)
   }, [router.pathname])
 
@@ -133,7 +133,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             color: "#fff",
             caretColor: "#fff",
             borderRadius: "8px",
-            padding: '0px 0px 0px 82px',
+            padding: isInputLabel ? '0px 0px 0px 82px': '12px 16px',
             margin: "0px"
           }}
           placeholder={

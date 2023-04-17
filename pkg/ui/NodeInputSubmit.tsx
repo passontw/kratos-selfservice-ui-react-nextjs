@@ -27,6 +27,7 @@ export function NodeInputSubmit<T>({
   const sixDigitCode = useSelector(selectSixDigitCode)
   const isDialogForgotPswd =
     activeStage === Stage.FORGOT_PASSWORD && getNodeLabel(node) === "Submit"
+  const isSignINOUT = ["Sign in", "Sign up"].includes(getNodeLabel(node))
 
   const defaultStyle = {
     backgroundColor: "#A62BC3",
@@ -44,7 +45,7 @@ export function NodeInputSubmit<T>({
         : isDialogForgotPswd
         ? "30px"
         : "unset",
-    marginTop: isDialogForgotPswd ? "30px" : "unset",
+    marginTop: isDialogForgotPswd ? "30px" : isSignINOUT ? "36px" : "unset" ,
   }
   const hiddenStyle = {
     display: "none",
