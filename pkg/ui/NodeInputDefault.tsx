@@ -76,7 +76,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   }, [node.messages.length])
 
   const isInputLabel = useMemo(() => {
-    const list = ["/login", "/registration"]
+    const list = ["/login", "/registration", "/recovery", "/settings"];
     return list.includes(router.pathname)
   }, [router.pathname])
 
@@ -110,7 +110,6 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   }
 
   // Render a generic text input field.
-  
   return (
     <>
       {/* <CodeInput /> */}
