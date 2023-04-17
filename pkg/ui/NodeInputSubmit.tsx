@@ -28,8 +28,6 @@ export function NodeInputSubmit<T>({
   const isDialogForgotPswd =
     activeStage === Stage.FORGOT_PASSWORD && getNodeLabel(node) === "Submit"
 
-
-
   const defaultStyle = {
     backgroundColor: "#A62BC3",
     borderRadius: "8px",
@@ -38,7 +36,6 @@ export function NodeInputSubmit<T>({
     fontSize: "16px",
     fontFamily: "Open Sans",
     width: isDialogForgotPswd || activeNav === Navs.SETTINGS ? "95px" : "100%",
-<<<<<<< HEAD
     position:
       isDialogForgotPswd || activeNav === Navs.SETTINGS ? "absolute" : "unset",
     right:
@@ -48,13 +45,6 @@ export function NodeInputSubmit<T>({
         ? "30px"
         : "unset",
     marginTop: isDialogForgotPswd ? "30px" : "unset",
-=======
-    position: isDialogForgotPswd ? "absolute" : "unset",
-    right: isDialogForgotPswd ? "30px" : "unset",
-    // marginTop: isDialogForgotPswd ? "30px" : "unset",
-
-    
->>>>>>> eafcff766d79875250d511db92f0dcdcee10b878
   }
   const hiddenStyle = {
     display: "none",
