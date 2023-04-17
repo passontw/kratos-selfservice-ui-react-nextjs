@@ -192,7 +192,7 @@ export default class Flow<T extends Values> extends Component<
           disabled={isLoading}
           attributes={csrfTokenNode.attributes}
         />
-        <Box color="#717197" fontSize="14px" fontFamily="open sans">
+        <Box color="#717197" fontSize="14px" fontFamily="open sans" mt="24px">
           New Password *
         </Box>
         <NodeInputDefault
@@ -218,7 +218,7 @@ export default class Flow<T extends Values> extends Component<
         <Box color="#7E7E89" fontSize="13px" fontFamily="open sans">
           A number and combination of characters. (min 8 characters)
         </Box>
-        <Box color="#717197" fontSize="14px" fontFamily="open sans">
+        <Box color="#717197" fontSize="14px" fontFamily="open sans" mt="24px">
           Confirm New Password *
         </Box>
         <TextInput
@@ -235,27 +235,29 @@ export default class Flow<T extends Values> extends Component<
           state={isEmpty(confirmPasswordError) ? undefined : "error"}
           subtitle={<span>{confirmPasswordError}</span>}
         />
-        <NodeInputSubmit
-          value={values[getNodeId(submitNode)]}
-          node={submitNode}
-          disabled={isLoading}
-          setValue={(value) =>
-            new Promise((resolve) => {
-              this.setState(
-                (state) => ({
-                  ...state,
-                  values: {
-                    ...state.values,
-                    [getNodeId(submitNode)]: value,
-                  },
-                }),
-                resolve,
-              )
-            })
-          }
-          attributes={submitNode.attributes}
-          dispatchSubmit={this.handleSubmit}
-        />
+        <Box position="relative">
+          <NodeInputSubmit
+            value={values[getNodeId(submitNode)]}
+            node={submitNode}
+            disabled={isLoading}
+            setValue={(value) =>
+              new Promise((resolve) => {
+                this.setState(
+                  (state) => ({
+                    ...state,
+                    values: {
+                      ...state.values,
+                      [getNodeId(submitNode)]: value,
+                    },
+                  }),
+                  resolve,
+                )
+              })
+            }
+            attributes={submitNode.attributes}
+            dispatchSubmit={this.handleSubmit}
+          />
+        </Box>
       </form>
     )
   }

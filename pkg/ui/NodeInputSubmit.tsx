@@ -35,7 +35,7 @@ export function NodeInputSubmit<T>({
     margin: "36px 0px 0px",
     fontSize: "16px",
     fontFamily: "Open Sans",
-    width: isDialogForgotPswd ? "95px" : "100%",
+    width: isDialogForgotPswd || activeNav === Navs.SETTINGS ? "95px" : "100%",
     position: isDialogForgotPswd ? "absolute" : "unset",
     right: isDialogForgotPswd ? "30px" : "unset",
     marginTop: isDialogForgotPswd ? "30px" : "unset",
