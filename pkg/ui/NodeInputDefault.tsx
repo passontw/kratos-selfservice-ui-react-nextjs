@@ -14,11 +14,15 @@ import {
   selectSixDigitCode,
   setDialog,
 } from "../../state/store/slice/layoutSlice"
+import {
+  StyledDefaultInput,
+  StyledDefaultLabel,
+  StyledPasswordIcon,
+} from "../../styles/share"
 import { Navs, Stage } from "../../types/enum"
 import { CenterLink } from "../styled"
 
 import { NodeInputProps } from "./helpers"
-import { StyledDefaultInput, StyledDefaultLabel, StyledPasswordIcon } from '../../styles/share'
 
 export function NodeInputDefault<T>(props: NodeInputProps) {
   const router = useRouter()
@@ -37,7 +41,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   }, [node.messages.length])
 
   const isInputLabel = useMemo(() => {
-    const list = ["/login", "/registration"];
+    const list = ["/login", "/registration"]
     return list.includes(router.pathname)
   }, [router.pathname])
 
@@ -74,7 +78,8 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   return (
     <>
       {/* <CodeInput /> */}
-      {activeStage === Stage.VERIFY_CODE && nav !== Navs.RECOVERY && (
+      {((activeStage === Stage.VERIFY_CODE && nav !== Navs.RECOVERY) ||
+        (nav === Navs.VERIFICATION && activeStage === Stage.NONE)) && (
         <CodeInput />
       )}
       <StyledDefaultInput isInputLabel={isInputLabel}>
@@ -94,8 +99,8 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             color: "#fff",
             caretColor: "#fff",
             borderRadius: "8px",
-            padding: isInputLabel ? '0px 0px 0px 82px': '12px 16px',
-            margin: "0px"
+            padding: isInputLabel ? "0px 0px 0px 82px" : "12px 16px",
+            margin: "0px",
           }}
           placeholder={
             isInputLabel
@@ -155,7 +160,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             cursor: "pointer",
             fontFamily: "Open Sans",
             position: "relative",
-            paddingBottom: "36px"
+            paddingBottom: "36px",
           }}
           onClick={() => {
             openDialog()
@@ -164,7 +169,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           Forgot Password?
         </span>
       )}
-      
+
       {attributes.name === "password" && nav === "REGISTER" && !isError && (
         <span
           style={{

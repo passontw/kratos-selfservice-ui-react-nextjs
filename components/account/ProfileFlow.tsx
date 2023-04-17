@@ -15,8 +15,9 @@ import {
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
 import { Component, FormEvent, MouseEvent } from "react"
 
-import { Messages } from "./Messages"
 import { Node } from "../../pkg/ui/Node"
+
+import { Messages } from "./Messages"
 
 export type Values = Partial<
   | UpdateLoginFlowBody
@@ -42,11 +43,11 @@ export type Methods =
 export type Props<T> = {
   // The flow
   flow?:
-  | LoginFlow
-  | RegistrationFlow
-  | SettingsFlow
-  | VerificationFlow
-  | RecoveryFlow
+    | LoginFlow
+    | RegistrationFlow
+    | SettingsFlow
+    | VerificationFlow
+    | RecoveryFlow
   // Only show certain nodes. We will always render the default nodes for CSRF tokens.
   only?: Methods
   // Is triggered on submission
@@ -64,7 +65,10 @@ type State<T> = {
   isLoading: boolean
 }
 
-export default class Flow<T extends Values> extends Component<Props<T>, State<T>> {
+export default class Flow<T extends Values> extends Component<
+  Props<T>,
+  State<T>
+> {
   constructor(props: Props<T>) {
     super(props)
     this.state = {
@@ -180,7 +184,7 @@ export default class Flow<T extends Values> extends Component<Props<T>, State<T>
 
     // Filter the nodes - only show the ones we want
     const nodes = this.filterNodes()
-    
+
     if (!flow) {
       // No flow was set yet? It's probably still loading...
       //
@@ -198,9 +202,12 @@ export default class Flow<T extends Values> extends Component<Props<T>, State<T>
         {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
         {nodes.map((node, k) => {
           const id = getNodeId(node) as keyof Values
-          const isShow = node.attributes.name === "csrf_token" || node.attributes.name === "traits.loginVerification" || node.attributes.type === "submit";
+          const isShow =
+            node.attributes.name === "csrf_token" ||
+            node.attributes.name === "traits.loginVerification" ||
+            node.attributes.type === "submit"
           return (
-            <span key={`${id}-${k}`} style={isShow ? {} : {display: "none"}}>
+            <span key={`${id}-${k}`} style={isShow ? {} : { display: "none" }}>
               <Node
                 disabled={isLoading}
                 node={node}
@@ -222,7 +229,6 @@ export default class Flow<T extends Values> extends Component<Props<T>, State<T>
                 }
               />
             </span>
-
           )
         })}
       </form>
