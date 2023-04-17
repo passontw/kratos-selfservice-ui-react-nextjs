@@ -21,6 +21,7 @@ import { Component, FormEvent } from "react"
 import { NodeInputDefault } from "../../pkg/ui/NodeInputDefault"
 import { NodeInputHidden } from "../../pkg/ui/NodeInputHidden"
 import { NodeInputSubmit } from "../../pkg/ui/NodeInputSubmit"
+import Eye from '../../public/images/eyes'
 import { StyledDefaultInput, StyledPasswordIcon } from '../../styles/share'
 
 
@@ -84,6 +85,7 @@ export default class Flow<T extends Values> extends Component<
       values: emptyState(),
       confirmPassword: "",
       isLoading: false,
+      type: "text"
     }
   }
 
@@ -164,6 +166,11 @@ export default class Flow<T extends Values> extends Component<
       })
   }
 
+  handleEye = () => {
+    let type = this.state === "password" ? "text": "password"
+    this.setState((state) => ({ ...state, type: type }))
+  }
+
   render() {
     const { hideGlobalMessages, flow, confirmPasswordError } = this.props
     const { values, isLoading } = this.state
@@ -227,6 +234,7 @@ export default class Flow<T extends Values> extends Component<
         <StyledDefaultInput>
           <TextInput
             // title="Confirm New Password *"
+            type={this.state.type}
             onChange={(e) => {
               this.setState((state) => ({
                 ...state,
@@ -242,7 +250,7 @@ export default class Flow<T extends Values> extends Component<
             style={{
               display: "unset",
               border: confirmPasswordError ? "1px solid #F24867" : "none",
-              backgroundColor: "#37374F",
+              backgroundColor: "#37374F !important",
               height: "44px",
               color: "#fff",
               caretColor: "#fff",
@@ -252,7 +260,7 @@ export default class Flow<T extends Values> extends Component<
             }}
           />
           <StyledPasswordIcon isError={confirmPasswordError}>
-            <Eye setInputType={handleEye} />
+            <Eye setInputType={this.handleEye} />
           </StyledPasswordIcon>
         </StyledDefaultInput>
         <Box position="relative">
