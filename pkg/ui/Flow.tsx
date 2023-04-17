@@ -122,7 +122,8 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     if (!flow) {
       return []
     }
-    return flow.ui.nodes.filter(({ group }) => {
+    const nodes = flow?.ui?.nodes || [];
+    return nodes.filter(({ group }) => {
       if (!only) {
         return true
       }

@@ -5,10 +5,9 @@ import cloneDeep from "lodash/cloneDeep"
 import isEmpty from "lodash/isEmpty"
 import type { NextPage } from "next"
 import { useRouter } from "next/router"
-import queryString from "query-string"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-
+import queryString from "query-string"
 import { api } from "../axios/api"
 import CmidHead from "../components/CmidHead"
 import { LogoutLink, Flow } from "../pkg"
@@ -30,6 +29,8 @@ import {
   StyledTags,
   StyledTagWrapper,
 } from "./../styles/share"
+
+const localStorageKey = "!@#$%^&*()data"
 
 const { NEXT_PUBLIC_REDIRECT_URI } = process.env
 
@@ -110,6 +111,7 @@ const Login: NextPage = () => {
   }
 
   useEffect(() => {
+    localStorage.removeItem(localStorageKey);
     hydraLoginService()
     // If the router is not ready yet, or we already have a flow, do nothing.
     if (!router.isReady || flow) {
@@ -196,12 +198,21 @@ const Login: NextPage = () => {
 
           // We logged in successfully! Let's bring the user home.
           .then((result) => {
-            const { traits } = result.data.session.identity
+            const {session} = result.data;
+            const { traits } = session.identity
             if (isEmailSignin && traits.loginVerification) {
-              window.location.href = `/verification?${queryString.stringify(
-                router.query,
-              )}&user=${traits.email}&csrf=${values.csrf_token}&return_to=/`
-              return
+              return ory.createBrowserLogoutFlow().then(({data: logoutFlow}) => {
+                return ory.updateLogoutFlow({
+                  token: logoutFlow.logout_token,
+                });
+              }).then(() => {
+                localStorage.setItem(localStorageKey, JSON.stringify(values));
+                window.location.href = `/verification?${queryString.stringify(
+                  router.query,
+                )}&user=${traits.email}&csrf=${values.csrf_token}&type=login`
+                return
+              })
+              
             }
 
             // new flow
@@ -218,7 +229,6 @@ const Login: NextPage = () => {
               router.push("/profile")
             }
           })
-          .then(() => {})
           .catch(handleFlowError(router, "login", setFlow))
           .catch((err: any) => {
             // If the previous handler did not catch the error it's most likely a form validation error
@@ -280,6 +290,8 @@ const Login: NextPage = () => {
       return false
     }
   }
+
+  if (isEmpty(flow?.ui)) return null;
 
   return (
     <>

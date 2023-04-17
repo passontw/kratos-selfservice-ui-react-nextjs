@@ -160,7 +160,7 @@ const Settings: NextPage = () => {
             headers: { withCredentials: true },
           })
 
-          return axios.delete(`https://auth.passon.tw/admin/identities/${data.identity.id}`, {
+          return axios.delete(`${process.env.ORY_SDK_URL}/admin/identities/${data.identity.id}`, {
             headers: {
               Accept: 'application/json',
               Authorization: `Bearer ${process.env.ORY_PAT}`
