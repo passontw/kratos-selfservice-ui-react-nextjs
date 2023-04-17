@@ -110,6 +110,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   }
 
   // Render a generic text input field.
+  console.log('isError', isError)
   return (
     <>
       {/* <CodeInput /> */}
@@ -204,7 +205,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
         </span>
       )}
       
-      {attributes.name === "traits.email" && nav === "REGISTER" && (
+      {attributes.name === "password" && nav === "REGISTER" && isError && (
         <span
           style={{
             color: "#7E7E89",
