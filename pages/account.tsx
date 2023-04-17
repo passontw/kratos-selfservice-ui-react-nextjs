@@ -206,20 +206,19 @@ const Account: NextPage = () => {
             Account Management
           </Box>
           <Box
-            display="flex"
-            gap="15px"
             mt="12px"
             width="100%"
             height="74px"
             bgcolor="#272735"
             borderRadius="12px"
-            onClick={deleteAccountPromt}
           >
-            <Box>
-              <Bin />
-            </Box>
-            <Box color="#F24867" fontSize="20px" fontFamily="open sans">
-              Delete my account
+            <Box display="flex" gap="15px" onClick={deleteAccountPromt}>
+              <Box>
+                <Bin />
+              </Box>
+              <Box color="#F24867" fontSize="20px" fontFamily="open sans">
+                Delete my account
+              </Box>
             </Box>
           </Box>
           {/* <button onClick={deleteAccountPromt}>刪除帳號</button> */}
