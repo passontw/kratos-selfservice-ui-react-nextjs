@@ -26,8 +26,19 @@ export const updatePasswordSchema = yup.object().shape({
       'Need at least 1 alphabet letter'
     )
     .required('password can not be empty.'),
-  confirmPassword: yup.string().when('password', (password, field) =>
-  password ? field.required().oneOf([yup.ref('password')]) : field
+  confirmPassword: yup
+    .string()
+    .min(8, 'Need at least 8 characters')
+    .matches(
+      /^(?=.*\d)/,
+      'Need at least 1 number'
+    )
+    .matches(
+      /^([a-zA-Z]+)\w*$/,
+      'Need at least 1 alphabet letter'
+    )
+    .when('password', (password, field) =>
+  password ? field.required().oneOf([yup.ref('password')], "Password doesn't match!") : field
 ),
 });
 export const loginFormSchema = yup.object().shape({
