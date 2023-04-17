@@ -169,8 +169,13 @@ const Account: NextPage = () => {
     <AccountLayout>
       <Box display="flex" flexDirection="column">
         <SettingsCard only="oidc" flow={flow}>
-          <H3>Manage Social Sign In</H3>
-
+          <Box color="#717197" fontFamily="open sans" fontSize="22px">
+            Account Linking
+          </Box>
+          <Box color="#A5A5A9" fontFamily="open sans" fontSize="14px">
+            Connect your account with one of these third parties to sign in
+            quickly and easily.
+          </Box>
           <Messages messages={flow?.ui.messages} />
           <Flow
             hideGlobalMessages
@@ -180,7 +185,13 @@ const Account: NextPage = () => {
           />
         </SettingsCard>
         <SettingsCard only="profile" flow={flow}>
-          <H3>Profile Settings</H3>
+          <Box color="#717197" fontFamily="open sans" fontSize="22px">
+            2-step Verification
+          </Box>
+          <Box color="#A5A5A9" fontFamily="open sans" fontSize="14px">
+            Each time you sign in to Cooler Master service, we’ll send you a
+            verification code to prevent unauthorized access.
+          </Box>
           <Messages messages={flow?.ui.messages} />
           <ProfileFlow
             hideGlobalMessages
@@ -190,6 +201,9 @@ const Account: NextPage = () => {
           />
         </SettingsCard>
         <SettingsCard only="profile" flow={flow}>
+          <Box color="#717197" fontFamily="open sans" fontSize="22px">
+            Account Management
+          </Box>
           <button onClick={deleteAccountPromt}>刪除帳號</button>
           <VerificationModal deleteAccount={deleteAccount} />
         </SettingsCard>
