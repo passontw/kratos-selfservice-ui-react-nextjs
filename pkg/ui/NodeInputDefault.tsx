@@ -54,7 +54,7 @@ const StyledPasswordIcon = styled.span`
   background-position: center center;
   position: absolute;
   right: 16px;
-  top: ${(props) => (props?.isError ? "40%" : "45%")};
+  top: 24px;
   transform: translate(0%, -50%);
   cursor: pointer;
 `
@@ -110,7 +110,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   }
 
   // Render a generic text input field.
-  console.log('isError', isError)
+  
   return (
     <>
       {/* <CodeInput /> */}
@@ -205,7 +205,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
         </span>
       )}
       
-      {attributes.name === "password" && nav === "REGISTER" && isError && (
+      {attributes.name === "password" && nav === "REGISTER" && !isError && (
         <span
           style={{
             color: "#7E7E89",
