@@ -202,12 +202,11 @@ const Account: NextPage = () => {
           />
         </SettingsCard>
         <SettingsCard only="profile" flow={flow}>
-          <Box color="#717197" fontFamily="open sans" fontSize="22px">
+          <Box color="#717197" fontFamily="open sans" fontSize="22px" mt="36px">
             Account Management
           </Box>
           <Box
             mt="12px"
-            width="100%"
             height="74px"
             bgcolor="#272735"
             borderRadius="12px"
@@ -224,7 +223,7 @@ const Account: NextPage = () => {
                 cursor: "pointer",
               }}
             >
-              <Box>
+              <Box pt="1.5px">
                 <Bin />
               </Box>
               <Box color="#F24867" fontSize="20px" fontFamily="open sans">
