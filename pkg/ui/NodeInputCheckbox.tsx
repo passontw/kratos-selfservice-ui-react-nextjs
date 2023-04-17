@@ -2,6 +2,8 @@ import Box from "@mui/material/Box"
 import { getNodeLabel } from "@ory/integrations/ui"
 import { Checkbox } from "@ory/themes"
 
+import Mail from "../../public/images/Mail"
+
 import { NodeInputProps } from "./helpers"
 
 export function NodeInputCheckbox<T>({
@@ -17,16 +19,24 @@ export function NodeInputCheckbox<T>({
       display="flex"
       width="100%"
       maxWidth="454px"
-      height="88px"
+      height={attributes.name === "traits.loginVerification" ? "74px" : "88px"}
       bgcolor="#272735"
       borderRadius="12px"
       justifyContent="space-between"
       alignItems="center"
       px="26px"
     >
-      <Box display="flex">
-        <Box>logo</Box>
-        <Box>fieldName</Box>
+      <Box
+        display="flex"
+        gap={attributes.name === "traits.loginVerification" ? "14px" : "20px"}
+        alignItems="center"
+      >
+        <Box>
+          {attributes.name === "traits.loginVerification" ? <Mail /> : "???"}
+        </Box>
+        <Box fontFamily="open sans" color="#FFF" fontSize="20px">
+          {attributes.name === "traits.loginVerification" ? "Email" : "???"}
+        </Box>
       </Box>
       <Box>
         <Checkbox
