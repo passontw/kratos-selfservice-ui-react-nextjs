@@ -24,10 +24,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <PopupLayout>
-            <div className="background-wrapper">
-              <div className="overlay-image"></div>
-            </div>
             <Box display="flex" position="relative">
+              <div className="background-wrapper">
+                <div className="overlay-image"></div>
+              </div>
               <Component {...pageProps} />
               <AppsList />
             </Box>

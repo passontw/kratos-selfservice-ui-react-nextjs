@@ -256,6 +256,7 @@ const Registration: NextPage = () => {
             justifyContent="center"
             display="flex"
             flexWrap="wrap"
+            paddingBottom="86px"
           >
             <Box>By signing up for Cooler Master ID,</Box>
             <Box>
