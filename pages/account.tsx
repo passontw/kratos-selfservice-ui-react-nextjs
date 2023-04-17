@@ -211,8 +211,19 @@ const Account: NextPage = () => {
             height="74px"
             bgcolor="#272735"
             borderRadius="12px"
+            display="flex"
+            alignItems="center"
+            pl="27px"
           >
-            <Box display="flex" gap="15px" onClick={deleteAccountPromt}>
+            <Box
+              display="flex"
+              gap="15px"
+              width="fit-content"
+              onClick={deleteAccountPromt}
+              sx={{
+                cursor: "pointer",
+              }}
+            >
               <Box>
                 <Bin />
               </Box>
