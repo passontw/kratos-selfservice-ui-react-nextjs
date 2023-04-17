@@ -43,7 +43,7 @@ const StyledDefaultLabel = styled.label`
   position: absolute;
   pointer-events: none;
   left: 16px;
-  top: ${(props) => (props?.isError ? "40%" : "45%")};
+  top: 22px;
   transform: translate(0%, -50%);
   color: #717197;
 `
@@ -133,6 +133,8 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             color: "#fff",
             caretColor: "#fff",
             borderRadius: "8px",
+            padding: '0px 0px 0px 82px',
+            margin: "0px"
           }}
           placeholder={
             isInputLabel
@@ -188,9 +190,11 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
         <span
           style={{
             color: "#CA4AE8",
-            fontSize: "13px",
+            fontSize: "16px",
             cursor: "pointer",
             fontFamily: "Open Sans",
+            position: "relative",
+            paddingBottom: "36px"
           }}
           onClick={() => {
             openDialog()
@@ -199,6 +203,19 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           Forgot Password?
         </span>
       )}
+      
+      {attributes.name === "traits.email" && nav === "REGISTER" && (
+        <span
+          style={{
+            color: "#7E7E89",
+            fontSize: "13px",
+            fontFamily: "Open Sans",
+          }}
+        >
+          A combination of numbers and characters. (min 8 characters)
+        </span>
+      )}
+
     </>
   )
 }
