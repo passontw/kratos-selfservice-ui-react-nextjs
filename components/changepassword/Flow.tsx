@@ -167,7 +167,7 @@ export default class Flow<T extends Values> extends Component<
   }
 
   handleEye = () => {
-    let type = this.state === "password" ? "text": "password"
+    let type = this.state.type === "password" ? "text": "password"
     this.setState((state) => ({ ...state, type: type }))
   }
 
@@ -224,9 +224,11 @@ export default class Flow<T extends Values> extends Component<
           }
           attributes={passwordNode.attributes}
         />
-        <Box color="#7E7E89" fontSize="13px" fontFamily="open sans">
+       
+       { !confirmPasswordError && <Box color="#7E7E89" fontSize="13px" fontFamily="open sans">
           A number and combination of characters. (min 8 characters)
-        </Box>
+        </Box> }
+
         <Box color="#717197" fontSize="14px" fontFamily="open sans" mt="24px">
           Confirm New Password *
         </Box>
@@ -250,7 +252,7 @@ export default class Flow<T extends Values> extends Component<
             style={{
               display: "unset",
               border: confirmPasswordError ? "1px solid #F24867" : "none",
-              backgroundColor: "#37374F !important",
+              backgroundColor: "#37374F",
               height: "44px",
               color: "#fff",
               caretColor: "#fff",
