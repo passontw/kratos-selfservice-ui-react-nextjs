@@ -60,6 +60,8 @@ export type Props<T> = {
   onSubmit: (values: T) => Promise<void>
   // Do not show the global messages. Useful when rendering them elsewhere.
   hideGlobalMessages?: boolean
+  // hide social login options
+  hideSocialLogin?: boolean
 }
 
 function emptyState<T>() {
@@ -228,7 +230,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
           // if (node.meta.label?.text === "E-Mail") return
           console.log("@node.meta", node.meta)
-          console.log(node.meta.label?.text)
+          console.log("@node.meta222", node.meta.label?.text)
           if (node.meta.label?.text === "Resend code") return
 
           return (
@@ -255,86 +257,99 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
             />
           )
         })}
-        <Box
-          mt="8px"
-          mb="38px"
-          // textAlign="center"
-          color="#A5A5A9"
-          fontSize="14px"
-          fontFamily="open sans"
-          display="flex"
-          justifyContent="center"
-          gap="4px"
-        >
-          <Box>
-            {" "}
-            {this.props.router?.pathname === "/login"
-              ? "Don’t have an account?"
-              : "Already have an account?"}
-          </Box>
+        {!this.props.hideSocialLogin && (
           <Box
-            color="#CA4AE8"
-            sx={{
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              const redirrectPath =
-                this.props.router?.pathname === "/login"
-                  ? "/registration"
-                  : "/login"
-              this.props.router.push(redirrectPath)
-            }}
+            mt="8px"
+            mb="38px"
+            // textAlign="center"
+            color="#A5A5A9"
+            fontSize="14px"
+            fontFamily="open sans"
+            display="flex"
+            justifyContent="center"
+            gap="4px"
           >
-            {this.props.router?.pathname === "/login" ? " Sign up" : " Sign in"}
+            <Box>
+              {" "}
+              {this.props.router?.pathname === "/login"
+                ? "Don’t have an account?"
+                : "Already have an account?"}
+            </Box>
+            <Box
+              color="#CA4AE8"
+              sx={{
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                const redirrectPath =
+                  this.props.router?.pathname === "/login"
+                    ? "/registration"
+                    : "/login"
+                this.props.router.push(redirrectPath)
+              }}
+            >
+              {this.props.router?.pathname === "/login"
+                ? " Sign up"
+                : " Sign in"}
+            </Box>
           </Box>
-        </Box>
-        <Box
-          color="#A5A5A9"
-          fontSize="14px"
-          fontFamily="open sans"
-          display="flex"
-          justifyContent="center"
-        >
-          <StyledMenuLine>
-            <span className="text">{this.props.router.pathname === '/login' ? 'Or login with other accounts': 'Or sign up with other accounts'}</span>
-          </StyledMenuLine>
-        </Box>
-        <Box display="flex" gap="24px" justifyContent="center" my="24px">
-          <Button
-            name="provider"
-            value="google"
-            disabled={false}
-            type="submit"
-            style={{
-              padding: "0px",
-              margin: "0px",
-              bordeRadius: "0px",
-              borderWidth: "0px",
-              borderStyle: "none",
-              borderColor: "transparent",
-              backgroundColor: "transparent",
-            }}
+        )}
+        {!this.props.hideSocialLogin && (
+          <Box
+            color="#A5A5A9"
+            fontSize="14px"
+            fontFamily="open sans"
+            display="flex"
+            justifyContent="center"
           >
-            <Google />
-          </Button>
-          <Button
-            name="provider"
-            value="apple"
-            disabled={false}
-            type="submit"
-            style={{
-              padding: "0px",
-              margin: "0px",
-              bordeRadius: "0px",
-              borderWidth: "0px",
-              borderStyle: "none",
-              borderColor: "transparent",
-              backgroundColor: "transparent",
-            }}
-          >
-            <Apple />
-          </Button>
-        </Box>
+            <StyledMenuLine>
+              <span className="text">
+                {" "}
+                {this.props.router?.pathname === "/login"
+                  ? "Or login with other accounts"
+                  : "Or sign up with other accounts"}
+              </span>
+            </StyledMenuLine>
+          </Box>
+        )}
+        {!this.props.hideSocialLogin && (
+          <Box display="flex" gap="24px" justifyContent="center" my="24px">
+            <Button
+              name="provider"
+              value="google"
+              disabled={false}
+              type="submit"
+              style={{
+                padding: "0px",
+                margin: "0px",
+                bordeRadius: "0px",
+                borderWidth: "0px",
+                borderStyle: "none",
+                borderColor: "transparent",
+                backgroundColor: "transparent",
+              }}
+            >
+              <Google />
+            </Button>
+            <Button
+              name="provider"
+              value="apple"
+              disabled={false}
+              type="submit"
+              style={{
+                padding: "0px",
+                margin: "0px",
+                bordeRadius: "0px",
+                borderWidth: "0px",
+                borderStyle: "none",
+                borderColor: "transparent",
+                backgroundColor: "transparent",
+              }}
+            >
+              <Apple />
+            </Button>
+          </Box>
+        )}
       </form>
     )
   }

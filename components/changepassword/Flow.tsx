@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box"
 import {
   LoginFlow,
   RecoveryFlow,
@@ -20,6 +21,9 @@ import { Component, FormEvent } from "react"
 import { NodeInputDefault } from "../../pkg/ui/NodeInputDefault"
 import { NodeInputHidden } from "../../pkg/ui/NodeInputHidden"
 import { NodeInputSubmit } from "../../pkg/ui/NodeInputSubmit"
+import Eye from '../../public/images/eyes'
+import { StyledDefaultInput, StyledPasswordIcon } from '../../styles/share'
+
 
 import { Messages } from "./Messages"
 
@@ -81,6 +85,7 @@ export default class Flow<T extends Values> extends Component<
       values: emptyState(),
       confirmPassword: "",
       isLoading: false,
+      type: "text"
     }
   }
 
@@ -161,6 +166,11 @@ export default class Flow<T extends Values> extends Component<
       })
   }
 
+  handleEye = () => {
+    let type = this.state.type === "password" ? "text": "password"
+    this.setState((state) => ({ ...state, type: type }))
+  }
+
   render() {
     const { hideGlobalMessages, flow, confirmPasswordError } = this.props
     const { values, isLoading } = this.state
@@ -191,6 +201,9 @@ export default class Flow<T extends Values> extends Component<
           disabled={isLoading}
           attributes={csrfTokenNode.attributes}
         />
+        <Box color="#717197" fontSize="14px" fontFamily="open sans" mt="24px">
+          New Password *
+        </Box>
         <NodeInputDefault
           value={values[getNodeId(passwordNode)]}
           node={passwordNode}
@@ -211,41 +224,70 @@ export default class Flow<T extends Values> extends Component<
           }
           attributes={passwordNode.attributes}
         />
-        <TextInput
-          title="Confirm New Password *"
-          onChange={(e) => {
-            this.setState((state) => ({
-              ...state,
-              confirmPassword: e.target.value,
-            }))
-          }}
-          placeholder="Confirm new password"
-          name="confirmPassword"
-          value={this.state.confirmPassword}
-          state={isEmpty(confirmPasswordError) ? undefined : "error"}
-          subtitle={<span>{confirmPasswordError}</span>}
-        />
-        <NodeInputSubmit
-          value={values[getNodeId(submitNode)]}
-          node={submitNode}
-          disabled={isLoading}
-          setValue={(value) =>
-            new Promise((resolve) => {
-              this.setState(
-                (state) => ({
-                  ...state,
-                  values: {
-                    ...state.values,
-                    [getNodeId(submitNode)]: value,
-                  },
-                }),
-                resolve,
-              )
-            })
-          }
-          attributes={submitNode.attributes}
-          dispatchSubmit={this.handleSubmit}
-        />
+       
+       { !confirmPasswordError && <Box color="#7E7E89" fontSize="13px" fontFamily="open sans">
+          A number and combination of characters. (min 8 characters)
+        </Box> }
+
+        <Box color="#717197" fontSize="14px" fontFamily="open sans" mt="24px">
+          Confirm New Password *
+        </Box>
+
+        <StyledDefaultInput>
+          <TextInput
+            // title="Confirm New Password *"
+            type={this.state.type}
+            onChange={(e) => {
+              this.setState((state) => ({
+                ...state,
+                confirmPassword: e.target.value,
+              }))
+            }}
+            className="my-text-input"
+            placeholder="Confirm new password"
+            name="confirmPassword"
+            value={this.state.confirmPassword}
+            state={isEmpty(confirmPasswordError) ? undefined : "error"}
+            subtitle={<span>{confirmPasswordError}</span>}
+            style={{
+              display: "unset",
+              border: confirmPasswordError ? "1px solid #F24867" : "none",
+              backgroundColor: "#37374F",
+              height: "44px",
+              color: "#fff",
+              caretColor: "#fff",
+              borderRadius: "8px",
+              padding: '12px 16px',
+              margin: "0px"
+            }}
+          />
+          <StyledPasswordIcon isError={confirmPasswordError}>
+            <Eye setInputType={this.handleEye} />
+          </StyledPasswordIcon>
+        </StyledDefaultInput>
+        <Box position="relative">
+          <NodeInputSubmit
+            value={values[getNodeId(submitNode)]}
+            node={submitNode}
+            disabled={isLoading}
+            setValue={(value) =>
+              new Promise((resolve) => {
+                this.setState(
+                  (state) => ({
+                    ...state,
+                    values: {
+                      ...state.values,
+                      [getNodeId(submitNode)]: value,
+                    },
+                  }),
+                  resolve,
+                )
+              })
+            }
+            attributes={submitNode.attributes}
+            dispatchSubmit={this.handleSubmit}
+          />
+        </Box>
       </form>
     )
   }

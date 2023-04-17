@@ -10,6 +10,13 @@ import ory from "../pkg/sdk"
 import { handleFlowError } from "../pkg/errors"
 import { useRouter } from "next/router"
 
+const dayjs = require('dayjs')
+var utc = require('dayjs/plugin/utc')
+var timezone = require('dayjs/plugin/timezone') // dependent on utc plugin
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
+
 const refreshSessions = (setSessions) => {
   axios.get('/api/.ory/sessions', {
     headers: { withCredentials: true },
@@ -91,7 +98,7 @@ const SessionList = (props) => {
         <p>Location: {device.location}</p>
         <p>Device: {deviceName}</p>
         <p>Browser: {agentResult.browser.name}</p>
-        <p>最近登入: {session.authenticated_at}</p>
+        <p>最近登入: {dayjs(session.authenticated_at).format()}</p>
         <button onClick={() => deactiveSession(session.id, setSessions)}>Sign out</button>
       </div>
     );
@@ -101,18 +108,18 @@ const SessionList = (props) => {
 const SessionListItem = (props) => {
   const {session} = props;
   if (isEmpty(session)) return null;
-
+  
   const [device] = session.devices;
   const agent = new UAParser(device.user_agent);
   const agentResult = agent.getResult();
-    const deviceName = agentResult.device.type
+  const deviceName = agentResult.device.type || agentResult.device.model;
   return (
     <div key={session.id}>
         <p>Self Session: </p>
         <p>Location: {device.location}</p>
         <p>Device: {deviceName}</p>
         <p>Browser: {agentResult.browser.name}</p>
-        <p>最近登入: {session.authenticated_at}</p>
+        <p>最近登入: {dayjs(session.authenticated_at).format()}</p>
       </div>
   )
 };

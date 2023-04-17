@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box"
 import { SettingsFlow, UpdateSettingsFlowBody } from "@ory/client"
 import { H3 } from "@ory/themes"
 import axios from "axios"
@@ -52,7 +53,7 @@ function SettingsCard({
     return null
   }
 
-  return <ActionCard wide>{children}</ActionCard>
+  return <Box>{children}</Box>
 }
 
 const Account: NextPage = () => {
@@ -166,28 +167,47 @@ const Account: NextPage = () => {
 
   return (
     <AccountLayout>
-      <SettingsCard only="oidc" flow={flow}>
-        <H3>Manage Social Sign In</H3>
-
-        <Messages messages={flow?.ui.messages} />
-        <Flow hideGlobalMessages onSubmit={onSubmit} only="oidc" flow={flow} />
-      </SettingsCard>
-
-      <SettingsCard only="profile" flow={flow}>
-        <H3>Profile Settings</H3>
-        <Messages messages={flow?.ui.messages} />
-        <ProfileFlow
-          hideGlobalMessages
-          onSubmit={onSubmit}
-          only="profile"
-          flow={flow}
-        />
-      </SettingsCard>
-
-      <SettingsCard only="profile" flow={flow}>
-        <button onClick={deleteAccountPromt}>刪除帳號</button>
-        <VerificationModal deleteAccount={deleteAccount} />
-      </SettingsCard>
+      <Box display="flex" flexDirection="column">
+        <SettingsCard only="oidc" flow={flow}>
+          <Box color="#717197" fontFamily="open sans" fontSize="22px">
+            Account Linking
+          </Box>
+          <Box color="#A5A5A9" fontFamily="open sans" fontSize="14px">
+            Connect your account with one of these third parties to sign in
+            quickly and easily.
+          </Box>
+          <Messages messages={flow?.ui.messages} />
+          <Flow
+            hideGlobalMessages
+            onSubmit={onSubmit}
+            only="oidc"
+            flow={flow}
+          />
+        </SettingsCard>
+        <SettingsCard only="profile" flow={flow}>
+          <Box color="#717197" fontFamily="open sans" fontSize="22px">
+            2-step Verification
+          </Box>
+          <Box color="#A5A5A9" fontFamily="open sans" fontSize="14px">
+            Each time you sign in to Cooler Master service, we’ll send you a
+            verification code to prevent unauthorized access.
+          </Box>
+          <Messages messages={flow?.ui.messages} />
+          <ProfileFlow
+            hideGlobalMessages
+            onSubmit={onSubmit}
+            only="profile"
+            flow={flow}
+          />
+        </SettingsCard>
+        <SettingsCard only="profile" flow={flow}>
+          <Box color="#717197" fontFamily="open sans" fontSize="22px">
+            Account Management
+          </Box>
+          <button onClick={deleteAccountPromt}>刪除帳號</button>
+          <VerificationModal deleteAccount={deleteAccount} />
+        </SettingsCard>
+      </Box>
     </AccountLayout>
   )
 }

@@ -7,8 +7,13 @@ import { useSelector } from "react-redux"
 
 import Apple from "../../public/images/login_icons/Apple"
 import Google from "../../public/images/login_icons/Google"
-import { selectActiveNav } from "../../state/store/slice/layoutSlice"
-import { Navs } from "../../types/enum"
+import {
+  selectActiveNav,
+  selectActiveStage,
+  selectDialog,
+  selectSixDigitCode,
+} from "../../state/store/slice/layoutSlice"
+import { Navs, Stage } from "../../types/enum"
 
 import { NodeInputProps } from "./helpers"
 
@@ -17,13 +22,30 @@ export function NodeInputSubmit<T>({
   attributes,
   disabled,
 }: NodeInputProps) {
+  const activeNav = useSelector(selectActiveNav)
+  const activeStage = useSelector(selectActiveStage)
+  const sixDigitCode = useSelector(selectSixDigitCode)
+  const isDialogForgotPswd =
+    activeStage === Stage.FORGOT_PASSWORD && getNodeLabel(node) === "Submit"
+  const isSignINOUT = ["Sign in", "Sign up"].includes(getNodeLabel(node))
+
   const defaultStyle = {
     backgroundColor: "#A62BC3",
     borderRadius: "8px",
     height: "44px",
-    margin: '20px 0px 0px',
-    color: '#FFFFFF',
-    font: 'Open Sans'
+    margin: "36px 0px 0px",
+    fontSize: "16px",
+    fontFamily: "Open Sans",
+    width: isDialogForgotPswd || activeNav === Navs.SETTINGS ? "95px" : "100%",
+    position:
+      isDialogForgotPswd || activeNav === Navs.SETTINGS ? "absolute" : "unset",
+    right:
+      activeNav === Navs.SETTINGS
+        ? "0px"
+        : isDialogForgotPswd
+        ? "30px"
+        : "unset",
+    marginTop: isDialogForgotPswd ? "30px" : isSignINOUT ? "36px" : "unset" ,
   }
   const hiddenStyle = {
     display: "none",
@@ -40,7 +62,7 @@ export function NodeInputSubmit<T>({
     fontSize: "14px",
     marginTop: "11px",
   }
-  console.log("@getNodeLabel(node)", getNodeLabel(node))
+
   const showButton = [
     "Save",
     "Submit",
@@ -48,8 +70,8 @@ export function NodeInputSubmit<T>({
     "Sign in",
     "Sign up",
   ].includes(getNodeLabel(node))
+  console.log("ppp", getNodeLabel(node))
   const link = ["Resend code"].includes(getNodeLabel(node))
-  const activeNav = useSelector(selectActiveNav)
   const buttonText =
     activeNav === Navs.VERIFICATION && getNodeLabel(node) === "Submit"
       ? "Verify"
@@ -57,29 +79,31 @@ export function NodeInputSubmit<T>({
       ? "Resend"
       : getNodeLabel(node)
 
-  const [timeRemaining, setTimeRemaining] = useState(60)
-  const timerId = useRef(null)
+  // const [timeRemaining, setTimeRemaining] = useState(60)
+  // const timerId = useRef(null)
 
-  useEffect(() => {
-    if (timeRemaining > 0 && timerId.current === null) {
-      timerId.current = setTimeout(() => {
-        setTimeRemaining(timeRemaining - 1)
-        timerId.current = null
-      }, 1000)
-    } else if (timeRemaining === 0) {
-      clearTimeout(timerId.current)
-      timerId.current = null
-    }
+  // useEffect(() => {
+  //   if (link) {
+  //     if (timeRemaining > 0 && timerId.current === null) {
+  //       timerId.current = setTimeout(() => {
+  //         setTimeRemaining(timeRemaining - 1)
+  //         timerId.current = null
+  //       }, 1000)
+  //     } else if (timeRemaining === 0) {
+  //       clearTimeout(timerId.current)
+  //       timerId.current = null
+  //     }
+  //   }
 
-    return () => {
-      clearTimeout(timerId.current)
-    }
-  }, [timeRemaining])
+  //   return () => {
+  //     clearTimeout(timerId.current)
+  //   }
+  // }, [timeRemaining])
 
-  const resetTimer = () => {
-    clearTimeout(timerId.current)
-    setTimeRemaining(60)
-  }
+  // const resetTimer = () => {
+  //   clearTimeout(timerId.current)
+  //   setTimeRemaining(60)
+  // }
 
   return (
     <>
@@ -98,13 +122,13 @@ export function NodeInputSubmit<T>({
             name={attributes.name}
             value={attributes.value || ""}
             disabled={attributes.disabled || disabled}
-            onClick={resetTimer}
+            // onClick={resetTimer}
           >
             {buttonText}
           </Button>
-          <Box fontFamily="open sans" color="#A5A5A9" fontSize="14px">
+          {/* <Box fontFamily="open sans" color="#A5A5A9" fontSize="14px">
             ({timeRemaining})
-          </Box>
+          </Box> */}
         </Box>
       ) : (
         <Button
@@ -112,6 +136,11 @@ export function NodeInputSubmit<T>({
           name={attributes.name}
           value={attributes.value || ""}
           disabled={attributes.disabled || disabled}
+          // disabled={
+          //   buttonText === "Verify" && sixDigitCode.length !== 6
+          //     ? true
+          //     : attributes.disabled || disabled
+          // }
         >
           {buttonText}
         </Button>

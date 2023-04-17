@@ -2,14 +2,15 @@ import Box from "@mui/material/Box"
 import { ReactNode } from "react"
 import { useSelector } from "react-redux"
 
+import DefaultAvatar from "../../../public/images/DefaultAvatar"
+import Dropdown from "../../../public/images/Dropdown"
 import Cmid from "../../../public/images/app_icons/Cmid"
 import { selectActiveNav } from "../../../state/store/slice/layoutSlice"
 import { Navs } from "../../../types/enum"
 import AccountMenu from "../../AccountMenu"
-import LoginMenu from '../../LoginMenu'
-import RegistrationMenu from '../../RegistrationMenu'
+import DropdownMenu from "../../DropdownMenu"
 
-import { StyledWrapper, StyledContent, StyledHeader, StyledContentWrapper } from "./styles"
+import { StyledWrapper, StyledContent, StyledHeader } from "./styles"
 
 interface AccountLayoutProps {
   children: ReactNode
@@ -17,6 +18,7 @@ interface AccountLayoutProps {
 
 const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
   const activeNav = useSelector(selectActiveNav)
+
   const renderTitle = (activeNav: string) => {
     let title = ""
     switch (activeNav) {
@@ -33,37 +35,33 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
     return title
   }
 
-  const renderSideContent = () => {
-    if ( activeNav === "LOGIN" ) {
-      return <LoginMenu />
-    }
-    if (activeNav === 'REGISTER') {
-      return <RegistrationMenu />
-    }
-    return <AccountMenu />
-  }
   return (
     <StyledWrapper>
+      <Box display="flex" width="100%">
         <Box
           display="flex"
           flexDirection="column"
+          width="400px"
           bgcolor="#161622"
         >
           <StyledHeader>
             <Cmid />
             <div>Cooler Master ID</div>
           </StyledHeader>
-            {renderSideContent()}
+          <AccountMenu />
         </Box>
-        <StyledContentWrapper>
-          <Box display="flex">
+        <Box px="48px" pt="48px" width="76%">
+          <Box display="flex" justifyContent="space-between">
             <Box fontFamily="Teko" fontSize="48px" color="#A2A1C6">
               {renderTitle(activeNav)}
             </Box>
-            {/* <Box>logout</Box> */}
+            <Box>
+              <DropdownMenu />
+            </Box>
           </Box>
           <StyledContent>{children}</StyledContent>
-        </StyledContentWrapper>
+        </Box>
+      </Box>
     </StyledWrapper>
   )
 }

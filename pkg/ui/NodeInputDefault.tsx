@@ -1,74 +1,44 @@
 import { Box, Link } from "@mui/material"
 import { TextInput } from "@ory/themes"
 import { useRouter } from "next/router"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 
 import RecoveryProcess from "../../components/changepassword/RecoveryProcess"
+import CodeInput from "../../components/verification/CodeInput"
 import Eye from "../../public/images/eyes"
-import { selectActiveNav, setDialog } from "../../state/store/slice/layoutSlice"
-import { Navs } from "../../types/enum"
+import {
+  selectActiveNav,
+  selectActiveStage,
+  selectSixDigitCode,
+  setDialog,
+} from "../../state/store/slice/layoutSlice"
+import {
+  StyledDefaultInput,
+  StyledDefaultLabel,
+  StyledPasswordIcon,
+} from "../../styles/share"
+import { Navs, Stage } from "../../types/enum"
 import { CenterLink } from "../styled"
 
 import { NodeInputProps } from "./helpers"
-
-const StyledDefaultInput = styled.div`
-  position: relative;
-  input:-webkit-autofill,
-  textarea:-webkit-autofill,
-  select:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 1000px #37374F inset !important;
-    -webkit-text-fill-color: white !important;
-  }
-
-  
-  input {
-    padding: ${(props) =>
-      props.isInputLabel ? "12px 16px 12px 82px" : "12px 16px"};
-  } 
-}
-`
-const StyledDefaultLabel = styled.label`
-  font-family: "Open Sans";
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 20px;
-  position: absolute;
-  pointer-events: none;
-  left: 16px;
-  top: ${(props) => (props?.isError ? "40%" : "45%")};
-  transform: translate(0%, -50%);
-  color: #717197;
-`
-const StyledPasswordIcon = styled.span`
-  display: inline-block;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  position: absolute;
-  right: 16px;
-  top: ${(props) => (props?.isError ? "40%" : "45%")};
-  transform: translate(0%, -50%);
-  cursor: pointer;
-`
 
 export function NodeInputDefault<T>(props: NodeInputProps) {
   const router = useRouter()
   const dispatch = useDispatch()
   const nav = useSelector(selectActiveNav)
+  const activeStage = useSelector(selectActiveStage)
+  const sixDigitCode = useSelector(selectSixDigitCode)
   const { node, attributes, value = "", setValue, disabled } = props
   const label = node.meta.label?.text === "ID" ? "Email" : node.meta.label?.text
   const [isError, setIsError] = useState(node.messages.length > 0)
   const [inputType, setInputType] = useState(attributes.type)
+  const inputRef = useRef(null)
 
   useEffect(() => {
     setIsError(node.messages.length > 0)
   }, [node.messages.length])
-
-  useEffect(() => {
-    console.log("props", props)
-  }, [props])
 
   const isInputLabel = useMemo(() => {
     const list = ["/login", "/registration"]
@@ -94,7 +64,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   const openDialog = () => {
     dispatch(
       setDialog({
-        title: "Forgot Password ",
+        title: "Forgot Password",
         titleHeight: "58px",
         width: 480,
         height: 358,
@@ -104,11 +74,14 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     )
   }
 
-  const SelectComponent = () => {}
-
   // Render a generic text input field.
   return (
     <>
+      {/* <CodeInput /> */}
+      {((activeStage === Stage.VERIFY_CODE && nav !== Navs.RECOVERY) ||
+        (nav === Navs.VERIFICATION && activeStage === Stage.NONE)) && (
+        <CodeInput />
+      )}
       <StyledDefaultInput isInputLabel={isInputLabel}>
         {isInputLabel && (
           <StyledDefaultLabel isError={isError}>{label}</StyledDefaultLabel>
@@ -116,13 +89,18 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
         <TextInput
           className="my-text-input"
           style={{
+            display:
+              label === "Verify code" && nav !== Navs.RECOVERY
+                ? "none"
+                : "unset",
             border: isError ? "1px solid #F24867" : "none",
             backgroundColor: "#37374F",
             height: "44px",
             color: "#fff",
             caretColor: "#fff",
             borderRadius: "8px",
-            margin: '0px'
+            padding: isInputLabel ? "0px 0px 0px 82px" : "12px 16px",
+            margin: "0px",
           }}
           placeholder={
             isInputLabel
@@ -139,6 +117,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           type={inputType}
           name={attributes.name}
           value={value}
+          // value={label === "Verify code" ? sixDigitCode : value}
           disabled={attributes.disabled || disabled}
           help={node.messages.length > 0}
           state={
@@ -177,15 +156,29 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
         <span
           style={{
             color: "#CA4AE8",
-            fontSize: "13px",
+            fontSize: "16px",
             cursor: "pointer",
             fontFamily: "Open Sans",
+            position: "relative",
+            paddingBottom: "36px",
           }}
           onClick={() => {
             openDialog()
           }}
         >
           Forgot Password?
+        </span>
+      )}
+
+      {attributes.name === "password" && nav === "REGISTER" && !isError && (
+        <span
+          style={{
+            color: "#7E7E89",
+            fontSize: "13px",
+            fontFamily: "Open Sans",
+          }}
+        >
+          A combination of numbers and characters. (min 8 characters)
         </span>
       )}
     </>

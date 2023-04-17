@@ -4,18 +4,20 @@
  */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Navs } from '../../../types/enum';
+import { Navs, Stage } from '../../../types/enum';
 
 import { DialogProps, LayoutSliceStateI } from '../../../types/model/stateModels';
 
 // Init State
 const initialState: LayoutSliceStateI = {
   activeNav: Navs.HOME,
+  activeStage: Stage.NONE,
   // this state should be moved to a separate slice, just for convenience
   // it's not related to layout
   dialog: null,
   dialog2: null,
   dialogLayer: 0,
+  sixDigitCode: '',
 };
 
 export const layoutSlice = createSlice({
@@ -27,6 +29,18 @@ export const layoutSlice = createSlice({
       { payload }: PayloadAction<Navs>
     ) => {
       state.activeNav = payload;
+    },
+    setActiveStage: (
+      state: LayoutSliceStateI,
+      { payload }: PayloadAction<Stage>
+    ) => {
+      state.activeStage = payload;
+    },
+    setSixDigitCode: (
+      state: LayoutSliceStateI,
+      { payload }: PayloadAction<string>
+    ) => {
+      state.sixDigitCode = payload;
     },
     setDialog: (state: any, { payload }: PayloadAction<DialogProps | null>) => {
       if (payload === null) {
@@ -63,6 +77,18 @@ export const selectActiveNav = (state: {
   };
 }) => state.layout.activeNav;
 
+export const selectActiveStage = (state: {
+  layout: {
+    activeStage: Stage;
+  };
+}) => state.layout.activeStage;
+
+export const selectSixDigitCode = (state: {
+  layout: {
+    sixDigitCode: string;
+  };
+}) => state.layout.sixDigitCode;
+
 export const selectDialog = (state: {
   layout: {
     dialog: DialogProps;
@@ -78,6 +104,8 @@ export const selectDialog2 = (state: {
 // Actions
 export const {
   setActiveNav,
+  setActiveStage,
+  setSixDigitCode,
   setDialog,
 } = layoutSlice.actions;
 
