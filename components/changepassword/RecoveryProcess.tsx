@@ -17,6 +17,7 @@ import {
   setDialog,
   selectDialog,
   setActiveStage,
+  selectActiveStage,
 } from "../../state/store/slice/layoutSlice"
 import { Stage } from "../../types/enum"
 
@@ -27,7 +28,7 @@ const RecoveryProcess: NextPage = () => {
     "Enter your registered email below and we’ll send you a reset link.",
   )
   const dispatch = useDispatch()
-
+  const activeStage = useSelector(selectActiveStage)
   // Get ?flow=... from the URL
   const router = useRouter()
   const { flow: flowId, return_to: returnTo } = router.query
@@ -130,9 +131,11 @@ const RecoveryProcess: NextPage = () => {
             {dialogMsg}
           </Box>
           {/* <CardTitle>Check Email</CardTitle> */}
-          <Box color="#A5A5A9" fontSize="14px" fontFamily="open sans">
-            Email *
-          </Box>
+          {activeStage === Stage.FORGOT_PASSWORD && (
+            <Box color="#A5A5A9" fontSize="14px" fontFamily="open sans">
+              Email *
+            </Box>
+          )}
           <Flow onSubmit={onSubmit} flow={flow} hideSocialLogin />
         </Box>
         {/* <ActionCard>

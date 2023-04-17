@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box"
 import {
   LoginFlow,
   RecoveryFlow,
@@ -191,6 +192,9 @@ export default class Flow<T extends Values> extends Component<
           disabled={isLoading}
           attributes={csrfTokenNode.attributes}
         />
+        <Box color="#717197" fontSize="14px" fontFamily="open sans">
+          New Password *
+        </Box>
         <NodeInputDefault
           value={values[getNodeId(passwordNode)]}
           node={passwordNode}
@@ -211,8 +215,14 @@ export default class Flow<T extends Values> extends Component<
           }
           attributes={passwordNode.attributes}
         />
+        <Box color="#7E7E89" fontSize="13px" fontFamily="open sans">
+          A number and combination of characters. (min 8 characters)
+        </Box>
+        <Box color="#717197" fontSize="14px" fontFamily="open sans">
+          Confirm New Password *
+        </Box>
         <TextInput
-          title="Confirm New Password *"
+          // title="Confirm New Password *"
           onChange={(e) => {
             this.setState((state) => ({
               ...state,
