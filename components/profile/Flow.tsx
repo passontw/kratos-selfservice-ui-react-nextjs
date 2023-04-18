@@ -1,4 +1,10 @@
 import {
+  StyledForm,
+  StyledImageUpload,
+  StyledProfileDeco,
+  StyledSideInputs,
+} from "../../styles/pages/profile.styles"
+import {
   LoginFlow,
   RecoveryFlow,
   RegistrationFlow,
@@ -64,7 +70,10 @@ type State<T> = {
   isLoading: boolean
 }
 
-export default class Flow<T extends Values> extends Component<Props<T>, State<T>> {
+export default class Flow<T extends Values> extends Component<
+  Props<T>,
+  State<T>
+> {
   constructor(props: Props<T>) {
     super(props)
     this.state = {
@@ -178,8 +187,16 @@ export default class Flow<T extends Values> extends Component<Props<T>, State<T>
     const { hideGlobalMessages, flow } = this.props
     const { values, isLoading } = this.state
 
+    console.log("@profile nodes:", nodes)
+
     // Filter the nodes - only show the ones we want
     const nodes = this.filterNodes()
+
+    // acquire profileNode
+    const profileNode = nodes.find((node) => node.name === "traits.avatar")
+    const profileNodeId = getNodeId(profileNode) as keyof Values
+    // remove it from the other nodes to sperate its view from the rest of the form
+    nodes.splice(nodes.indexOf(profileNode), 1)
 
     if (!flow) {
       // No flow was set yet? It's probably still loading...
@@ -196,36 +213,67 @@ export default class Flow<T extends Values> extends Component<Props<T>, State<T>
         onSubmit={this.handleSubmit}
       >
         {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
-        {nodes.map((node, k) => {
-          // console.log(node)
-          const id = getNodeId(node) as keyof Values
-          // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
-          // if (node.meta.label?.text === "E-Mail") return
 
-          return (
-            <Node
-              key={`${id}-${k}`}
-              disabled={isLoading}
-              node={node}
-              value={values[id]}
-              dispatchSubmit={this.handleSubmit}
-              setValue={(value) =>
-                new Promise((resolve) => {
-                  this.setState(
-                    (state) => ({
-                      ...state,
-                      values: {
-                        ...state.values,
-                        [getNodeId(node)]: value,
-                      },
-                    }),
-                    resolve,
-                  )
-                })
-              }
-            />
-          )
-        })}
+        <StyledForm>
+          <StyledImageUpload>
+            {profileNode && (
+              <Node
+                disabled={isLoading}
+                node={profileNode}
+                value={values[profileNodeId]}
+                dispatchSubmit={this.handleSubmit}
+                setValue={(value) =>
+                  new Promise((resolve) => {
+                    this.setState(
+                      (state) => ({
+                        ...state,
+                        values: {
+                          ...state.values,
+                          [getNodeId(profileNode)]: value,
+                        },
+                      }),
+                      resolve,
+                    )
+                  })
+                }
+              />
+            )}
+          </StyledImageUpload>
+
+          <StyledSideInputs>
+            <StyledProfileDeco src={"/images/purple-deco.png"} />
+            {nodes.map((node, k) => {
+              // console.log(node)
+              const id = getNodeId(node) as keyof Values
+              // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
+              // if (node.meta.label?.text === "E-Mail") return
+
+              return (
+                <Node
+                  key={`${id}-${k}`}
+                  disabled={isLoading}
+                  node={node}
+                  value={values[id]}
+                  dispatchSubmit={this.handleSubmit}
+                  setValue={(value) =>
+                    new Promise((resolve) => {
+                      this.setState(
+                        (state) => ({
+                          ...state,
+                          values: {
+                            ...state.values,
+                            [getNodeId(node)]: value,
+                          },
+                        }),
+                        resolve,
+                      )
+                    })
+                  }
+                />
+              )
+            })}
+          </StyledSideInputs>
+        </StyledForm>
       </form>
     )
   }
