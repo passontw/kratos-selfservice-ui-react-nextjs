@@ -248,10 +248,10 @@ export default class Flow<T extends Values> extends Component<
       this.spliceNode("traits.birthdayYear", nodes)
 
     // acquire method (submit button)
-    // const { node: methodNode, nodeId: methodNodeId } = this.spliceNode(
-    //   "traits.method",
-    //   nodes,
-    // )
+    const { node: methodNode, nodeId: methodNodeId } = this.spliceNode(
+      "method",
+      nodes,
+    )
 
     if (!flow) {
       // No flow was set yet? It's probably still loading...
@@ -436,7 +436,7 @@ export default class Flow<T extends Values> extends Component<
                 )}
               </StyledBirthdayWrap>
               {/* method node (submit button) */}
-              {/* {methodNode && (
+              {methodNode && (
                 <StyledSubmitArea>
                   <Node
                     disabled={isLoading}
@@ -459,7 +459,7 @@ export default class Flow<T extends Values> extends Component<
                     }
                   />
                 </StyledSubmitArea>
-              )} */}
+              )}
             </StyledSideInputs>
           </StyledSideWrap>
         </StyledForm>
