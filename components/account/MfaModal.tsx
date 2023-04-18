@@ -11,9 +11,10 @@ interface MfaModalProps {
 
 const MfaModal: React.FC<MfaModalProps> = () => {
   const mfaState = useSelector(selectMfaState)
+  console.log("mfaState", mfaState)
   const modalContent = mfaState
-    ? "You will no longer receive a code if we notice an attempted login from an unrecognized device or browser. Are you sure to proceed?"
-    : "If 2-step verification is turned on, you’ll need to complete the email verification process every time you log in."
+    ? "If 2-step verification is turned on, you’ll need to complete the email verification process every time you log in."
+    : "You will no longer receive a code if we notice an attempted login from an unrecognized device or browser. Are you sure to proceed?"
 
   return (
     <Box>

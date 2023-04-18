@@ -220,7 +220,7 @@ const Account: NextPage = () => {
             only="profile"
             flow={flow}
             modalOpen={mfaModalOpen}
-            mfaState={mfaState}
+            // mfaState={mfaState}
             dispatch={dispatch}
           />
         </SettingsCard>

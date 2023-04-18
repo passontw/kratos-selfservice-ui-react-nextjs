@@ -19,6 +19,7 @@ import {
   selectActiveNav,
   selectActiveStage,
   selectDialog,
+  selectMfaState,
   setActiveStage,
   setDialog,
   setMfaModalOpen,
@@ -69,6 +70,7 @@ const Dialog: React.FC<DialogProps> = ({
 
   const activeNav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
+  const mfaState = useSelector(selectMfaState)
 
   return (
     <MuiDialog
@@ -92,7 +94,11 @@ const Dialog: React.FC<DialogProps> = ({
     >
       {title && (
         <StyledDialogTitle titleHeight={titleHeight}>
-          <div>{title}</div>
+          <div>
+            {title.includes("2-Step")
+              ? `Turn ${mfaState ? "on" : "off"} 2-Step Verification`
+              : title}
+          </div>
           <IconButton
             onClick={(e) => {
               dispatch(setActiveStage(Stage.NONE))
