@@ -14,6 +14,7 @@ import VerificationModal from "../components/account/VerificationModal"
 import { Methods, ActionCard, Messages } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
+import Bin from "../public/images/Bin"
 import { setActiveNav } from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
 
@@ -69,7 +70,7 @@ const Account: NextPage = () => {
       headers: { withCredentials: true },
     })
     return axios
-      .delete(`https://auth.passon.tw/admin/identities/${data.identity.id}`, {
+      .delete(`${process.env.ORY_SDK_URL}/admin/identities/${data.identity.id}`, {
         headers: {
           Accept: "application/json",
           Authorization: `Bearer ${process.env.ORY_PAT}`,
@@ -114,7 +115,6 @@ const Account: NextPage = () => {
               updateSettingsFlowBody: values,
             })
             .then(({ data }) => {
-              console.log("🚀 ~ file: account.tsx:109 ~ .then ~ data:", data)
               // The settings have been saved and the flow was updated. Let's show it to the user!
               setFlow(data)
             })
@@ -172,7 +172,13 @@ const Account: NextPage = () => {
           <Box color="#717197" fontFamily="open sans" fontSize="22px">
             Account Linking
           </Box>
-          <Box color="#A5A5A9" fontFamily="open sans" fontSize="14px">
+          <Box
+            color="#A5A5A9"
+            fontFamily="open sans"
+            fontSize="14px"
+            mt="4px"
+            mb="12px"
+          >
             Connect your account with one of these third parties to sign in
             quickly and easily.
           </Box>
@@ -188,7 +194,13 @@ const Account: NextPage = () => {
           <Box color="#717197" fontFamily="open sans" fontSize="22px">
             2-step Verification
           </Box>
-          <Box color="#A5A5A9" fontFamily="open sans" fontSize="14px">
+          <Box
+            color="#A5A5A9"
+            fontFamily="open sans"
+            fontSize="14px"
+            mt="4px"
+            mb="12px"
+          >
             Each time you sign in to Cooler Master service, we’ll send you a
             verification code to prevent unauthorized access.
           </Box>
@@ -201,10 +213,36 @@ const Account: NextPage = () => {
           />
         </SettingsCard>
         <SettingsCard only="profile" flow={flow}>
-          <Box color="#717197" fontFamily="open sans" fontSize="22px">
+          <Box color="#717197" fontFamily="open sans" fontSize="22px" mt="36px">
             Account Management
           </Box>
-          <button onClick={deleteAccountPromt}>刪除帳號</button>
+          <Box
+            mt="12px"
+            height="74px"
+            bgcolor="#272735"
+            borderRadius="12px"
+            display="flex"
+            alignItems="center"
+            pl="27px"
+          >
+            <Box
+              display="flex"
+              gap="15px"
+              width="fit-content"
+              onClick={deleteAccountPromt}
+              sx={{
+                cursor: "pointer",
+              }}
+            >
+              <Box pt="1.5px">
+                <Bin />
+              </Box>
+              <Box color="#F24867" fontSize="20px" fontFamily="open sans">
+                Delete my account
+              </Box>
+            </Box>
+          </Box>
+          {/* <button onClick={deleteAccountPromt}>刪除帳號</button> */}
           <VerificationModal deleteAccount={deleteAccount} />
         </SettingsCard>
       </Box>
