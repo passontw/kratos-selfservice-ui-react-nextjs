@@ -6,7 +6,10 @@ import React from "react"
 import { useDispatch } from "react-redux"
 
 import { ValueSetter } from "../../pkg/ui/helpers"
-import { setMfaModalOpen } from "../../state/store/slice/layoutSlice"
+import {
+  setMfaModalOpen,
+  setMfaState,
+} from "../../state/store/slice/layoutSlice"
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,
@@ -66,6 +69,7 @@ const CustomizedSwitches: React.FC<SwitchProps> = ({
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (origin === "MFA") {
       dispatch(setMfaModalOpen(true))
+      dispatch(setMfaState(event.target.checked))
     }
     setChecked(event.target.checked)
     change(event.target.checked)

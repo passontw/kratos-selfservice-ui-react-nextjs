@@ -17,6 +17,7 @@ import ory from "../pkg/sdk"
 import Bin from "../public/images/Bin"
 import {
   selectMfaModalOpen,
+  selectMfaState,
   setActiveNav,
 } from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
@@ -66,6 +67,7 @@ const Account: NextPage = () => {
   const [flow, setFlow] = useState<SettingsFlow>()
   const router = useRouter()
   const mfaModalOpen = useSelector(selectMfaModalOpen)
+  const mfaState = useSelector(selectMfaState)
 
   const { flow: flowId, return_to: returnTo } = router.query
 
@@ -218,6 +220,7 @@ const Account: NextPage = () => {
             only="profile"
             flow={flow}
             modalOpen={mfaModalOpen}
+            mfaState={mfaState}
             dispatch={dispatch}
           />
         </SettingsCard>

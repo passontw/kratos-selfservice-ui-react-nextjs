@@ -19,6 +19,7 @@ import { Node } from "../../pkg/ui/Node"
 import { setDialog, setMfaModalOpen } from "../../state/store/slice/layoutSlice"
 
 import { Messages } from "./Messages"
+import MfaModal from "./MfaModal"
 
 export type Values = Partial<
   | UpdateLoginFlowBody
@@ -57,7 +58,9 @@ export type Props<T> = {
   hideGlobalMessages?: boolean
   // modal is open or not
   modalOpen?: boolean
-
+  // state of mfa
+  mfaState: boolean
+  // dispatch function
   dispatch?: any
 }
 
@@ -94,12 +97,19 @@ export default class Flow<T extends Values> extends Component<
     if (this.props.modalOpen) {
       this.props.dispatch(
         setDialog({
-          title: "Turn 2-Step Verification",
+          title: `Turn ${
+            this.props.mfaState ? "off" : "on"
+          } 2-Step Verification`,
           titleHeight: "58px",
           width: 480,
           height: 358,
           center: true,
-          children: <div>123</div>,
+          children: (
+            <MfaModal
+              mfaState={this.props.mfaState}
+              submit={this.handleSubmit}
+            />
+          ),
         }),
       )
     }
