@@ -193,6 +193,7 @@ export default class Flow<T extends Values> extends Component<
 
     // acquire profileNode
     const profileNode = nodes?.find((node) => node.name === "traits.avatar")
+    console.log("@profile profileNode:", profileNode, " from:", nodes)
     const profileNodeId =
       profileNode && (getNodeId(profileNode) as keyof Values)
     // remove it from the other nodes to sperate its view from the rest of the form
