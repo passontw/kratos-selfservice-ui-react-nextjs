@@ -39,21 +39,22 @@ export function NodeInputCheckbox<T>({
         </Box>
       </Box>
       <Box>
-        <Checkbox
-          // className="custom-switch"
-          style={{ display: "block" }}
-          name={attributes.name}
-          defaultChecked={attributes.value}
-          onChange={(e) => setValue(e.target.checked)}
-          disabled={attributes.disabled || disabled}
-          // label={getNodeLabel(node)}
-          state={
-            node.messages.find(({ type }) => type === "error")
-              ? "error"
-              : undefined
-          }
-          subtitle={node.messages.map(({ text }) => text).join("\n")}
-        />
+        <label className="customSwitch">
+          <Checkbox
+            style={{ display: "block" }}
+            name={attributes.name}
+            defaultChecked={attributes.value}
+            onChange={(e) => setValue(e.target.checked)}
+            disabled={attributes.disabled || disabled}
+            // label={getNodeLabel(node)}
+            state={
+              node.messages.find(({ type }) => type === "error")
+                ? "error"
+                : undefined
+            }
+            subtitle={node.messages.map(({ text }) => text).join("\n")}
+          />
+        </label>
       </Box>
     </Box>
   )
