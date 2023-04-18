@@ -3,22 +3,20 @@ import { SettingsFlow, UpdateSettingsFlowBody } from "@ory/client"
 import axios from "axios"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
-import {  useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
 import AccountLayout from "../components/Layout/AccountLayout"
-
+import LinkNav from "../components/LinkNav"
+import MenuFooter from "../components/MenuFooter"
 import { Methods, ActionCard, Messages } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
-import { setActiveNav } from "../state/store/slice/layoutSlice"
-import { Navs } from "../types/enum"
-
 import Cmodx from "../public/images/app_icons/Cmodx"
 import MasterControl from "../public/images/app_icons/MasterControl"
 import Stormplay from "../public/images/app_icons/Stormplay"
-import MenuFooter from '../components/MenuFooter'
-import LinkNav from '../components/LinkNav'
+import { setActiveNav } from "../state/store/slice/layoutSlice"
+import { Navs } from "../types/enum"
 
 interface Props {
   flow?: SettingsFlow
@@ -82,39 +80,108 @@ const Export: NextPage = () => {
 
   return (
     <AccountLayout>
-      <Box display="flex" flexDirection="column" position="relative" height='100%' marginTop="48px">
-        <p style={{color: '#717197', fontFamily: 'Open Sans', fontSize: '22px', fontWeight: '400',margin: '0px 0px 12px 0px'}}>Service</p>
-        <Box display="flex" alignItems="center" justifyContent="space-between" color="#FFF" fontFamily="Open Sans" backgroundColor="#272735" padding="24px" borderRadius="20px" marginBottom="36px">
+      <Box
+        display="flex"
+        flexDirection="column"
+        position="relative"
+        height="100%"
+        marginTop="48px"
+      >
+        <p
+          style={{
+            color: "#717197",
+            fontFamily: "Open Sans",
+            fontSize: "22px",
+            fontWeight: "400",
+            margin: "0px 0px 12px 0px",
+          }}
+        >
+          Service
+        </p>
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          color="#FFF"
+          fontFamily="Open Sans"
+          backgroundColor="#272735"
+          padding="24px"
+          borderRadius="20px"
+          marginBottom="36px"
+        >
           <Box display="flex" alignItems="center">
             <Stormplay />
-            <span style={{paddingLeft: "32px"}}>StormPlay</span>
+            <span style={{ paddingLeft: "32px" }}>StormPlay</span>
           </Box>
-          <Box backgroundColor="#A62BC3" padding="12px 20px" borderRadius="8px" sx={{
-              '&:hover': {
-                  cursor: 'pointer'
-              }}}>Export</Box>
-        </Box>
-        
-        <Box display="flex" alignItems="center" justifyContent="space-between" color="#FFF" fontFamily="Open Sans" backgroundColor="#272735" padding="24px" borderRadius="20px" marginBottom="36px">
-          <Box display="flex" alignItems="center">
-            <MasterControl />
-            <span style={{paddingLeft: "32px"}}>Master Control</span>
+          <Box
+            backgroundColor="#A62BC3"
+            padding="12px 20px"
+            borderRadius="8px"
+            sx={{
+              "&:hover": {
+                cursor: "pointer",
+              },
+            }}
+          >
+            Export
           </Box>
-          <Box backgroundColor="#A62BC3" padding="12px 20px" borderRadius="8px" sx={{
-              '&:hover': {
-                  cursor: 'pointer'
-              }}}>Export</Box>
         </Box>
 
-        <Box display="flex" alignItems="center" justifyContent="space-between" color="#FFF" fontFamily="Open Sans" backgroundColor="#272735" padding="24px" borderRadius="20px" >
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          color="#FFF"
+          fontFamily="Open Sans"
+          backgroundColor="#272735"
+          padding="24px"
+          borderRadius="20px"
+          marginBottom="36px"
+        >
+          <Box display="flex" alignItems="center">
+            <MasterControl />
+            <span style={{ paddingLeft: "32px" }}>Master Control</span>
+          </Box>
+          <Box
+            backgroundColor="#A62BC3"
+            padding="12px 20px"
+            borderRadius="8px"
+            sx={{
+              "&:hover": {
+                cursor: "pointer",
+              },
+            }}
+          >
+            Export
+          </Box>
+        </Box>
+
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          color="#FFF"
+          fontFamily="Open Sans"
+          backgroundColor="#272735"
+          padding="24px"
+          borderRadius="20px"
+        >
           <Box display="flex" alignItems="center">
             <Cmodx />
-            <span style={{paddingLeft: "32px"}}>CMODX</span>
+            <span style={{ paddingLeft: "32px" }}>CMODX</span>
           </Box>
-          <Box backgroundColor="#A62BC3" padding="12px 20px" borderRadius="8px" sx={{
-              '&:hover': {
-                  cursor: 'pointer'
-              }}}>Export</Box>
+          <Box
+            backgroundColor="#A62BC3"
+            padding="12px 20px"
+            borderRadius="8px"
+            sx={{
+              "&:hover": {
+                cursor: "pointer",
+              },
+            }}
+          >
+            Export
+          </Box>
         </Box>
       </Box>
       <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
