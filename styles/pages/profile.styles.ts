@@ -2,15 +2,17 @@ import { styled } from "@mui/system"
 
 import { WHITE } from "../../constants/colors"
 
-const StyledProfileArea = styled("div")(() => ({
-  fontFamily: "Open Sans",
-  marginTop: "48px",
-  backgroundColor: "#272735",
-  paddingLeft: "74px",
-  paddingRight: "48px",
-  paddingBottom: "96px",
-  borderRadius: "12px",
-}))
+const StyledProfileArea = styled("div")<{ paddingRight?: string }>(
+  ({ paddingRight }) => ({
+    fontFamily: "Open Sans",
+    marginTop: "48px",
+    backgroundColor: "#272735",
+    paddingLeft: "74px",
+    paddingRight: "48px",
+    paddingBottom: "96px",
+    borderRadius: "12px",
+  }),
+)
 
 const StyledProfileDeco = styled("img")(() => ({}))
 
@@ -37,7 +39,23 @@ const StyledImageText = styled("div")(() => ({
   color: "#7E7E89",
 }))
 
-const StyledSideInputs = styled("div")(() => ({}))
+const StyledProfileImageWrap = styled("div")(() => ({
+  position: "relative",
+}))
+
+const StyledProfileImage = styled("img")(() => ({
+  width: "168px",
+}))
+
+const StyledEditButton = styled("img")(() => ({
+  position: "absolute",
+  bottom: 0,
+  right: "-5px",
+}))
+
+const StyledSideInputs = styled("div")(() => ({
+  padding: "48px 48px",
+}))
 
 export {
   StyledProfileArea,
@@ -47,4 +65,7 @@ export {
   StyledProfileDeco,
   StyledImageTitle,
   StyledImageText,
+  StyledEditButton,
+  StyledProfileImage,
+  StyledProfileImageWrap,
 }

@@ -1,9 +1,12 @@
 import {
+  StyledEditButton,
   StyledForm,
   StyledImageText,
   StyledImageTitle,
   StyledImageUpload,
   StyledProfileDeco,
+  StyledProfileImage,
+  StyledProfileImageWrap,
   StyledSideInputs,
 } from "../../styles/pages/profile.styles"
 import {
@@ -221,6 +224,9 @@ export default class Flow<T extends Values> extends Component<
 
         <StyledForm>
           <StyledImageUpload>
+            {/* TODO - in production when there is DB and backend server
+            this requires uploading local image to S3  */}
+            {/* Actual Form Data is passed to this node: */}
             {profileNode && (
               <Node
                 disabled={isLoading}
@@ -244,12 +250,20 @@ export default class Flow<T extends Values> extends Component<
               />
             )}
 
+            {/* Temporary placeholder, need to merge with the input above
+            when there is actual image upload */}
+
+            <StyledProfileImageWrap>
+              <StyledProfileImage src={"/images/profile-pic.png"} />
+              <StyledEditButton src={"/images/edit-icon.png"} />
+            </StyledProfileImageWrap>
+
             <StyledImageTitle>master123@gmail.com</StyledImageTitle>
-            <StyledImageText> </StyledImageText>
+            <StyledImageText>Joined since May 2022</StyledImageText>
           </StyledImageUpload>
 
+          <StyledProfileDeco src={"/images/purple-deco.png"} />
           <StyledSideInputs>
-            <StyledProfileDeco src={"/images/purple-deco.png"} />
             {nodes.map((node, k) => {
               // console.log(node)
               const id = getNodeId(node) as keyof Values
