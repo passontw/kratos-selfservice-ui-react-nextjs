@@ -40,7 +40,7 @@ export function NodeInputCheckbox<T>({
       </Box>
       <Box>
         <Checkbox
-          className="custom-switch"
+          // className="custom-switch"
           style={{ display: "block" }}
           name={attributes.name}
           defaultChecked={attributes.value}
