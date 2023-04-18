@@ -202,8 +202,6 @@ export default class Flow<T extends Values> extends Component<
         {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
         {nodes.map((node, k) => {
           const id = getNodeId(node) as keyof Values
-          console.log("+++++++++++++")
-          console.log(node)
           const isShow =
             node.attributes.name === "csrf_token" ||
             node.attributes.name === "traits.loginVerification" ||

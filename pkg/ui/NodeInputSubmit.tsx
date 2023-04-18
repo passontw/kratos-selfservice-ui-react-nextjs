@@ -45,7 +45,7 @@ export function NodeInputSubmit<T>({
         : isDialogForgotPswd
         ? "30px"
         : "unset",
-    marginTop: isDialogForgotPswd ? "30px" : isSignINOUT ? "36px" : "unset" ,
+    marginTop: isDialogForgotPswd ? "30px" : isSignINOUT ? "36px" : "unset",
   }
   const hiddenStyle = {
     display: "none",
@@ -69,6 +69,8 @@ export function NodeInputSubmit<T>({
     "Resend code",
     "Sign in",
     "Sign up",
+    "Link apple",
+    "Link google",
   ].includes(getNodeLabel(node))
   console.log("ppp", getNodeLabel(node))
   const link = ["Resend code"].includes(getNodeLabel(node))
