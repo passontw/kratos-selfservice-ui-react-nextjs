@@ -1,10 +1,7 @@
 import { Box } from "@mui/material"
 import { VerificationFlow, UpdateVerificationFlowBody } from "@ory/client"
-import { CardTitle } from "@ory/themes"
 import { AxiosError } from "axios"
 import type { NextPage } from "next"
-import Head from "next/head"
-import Link from "next/link"
 import { useRouter } from "next/router"
 import queryString from "query-string"
 import { useEffect, useState } from "react"
@@ -12,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux"
 
 import CmidHead from "../components/CmidHead"
 import { Flow } from "../components/verification/Flow"
-import { ActionCard, CenterLink, MarginCard } from "../pkg"
 import ory from "../pkg/sdk"
 import {
   selectSixDigitCode,
@@ -22,6 +18,9 @@ import { Navs } from "../types/enum"
 
 import { StyledMenuWrapper } from "./../styles/share"
 
+const localStorageKey = "!@#$%^&*()data"
+
+const { NEXT_PUBLIC_REDIRECT_URI } = process.env
 
 const Verification: NextPage = () => {
   const dispatch = useDispatch()
@@ -32,8 +31,20 @@ const Verification: NextPage = () => {
 
   // Get ?flow=... from the URL
   const router = useRouter()
-  const { flow: flowId, return_to: returnTo, user } = router.query
-
+  const {
+    login_challenge,
+    return_to: returnTo,
+    flow: flowId,
+    // Refresh means we want to refresh the session. This is needed, for example, when we want to update the password
+    // of a user.
+    refresh,
+    // AAL = Authorization Assurance Level. This implies that we want to upgrade the AAL, meaning that we want
+    // to perform two-factor authentication/verification.
+    aal,
+    user,
+    type,
+  } = router.query
+    
   const email = router.query.user as string
 
   useEffect(() => {
@@ -70,7 +81,6 @@ const Verification: NextPage = () => {
               return
             case 410:
               const newFlowID = err.response.data.use_flow_id
-              const { redirect_to } = router.components.query
               router
                 // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
                 // their data when they reload the page.
@@ -157,6 +167,33 @@ const Verification: NextPage = () => {
         console.log("data", data)
         setVerifySuccess(data.state === "passed_challenge")
         setFlow(data)
+        if (type === 'login') {
+          const values = JSON.parse(localStorage.getItem(localStorageKey))
+          ory.createBrowserLoginFlow({
+            refresh: Boolean(refresh),
+            aal: aal ? String(aal) : undefined,
+            returnTo: Boolean(login_challenge)
+              ? NEXT_PUBLIC_REDIRECT_URI
+              : undefined,
+          }).then(({data}) => {
+            const csrfNode = data.ui.nodes.find(node => node.attributes.name === "csrf_token")
+            
+            return ory
+            .updateLoginFlow({
+              flow: String(data?.id),
+              updateLoginFlowBody: {...values, csrf_token: csrfNode?.attributes.value},
+            }).then(() => flow)
+          }).then(flow => {
+            if (flow?.return_to) {
+              window.location.href = flow?.return_to
+              return
+            }
+            router.push("/profile")
+          }).catch(error => {
+            console.log(error)
+          })
+          return;
+        }
       })
       .catch((err: any) => {
         switch (err.response?.status) {

@@ -70,7 +70,7 @@ const Account: NextPage = () => {
       headers: { withCredentials: true },
     })
     return axios
-      .delete(`https://auth.passon.tw/admin/identities/${data.identity.id}`, {
+      .delete(`${process.env.ORY_SDK_URL}/admin/identities/${data.identity.id}`, {
         headers: {
           Accept: "application/json",
           Authorization: `Bearer ${process.env.ORY_PAT}`,
@@ -115,7 +115,6 @@ const Account: NextPage = () => {
               updateSettingsFlowBody: values,
             })
             .then(({ data }) => {
-              console.log("🚀 ~ file: account.tsx:109 ~ .then ~ data:", data)
               // The settings have been saved and the flow was updated. Let's show it to the user!
               setFlow(data)
             })
