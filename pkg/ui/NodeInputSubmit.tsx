@@ -29,6 +29,9 @@ export function NodeInputSubmit<T>({
   const isDialogForgotPswd =
     activeStage === Stage.FORGOT_PASSWORD && getNodeLabel(node) === "Submit"
   const isSignINOUT = ["Sign in", "Sign up"].includes(getNodeLabel(node))
+  const resendLink = ["Resend code"].includes(getNodeLabel(node))
+  const linkRelated =
+    getNodeLabel(node).includes("Link") || getNodeLabel(node).includes("Unlink")
 
   const defaultStyle = {
     backgroundColor: "#A62BC3",
@@ -37,7 +40,10 @@ export function NodeInputSubmit<T>({
     margin: "36px 0px 0px",
     fontSize: "16px",
     fontFamily: "Open Sans",
-    width: isDialogForgotPswd || activeNav === Navs.SETTINGS ? "95px" : "100%",
+    width:
+      isDialogForgotPswd || activeNav === Navs.SETTINGS || linkRelated
+        ? "95px"
+        : "100%",
     position:
       isDialogForgotPswd || activeNav === Navs.SETTINGS ? "absolute" : "unset",
     right:
@@ -76,15 +82,12 @@ export function NodeInputSubmit<T>({
     "Unlink apple",
   ].includes(getNodeLabel(node))
   console.log("ppp", getNodeLabel(node))
-  const link = ["Resend code"].includes(getNodeLabel(node))
   const buttonText =
     activeNav === Navs.VERIFICATION && getNodeLabel(node) === "Submit"
       ? "Verify"
       : getNodeLabel(node) === "Resend code"
       ? "Resend"
       : getNodeLabel(node)
-  const linkRelated =
-    getNodeLabel(node).includes("Link") || getNodeLabel(node).includes("Unlink")
 
   return (
     <>
@@ -99,7 +102,9 @@ export function NodeInputSubmit<T>({
             Didn’t receive?
           </Box>
           <Button
-            style={showButton ? (link ? linkStyle : defaultStyle) : hiddenStyle}
+            style={
+              showButton ? (resendLink ? linkStyle : defaultStyle) : hiddenStyle
+            }
             name={attributes.name}
             value={attributes.value || ""}
             disabled={attributes.disabled || disabled}
@@ -110,7 +115,9 @@ export function NodeInputSubmit<T>({
       ) : (
         <>
           <Button
-            style={showButton ? (link ? linkStyle : defaultStyle) : hiddenStyle}
+            style={
+              showButton ? (resendLink ? linkStyle : defaultStyle) : hiddenStyle
+            }
             name={attributes.name}
             value={attributes.value || ""}
             disabled={attributes.disabled || disabled}

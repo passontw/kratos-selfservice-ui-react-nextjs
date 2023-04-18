@@ -130,6 +130,7 @@ const ChangePassword: NextPage = () => {
       setFlow(nextFlow)
     }
   }
+  console.log('[flow]', flow)
 
   return (
     <AccountLayout>
