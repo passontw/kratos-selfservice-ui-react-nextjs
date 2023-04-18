@@ -15,6 +15,7 @@ export enum Navs {
   RECOVERY = "RECOVERY",
   SETTINGS = "SETTINGS",
   VERIFICATION = "VERIFICATION",
+  EXPORT = "EXPORT"
 }
 
 export enum Stage {

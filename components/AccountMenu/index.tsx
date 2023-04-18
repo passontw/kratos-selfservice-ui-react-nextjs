@@ -25,18 +25,21 @@ const AccountMenu: React.FC<AccountMenuProps> = () => {
 
   const Component = ({name, active, icon}: {name: string, active: boolean, icon: string}) => {
     const color = active ? "#CA4AE8" : "#FFFFFF"
+    const appIconMapping = {
+      User: User,
+      Tool: Tool,
+      Lock: Lock,
+      ServiceManagement: ServiceManagement,
+      Export: Export
+    }
+    const IconComponent = appIconMapping[icon]
     return (
       <>
         {active &&  (
           <StyledVercelWrapper>
             <Vercel color={color} />
           </StyledVercelWrapper>)}
-        {
-          icon === "User" ?  <User color={color} /> :
-          icon === "Tool" ?  <Tool color={color} /> : 
-          icon === "Lock" ?  <Lock color={color} /> : 
-          icon === "ServiceManagement" ? <ServiceManagement color={color}/> : <Export color={color}/>
-        }
+        <IconComponent color={color}/>
         {name}
       </>
     )
