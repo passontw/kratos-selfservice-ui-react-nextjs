@@ -4,6 +4,8 @@ import Switch from "@mui/material/Switch"
 import { styled } from "@mui/material/styles"
 import React from "react"
 
+import { ValueSetter } from "../../pkg/ui/helpers"
+
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,
   height: 16,
@@ -47,14 +49,15 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 
 interface SwitchProps {
   on: boolean
-  change?: (event: React.ChangeEvent<HTMLInputElement>) => void
+  change: ValueSetter
 }
 
-const CustomizedSwitches: React.FC<SwitchProps> = ({ on }) => {
+const CustomizedSwitches: React.FC<SwitchProps> = ({ on, change }) => {
   const [checked, setChecked] = React.useState(on)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked)
+    change(event.target.checked)
   }
 
   return (
