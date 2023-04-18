@@ -82,30 +82,39 @@ const Export: NextPage = () => {
 
   return (
     <AccountLayout>
-      <Box display="flex" flexDirection="column" position="relative" height='100%'>
+      <Box display="flex" flexDirection="column" position="relative" height='100%' marginTop="48px">
         <p style={{color: '#717197', fontFamily: 'Open Sans', fontSize: '22px', fontWeight: '400',margin: '0px 0px 12px 0px'}}>Service</p>
         <Box display="flex" alignItems="center" justifyContent="space-between" color="#FFF" fontFamily="Open Sans" backgroundColor="#272735" padding="24px" borderRadius="20px" marginBottom="36px">
           <Box display="flex" alignItems="center">
-            <Stormplay width='48' height='48' />
+            <Stormplay />
             <span style={{paddingLeft: "32px"}}>StormPlay</span>
           </Box>
-          <Box backgroundColor="#A62BC3" padding="12px 20px" borderRadius="8px" cursor="pointer">Export</Box>
+          <Box backgroundColor="#A62BC3" padding="12px 20px" borderRadius="8px" sx={{
+              '&:hover': {
+                  cursor: 'pointer'
+              }}}>Export</Box>
         </Box>
         
         <Box display="flex" alignItems="center" justifyContent="space-between" color="#FFF" fontFamily="Open Sans" backgroundColor="#272735" padding="24px" borderRadius="20px" marginBottom="36px">
           <Box display="flex" alignItems="center">
-            <MasterControl width='48' height='48' />
+            <MasterControl />
             <span style={{paddingLeft: "32px"}}>Master Control</span>
           </Box>
-          <Box backgroundColor="#A62BC3" padding="12px 20px" borderRadius="8px" cursor="pointer">Export</Box>
+          <Box backgroundColor="#A62BC3" padding="12px 20px" borderRadius="8px" sx={{
+              '&:hover': {
+                  cursor: 'pointer'
+              }}}>Export</Box>
         </Box>
 
         <Box display="flex" alignItems="center" justifyContent="space-between" color="#FFF" fontFamily="Open Sans" backgroundColor="#272735" padding="24px" borderRadius="20px" >
           <Box display="flex" alignItems="center">
-            <Cmodx  width='48' height='48' />
+            <Cmodx />
             <span style={{paddingLeft: "32px"}}>CMODX</span>
           </Box>
-          <Box backgroundColor="#A62BC3" padding="12px 20px" borderRadius="8px" cursor="pointer">Export</Box>
+          <Box backgroundColor="#A62BC3" padding="12px 20px" borderRadius="8px" sx={{
+              '&:hover': {
+                  cursor: 'pointer'
+              }}}>Export</Box>
         </Box>
       </Box>
       <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
