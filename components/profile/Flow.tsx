@@ -189,6 +189,16 @@ export default class Flow<T extends Values> extends Component<
       })
   }
 
+  spliceNode = (name: string, nodes: UiNode) => {
+    // acquire profileNode
+    const node = nodes?.find((node) => node.attributes.name === "traits.avatar")
+    console.log(`@profile ${name} node:`, node, " from:", nodes)
+    const nodeId = node && (getNodeId(node) as keyof Values)
+    // remove it from the other nodes to sperate its view from the rest of the form
+    nodes.splice(nodes.indexOf(node), 1)
+    return { node, nodeId }
+  }
+
   render() {
     const { hideGlobalMessages, flow } = this.props
     const { values, isLoading } = this.state
@@ -198,14 +208,16 @@ export default class Flow<T extends Values> extends Component<
     // console.log("@profile nodes:", nodes)
 
     // acquire profileNode
-    const profileNode = nodes?.find(
-      (node) => node.attributes.name === "traits.avatar",
+    const { node: profileNode, nodeId: profileNodeId } = this.spliceNode(
+      "traits.avatar",
+      nodes,
     )
-    console.log("@profile profileNode:", profileNode, " from:", nodes)
-    const profileNodeId =
-      profileNode && (getNodeId(profileNode) as keyof Values)
-    // remove it from the other nodes to sperate its view from the rest of the form
-    nodes.splice(nodes.indexOf(profileNode), 1)
+
+    // acquire profileNode
+    const { node: emailNode, nodeId: emailNodeId } = this.spliceNode(
+      "traits.email",
+      nodes,
+    )
 
     if (!flow) {
       // No flow was set yet? It's probably still loading...
@@ -228,7 +240,7 @@ export default class Flow<T extends Values> extends Component<
             {/* TODO - in production when there is DB and backend server
             this requires uploading local image to S3  */}
             {/* TODO - UNCOMMENT THIS AND WORK ON COMBINING UPLOAD UI
-            WITH THIS IMAGE UPLOAD */}
+            WITH THIS IMAGE UPLOAD INPUT */}
             {/* Actual Form Data is passed to this node: */}
             {/* {profileNode && (
               <Node
@@ -277,6 +289,30 @@ export default class Flow<T extends Values> extends Component<
                     node.attributes.name !== "traits.loginVerification",
                 ),
               )}
+
+              {emailNode && (
+                <Node
+                  disabled={isLoading}
+                  node={emailNode}
+                  value={values[emailNodeId]}
+                  dispatchSubmit={this.handleSubmit}
+                  setValue={(value) =>
+                    new Promise((resolve) => {
+                      this.setState(
+                        (state) => ({
+                          ...state,
+                          values: {
+                            ...state.values,
+                            [getNodeId(emailNode)]: value,
+                          },
+                        }),
+                        resolve,
+                      )
+                    })
+                  }
+                />
+              )}
+
               {nodes
                 .filter(
                   (node) =>
