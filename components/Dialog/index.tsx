@@ -21,6 +21,7 @@ import {
   selectDialog,
   setActiveStage,
   setDialog,
+  setMfaModalOpen,
 } from "../../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../../types/enum"
 
@@ -94,6 +95,7 @@ const Dialog: React.FC<DialogProps> = ({
           <IconButton
             onClick={(e) => {
               dispatch(setActiveStage(Stage.NONE))
+              dispatch(setMfaModalOpen(false))
               if (activeNav === Navs.RECOVERY) {
                 router.push("/login")
               }
