@@ -191,7 +191,7 @@ export default class Flow<T extends Values> extends Component<
 
   spliceNode = (name: string, nodes: UiNode) => {
     // acquire profileNode
-    const node = nodes?.find((node) => node.attributes.name === "traits.avatar")
+    const node = nodes?.find((node) => node.attributes.name === name)
     console.log(`@profile ${name} node:`, node, " from:", nodes)
     const nodeId = node && (getNodeId(node) as keyof Values)
     // remove it from the other nodes to sperate its view from the rest of the form
@@ -281,14 +281,6 @@ export default class Flow<T extends Values> extends Component<
             <StyledProfileDeco src={"/images/purple-deco.png"} />
             <StyledSideInputs>
               {/*  also remove fields not included in design  */}
-              {console.log(
-                "@profile nodes after filter:",
-                nodes.filter(
-                  (node) =>
-                    node.attributes.name !== "traits.email" ||
-                    node.attributes.name !== "traits.loginVerification",
-                ),
-              )}
 
               {emailNode && (
                 <Node
@@ -313,42 +305,36 @@ export default class Flow<T extends Values> extends Component<
                 />
               )}
 
-              {nodes
-                .filter(
-                  (node) =>
-                    node.attributes.name !== "traits.email" ||
-                    node.attributes.name !== "traits.loginVerification",
-                )
-                .map((node, k) => {
-                  // console.log(node)
-                  const id = getNodeId(node) as keyof Values
-                  // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
-                  // if (node.meta.label?.text === "E-Mail") return
+              {nodes.map((node, k) => {
+                // console.log(node)
+                const id = getNodeId(node) as keyof Values
+                // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
+                // if (node.meta.label?.text === "E-Mail") return
 
-                  return (
-                    <Node
-                      key={`${id}-${k}`}
-                      disabled={isLoading}
-                      node={node}
-                      value={values[id]}
-                      dispatchSubmit={this.handleSubmit}
-                      setValue={(value) =>
-                        new Promise((resolve) => {
-                          this.setState(
-                            (state) => ({
-                              ...state,
-                              values: {
-                                ...state.values,
-                                [getNodeId(node)]: value,
-                              },
-                            }),
-                            resolve,
-                          )
-                        })
-                      }
-                    />
-                  )
-                })}
+                return (
+                  <Node
+                    key={`${id}-${k}`}
+                    disabled={isLoading}
+                    node={node}
+                    value={values[id]}
+                    dispatchSubmit={this.handleSubmit}
+                    setValue={(value) =>
+                      new Promise((resolve) => {
+                        this.setState(
+                          (state) => ({
+                            ...state,
+                            values: {
+                              ...state.values,
+                              [getNodeId(node)]: value,
+                            },
+                          }),
+                          resolve,
+                        )
+                      })
+                    }
+                  />
+                )
+              })}
             </StyledSideInputs>
           </StyledSideWrap>
         </StyledForm>
