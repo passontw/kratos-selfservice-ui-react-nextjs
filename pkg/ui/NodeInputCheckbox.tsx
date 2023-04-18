@@ -54,6 +54,7 @@ export function NodeInputCheckbox<T>({
             }
             subtitle={node.messages.map(({ text }) => text).join("\n")}
           />
+          <span className="customSwitchSlider round"></span>
         </label>
       </Box>
     </Box>
