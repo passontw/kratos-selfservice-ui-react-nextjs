@@ -5,7 +5,7 @@ import { ACTIVE_COLOR, TEXT_COLOR } from "../../constants/colors"
 const StyledWrapper = styled("div")(() => ({
   color: TEXT_COLOR,
   fontFamily: "Open Sans",
-  marginTop: "115px",
+  marginTop: "95px",
   display: "flex",
   flexDirection: "column",
   fontWeight: 400,
