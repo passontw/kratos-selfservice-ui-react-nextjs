@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box"
 import {
   LoginFlow,
   RecoveryFlow,
@@ -191,42 +192,45 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
 
     return (
       <form
-        style={{ display: "flex", flexWrap: "wrap" }}
         action={flow.ui.action}
         method={flow.ui.method}
         onSubmit={this.handleSubmit}
       >
-        {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
-        {nodes.map((node, k) => {
-          // console.log(node)
-          const id = getNodeId(node) as keyof Values
-          // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
-          // if (node.meta.label?.text === "E-Mail") return
+        <Box display="flex" flexWrap="wrap" gap="36px">
+          {!hideGlobalMessages ? (
+            <Messages messages={flow.ui.messages} />
+          ) : null}
+          {nodes.map((node, k) => {
+            // console.log(node)
+            const id = getNodeId(node) as keyof Values
+            // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
+            // if (node.meta.label?.text === "E-Mail") return
 
-          return (
-            <Node
-              key={`${id}-${k}`}
-              disabled={isLoading}
-              node={node}
-              value={values[id]}
-              dispatchSubmit={this.handleSubmit}
-              setValue={(value) =>
-                new Promise((resolve) => {
-                  this.setState(
-                    (state) => ({
-                      ...state,
-                      values: {
-                        ...state.values,
-                        [getNodeId(node)]: value,
-                      },
-                    }),
-                    resolve,
-                  )
-                })
-              }
-            />
-          )
-        })}
+            return (
+              <Node
+                key={`${id}-${k}`}
+                disabled={isLoading}
+                node={node}
+                value={values[id]}
+                dispatchSubmit={this.handleSubmit}
+                setValue={(value) =>
+                  new Promise((resolve) => {
+                    this.setState(
+                      (state) => ({
+                        ...state,
+                        values: {
+                          ...state.values,
+                          [getNodeId(node)]: value,
+                        },
+                      }),
+                      resolve,
+                    )
+                  })
+                }
+              />
+            )
+          })}
+        </Box>
       </form>
     )
   }
