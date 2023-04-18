@@ -1,12 +1,12 @@
 import { styled } from "@mui/system"
 
-const StyledChangePasswordArea = styled("div")<{ paddingRight?: string }>(
-  ({ paddingRight }) => ({
+const StyledChangePasswordArea = styled("div")<{ marginTop?: string }>(
+  ({ marginTop }) => ({
     backgroundColor: "#272735",
     display: "flex",
     width: "100%",
     fontFamily: "Open Sans",
-    marginTop: "36px",
+    marginTop: marginTop ?? "36px",
     ">div": {
       backgroundColor: "transparent",
       padding: "32px",
@@ -17,4 +17,12 @@ const StyledChangePasswordArea = styled("div")<{ paddingRight?: string }>(
   }),
 )
 
-export { StyledChangePasswordArea }
+const StyledAccount = styled("div")<{}>(() => ({
+  color: "#717197",
+}))
+
+const StyledEmail = styled("div")<{}>(() => ({
+  color: "#A5A5A9",
+}))
+
+export { StyledChangePasswordArea, StyledAccount, StyledEmail }

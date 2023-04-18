@@ -16,7 +16,7 @@ import AccountLayout from '../components/Layout/AccountLayout'
 import { setActiveNav } from '../state/store/slice/layoutSlice'
 import { Navs } from '../types/enum'
 import { useDispatch } from 'react-redux'
-import { StyledChangePasswordArea } from '../styles/pages/changepassword.styles'
+import { StyledChangePasswordArea, StyledAccount, StyledEmail } from '../styles/pages/changepassword.styles'
 
 interface Props {
   flow?: SettingsFlow
@@ -47,6 +47,7 @@ const ChangePassword: NextPage = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("")
   const [flow, setFlow] = useState<SettingsFlow>()
   const dispatch = useDispatch()
+  const email = flow?.identity.traits.email
 
   // Get ?flow=... from the URL
   const router = useRouter()
@@ -130,10 +131,13 @@ const ChangePassword: NextPage = () => {
       setFlow(nextFlow)
     }
   }
-  console.log('[flow]', flow)
 
   return (
     <AccountLayout>
+      <StyledChangePasswordArea marginTop='48px'>
+        <StyledAccount>Account</StyledAccount>
+        <StyledEmail>{{email}}</StyledEmail>
+      </StyledChangePasswordArea>
       <StyledChangePasswordArea>
         <SettingsCard only="password" flow={flow}>
           <Messages messages={flow?.ui.messages} />
