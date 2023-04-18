@@ -216,7 +216,7 @@ export default class Flow<T extends Values> extends Component<
 
         <StyledForm>
           <StyledImageUpload>
-            {/* {profileNode && (
+            {profileNode && (
               <Node
                 disabled={isLoading}
                 node={profileNode}
@@ -237,7 +237,7 @@ export default class Flow<T extends Values> extends Component<
                   })
                 }
               />
-            )} */}
+            )}
           </StyledImageUpload>
 
           <StyledSideInputs>
