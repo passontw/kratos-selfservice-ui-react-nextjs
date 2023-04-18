@@ -226,8 +226,10 @@ export default class Flow<T extends Values> extends Component<
           <StyledImageUpload>
             {/* TODO - in production when there is DB and backend server
             this requires uploading local image to S3  */}
+            {/* TODO - UNCOMMENT THIS AND WORK ON COMBINING UPLOAD UI
+            WITH THIS IMAGE UPLOAD */}
             {/* Actual Form Data is passed to this node: */}
-            {profileNode && (
+            {/* {profileNode && (
               <Node
                 disabled={isLoading}
                 node={profileNode}
@@ -248,7 +250,7 @@ export default class Flow<T extends Values> extends Component<
                   })
                 }
               />
-            )}
+            )} */}
 
             {/* Temporary placeholder, need to merge with the input above
             when there is actual image upload */}
