@@ -8,7 +8,7 @@ const StyledProfileArea = styled("div")<{ paddingRight?: string }>(
     marginTop: "48px",
     backgroundColor: "#272735",
     paddingLeft: "74px",
-    paddingRight: "48px",
+    paddingRight: paddingRight ? paddingRight : "48px",
     paddingBottom: "96px",
     borderRadius: "12px",
   }),
