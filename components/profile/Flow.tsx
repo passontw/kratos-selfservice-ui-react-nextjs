@@ -188,7 +188,7 @@ export default class Flow<T extends Values> extends Component<
     const { values, isLoading } = this.state
 
     // Filter the nodes - only show the ones we want
-    // const nodes = this.filterNodes()
+    const nodes = this.filterNodes()
     // console.log("@profile nodes:", nodes)
 
     // acquire profileNode
@@ -241,7 +241,7 @@ export default class Flow<T extends Values> extends Component<
 
           <StyledSideInputs>
             <StyledProfileDeco src={"/images/purple-deco.png"} />
-            {/* {nodes.map((node, k) => {
+            {nodes.map((node, k) => {
               // console.log(node)
               const id = getNodeId(node) as keyof Values
               // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
@@ -270,7 +270,7 @@ export default class Flow<T extends Values> extends Component<
                   }
                 />
               )
-            })} */}
+            })}
           </StyledSideInputs>
         </StyledForm>
       </form>
