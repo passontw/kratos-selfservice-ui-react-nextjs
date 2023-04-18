@@ -25,7 +25,11 @@ const AccountMenu: React.FC<AccountMenuProps> = () => {
     { name: "Personal Info", path: "/profile", icon: "User" },
     { name: "Account Settings", path: "/account", icon: "Tool" },
     { name: "Change Password", path: "/changepassword", icon: "Lock" },
-    { name: "Device Management", path: "/", icon: "ServiceManagement" },
+    {
+      name: "Device Management",
+      path: "/devicemanagement",
+      icon: "ServiceManagement",
+    },
     { name: "Export User Data", path: "/export", icon: "Export" },
   ]
 
