@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box"
 import { LoginFlow } from "@ory/client"
-import { Checkbox } from "@ory/themes"
 import axios from "axios"
 import { AxiosError } from "axios"
 import cloneDeep from "lodash/cloneDeep"
@@ -319,21 +318,6 @@ const Login: NextPage = () => {
           <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
             Welcome back
           </Box>
-          {/* <Box>
-            <label className="customSwitch">
-              <Checkbox
-                style={{ display: "block" }}
-                name={"check"}
-                defaultChecked={false}
-                onChange={(e) => {}}
-                disabled={false}
-                state={undefined}
-                // subtitle={"123"}
-              />
-              <span className="customSwitchSlider round"></span>
-            </label>
-          </Box> */}
-
           <Flow onSubmit={onSubmit} flow={flow} router={router} />
 
           <MenuTag />
