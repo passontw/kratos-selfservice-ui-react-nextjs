@@ -192,7 +192,9 @@ export default class Flow<T extends Values> extends Component<
     // console.log("@profile nodes:", nodes)
 
     // acquire profileNode
-    const profileNode = nodes?.find((node) => node.name === "traits.avatar")
+    const profileNode = nodes?.find(
+      (node) => node.attributes.name === "traits.avatar",
+    )
     console.log("@profile profileNode:", profileNode, " from:", nodes)
     const profileNodeId =
       profileNode && (getNodeId(profileNode) as keyof Values)
