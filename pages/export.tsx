@@ -13,7 +13,12 @@ import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import { setActiveNav } from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
-import AppItem from '../components/AppItem'
+
+import Cmodx from "../public/images/app_icons/Cmodx"
+import MasterControl from "../public/images/app_icons/MasterControl"
+import Stormplay from "../public/images/app_icons/Stormplay"
+import MenuFooter from '../components/MenuFooter'
+import LinkNav from '../components/LinkNav'
 
 interface Props {
   flow?: SettingsFlow
@@ -77,9 +82,34 @@ const Export: NextPage = () => {
 
   return (
     <AccountLayout>
-      <Box display="flex" flexDirection="column">
-        <AppItem appIcon="MasterControl" appName="Master Control" />
+      <Box display="flex" flexDirection="column" position="relative" height='100%'>
+        <p style={{color: '#717197', fontFamily: 'Open Sans', fontSize: '22px', fontWeight: '400',margin: '0px 0px 12px 0px'}}>Service</p>
+        <Box display="flex" alignItems="center" justifyContent="space-between" color="#FFF" fontFamily="Open Sans" backgroundColor="#272735" padding="24px" borderRadius="20px" marginBottom="36px">
+          <Box display="flex" alignItems="center">
+            <Stormplay width='48' height='48' />
+            <span style={{paddingLeft: "32px"}}>StormPlay</span>
+          </Box>
+          <Box backgroundColor="#A62BC3" padding="12px 20px" borderRadius="8px" cursor="pointer">Export</Box>
+        </Box>
+        
+        <Box display="flex" alignItems="center" justifyContent="space-between" color="#FFF" fontFamily="Open Sans" backgroundColor="#272735" padding="24px" borderRadius="20px" marginBottom="36px">
+          <Box display="flex" alignItems="center">
+            <MasterControl width='48' height='48' />
+            <span style={{paddingLeft: "32px"}}>Master Control</span>
+          </Box>
+          <Box backgroundColor="#A62BC3" padding="12px 20px" borderRadius="8px" cursor="pointer">Export</Box>
+        </Box>
+
+        <Box display="flex" alignItems="center" justifyContent="space-between" color="#FFF" fontFamily="Open Sans" backgroundColor="#272735" padding="24px" borderRadius="20px" >
+          <Box display="flex" alignItems="center">
+            <Cmodx  width='48' height='48' />
+            <span style={{paddingLeft: "32px"}}>CMODX</span>
+          </Box>
+          <Box backgroundColor="#A62BC3" padding="12px 20px" borderRadius="8px" cursor="pointer">Export</Box>
+        </Box>
       </Box>
+      <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
+      <LinkNav />
     </AccountLayout>
   )
 }
