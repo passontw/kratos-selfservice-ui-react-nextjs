@@ -10,6 +10,7 @@ import {
   StyledProfileImageWrap,
   StyledSideInputs,
   StyledSideWrap,
+  StyledSubmitArea,
 } from "../../styles/pages/profile.styles"
 import {
   LoginFlow,
@@ -245,6 +246,12 @@ export default class Flow<T extends Values> extends Component<
     const { node: birthdayYearNode, nodeId: birthdayYearNodeId } =
       this.spliceNode("traits.birthdayYear", nodes)
 
+    // acquire method (submit button)
+    const { node: methodNode, nodeId: methodNodeId } = this.spliceNode(
+      "traits.method",
+      nodes,
+    )
+
     if (!flow) {
       // No flow was set yet? It's probably still loading...
       //
@@ -348,6 +355,7 @@ export default class Flow<T extends Values> extends Component<
               })}
 
               {/* gender node */}
+              <StyledFieldTitle>Gender</StyledFieldTitle>
               {genderNode && (
                 <Node
                   disabled={isLoading}
@@ -370,6 +378,9 @@ export default class Flow<T extends Values> extends Component<
                   }
                 />
               )}
+
+              {/* Birthday Section */}
+              <StyledFieldTitle>Date of Birth</StyledFieldTitle>
 
               <div style={{ display: "flex" }}>
                 {/* birthdayMonth node */}
@@ -419,6 +430,31 @@ export default class Flow<T extends Values> extends Component<
                   />
                 )}
               </div>
+              {/* method node (submit button) */}
+              {methodNode && (
+                <StyledSubmitArea>
+                  <Node
+                    disabled={isLoading}
+                    node={methodNode}
+                    value={values[methodNodeId]}
+                    dispatchSubmit={this.handleSubmit}
+                    setValue={(value) =>
+                      new Promise((resolve) => {
+                        this.setState(
+                          (state) => ({
+                            ...state,
+                            values: {
+                              ...state.values,
+                              [getNodeId(methodNode)]: value,
+                            },
+                          }),
+                          resolve,
+                        )
+                      })
+                    }
+                  />
+                </StyledSubmitArea>
+              )}
             </StyledSideInputs>
           </StyledSideWrap>
         </StyledForm>

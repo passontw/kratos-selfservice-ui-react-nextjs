@@ -69,6 +69,13 @@ const StyledFieldTitle = styled("div")(() => ({
   fontWeight: 400,
 }))
 
+const StyledSubmitArea = styled("div")(() => ({
+  marginTop: "48px",
+  width: "100%",
+  display: "flex",
+  justifyContent: "end",
+}))
+
 export {
   StyledProfileArea,
   StyledImageUpload,
@@ -82,4 +89,5 @@ export {
   StyledProfileImageWrap,
   StyledSideWrap,
   StyledFieldTitle,
+  StyledSubmitArea,
 }
