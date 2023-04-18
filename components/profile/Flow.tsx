@@ -1,5 +1,7 @@
 import {
   StyledForm,
+  StyledImageText,
+  StyledImageTitle,
   StyledImageUpload,
   StyledProfileDeco,
   StyledSideInputs,
@@ -241,6 +243,9 @@ export default class Flow<T extends Values> extends Component<
                 }
               />
             )}
+
+            <StyledImageTitle>master123@gmail.com</StyledImageTitle>
+            <StyledImageText> </StyledImageText>
           </StyledImageUpload>
 
           <StyledSideInputs>
