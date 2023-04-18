@@ -118,12 +118,12 @@ const Profile: NextPage = () => {
         <SettingsCard only="profile" flow={flow}>
           {/* <H3>Profile Settings</H3> */}
           <Messages messages={flow?.ui.messages} />
-          {/* <Flow
+          <Flow
             hideGlobalMessages
             onSubmit={onSubmit}
             only="profile"
             flow={flow}
-          /> */}
+          />
         </SettingsCard>
       </StyledProfileArea>
     </AccountLayout>
