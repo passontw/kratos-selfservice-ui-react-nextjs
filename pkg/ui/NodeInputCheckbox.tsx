@@ -2,6 +2,7 @@ import Box from "@mui/material/Box"
 import { getNodeLabel } from "@ory/integrations/ui"
 import { Checkbox } from "@ory/themes"
 
+import Switch from "../../components/Switch"
 import Mail from "../../public/images/Mail"
 
 import { NodeInputProps } from "./helpers"
@@ -39,6 +40,7 @@ export function NodeInputCheckbox<T>({
         </Box>
       </Box>
       <Box>
+        <Switch />
         <Checkbox
           style={{ display: "block" }}
           name={attributes.name}

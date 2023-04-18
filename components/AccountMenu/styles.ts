@@ -13,6 +13,8 @@ const StyledWrapper = styled("div")(() => ({
 }))
 
 const StyledMenuItem = styled("div")<{ active?: boolean }>(({ active }) => ({
+  display: "flex",
+  alignItems: "center",
   padding: "19px 0",
   paddingLeft: "54px",
   ...(active && {
@@ -25,6 +27,14 @@ const StyledMenuItem = styled("div")<{ active?: boolean }>(({ active }) => ({
   "&:hover": {
     paddingLeft: "59px",
   },
+  svg: {
+    paddingRight: "16px",
+  },
 }))
 
-export { StyledWrapper, StyledMenuItem }
+const StyledVercelWrapper = styled("div")<{ active?: boolean }>(() => ({
+  position: "absolute",
+  left: "0px",
+}))
+
+export { StyledWrapper, StyledMenuItem, StyledVercelWrapper }

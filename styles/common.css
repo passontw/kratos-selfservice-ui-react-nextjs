@@ -77,23 +77,23 @@ input:-internal-autofill-selected {
 }
 
 a:link {
-  color: #CA4AE8;
+  color: #ca4ae8;
   background-color: transparent;
   text-decoration: none;
 }
 
 a:visited {
-  color: #CA4AE8;
+  color: #ca4ae8;
   background-color: transparent;
   text-decoration: none;
 }
 
 a:hover {
-  color: #CA4AE8;
+  color: #ca4ae8;
   background-color: transparent;
 }
 
 a:active {
-  color: #CA4AE8;
+  color: #ca4ae8;
   background-color: transparent;
 }

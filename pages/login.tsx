@@ -6,9 +6,10 @@ import cloneDeep from "lodash/cloneDeep"
 import isEmpty from "lodash/isEmpty"
 import type { NextPage } from "next"
 import { useRouter } from "next/router"
+import queryString from "query-string"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import queryString from "query-string"
+
 import { api } from "../axios/api"
 import CmidHead from "../components/CmidHead"
 import MenuFooter from "../components/MenuFooter"
@@ -102,7 +103,7 @@ const Login: NextPage = () => {
   }
 
   useEffect(() => {
-    localStorage.removeItem(localStorageKey);
+    localStorage.removeItem(localStorageKey)
     hydraLoginService()
     // If the router is not ready yet, or we already have a flow, do nothing.
     if (!router.isReady || flow) {
@@ -188,21 +189,23 @@ const Login: NextPage = () => {
 
           // We logged in successfully! Let's bring the user home.
           .then((result) => {
-            const {session} = result.data;
+            const { session } = result.data
             const { traits } = session.identity
             if (isEmailSignin && traits.loginVerification) {
-              return ory.createBrowserLogoutFlow().then(({data: logoutFlow}) => {
-                return ory.updateLogoutFlow({
-                  token: logoutFlow.logout_token,
-                });
-              }).then(() => {
-                localStorage.setItem(localStorageKey, JSON.stringify(values));
-                window.location.href = `/verification?${queryString.stringify(
-                  router.query,
-                )}&user=${traits.email}&csrf=${values.csrf_token}&type=login`
-                return
-              })
-              
+              return ory
+                .createBrowserLogoutFlow()
+                .then(({ data: logoutFlow }) => {
+                  return ory.updateLogoutFlow({
+                    token: logoutFlow.logout_token,
+                  })
+                })
+                .then(() => {
+                  localStorage.setItem(localStorageKey, JSON.stringify(values))
+                  window.location.href = `/verification?${queryString.stringify(
+                    router.query,
+                  )}&user=${traits.email}&csrf=${values.csrf_token}&type=login`
+                  return
+                })
             }
 
             // new flow
@@ -285,7 +288,7 @@ const Login: NextPage = () => {
     }
   }
 
-  if (isEmpty(flow?.ui)) return null;
+  if (isEmpty(flow?.ui)) return null
 
   return (
     <>
