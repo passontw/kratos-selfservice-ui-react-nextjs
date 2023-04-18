@@ -42,7 +42,7 @@ export function NodeInputCheckbox<T>({
       <Box>
         <Switch on={attributes.value} change={setValue} />
         <Checkbox
-          style={{ display: "block" }}
+          style={{ display: "none" }}
           name={attributes.name}
           defaultChecked={attributes.value}
           onChange={(e) => setValue(e.target.checked)}
