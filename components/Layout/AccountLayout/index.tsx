@@ -30,6 +30,8 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
         break
       case Navs.EXPORT: 
         title = "Export User Data"
+      case Navs.CHANGEPASSWORD:
+        title = "Change Password"
       default:
         break
     }
