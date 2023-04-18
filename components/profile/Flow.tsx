@@ -272,8 +272,8 @@ export default class Flow<T extends Values> extends Component<
               {nodes
                 .filter(
                   (node) =>
-                    node.attributes.name === "traits.email" ||
-                    node.attributes.name === "traits.loginVerification",
+                    node.attributes.name !== "traits.email" ||
+                    node.attributes.name !== "traits.loginVerification",
                 )
                 .map((node, k) => {
                   // console.log(node)
