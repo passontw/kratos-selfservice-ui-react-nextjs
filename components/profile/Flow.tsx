@@ -196,7 +196,7 @@ export default class Flow<T extends Values> extends Component<
     const profileNode = nodes?.find((node) => node.name === "traits.avatar")
     const profileNodeId = getNodeId(profileNode) as keyof Values
     // remove it from the other nodes to sperate its view from the rest of the form
-    nodes.splice(nodes.indexOf(profileNode), 1)
+    // nodes.splice(nodes.indexOf(profileNode), 1)
 
     if (!flow) {
       // No flow was set yet? It's probably still loading...
