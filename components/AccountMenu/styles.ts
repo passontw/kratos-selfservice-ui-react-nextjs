@@ -13,6 +13,8 @@ const StyledWrapper = styled("div")(() => ({
 }))
 
 const StyledMenuItem = styled("div")<{ active?: boolean }>(({ active }) => ({
+  display: "flex",
+  alignItems: "center",
   padding: "19px 0",
   paddingLeft: "54px",
   ...(active && {
@@ -24,6 +26,9 @@ const StyledMenuItem = styled("div")<{ active?: boolean }>(({ active }) => ({
   transition: "padding-left 200ms ease-in",
   "&:hover": {
     paddingLeft: "59px",
+  },
+  svg: {
+    paddingRight: "16px",
   },
 }))
 
