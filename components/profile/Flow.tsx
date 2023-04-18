@@ -242,7 +242,7 @@ export default class Flow<T extends Values> extends Component<
 
           <StyledSideInputs>
             <StyledProfileDeco src={"/images/purple-deco.png"} />
-            {/* {nodes.map((node, k) => {
+            {nodes.map((node, k) => {
               // console.log(node)
               const id = getNodeId(node) as keyof Values
               // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
@@ -271,7 +271,7 @@ export default class Flow<T extends Values> extends Component<
                   }
                 />
               )
-            })} */}
+            })}
           </StyledSideInputs>
         </StyledForm>
       </form>
