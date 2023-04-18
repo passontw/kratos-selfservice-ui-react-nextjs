@@ -189,6 +189,13 @@ export default class Flow<T extends Values> extends Component<
       })
   }
 
+  /**
+   * Removes ory's node from the list and returns it by itself so that you can use
+   * in a specialized manner.
+   * @param name - name of the attribute, found under node.attributes.name
+   * @param nodes - the list of initialized nodes, passed in order to retain the pointers
+   * @returns
+   */
   spliceNode = (name: string, nodes: UiNode) => {
     // acquire profileNode
     const node = nodes?.find((node) => node.attributes.name === name)
@@ -213,9 +220,19 @@ export default class Flow<T extends Values> extends Component<
       nodes,
     )
 
-    // acquire profileNode
+    // acquire emailNode
     const { node: emailNode, nodeId: emailNodeId } = this.spliceNode(
       "traits.email",
+      nodes,
+    )
+
+    // acquire loginVerificationNode
+    const { node: loginVerificationNode, nodeId: loginVerificationNodeId } =
+      this.spliceNode("traits.loginVerification", nodes)
+
+    // acquire genderNode
+    const { node: genderNode, nodeId: genderNodeId } = this.spliceNode(
+      "traits.gender",
       nodes,
     )
 
@@ -280,13 +297,12 @@ export default class Flow<T extends Values> extends Component<
           <StyledSideWrap>
             <StyledProfileDeco src={"/images/purple-deco.png"} />
             <StyledSideInputs>
-              {/*  also remove fields not included in design  */}
-
-              {emailNode && (
+              {/* gender node */}
+              {genderNode && (
                 <Node
                   disabled={isLoading}
-                  node={emailNode}
-                  value={values[emailNodeId]}
+                  node={genderNode}
+                  value={values[genderNodeId]}
                   dispatchSubmit={this.handleSubmit}
                   setValue={(value) =>
                     new Promise((resolve) => {
@@ -295,7 +311,7 @@ export default class Flow<T extends Values> extends Component<
                           ...state,
                           values: {
                             ...state.values,
-                            [getNodeId(emailNode)]: value,
+                            [getNodeId(genderNode)]: value,
                           },
                         }),
                         resolve,
@@ -304,7 +320,6 @@ export default class Flow<T extends Values> extends Component<
                   }
                 />
               )}
-
               {nodes.map((node, k) => {
                 // console.log(node)
                 const id = getNodeId(node) as keyof Values
