@@ -46,19 +46,22 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 }))
 
 interface SwitchProps {
-  checked: boolean
-  handleChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+  on: boolean
+  change?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const CustomizedSwitches: React.FC<SwitchProps> = ({
-  checked,
-  handleChange,
-}) => {
+const CustomizedSwitches: React.FC<SwitchProps> = ({ on }) => {
+  const [checked, setChecked] = React.useState(true)
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked)
+  }
+
   return (
     <FormGroup>
       <Stack direction="row" spacing={1} alignItems="center">
         <AntSwitch
-          // defaultChecked
+          defaultChecked={on}
           inputProps={{ "aria-label": "controlled" }}
           checked={checked}
           onChange={handleChange}

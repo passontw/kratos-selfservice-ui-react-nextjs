@@ -40,7 +40,7 @@ export function NodeInputCheckbox<T>({
         </Box>
       </Box>
       <Box>
-        <Switch checked={attributes.value} />
+        <Switch on={attributes.value} />
         <Checkbox
           style={{ display: "block" }}
           name={attributes.name}
