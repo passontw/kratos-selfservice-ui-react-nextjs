@@ -62,7 +62,7 @@ const CustomizedSwitches: React.FC<SwitchProps> = ({ on }) => {
       <Stack direction="row" spacing={1} alignItems="center">
         <AntSwitch
           defaultChecked={checked}
-          // inputProps={{ "aria-label": "controlled" }}
+          inputProps={{ "aria-label": "controlled" }}
           checked={checked}
           onChange={handleChange}
         />
