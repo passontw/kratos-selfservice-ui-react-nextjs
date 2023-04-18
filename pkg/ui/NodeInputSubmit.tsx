@@ -5,6 +5,7 @@ import { NodeNextResponse } from "next/dist/server/base-http/node"
 import { useState, useEffect, useRef } from "react"
 import { useSelector } from "react-redux"
 
+import Switch from "../../components/Switch"
 import Apple from "../../public/images/login_icons/Apple"
 import Google from "../../public/images/login_icons/Google"
 import {
@@ -28,6 +29,9 @@ export function NodeInputSubmit<T>({
   const isDialogForgotPswd =
     activeStage === Stage.FORGOT_PASSWORD && getNodeLabel(node) === "Submit"
   const isSignINOUT = ["Sign in", "Sign up"].includes(getNodeLabel(node))
+  const resendLink = ["Resend code"].includes(getNodeLabel(node))
+  const linkRelated =
+    getNodeLabel(node).includes("Link") || getNodeLabel(node).includes("Unlink")
 
   const defaultStyle = {
     backgroundColor: "#A62BC3",
@@ -36,7 +40,10 @@ export function NodeInputSubmit<T>({
     margin: "36px 0px 0px",
     fontSize: "16px",
     fontFamily: "Open Sans",
-    width: isDialogForgotPswd || activeNav === Navs.SETTINGS ? "95px" : "100%",
+    width:
+      isDialogForgotPswd || activeNav === Navs.SETTINGS || linkRelated
+        ? "95px"
+        : "100%",
     position:
       isDialogForgotPswd || activeNav === Navs.SETTINGS ? "absolute" : "unset",
     right:
@@ -45,7 +52,7 @@ export function NodeInputSubmit<T>({
         : isDialogForgotPswd
         ? "30px"
         : "unset",
-    marginTop: isDialogForgotPswd ? "30px" : isSignINOUT ? "36px" : "unset" ,
+    marginTop: isDialogForgotPswd ? "30px" : isSignINOUT ? "36px" : "unset",
   }
   const hiddenStyle = {
     display: "none",
@@ -69,41 +76,18 @@ export function NodeInputSubmit<T>({
     "Resend code",
     "Sign in",
     "Sign up",
+    "Link apple",
+    "Link google",
+    "Unlink google",
+    "Unlink apple",
   ].includes(getNodeLabel(node))
   console.log("ppp", getNodeLabel(node))
-  const link = ["Resend code"].includes(getNodeLabel(node))
   const buttonText =
     activeNav === Navs.VERIFICATION && getNodeLabel(node) === "Submit"
       ? "Verify"
       : getNodeLabel(node) === "Resend code"
       ? "Resend"
       : getNodeLabel(node)
-
-  // const [timeRemaining, setTimeRemaining] = useState(60)
-  // const timerId = useRef(null)
-
-  // useEffect(() => {
-  //   if (link) {
-  //     if (timeRemaining > 0 && timerId.current === null) {
-  //       timerId.current = setTimeout(() => {
-  //         setTimeRemaining(timeRemaining - 1)
-  //         timerId.current = null
-  //       }, 1000)
-  //     } else if (timeRemaining === 0) {
-  //       clearTimeout(timerId.current)
-  //       timerId.current = null
-  //     }
-  //   }
-
-  //   return () => {
-  //     clearTimeout(timerId.current)
-  //   }
-  // }, [timeRemaining])
-
-  // const resetTimer = () => {
-  //   clearTimeout(timerId.current)
-  //   setTimeRemaining(60)
-  // }
 
   return (
     <>
@@ -118,32 +102,64 @@ export function NodeInputSubmit<T>({
             Didn’t receive?
           </Box>
           <Button
-            style={showButton ? (link ? linkStyle : defaultStyle) : hiddenStyle}
+            style={
+              showButton ? (resendLink ? linkStyle : defaultStyle) : hiddenStyle
+            }
             name={attributes.name}
             value={attributes.value || ""}
             disabled={attributes.disabled || disabled}
-            // onClick={resetTimer}
           >
             {buttonText}
           </Button>
-          {/* <Box fontFamily="open sans" color="#A5A5A9" fontSize="14px">
-            ({timeRemaining})
-          </Box> */}
         </Box>
       ) : (
-        <Button
-          style={showButton ? (link ? linkStyle : defaultStyle) : hiddenStyle}
-          name={attributes.name}
-          value={attributes.value || ""}
-          disabled={attributes.disabled || disabled}
-          // disabled={
-          //   buttonText === "Verify" && sixDigitCode.length !== 6
-          //     ? true
-          //     : attributes.disabled || disabled
-          // }
-        >
-          {buttonText}
-        </Button>
+        <>
+          <Button
+            style={
+              showButton ? (resendLink ? linkStyle : defaultStyle) : hiddenStyle
+            }
+            name={attributes.name}
+            value={attributes.value || ""}
+            disabled={attributes.disabled || disabled}
+            // disabled={
+            //   buttonText === "Verify" && sixDigitCode.length !== 6
+            //     ? true
+            //     : attributes.disabled || disabled
+            // }
+          >
+            {buttonText}
+          </Button>
+          {linkRelated && (
+            <Box
+              height="40px"
+              maxWidth="400px"
+              width="100%"
+              bgcolor="#272735"
+              borderRadius="12px"
+              display="flex"
+              p="24px"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Box display="flex" gap="20px" alignItems="center">
+                <Box>
+                  {getNodeLabel(node).includes("google") ? (
+                    <Google />
+                  ) : getNodeLabel(node).includes("apple") ? (
+                    <Apple />
+                  ) : null}
+                </Box>
+                <Box fontFamily="open sans" fontSize="20px" color="#FFF">
+                  {getNodeLabel(node).split(" ")[1].charAt(0).toUpperCase() +
+                    getNodeLabel(node).split(" ")[1].slice(1)}
+                </Box>
+              </Box>
+              <Box>
+                <Switch />
+              </Box>
+            </Box>
+          )}
+        </>
       )}
     </>
   )

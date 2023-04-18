@@ -1,4 +1,19 @@
 import {
+  StyledBirthdayWrap,
+  StyledEditButton,
+  StyledFieldTitle,
+  StyledForm,
+  StyledImageText,
+  StyledImageTitle,
+  StyledImageUpload,
+  StyledProfileDeco,
+  StyledProfileImage,
+  StyledProfileImageWrap,
+  StyledSideInputs,
+  StyledSideWrap,
+  StyledSubmitArea,
+} from "../../styles/pages/profile.styles"
+import {
   LoginFlow,
   RecoveryFlow,
   RegistrationFlow,
@@ -64,7 +79,10 @@ type State<T> = {
   isLoading: boolean
 }
 
-export default class Flow<T extends Values> extends Component<Props<T>, State<T>> {
+export default class Flow<T extends Values> extends Component<
+  Props<T>,
+  State<T>
+> {
   constructor(props: Props<T>) {
     super(props)
     this.state = {
@@ -174,12 +192,66 @@ export default class Flow<T extends Values> extends Component<Props<T>, State<T>
       })
   }
 
+  /**
+   * Removes ory's node from the list and returns it by itself so that you can use
+   * in a specialized manner.
+   * @param name - name of the attribute, found under node.attributes.name
+   * @param nodes - the list of initialized nodes, passed in order to retain the pointers
+   * @returns
+   */
+  spliceNode = (name: string, nodes: UiNode) => {
+    // acquire profileNode
+    const node = nodes?.find((node) => node.attributes.name === name)
+    console.log(`@profile ${name} node:`, node, " from:", nodes)
+    const nodeId = node && (getNodeId(node) as keyof Values)
+    // remove it from the other nodes to sperate its view from the rest of the form
+    nodes.splice(nodes.indexOf(node), 1)
+    return { node, nodeId }
+  }
+
   render() {
     const { hideGlobalMessages, flow } = this.props
     const { values, isLoading } = this.state
 
     // Filter the nodes - only show the ones we want
     const nodes = this.filterNodes()
+    // console.log("@profile nodes:", nodes)
+
+    // acquire profileNode
+    const { node: profileNode, nodeId: profileNodeId } = this.spliceNode(
+      "traits.avatar",
+      nodes,
+    )
+
+    // acquire emailNode
+    const { node: emailNode, nodeId: emailNodeId } = this.spliceNode(
+      "traits.email",
+      nodes,
+    )
+
+    // acquire loginVerificationNode
+    const { node: loginVerificationNode, nodeId: loginVerificationNodeId } =
+      this.spliceNode("traits.loginVerification", nodes)
+
+    // acquire genderNode
+    const { node: genderNode, nodeId: genderNodeId } = this.spliceNode(
+      "traits.gender",
+      nodes,
+    )
+
+    // acquire birthdayMonth
+    const { node: birthdayMonthNode, nodeId: birthdayMonthNodeId } =
+      this.spliceNode("traits.birthdayMonth", nodes)
+
+    // acquire birthdayYear
+    const { node: birthdayYearNode, nodeId: birthdayYearNodeId } =
+      this.spliceNode("traits.birthdayYear", nodes)
+
+    // acquire method (submit button)
+    const { node: methodNode, nodeId: methodNodeId } = this.spliceNode(
+      "method",
+      nodes,
+    )
 
     if (!flow) {
       // No flow was set yet? It's probably still loading...
@@ -196,36 +268,201 @@ export default class Flow<T extends Values> extends Component<Props<T>, State<T>
         onSubmit={this.handleSubmit}
       >
         {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
-        {nodes.map((node, k) => {
-          // console.log(node)
-          const id = getNodeId(node) as keyof Values
-          // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
-          // if (node.meta.label?.text === "E-Mail") return
 
-          return (
-            <Node
-              key={`${id}-${k}`}
-              disabled={isLoading}
-              node={node}
-              value={values[id]}
-              dispatchSubmit={this.handleSubmit}
-              setValue={(value) =>
-                new Promise((resolve) => {
-                  this.setState(
-                    (state) => ({
-                      ...state,
-                      values: {
-                        ...state.values,
-                        [getNodeId(node)]: value,
-                      },
-                    }),
-                    resolve,
-                  )
-                })
-              }
-            />
-          )
-        })}
+        <StyledForm>
+          <StyledImageUpload>
+            {/* TODO - in production when there is DB and backend server
+            this requires uploading local image to S3  */}
+            {/* TODO - UNCOMMENT THIS AND WORK ON COMBINING UPLOAD UI
+            WITH THIS IMAGE UPLOAD INPUT */}
+            {/* Actual Form Data is passed to this node: */}
+            {/* {profileNode && (
+              <Node
+                disabled={isLoading}
+                node={profileNode}
+                value={values[profileNodeId]}
+                dispatchSubmit={this.handleSubmit}
+                setValue={(value) =>
+                  new Promise((resolve) => {
+                    this.setState(
+                      (state) => ({
+                        ...state,
+                        values: {
+                          ...state.values,
+                          [getNodeId(profileNode)]: value,
+                        },
+                      }),
+                      resolve,
+                    )
+                  })
+                }
+              />
+            )} */}
+
+            {/* Temporary placeholder, need to merge with the input above
+            when there is actual image upload */}
+
+            <StyledProfileImageWrap>
+              <StyledProfileImage src={"/images/profile-pic.png"} />
+              <StyledEditButton src={"/images/edit-icon.png"} />
+            </StyledProfileImageWrap>
+
+            <StyledImageTitle>master123@gmail.com</StyledImageTitle>
+            <StyledImageText>Joined since May 2022</StyledImageText>
+          </StyledImageUpload>
+
+          <StyledSideWrap>
+            <StyledProfileDeco src={"/images/purple-deco.png"} />
+            <StyledSideInputs>
+              {nodes.map((node, k) => {
+                // console.log(node)
+                const id = getNodeId(node) as keyof Values
+                // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
+                // if (node.meta.label?.text === "E-Mail") return
+
+                return (
+                  <>
+                    <StyledFieldTitle>
+                      {console.log(
+                        "@profile LOGGIN TITLE:",
+                        node.attributes.title,
+                      )}
+                      {node.attributes.title === "traits.name"
+                        ? "Username"
+                        : node.attributes.title === "traits.phone"
+                        ? "Phone"
+                        : ""}
+                    </StyledFieldTitle>
+
+                    <Node
+                      key={`${id}-${k}`}
+                      disabled={isLoading}
+                      node={node}
+                      value={values[id]}
+                      dispatchSubmit={this.handleSubmit}
+                      setValue={(value) =>
+                        new Promise((resolve) => {
+                          this.setState(
+                            (state) => ({
+                              ...state,
+                              values: {
+                                ...state.values,
+                                [getNodeId(node)]: value,
+                              },
+                            }),
+                            resolve,
+                          )
+                        })
+                      }
+                    />
+                  </>
+                )
+              })}
+
+              {/* gender node */}
+              <StyledFieldTitle>Gender</StyledFieldTitle>
+              {genderNode && (
+                <Node
+                  disabled={isLoading}
+                  node={genderNode}
+                  value={values[genderNodeId]}
+                  dispatchSubmit={this.handleSubmit}
+                  setValue={(value) =>
+                    new Promise((resolve) => {
+                      this.setState(
+                        (state) => ({
+                          ...state,
+                          values: {
+                            ...state.values,
+                            [getNodeId(genderNode)]: value,
+                          },
+                        }),
+                        resolve,
+                      )
+                    })
+                  }
+                />
+              )}
+
+              {/* Birthday Section */}
+              <StyledFieldTitle>Date of Birth</StyledFieldTitle>
+
+              <StyledBirthdayWrap>
+                {/* birthdayMonth node */}
+                {birthdayMonthNode && (
+                  <Node
+                    disabled={isLoading}
+                    node={birthdayMonthNode}
+                    value={values[birthdayMonthNodeId]}
+                    dispatchSubmit={this.handleSubmit}
+                    setValue={(value) =>
+                      new Promise((resolve) => {
+                        this.setState(
+                          (state) => ({
+                            ...state,
+                            values: {
+                              ...state.values,
+                              [getNodeId(birthdayMonthNode)]: value,
+                            },
+                          }),
+                          resolve,
+                        )
+                      })
+                    }
+                  />
+                )}
+                {/* birthdayYear node */}
+                {birthdayYearNode && (
+                  <Node
+                    disabled={isLoading}
+                    node={birthdayYearNode}
+                    value={values[birthdayYearNodeId]}
+                    dispatchSubmit={this.handleSubmit}
+                    setValue={(value) =>
+                      new Promise((resolve) => {
+                        this.setState(
+                          (state) => ({
+                            ...state,
+                            values: {
+                              ...state.values,
+                              [getNodeId(birthdayYearNode)]: value,
+                            },
+                          }),
+                          resolve,
+                        )
+                      })
+                    }
+                  />
+                )}
+              </StyledBirthdayWrap>
+              {/* method node (submit button) */}
+              {methodNode && (
+                <StyledSubmitArea>
+                  <Node
+                    disabled={isLoading}
+                    node={methodNode}
+                    value={values[methodNodeId]}
+                    dispatchSubmit={this.handleSubmit}
+                    setValue={(value) =>
+                      new Promise((resolve) => {
+                        this.setState(
+                          (state) => ({
+                            ...state,
+                            values: {
+                              ...state.values,
+                              [getNodeId(methodNode)]: value,
+                            },
+                          }),
+                          resolve,
+                        )
+                      })
+                    }
+                  />
+                </StyledSubmitArea>
+              )}
+            </StyledSideInputs>
+          </StyledSideWrap>
+        </StyledForm>
       </form>
     )
   }

@@ -28,6 +28,15 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
       case Navs.ACCOUNT:
         title = "Account Settings"
         break
+      case Navs.EXPORT:
+        title = "Export User Data"
+        break
+      case Navs.DEVICEMANAGEMENT:
+        title = "Device Management"
+        break
+      case Navs.CHANGEPASSWORD:
+        title = "Change Password"
+        break
       default:
         break
     }
@@ -50,7 +59,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
           </StyledHeader>
           <AccountMenu />
         </Box>
-        <Box px="48px" pt="48px" width="76%">
+        <Box px="48px" pt="48px" width="76%" position="relative">
           <Box display="flex" justifyContent="space-between">
             <Box fontFamily="Teko" fontSize="48px" color="#A2A1C6">
               {renderTitle(activeNav)}

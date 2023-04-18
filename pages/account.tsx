@@ -70,12 +70,15 @@ const Account: NextPage = () => {
       headers: { withCredentials: true },
     })
     return axios
-      .delete(`${process.env.ORY_SDK_URL}/admin/identities/${data.identity.id}`, {
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer ${process.env.ORY_PAT}`,
+      .delete(
+        `${process.env.ORY_SDK_URL}/admin/identities/${data.identity.id}`,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${process.env.ORY_PAT}`,
+          },
         },
-      })
+      )
       .then((resp) => {
         router.replace("/")
       })
@@ -169,7 +172,7 @@ const Account: NextPage = () => {
     <AccountLayout>
       <Box display="flex" flexDirection="column">
         <SettingsCard only="oidc" flow={flow}>
-          <Box color="#717197" fontFamily="open sans" fontSize="22px">
+          <Box color="#717197" fontFamily="open sans" fontSize="22px" mt="48px">
             Account Linking
           </Box>
           <Box
@@ -191,7 +194,7 @@ const Account: NextPage = () => {
           />
         </SettingsCard>
         <SettingsCard only="profile" flow={flow}>
-          <Box color="#717197" fontFamily="open sans" fontSize="22px">
+          <Box color="#717197" fontFamily="open sans" fontSize="22px" mt="36px">
             2-step Verification
           </Box>
           <Box

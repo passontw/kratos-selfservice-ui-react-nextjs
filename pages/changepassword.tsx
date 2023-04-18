@@ -1,17 +1,25 @@
+import {
+  StyledChangePasswordArea,
+  StyledAccount,
+  StyledEmail,
+} from "../styles/pages/changepassword.styles"
 import { SettingsFlow, UpdateSettingsFlowBody } from "@ory/client"
 import { H3 } from "@ory/themes"
 import cloneDeep from "lodash/cloneDeep"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { ReactNode, useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 
+import AccountLayout from "../components/Layout/AccountLayout"
+import Flow from "../components/changepassword/Flow"
 import { Methods, Messages, ActionCard } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
+import { setActiveNav } from "../state/store/slice/layoutSlice"
+import { Navs } from "../types/enum"
 import { updatePasswordSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
-
-import Flow from "../components/changepassword/Flow"
 
 interface Props {
   flow?: SettingsFlow
@@ -41,6 +49,9 @@ function SettingsCard({
 const ChangePassword: NextPage = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("")
   const [flow, setFlow] = useState<SettingsFlow>()
+  const dispatch = useDispatch()
+  const email = flow?.identity.traits?.email
+  // const email = "master123@gmail.com"
 
   // Get ?flow=... from the URL
   const router = useRouter()
@@ -60,6 +71,10 @@ const ChangePassword: NextPage = () => {
         setFlow(data)
       })
       .catch(handleFlowError(router, "settings", setFlow))
+  }, [])
+
+  useEffect(() => {
+    dispatch(setActiveNav(Navs.CHANGEPASSWORD))
   }, [])
 
   const onSubmit = async (values: UpdateSettingsFlowBody, confirmPassword) => {
@@ -122,20 +137,24 @@ const ChangePassword: NextPage = () => {
   }
 
   return (
-    <>
-      <SettingsCard only="password" flow={flow}>
-        <H3>Change Password</H3>
-
-        <Messages messages={flow?.ui.messages} />
-        <Flow
-          hideGlobalMessages
-          confirmPasswordError={confirmPasswordError}
-          onSubmit={onSubmit}
-          only="password"
-          flow={flow}
-        />
-      </SettingsCard>
-    </>
+    <AccountLayout>
+      <StyledChangePasswordArea marginTop="48px">
+        <StyledAccount>Account</StyledAccount>
+        <StyledEmail>{email}</StyledEmail>
+      </StyledChangePasswordArea>
+      <StyledChangePasswordArea>
+        <SettingsCard only="password" flow={flow}>
+          <Messages messages={flow?.ui.messages} />
+          <Flow
+            hideGlobalMessages
+            confirmPasswordError={confirmPasswordError}
+            onSubmit={onSubmit}
+            only="password"
+            flow={flow}
+          />
+        </SettingsCard>
+      </StyledChangePasswordArea>
+    </AccountLayout>
   )
 }
 

@@ -114,7 +114,7 @@ const Profile: NextPage = () => {
 
   return (
     <AccountLayout>
-      <StyledProfileArea>
+      <StyledProfileArea paddingRight="0">
         <SettingsCard only="profile" flow={flow}>
           {/* <H3>Profile Settings</H3> */}
           <Messages messages={flow?.ui.messages} />

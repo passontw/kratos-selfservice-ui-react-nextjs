@@ -6,7 +6,7 @@ import { selectActiveNav } from "../../state/store/slice/layoutSlice"
 import {
   StyledWrapper,
   StyledTagPcWrapper,
-  StyledTagPc
+  StyledTagPc,
 } from "../../styles/share"
 import { Navs } from "../../types/enum"
 import AppItem from "../AppItem"
@@ -20,7 +20,10 @@ const AppsList: React.FC<AppsListProps> = () => {
     <>
       {activeNav !== Navs.SETTINGS &&
       activeNav !== Navs.PROFILE &&
-      activeNav !== Navs.ACCOUNT ? (
+      activeNav !== Navs.ACCOUNT &&
+      activeNav !== Navs.EXPORT &&
+      activeNav !== Navs.DEVICEMANAGEMENT &&
+      activeNav !== Navs.CHANGEPASSWORD ? (
         <StyledWrapper>
           <StyledTagPc>
             <Box fontSize="30px" color="#fff">
