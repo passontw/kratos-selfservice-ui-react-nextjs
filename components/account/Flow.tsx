@@ -196,7 +196,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         method={flow.ui.method}
         onSubmit={this.handleSubmit}
       >
-        <Box display="flex" flexWrap="wrap">
+        <Box display="flex" flexWrap="wrap" gap="36px">
           {!hideGlobalMessages ? (
             <Messages messages={flow.ui.messages} />
           ) : null}
