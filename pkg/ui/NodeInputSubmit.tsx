@@ -71,6 +71,8 @@ export function NodeInputSubmit<T>({
     "Sign up",
     "Link apple",
     "Link google",
+    "Unlink google",
+    "Unlink apple",
   ].includes(getNodeLabel(node))
   console.log("ppp", getNodeLabel(node))
   const link = ["Resend code"].includes(getNodeLabel(node))
