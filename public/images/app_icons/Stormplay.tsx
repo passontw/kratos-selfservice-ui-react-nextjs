@@ -1,12 +1,14 @@
 interface StormplayProps {
-  color?: string
+  color?: string,
+  width?: string,
+  height?: string
 }
 
-const Stormplay: React.FC<StormplayProps> = ({ color = "#FFF" }) => {
+const Stormplay: React.FC<StormplayProps> = ({ color = "#FFF", width = "80", height = "80" }) => {
   return (
     <svg
-      width="80"
-      height="80"
+      width={width}
+      height={height}
       viewBox="0 0 80 80"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
