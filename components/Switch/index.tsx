@@ -3,8 +3,10 @@ import Stack from "@mui/material/Stack"
 import Switch from "@mui/material/Switch"
 import { styled } from "@mui/material/styles"
 import React from "react"
+import { useDispatch } from "react-redux"
 
 import { ValueSetter } from "../../pkg/ui/helpers"
+import { setMfaModalOpen } from "../../state/store/slice/layoutSlice"
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,
@@ -50,12 +52,21 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 interface SwitchProps {
   on: boolean
   change: ValueSetter
+  origin: string
 }
 
-const CustomizedSwitches: React.FC<SwitchProps> = ({ on, change }) => {
+const CustomizedSwitches: React.FC<SwitchProps> = ({
+  on,
+  change,
+  origin = "",
+}) => {
+  const dispatch = useDispatch()
   const [checked, setChecked] = React.useState(on)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (origin === "MFA") {
+      dispatch(setMfaModalOpen(true))
+    }
     setChecked(event.target.checked)
     change(event.target.checked)
   }

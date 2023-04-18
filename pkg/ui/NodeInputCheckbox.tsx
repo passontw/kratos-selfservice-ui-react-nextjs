@@ -40,7 +40,7 @@ export function NodeInputCheckbox<T>({
         </Box>
       </Box>
       <Box>
-        <Switch on={attributes.value} change={setValue} />
+        <Switch on={attributes.value} change={setValue} origin="MFA" />
         <Checkbox
           style={{ display: "none" }}
           name={attributes.name}

@@ -136,7 +136,9 @@ const Dialog: React.FC<DialogProps> = ({
               cursor: "pointer",
             }}
             onClick={(e) => {
-              router.push("/login")
+              if (activeStage === Stage.FORGOT_PASSWORD) {
+                router.push("/login")
+              }
               handleClose(e, "")
               dispatch(setActiveStage(Stage.NONE))
             }}

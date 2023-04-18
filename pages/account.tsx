@@ -5,7 +5,7 @@ import axios from "axios"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { ReactNode, useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 import AccountLayout from "../components/Layout/AccountLayout"
 import { Flow } from "../components/account/Flow"
@@ -15,7 +15,10 @@ import { Methods, ActionCard, Messages } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import Bin from "../public/images/Bin"
-import { setActiveNav } from "../state/store/slice/layoutSlice"
+import {
+  selectMfaModalOpen,
+  setActiveNav,
+} from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
 
 interface Props {
@@ -62,6 +65,7 @@ const Account: NextPage = () => {
   const [sessions, setSessions] = useState([])
   const [flow, setFlow] = useState<SettingsFlow>()
   const router = useRouter()
+  const mfaModalOpen = useSelector(selectMfaModalOpen)
 
   const { flow: flowId, return_to: returnTo } = router.query
 
@@ -213,6 +217,8 @@ const Account: NextPage = () => {
             onSubmit={onSubmit}
             only="profile"
             flow={flow}
+            modalOpen={mfaModalOpen}
+            dispatch={dispatch}
           />
         </SettingsCard>
         <SettingsCard only="profile" flow={flow}>

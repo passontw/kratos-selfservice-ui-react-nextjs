@@ -18,6 +18,7 @@ const initialState: LayoutSliceStateI = {
   dialog2: null,
   dialogLayer: 0,
   sixDigitCode: '',
+  mfaModalOpen: false,
 };
 
 export const layoutSlice = createSlice({
@@ -41,6 +42,12 @@ export const layoutSlice = createSlice({
       { payload }: PayloadAction<string>
     ) => {
       state.sixDigitCode = payload;
+    },
+    setMfaModalOpen: (
+      state: LayoutSliceStateI,
+      { payload }: PayloadAction<boolean>
+    ) => {
+      state.mfaModalOpen = payload;
     },
     setDialog: (state: any, { payload }: PayloadAction<DialogProps | null>) => {
       if (payload === null) {
@@ -89,6 +96,12 @@ export const selectSixDigitCode = (state: {
   };
 }) => state.layout.sixDigitCode;
 
+export const selectMfaModalOpen = (state: {
+  layout: {
+    mfaModalOpen: boolean;
+  };
+}) => state.layout.mfaModalOpen;
+
 export const selectDialog = (state: {
   layout: {
     dialog: DialogProps;
@@ -106,6 +119,7 @@ export const {
   setActiveNav,
   setActiveStage,
   setSixDigitCode,
+  setMfaModalOpen,
   setDialog,
 } = layoutSlice.actions;
 
