@@ -11,7 +11,7 @@ const StyledChangePasswordArea = styled("div")<{ paddingRight?: string }>(
       padding: "32px",
       margin: "0px",
       border: "none",
-      width: "100%",
+      width: "500px",
     },
   }),
 )
