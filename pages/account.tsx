@@ -113,7 +113,6 @@ const Account: NextPage = () => {
               updateSettingsFlowBody: values,
             })
             .then(({ data }) => {
-              console.log("🚀 ~ file: account.tsx:109 ~ .then ~ data:", data)
               // The settings have been saved and the flow was updated. Let's show it to the user!
               setFlow(data)
             })

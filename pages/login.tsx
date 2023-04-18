@@ -78,8 +78,6 @@ const Login: NextPage = () => {
     dispatch(setActiveNav(Navs.LOGIN))
   }, [])
 
-  console.log(useSelector(selectActiveNav))
-
   // Get ?flow=... from the URL
   const router = useRouter()
   const {
@@ -176,7 +174,6 @@ const Login: NextPage = () => {
   // const onSubmit = async (values: UpdateLoginFlowBody) => {
   const onSubmit = async (values: any) => {
     const login_challenge = router.query.login_challenge
-
     // TODO - this is temp method to add subject, need to get subject from account
     let subject = ""
     if (values?.identifier) {

@@ -131,7 +131,6 @@ const Registration: NextPage = () => {
       )
     } catch (error) {
       const errors = handleYupErrors(error)
-      console.log("🚀 ~ file: registration.tsx:134 ~ onSubmit ~ errors:", errors)
       const nextFlow = cloneDeep(flow)
 
       if (errors['["traits.email"]']) {
