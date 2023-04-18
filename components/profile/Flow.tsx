@@ -1,5 +1,6 @@
 import {
   StyledEditButton,
+  StyledFieldTitle,
   StyledForm,
   StyledImageText,
   StyledImageTitle,
@@ -327,27 +328,37 @@ export default class Flow<T extends Values> extends Component<
                 // if (node.meta.label?.text === "E-Mail") return
 
                 return (
-                  <Node
-                    key={`${id}-${k}`}
-                    disabled={isLoading}
-                    node={node}
-                    value={values[id]}
-                    dispatchSubmit={this.handleSubmit}
-                    setValue={(value) =>
-                      new Promise((resolve) => {
-                        this.setState(
-                          (state) => ({
-                            ...state,
-                            values: {
-                              ...state.values,
-                              [getNodeId(node)]: value,
-                            },
-                          }),
-                          resolve,
-                        )
-                      })
-                    }
-                  />
+                  <>
+                    <StyledFieldTitle>
+                      {node.attributes.title === "traits.name"
+                        ? "Username"
+                        : node.attributes.title === "traits.phone"
+                        ? "Phone"
+                        : ""}
+                    </StyledFieldTitle>
+
+                    <Node
+                      key={`${id}-${k}`}
+                      disabled={isLoading}
+                      node={node}
+                      value={values[id]}
+                      dispatchSubmit={this.handleSubmit}
+                      setValue={(value) =>
+                        new Promise((resolve) => {
+                          this.setState(
+                            (state) => ({
+                              ...state,
+                              values: {
+                                ...state.values,
+                                [getNodeId(node)]: value,
+                              },
+                            }),
+                            resolve,
+                          )
+                        })
+                      }
+                    />
+                  </>
                 )
               })}
             </StyledSideInputs>

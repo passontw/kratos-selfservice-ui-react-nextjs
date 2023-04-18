@@ -63,6 +63,12 @@ const StyledSideInputs = styled("div")(() => ({
   padding: "48px 48px",
 }))
 
+const StyledFieldTitle = styled("div")(() => ({
+  fontSize: "14px",
+  color: "#717197;",
+  fontWeight: 400,
+}))
+
 export {
   StyledProfileArea,
   StyledImageUpload,
@@ -75,4 +81,5 @@ export {
   StyledProfileImage,
   StyledProfileImageWrap,
   StyledSideWrap,
+  StyledFieldTitle,
 }
