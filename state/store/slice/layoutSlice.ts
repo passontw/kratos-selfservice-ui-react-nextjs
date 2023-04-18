@@ -17,7 +17,7 @@ const initialState: LayoutSliceStateI = {
   dialogLayer: 0,
   sixDigitCode: '',
   mfaModalOpen: false,
-  mfaState: true,
+  mfaState: undefined,
 };
 
 export const layoutSlice = createSlice({

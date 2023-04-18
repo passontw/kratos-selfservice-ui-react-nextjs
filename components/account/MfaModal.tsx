@@ -1,12 +1,16 @@
 import Box from "@mui/material/Box"
 import { FormEvent } from "react"
+import { useSelector } from "react-redux"
+
+import { selectMfaState } from "../../state/store/slice/layoutSlice"
 
 interface MfaModalProps {
-  mfaState: boolean
+  // mfaState: boolean
   submit: (event: any) => void
 }
 
-const MfaModal: React.FC<MfaModalProps> = ({ mfaState }) => {
+const MfaModal: React.FC<MfaModalProps> = () => {
+  const mfaState = useSelector(selectMfaState)
   const modalContent = mfaState
     ? "You will no longer receive a code if we notice an attempted login from an unrecognized device or browser. Are you sure to proceed?"
     : "If 2-step verification is turned on, you’ll need to complete the email verification process every time you log in."

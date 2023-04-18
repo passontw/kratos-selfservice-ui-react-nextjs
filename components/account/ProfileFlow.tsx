@@ -59,7 +59,7 @@ export type Props<T> = {
   // modal is open or not
   modalOpen?: boolean
   // state of mfa
-  mfaState: boolean
+  // mfaState: boolean
   // dispatch function
   dispatch?: any
 }
@@ -97,16 +97,14 @@ export default class Flow<T extends Values> extends Component<
     if (this.props.modalOpen) {
       this.props.dispatch(
         setDialog({
-          title: `Turn ${
-            this.props.mfaState ? "off" : "on"
-          } 2-Step Verification`,
+          title: `2-Step Verification`,
           titleHeight: "58px",
           width: 480,
           height: 358,
           center: true,
           children: (
             <MfaModal
-              mfaState={this.props.mfaState}
+              // mfaState={this.props.mfaState}
               submit={this.handleSubmit}
             />
           ),
