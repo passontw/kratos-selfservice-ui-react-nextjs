@@ -187,10 +187,9 @@ export default class Flow<T extends Values> extends Component<
     const { hideGlobalMessages, flow } = this.props
     const { values, isLoading } = this.state
 
-    console.log("@profile nodes:", nodes)
-
     // Filter the nodes - only show the ones we want
     const nodes = this.filterNodes()
+    console.log("@profile nodes:", nodes)
 
     // acquire profileNode
     const profileNode = nodes?.find((node) => node.name === "traits.avatar")
@@ -248,29 +247,29 @@ export default class Flow<T extends Values> extends Component<
               // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
               // if (node.meta.label?.text === "E-Mail") return
 
-              return (
-                <Node
-                  key={`${id}-${k}`}
-                  disabled={isLoading}
-                  node={node}
-                  value={values[id]}
-                  dispatchSubmit={this.handleSubmit}
-                  setValue={(value) =>
-                    new Promise((resolve) => {
-                      this.setState(
-                        (state) => ({
-                          ...state,
-                          values: {
-                            ...state.values,
-                            [getNodeId(node)]: value,
-                          },
-                        }),
-                        resolve,
-                      )
-                    })
-                  }
-                />
-              )
+              // return (
+              //   <Node
+              //     key={`${id}-${k}`}
+              //     disabled={isLoading}
+              //     node={node}
+              //     value={values[id]}
+              //     dispatchSubmit={this.handleSubmit}
+              //     setValue={(value) =>
+              //       new Promise((resolve) => {
+              //         this.setState(
+              //           (state) => ({
+              //             ...state,
+              //             values: {
+              //               ...state.values,
+              //               [getNodeId(node)]: value,
+              //             },
+              //           }),
+              //           resolve,
+              //         )
+              //       })
+              //     }
+              //   />
+              // )
             })}
           </StyledSideInputs>
         </StyledForm>
