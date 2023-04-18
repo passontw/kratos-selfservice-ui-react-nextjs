@@ -21,7 +21,8 @@ const AppsList: React.FC<AppsListProps> = () => {
       {activeNav !== Navs.SETTINGS &&
       activeNav !== Navs.PROFILE &&
       activeNav !== Navs.ACCOUNT && 
-      activeNav !== Navs.EXPORT ?
+      activeNav !== Navs.EXPORT &&
+      activeNav !== Navs.CHANGEPASSWORD ?
       (
         <StyledWrapper>
           <StyledTagPc>

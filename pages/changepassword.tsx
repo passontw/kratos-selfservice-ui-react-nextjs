@@ -12,6 +12,10 @@ import { updatePasswordSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 
 import Flow from "../components/changepassword/Flow"
+import AccountLayout from '../components/Layout/AccountLayout'
+import { setActiveNav } from '../state/store/slice/layoutSlice'
+import { Navs } from '../types/enum'
+import { useDispatch } from 'react-redux'
 
 interface Props {
   flow?: SettingsFlow
@@ -41,6 +45,7 @@ function SettingsCard({
 const ChangePassword: NextPage = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("")
   const [flow, setFlow] = useState<SettingsFlow>()
+  const dispatch = useDispatch()
 
   // Get ?flow=... from the URL
   const router = useRouter()
@@ -60,6 +65,10 @@ const ChangePassword: NextPage = () => {
         setFlow(data)
       })
       .catch(handleFlowError(router, "settings", setFlow))
+  }, [])
+
+  useEffect(() => {
+    dispatch(setActiveNav(Navs.CHANGEPASSWORD))
   }, [])
 
   const onSubmit = async (values: UpdateSettingsFlowBody, confirmPassword) => {
@@ -122,7 +131,7 @@ const ChangePassword: NextPage = () => {
   }
 
   return (
-    <>
+    <AccountLayout>
       <SettingsCard only="password" flow={flow}>
         <H3>Change Password</H3>
 
@@ -135,8 +144,12 @@ const ChangePassword: NextPage = () => {
           flow={flow}
         />
       </SettingsCard>
-    </>
+    </AccountLayout>
   )
 }
 
 export default ChangePassword
+function dispatch(arg0: any) {
+  throw new Error('Function not implemented.')
+}
+
