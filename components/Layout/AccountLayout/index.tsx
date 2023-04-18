@@ -28,6 +28,8 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
       case Navs.ACCOUNT:
         title = "Account Settings"
         break
+      case Navs.EXPORT: 
+        title = "Export User Data"
       default:
         break
     }

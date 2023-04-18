@@ -20,7 +20,9 @@ const AppsList: React.FC<AppsListProps> = () => {
     <>
       {activeNav !== Navs.SETTINGS &&
       activeNav !== Navs.PROFILE &&
-      activeNav !== Navs.ACCOUNT ? (
+      activeNav !== Navs.ACCOUNT && 
+      activeNav !== Navs.EXPORT ?
+      (
         <StyledWrapper>
           <StyledTagPc>
             <Box fontSize="30px" color="#fff">

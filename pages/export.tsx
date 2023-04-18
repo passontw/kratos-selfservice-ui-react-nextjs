@@ -1,22 +1,19 @@
 import Box from "@mui/material/Box"
 import { SettingsFlow, UpdateSettingsFlowBody } from "@ory/client"
-import { H3 } from "@ory/themes"
 import axios from "axios"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
-import { ReactNode, useEffect, useState } from "react"
+import {  useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
 import AccountLayout from "../components/Layout/AccountLayout"
-import { Flow } from "../components/account/Flow"
-import ProfileFlow from "../components/account/ProfileFlow"
-import VerificationModal from "../components/account/VerificationModal"
+
 import { Methods, ActionCard, Messages } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
-import Bin from "../public/images/Bin"
 import { setActiveNav } from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
+import AppItem from '../components/AppItem'
 
 interface Props {
   flow?: SettingsFlow
@@ -46,7 +43,7 @@ const Export: NextPage = () => {
   const { flow: flowId, return_to: returnTo } = router.query
 
   useEffect(() => {
-    dispatch(setActiveNav(Navs.ACCOUNT))
+    dispatch(setActiveNav(Navs.EXPORT))
   }, [])
 
   useEffect(() => {
@@ -81,7 +78,7 @@ const Export: NextPage = () => {
   return (
     <AccountLayout>
       <Box display="flex" flexDirection="column">
-
+        <AppItem appIcon="MasterControl" appName="Master Control" />
       </Box>
     </AccountLayout>
   )
