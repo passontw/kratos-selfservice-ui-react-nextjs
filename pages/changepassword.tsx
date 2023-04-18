@@ -16,6 +16,7 @@ import AccountLayout from '../components/Layout/AccountLayout'
 import { setActiveNav } from '../state/store/slice/layoutSlice'
 import { Navs } from '../types/enum'
 import { useDispatch } from 'react-redux'
+import { StyledProfileArea } from '../styles/pages/changepassword.styles'
 
 interface Props {
   flow?: SettingsFlow
@@ -132,18 +133,18 @@ const ChangePassword: NextPage = () => {
 
   return (
     <AccountLayout>
-      <SettingsCard only="password" flow={flow}>
-        <H3>Change Password</H3>
-
-        <Messages messages={flow?.ui.messages} />
-        <Flow
-          hideGlobalMessages
-          confirmPasswordError={confirmPasswordError}
-          onSubmit={onSubmit}
-          only="password"
-          flow={flow}
-        />
-      </SettingsCard>
+      <StyledProfileArea>
+        <SettingsCard only="password" flow={flow}>
+          <Messages messages={flow?.ui.messages} />
+          <Flow
+            hideGlobalMessages
+            confirmPasswordError={confirmPasswordError}
+            onSubmit={onSubmit}
+            only="password"
+            flow={flow}
+          />
+        </SettingsCard>
+      </StyledProfileArea>
     </AccountLayout>
   )
 }
