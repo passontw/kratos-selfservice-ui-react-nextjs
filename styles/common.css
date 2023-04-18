@@ -77,23 +77,70 @@ input:-internal-autofill-selected {
 }
 
 a:link {
-  color: #CA4AE8;
+  color: #ca4ae8;
   background-color: transparent;
   text-decoration: none;
 }
 
 a:visited {
-  color: #CA4AE8;
+  color: #ca4ae8;
   background-color: transparent;
   text-decoration: none;
 }
 
 a:hover {
-  color: #CA4AE8;
+  color: #ca4ae8;
   background-color: transparent;
 }
 
 a:active {
-  color: #CA4AE8;
+  color: #ca4ae8;
   background-color: transparent;
+}
+
+.custom-switch {
+  position: relative;
+  width: 42px;
+  height: 24px;
+}
+
+.custom-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.custom-switch input:checked + span {
+  background-color: #2196f3;
+}
+
+.custom-switch input:focus + span {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+.custom-switch span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 34px;
+  transition: background-color 0.2s;
+}
+
+.custom-switch span:before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+
+.custom-switch input:checked + span:before {
+  transform: translateX(18px);
 }
