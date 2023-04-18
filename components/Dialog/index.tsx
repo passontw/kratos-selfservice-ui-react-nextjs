@@ -64,6 +64,7 @@ const Dialog: React.FC<DialogProps> = ({
     if (reason === "escapeKeyDown") return
     if (reason === "backdropClick") return
     dispatch(setDialog(null))
+    dispatch(setDialog(null))
   }
 
   const activeNav = useSelector(selectActiveNav)
