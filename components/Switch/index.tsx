@@ -2,6 +2,7 @@ import FormGroup from "@mui/material/FormGroup"
 import Stack from "@mui/material/Stack"
 import Switch, { SwitchProps } from "@mui/material/Switch"
 import { styled } from "@mui/material/styles"
+import React from "react"
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,
@@ -45,10 +46,21 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 }))
 
 export default function CustomizedSwitches() {
+  const [checked, setChecked] = React.useState(true)
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked)
+  }
+
   return (
     <FormGroup>
       <Stack direction="row" spacing={1} alignItems="center">
-        <AntSwitch defaultChecked inputProps={{ "aria-label": "ant design" }} />
+        <AntSwitch
+          // defaultChecked
+          inputProps={{ "aria-label": "controlled" }}
+          checked={checked}
+          onChange={handleChange}
+        />
       </Stack>
     </FormGroup>
   )
