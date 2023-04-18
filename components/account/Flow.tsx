@@ -191,6 +191,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
 
     return (
       <form
+        style={{ display: "flex", flexWrap: "wrap" }}
         action={flow.ui.action}
         method={flow.ui.method}
         onSubmit={this.handleSubmit}
