@@ -8,6 +8,7 @@ import {
   StyledProfileImage,
   StyledProfileImageWrap,
   StyledSideInputs,
+  StyledSideWrap,
 } from "../../styles/pages/profile.styles"
 import {
   LoginFlow,
@@ -264,39 +265,48 @@ export default class Flow<T extends Values> extends Component<
             <StyledImageText>Joined since May 2022</StyledImageText>
           </StyledImageUpload>
 
-          <StyledProfileDeco src={"/images/purple-deco.png"} />
-          <StyledSideInputs>
-            {nodes.map((node, k) => {
-              // console.log(node)
-              const id = getNodeId(node) as keyof Values
-              // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
-              // if (node.meta.label?.text === "E-Mail") return
+          <StyledSideWrap>
+            <StyledProfileDeco src={"/images/purple-deco.png"} />
+            <StyledSideInputs>
+              {/*  also remove fields not included in design  */}
+              {nodes
+                .filter(
+                  (node) =>
+                    node.attributes.name === "traits.email" ||
+                    node.attributes.name === "traits.loginVerification",
+                )
+                .map((node, k) => {
+                  // console.log(node)
+                  const id = getNodeId(node) as keyof Values
+                  // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
+                  // if (node.meta.label?.text === "E-Mail") return
 
-              return (
-                <Node
-                  key={`${id}-${k}`}
-                  disabled={isLoading}
-                  node={node}
-                  value={values[id]}
-                  dispatchSubmit={this.handleSubmit}
-                  setValue={(value) =>
-                    new Promise((resolve) => {
-                      this.setState(
-                        (state) => ({
-                          ...state,
-                          values: {
-                            ...state.values,
-                            [getNodeId(node)]: value,
-                          },
-                        }),
-                        resolve,
-                      )
-                    })
-                  }
-                />
-              )
-            })}
-          </StyledSideInputs>
+                  return (
+                    <Node
+                      key={`${id}-${k}`}
+                      disabled={isLoading}
+                      node={node}
+                      value={values[id]}
+                      dispatchSubmit={this.handleSubmit}
+                      setValue={(value) =>
+                        new Promise((resolve) => {
+                          this.setState(
+                            (state) => ({
+                              ...state,
+                              values: {
+                                ...state.values,
+                                [getNodeId(node)]: value,
+                              },
+                            }),
+                            resolve,
+                          )
+                        })
+                      }
+                    />
+                  )
+                })}
+            </StyledSideInputs>
+          </StyledSideWrap>
         </StyledForm>
       </form>
     )

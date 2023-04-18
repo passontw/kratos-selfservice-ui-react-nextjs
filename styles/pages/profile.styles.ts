@@ -53,6 +53,11 @@ const StyledEditButton = styled("img")(() => ({
   right: "-5px",
 }))
 
+const StyledSideWrap = styled("div")(() => ({
+  display: "flex",
+  flexDirection: "column",
+}))
+
 const StyledSideInputs = styled("div")(() => ({
   padding: "48px 48px",
 }))
@@ -68,4 +73,5 @@ export {
   StyledEditButton,
   StyledProfileImage,
   StyledProfileImageWrap,
+  StyledSideWrap,
 }
