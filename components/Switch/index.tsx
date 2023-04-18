@@ -51,7 +51,7 @@ interface SwitchProps {
 }
 
 const CustomizedSwitches: React.FC<SwitchProps> = ({ on }) => {
-  const [checked, setChecked] = React.useState(true)
+  const [checked, setChecked] = React.useState(on)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked)
@@ -61,7 +61,7 @@ const CustomizedSwitches: React.FC<SwitchProps> = ({ on }) => {
     <FormGroup>
       <Stack direction="row" spacing={1} alignItems="center">
         <AntSwitch
-          defaultChecked={on}
+          defaultChecked={checked}
           inputProps={{ "aria-label": "controlled" }}
           checked={checked}
           onChange={handleChange}
