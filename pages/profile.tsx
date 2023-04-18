@@ -1,3 +1,4 @@
+import { StyledProfileArea } from "../styles/pages/profile.styles"
 import Box from "@mui/material/Box"
 import {
   RegistrationFlow,
@@ -113,16 +114,18 @@ const Profile: NextPage = () => {
 
   return (
     <AccountLayout>
-      <SettingsCard only="profile" flow={flow}>
-        {/* <H3>Profile Settings</H3> */}
-        <Messages messages={flow?.ui.messages} />
-        <Flow
-          hideGlobalMessages
-          onSubmit={onSubmit}
-          only="profile"
-          flow={flow}
-        />
-      </SettingsCard>
+      <StyledProfileArea>
+        <SettingsCard only="profile" flow={flow}>
+          {/* <H3>Profile Settings</H3> */}
+          <Messages messages={flow?.ui.messages} />
+          <Flow
+            hideGlobalMessages
+            onSubmit={onSubmit}
+            only="profile"
+            flow={flow}
+          />
+        </SettingsCard>
+      </StyledProfileArea>
     </AccountLayout>
   )
 }

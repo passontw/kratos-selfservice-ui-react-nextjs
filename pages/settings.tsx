@@ -12,8 +12,8 @@ import Flow from "../components/changepassword/Flow"
 import { ActionCard, Messages, Methods, LogoutLink } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
-import { setActiveNav } from "../state/store/slice/layoutSlice"
-import { Navs } from "../types/enum"
+import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
+import { Navs, Stage } from "../types/enum"
 import { updatePasswordSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 
@@ -67,6 +67,7 @@ const Settings: NextPage = () => {
 
   useEffect(() => {
     dispatch(setActiveNav(Navs.SETTINGS))
+    dispatch(setActiveStage(Stage.NONE))
   }, [])
 
   useEffect(() => {

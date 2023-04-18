@@ -5,13 +5,18 @@ import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import queryString from "query-string"
 import { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 import CmidHead from "../components/CmidHead"
 import { Flow } from "../components/verification/Flow"
 import ory from "../pkg/sdk"
-import { setActiveNav } from "../state/store/slice/layoutSlice"
+import {
+  selectSixDigitCode,
+  setActiveNav,
+} from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
+
+import { StyledMenuWrapper } from "./../styles/share"
 
 const localStorageKey = "!@#$%^&*()data"
 
@@ -19,8 +24,10 @@ const { NEXT_PUBLIC_REDIRECT_URI } = process.env
 
 const Verification: NextPage = () => {
   const dispatch = useDispatch()
+  const sixDigitCode = useSelector(selectSixDigitCode)
   const [initFlow, setInitFlow] = useState(false)
   const [flow, setFlow] = useState<VerificationFlow>()
+  const [verifySuccess, setVerifySuccess] = useState(false)
 
   // Get ?flow=... from the URL
   const router = useRouter()
@@ -157,6 +164,8 @@ const Verification: NextPage = () => {
       })
       .then(({ data }) => {
         // Form submission was successful, show the message to the user!
+        console.log("data", data)
+        setVerifySuccess(data.state === "passed_challenge")
         setFlow(data)
         if (type === 'login') {
           const values = JSON.parse(localStorage.getItem(localStorageKey))
@@ -214,6 +223,7 @@ const Verification: NextPage = () => {
   return (
     <>
       <div className="mainWrapper">
+        <StyledMenuWrapper>
         <div>
           <title>Verify your account - Ory NextJS Integration Example</title>
           <meta name="description" content="NextJS + React + Vercel + Ory" />
@@ -221,7 +231,7 @@ const Verification: NextPage = () => {
         <CmidHead />
         <Box mt="62px" display="flex" flexDirection="column">
           <span style={{ color: "#FFF", fontSize: "36px", fontFamily: "Teko" }}>
-            Verify Account
+            {verifySuccess ? "Verified Success" : "Verify Account"}
           </span>
           <span
             style={{
@@ -230,10 +240,13 @@ const Verification: NextPage = () => {
               fontFamily: "open sans",
             }}
           >
-            Enter the 6-digit code we sent to {email} to verify account.
+            {verifySuccess
+              ? "Congratulation, your account is approved"
+              : `Enter the 6-digit code we sent to ${email} to verify account.`}
           </span>
         </Box>
-        <Flow onSubmit={onSubmit} flow={flow} />
+        <Flow onSubmit={onSubmit} flow={flow} code={sixDigitCode} />
+        </StyledMenuWrapper>
       </div>
     </>
   )
