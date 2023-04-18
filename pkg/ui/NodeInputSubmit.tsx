@@ -5,6 +5,7 @@ import { NodeNextResponse } from "next/dist/server/base-http/node"
 import { useState, useEffect, useRef } from "react"
 import { useSelector } from "react-redux"
 
+import Switch from "../../components/Switch"
 import Apple from "../../public/images/login_icons/Apple"
 import Google from "../../public/images/login_icons/Google"
 import {
@@ -82,32 +83,8 @@ export function NodeInputSubmit<T>({
       : getNodeLabel(node) === "Resend code"
       ? "Resend"
       : getNodeLabel(node)
-
-  // const [timeRemaining, setTimeRemaining] = useState(60)
-  // const timerId = useRef(null)
-
-  // useEffect(() => {
-  //   if (link) {
-  //     if (timeRemaining > 0 && timerId.current === null) {
-  //       timerId.current = setTimeout(() => {
-  //         setTimeRemaining(timeRemaining - 1)
-  //         timerId.current = null
-  //       }, 1000)
-  //     } else if (timeRemaining === 0) {
-  //       clearTimeout(timerId.current)
-  //       timerId.current = null
-  //     }
-  //   }
-
-  //   return () => {
-  //     clearTimeout(timerId.current)
-  //   }
-  // }, [timeRemaining])
-
-  // const resetTimer = () => {
-  //   clearTimeout(timerId.current)
-  //   setTimeRemaining(60)
-  // }
+  const linkRelated =
+    getNodeLabel(node).includes("Link") || getNodeLabel(node).includes("Unlink")
 
   return (
     <>
@@ -126,28 +103,50 @@ export function NodeInputSubmit<T>({
             name={attributes.name}
             value={attributes.value || ""}
             disabled={attributes.disabled || disabled}
-            // onClick={resetTimer}
           >
             {buttonText}
           </Button>
-          {/* <Box fontFamily="open sans" color="#A5A5A9" fontSize="14px">
-            ({timeRemaining})
-          </Box> */}
         </Box>
       ) : (
-        <Button
-          style={showButton ? (link ? linkStyle : defaultStyle) : hiddenStyle}
-          name={attributes.name}
-          value={attributes.value || ""}
-          disabled={attributes.disabled || disabled}
-          // disabled={
-          //   buttonText === "Verify" && sixDigitCode.length !== 6
-          //     ? true
-          //     : attributes.disabled || disabled
-          // }
-        >
-          {buttonText}
-        </Button>
+        <>
+          <Button
+            style={showButton ? (link ? linkStyle : defaultStyle) : hiddenStyle}
+            name={attributes.name}
+            value={attributes.value || ""}
+            disabled={attributes.disabled || disabled}
+            // disabled={
+            //   buttonText === "Verify" && sixDigitCode.length !== 6
+            //     ? true
+            //     : attributes.disabled || disabled
+            // }
+          >
+            {buttonText}
+          </Button>
+          {linkRelated && (
+            <Box
+              height="88px"
+              maxWidth="454px"
+              width="100%"
+              bgcolor="#272735"
+              borderRadius="12px"
+              display="flex"
+              p="24px"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Box display="flex" gap="20px">
+                <Box>LOGO</Box>
+                <Box>
+                  {getNodeLabel(node).split(" ")[1].charAt(0).toUpperCase() +
+                    getNodeLabel(node).split(" ")[1].slice(1)}
+                </Box>
+              </Box>
+              <Box>
+                <Switch />
+              </Box>
+            </Box>
+          )}
+        </>
       )}
     </>
   )
