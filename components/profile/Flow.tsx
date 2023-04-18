@@ -237,6 +237,14 @@ export default class Flow<T extends Values> extends Component<
       nodes,
     )
 
+    // acquire birthdayMonth
+    const { node: birthdayMonthNode, nodeId: birthdayMonthNodeId } =
+      this.spliceNode("traits.birthdayMonth", nodes)
+
+    // acquire birthdayYear
+    const { node: birthdayYearNode, nodeId: birthdayYearNodeId } =
+      this.spliceNode("traits.birthdayYear", nodes)
+
     if (!flow) {
       // No flow was set yet? It's probably still loading...
       //
@@ -298,29 +306,6 @@ export default class Flow<T extends Values> extends Component<
           <StyledSideWrap>
             <StyledProfileDeco src={"/images/purple-deco.png"} />
             <StyledSideInputs>
-              {/* gender node */}
-              {genderNode && (
-                <Node
-                  disabled={isLoading}
-                  node={genderNode}
-                  value={values[genderNodeId]}
-                  dispatchSubmit={this.handleSubmit}
-                  setValue={(value) =>
-                    new Promise((resolve) => {
-                      this.setState(
-                        (state) => ({
-                          ...state,
-                          values: {
-                            ...state.values,
-                            [getNodeId(genderNode)]: value,
-                          },
-                        }),
-                        resolve,
-                      )
-                    })
-                  }
-                />
-              )}
               {nodes.map((node, k) => {
                 // console.log(node)
                 const id = getNodeId(node) as keyof Values
@@ -361,6 +346,79 @@ export default class Flow<T extends Values> extends Component<
                   </>
                 )
               })}
+
+              {/* gender node */}
+              {genderNode && (
+                <Node
+                  disabled={isLoading}
+                  node={genderNode}
+                  value={values[genderNodeId]}
+                  dispatchSubmit={this.handleSubmit}
+                  setValue={(value) =>
+                    new Promise((resolve) => {
+                      this.setState(
+                        (state) => ({
+                          ...state,
+                          values: {
+                            ...state.values,
+                            [getNodeId(genderNode)]: value,
+                          },
+                        }),
+                        resolve,
+                      )
+                    })
+                  }
+                />
+              )}
+
+              <div style={{ display: "flex" }}>
+                {/* birthdayMonth node */}
+                {birthdayMonthNode && (
+                  <Node
+                    disabled={isLoading}
+                    node={birthdayMonthNode}
+                    value={values[birthdayMonthNodeId]}
+                    dispatchSubmit={this.handleSubmit}
+                    setValue={(value) =>
+                      new Promise((resolve) => {
+                        this.setState(
+                          (state) => ({
+                            ...state,
+                            values: {
+                              ...state.values,
+                              [getNodeId(birthdayMonthNode)]: value,
+                            },
+                          }),
+                          resolve,
+                        )
+                      })
+                    }
+                  />
+                )}
+                {/* birthdayYear node */}
+                {birthdayYearNode && (
+                  <Node
+                    disabled={isLoading}
+                    node={birthdayYearNode}
+                    value={values[birthdayYearNodeId]}
+                    dispatchSubmit={this.handleSubmit}
+                    setValue={(value) =>
+                      new Promise((resolve) => {
+                        this.setState(
+                          (state) => ({
+                            ...state,
+                            values: {
+                              ...state.values,
+                              [getNodeId(birthdayYearNode)]: value,
+                            },
+                          }),
+                          resolve,
+                        )
+                      })
+                    }
+                  />
+                )}
+              </div>
             </StyledSideInputs>
           </StyledSideWrap>
         </StyledForm>
