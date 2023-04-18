@@ -124,8 +124,8 @@ export function NodeInputSubmit<T>({
           </Button>
           {linkRelated && (
             <Box
-              height="88px"
-              maxWidth="454px"
+              height="40px"
+              maxWidth="400px"
               width="100%"
               bgcolor="#272735"
               borderRadius="12px"
@@ -135,8 +135,14 @@ export function NodeInputSubmit<T>({
               justifyContent="space-between"
             >
               <Box display="flex" gap="20px">
-                <Box>LOGO</Box>
                 <Box>
+                  {getNodeLabel(node).includes("google") ? (
+                    <Google />
+                  ) : getNodeLabel(node).includes("apple") ? (
+                    <Apple />
+                  ) : null}
+                </Box>
+                <Box fontFamily="open sans" fontSize="20px" color="#FFF">
                   {getNodeLabel(node).split(" ")[1].charAt(0).toUpperCase() +
                     getNodeLabel(node).split(" ")[1].slice(1)}
                 </Box>
