@@ -2,13 +2,13 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import React, { useEffect } from "react"
 
-import { StyledWrapper, StyledMenuItem, StyledImg } from "./styles"
+import { StyledWrapper, StyledMenuItem, StyledVercelWrapper, StyledImg } from "./styles"
 import User from "../../public/images/Menu/User"
 import Tool from '../../public/images/Menu/Tool'
 import ServiceManagement from '../../public/images/Menu/ServiceManagement'
-
 import Export from '../../public/images/Menu/Export'
 import Lock from '../../public/images/Menu/Lock'
+import Vercel from '../../public/images/Menu/Vector'
 
 interface AccountMenuProps {}
 
@@ -27,16 +27,18 @@ const AccountMenu: React.FC<AccountMenuProps> = () => {
     const color = active ? "#CA4AE8" : "#FFFFFF"
     return (
       <>
-      {
-        icon === "User" ?  <User color={color} /> :
-        icon === "Tool" ?  <Tool color={color} /> : 
-        icon === "Lock" ?  <Lock color={color} /> : 
-        icon === "ServiceManagement" ? <ServiceManagement color={color}/> : <Export color={color}/>
-      }
-      {name}
-    </>
+        <StyledVercelWrapper>
+          <Vercel color={color} />
+        </StyledVercelWrapper>
+        {
+          icon === "User" ?  <User color={color} /> :
+          icon === "Tool" ?  <Tool color={color} /> : 
+          icon === "Lock" ?  <Lock color={color} /> : 
+          icon === "ServiceManagement" ? <ServiceManagement color={color}/> : <Export color={color}/>
+        }
+        {name}
+      </>
     )
-
   }
   return (
     <StyledWrapper>

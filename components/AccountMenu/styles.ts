@@ -32,4 +32,9 @@ const StyledMenuItem = styled("div")<{ active?: boolean }>(({ active }) => ({
   },
 }))
 
-export { StyledWrapper, StyledMenuItem }
+const StyledVercelWrapper = styled("div")<{ active?: boolean }>(() => ({
+  position: "absolute",
+  left: "0px",
+}))
+
+export { StyledWrapper, StyledMenuItem, StyledVercelWrapper }
