@@ -269,6 +269,14 @@ export default class Flow<T extends Values> extends Component<
             <StyledProfileDeco src={"/images/purple-deco.png"} />
             <StyledSideInputs>
               {/*  also remove fields not included in design  */}
+              {console.log(
+                "@profile nodes after filter:",
+                nodes.filter(
+                  (node) =>
+                    node.attributes.name !== "traits.email" ||
+                    node.attributes.name !== "traits.loginVerification",
+                ),
+              )}
               {nodes
                 .filter(
                   (node) =>
