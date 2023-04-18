@@ -1,4 +1,5 @@
 import {
+  StyledBirthdayWrap,
   StyledEditButton,
   StyledFieldTitle,
   StyledForm,
@@ -247,10 +248,10 @@ export default class Flow<T extends Values> extends Component<
       this.spliceNode("traits.birthdayYear", nodes)
 
     // acquire method (submit button)
-    const { node: methodNode, nodeId: methodNodeId } = this.spliceNode(
-      "traits.method",
-      nodes,
-    )
+    // const { node: methodNode, nodeId: methodNodeId } = this.spliceNode(
+    //   "traits.method",
+    //   nodes,
+    // )
 
     if (!flow) {
       // No flow was set yet? It's probably still loading...
@@ -322,6 +323,10 @@ export default class Flow<T extends Values> extends Component<
                 return (
                   <>
                     <StyledFieldTitle>
+                      {console.log(
+                        "@profile LOGGIN TITLE:",
+                        node.attributes.title,
+                      )}
                       {node.attributes.title === "traits.name"
                         ? "Username"
                         : node.attributes.title === "traits.phone"
@@ -382,7 +387,7 @@ export default class Flow<T extends Values> extends Component<
               {/* Birthday Section */}
               <StyledFieldTitle>Date of Birth</StyledFieldTitle>
 
-              <div style={{ display: "flex" }}>
+              <StyledBirthdayWrap>
                 {/* birthdayMonth node */}
                 {birthdayMonthNode && (
                   <Node
@@ -429,9 +434,9 @@ export default class Flow<T extends Values> extends Component<
                     }
                   />
                 )}
-              </div>
+              </StyledBirthdayWrap>
               {/* method node (submit button) */}
-              {methodNode && (
+              {/* {methodNode && (
                 <StyledSubmitArea>
                   <Node
                     disabled={isLoading}
@@ -454,7 +459,7 @@ export default class Flow<T extends Values> extends Component<
                     }
                   />
                 </StyledSubmitArea>
-              )}
+              )} */}
             </StyledSideInputs>
           </StyledSideWrap>
         </StyledForm>

@@ -76,6 +76,11 @@ const StyledSubmitArea = styled("div")(() => ({
   justifyContent: "end",
 }))
 
+const StyledBirthdayWrap = styled("div")(() => ({
+  display: "flex",
+  justifyContent: "space-between",
+}))
+
 export {
   StyledProfileArea,
   StyledImageUpload,
@@ -90,4 +95,5 @@ export {
   StyledSideWrap,
   StyledFieldTitle,
   StyledSubmitArea,
+  StyledBirthdayWrap,
 }
