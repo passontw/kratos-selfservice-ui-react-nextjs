@@ -23,13 +23,14 @@ const AccountMenu: React.FC<AccountMenuProps> = () => {
     { name: "Export User Data", path: "/", icon: "Export" },
   ]
 
-  const Component = ({name, active, icon}: {name: string, active: boolean, icon:string}) => {
+  const Component = ({name, active, icon}: {name: string, active: boolean, icon: string}) => {
     const color = active ? "#CA4AE8" : "#FFFFFF"
     return (
       <>
-        <StyledVercelWrapper>
-          <Vercel color={color} />
-        </StyledVercelWrapper>
+        {active &&  (
+          <StyledVercelWrapper>
+            <Vercel color={color} />
+          </StyledVercelWrapper>)}
         {
           icon === "User" ?  <User color={color} /> :
           icon === "Tool" ?  <Tool color={color} /> : 
