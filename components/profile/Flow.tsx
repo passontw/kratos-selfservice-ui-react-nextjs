@@ -193,7 +193,8 @@ export default class Flow<T extends Values> extends Component<
 
     // acquire profileNode
     const profileNode = nodes?.find((node) => node.name === "traits.avatar")
-    const profileNodeId = getNodeId(profileNode) as keyof Values
+    const profileNodeId =
+      profileNode && (getNodeId(profileNode) as keyof Values)
     // remove it from the other nodes to sperate its view from the rest of the form
     nodes.splice(nodes.indexOf(profileNode), 1)
 
@@ -215,7 +216,7 @@ export default class Flow<T extends Values> extends Component<
 
         <StyledForm>
           <StyledImageUpload>
-            {/* {profileNode && (
+            {profileNode && (
               <Node
                 disabled={isLoading}
                 node={profileNode}
@@ -236,7 +237,7 @@ export default class Flow<T extends Values> extends Component<
                   })
                 }
               />
-            )} */}
+            )}
           </StyledImageUpload>
 
           <StyledSideInputs>
