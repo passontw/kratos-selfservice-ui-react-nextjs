@@ -141,7 +141,7 @@ export function NodeInputSubmit<T>({
               alignItems="center"
               justifyContent="space-between"
             >
-              <Box display="flex" gap="20px">
+              <Box display="flex" gap="20px" alignItems="center">
                 <Box>
                   {getNodeLabel(node).includes("google") ? (
                     <Google />

@@ -1,10 +1,10 @@
 interface AppleProps {
-  color?: string,
+  color?: string
 }
 
 const Apple: React.FC<AppleProps> = ({ color = "#FFF" }) => {
   return (
-    <div>
+    <>
       <svg
         width="44"
         height="44"
@@ -18,7 +18,7 @@ const Apple: React.FC<AppleProps> = ({ color = "#FFF" }) => {
           fill="black"
         />
       </svg>
-    </div>
+    </>
   )
 }
 

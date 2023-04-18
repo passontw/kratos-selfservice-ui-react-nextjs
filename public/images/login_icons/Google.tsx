@@ -4,7 +4,7 @@ interface GoogleProps {
 
 const Google: React.FC<GoogleProps> = ({ color = "#FFF" }) => {
   return (
-    <div>
+    <>
       <svg
         width="44"
         height="44"
@@ -38,7 +38,7 @@ const Google: React.FC<GoogleProps> = ({ color = "#FFF" }) => {
           fill="#4285F4"
         />
       </svg>
-    </div>
+    </>
   )
 }
 
