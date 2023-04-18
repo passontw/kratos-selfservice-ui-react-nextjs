@@ -16,7 +16,7 @@ import AccountLayout from '../components/Layout/AccountLayout'
 import { setActiveNav } from '../state/store/slice/layoutSlice'
 import { Navs } from '../types/enum'
 import { useDispatch } from 'react-redux'
-import { StyledProfileArea } from '../styles/pages/changepassword.styles'
+import { StyledChangePasswordArea } from '../styles/pages/changepassword.styles'
 
 interface Props {
   flow?: SettingsFlow
@@ -134,7 +134,7 @@ const ChangePassword: NextPage = () => {
 
   return (
     <AccountLayout>
-      <StyledProfileArea>
+      <StyledChangePasswordArea>
         <SettingsCard only="password" flow={flow}>
           <Messages messages={flow?.ui.messages} />
           <Flow
@@ -145,13 +145,11 @@ const ChangePassword: NextPage = () => {
             flow={flow}
           />
         </SettingsCard>
-      </StyledProfileArea>
+      </StyledChangePasswordArea>
     </AccountLayout>
   )
 }
 
 export default ChangePassword
-function dispatch(arg0: any) {
-  throw new Error('Function not implemented.')
-}
+
 
