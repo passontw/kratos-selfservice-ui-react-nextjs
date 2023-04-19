@@ -201,7 +201,7 @@ export default class Flow<T extends Values> extends Component<
           disabled={isLoading}
           attributes={csrfTokenNode.attributes}
         />
-        <Box color="#717197" fontSize="14px" fontFamily="open sans" mt="24px">
+        <Box color="#717197" fontSize="14px" fontFamily="open sans">
           New Password *
         </Box>
         <NodeInputDefault
@@ -265,7 +265,7 @@ export default class Flow<T extends Values> extends Component<
             <Eye setInputType={this.handleEye} />
           </StyledPasswordIcon>
         </StyledDefaultInput>
-        <Box position="relative" width="76px">
+        <Box position="relative" width="76px" mt="16px">
           <NodeInputSubmit
             value={values[getNodeId(submitNode)]}
             node={submitNode}
