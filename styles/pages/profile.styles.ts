@@ -33,6 +33,7 @@ const StyledImageTitle = styled("div")(() => ({
   fontWeight: 600,
   color: WHITE,
 }))
+
 const StyledImageText = styled("div")(() => ({
   marginTop: "12px",
   fontSize: "13px",

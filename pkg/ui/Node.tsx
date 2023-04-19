@@ -6,6 +6,7 @@ import {
   isUiNodeScriptAttributes,
   isUiNodeTextAttributes,
 } from "@ory/integrations/ui"
+import { ReactHTMLElement, Ref } from "react"
 
 import { NodeAnchor } from "./NodeAnchor"
 import { NodeImage } from "./NodeImage"
@@ -15,6 +16,7 @@ import { NodeText } from "./NodeText"
 import { FormDispatcher, ValueSetter } from "./helpers"
 
 interface Props {
+  ref: Ref<HTMLButtonElement>
   node: UiNode
   disabled: boolean
   value: any

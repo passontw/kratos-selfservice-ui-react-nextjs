@@ -13,7 +13,7 @@ import {
   UiTextTypeEnum,
 } from "@ory/client"
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
-import { Component, FormEvent, MouseEvent } from "react"
+import { Component, FormEvent, MouseEvent, createRef } from "react"
 
 import { Node } from "../../pkg/ui/Node"
 import { setDialog, setMfaModalOpen } from "../../state/store/slice/layoutSlice"
@@ -77,12 +77,15 @@ export default class Flow<T extends Values> extends Component<
   Props<T>,
   State<T>
 > {
+  private submitButton: React.RefObject<HTMLButtonElement>
+
   constructor(props: Props<T>) {
     super(props)
     this.state = {
       values: emptyState(),
       isLoading: false,
     }
+    this.submitButton = createRef<HTMLButtonElement>()
   }
 
   componentDidMount() {
@@ -218,45 +221,64 @@ export default class Flow<T extends Values> extends Component<
       return null
     }
 
+    const handleTestSubmit = () => {
+      console.log("@modal clicking...")
+      this.submitButton.current?.click()
+    }
+
     return (
-      <form
-        action={flow.ui.action}
-        method={flow.ui.method}
-        onSubmit={this.handleSubmit}
-      >
-        {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
-        {nodes.map((node, k) => {
-          const id = getNodeId(node) as keyof Values
-          const isShow =
-            node.attributes.name === "csrf_token" ||
-            node.attributes.name === "traits.loginVerification" ||
-            node.attributes.type === "submit"
-          return (
-            <span key={`${id}-${k}`} style={isShow ? {} : { display: "none" }}>
-              <Node
-                disabled={isLoading}
-                node={node}
-                value={values[id]}
-                dispatchSubmit={this.handleSubmit}
-                setValue={(value) =>
-                  new Promise((resolve) => {
-                    this.setState(
-                      (state) => ({
-                        ...state,
-                        values: {
-                          ...state.values,
-                          [getNodeId(node)]: value,
-                        },
-                      }),
-                      resolve,
-                    )
-                  })
-                }
-              />
-            </span>
-          )
-        })}
-      </form>
+      <>
+        <button onClick={handleTestSubmit}>TEST</button>
+        <form
+          action={flow.ui.action}
+          method={flow.ui.method}
+          onSubmit={this.handleSubmit}
+        >
+          {!hideGlobalMessages ? (
+            <Messages messages={flow.ui.messages} />
+          ) : null}
+          {nodes.map((node, k) => {
+            const id = getNodeId(node) as keyof Values
+            const isShow =
+              node.attributes.name === "csrf_token" ||
+              node.attributes.name === "traits.loginVerification" ||
+              node.attributes.type === "submit"
+            const isSubmitBtn = node.attributes.name === "method"
+            if (isSubmitBtn) {
+              console.log("@modal submit Btn", node)
+            }
+
+            return (
+              <span
+                key={`${id}-${k}`}
+                style={isShow ? {} : { display: "none" }}
+              >
+                <Node
+                  ref={isSubmitBtn ? this.submitButton : null}
+                  disabled={isLoading}
+                  node={node}
+                  value={values[id]}
+                  dispatchSubmit={this.handleSubmit}
+                  setValue={(value) =>
+                    new Promise((resolve) => {
+                      this.setState(
+                        (state) => ({
+                          ...state,
+                          values: {
+                            ...state.values,
+                            [getNodeId(node)]: value,
+                          },
+                        }),
+                        resolve,
+                      )
+                    })
+                  }
+                />
+              </span>
+            )
+          })}
+        </form>
+      </>
     )
   }
 }

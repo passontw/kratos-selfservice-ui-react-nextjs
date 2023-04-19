@@ -21,6 +21,7 @@ export function NodeInputButton<T>({
       e.stopPropagation()
       e.preventDefault()
       const run = new Function(attributes.onclick)
+
       run()
       return
     }

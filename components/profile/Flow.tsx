@@ -122,7 +122,6 @@ export default class Flow<T extends Values> extends Component<
           return
         }
         values[node.attributes.name as keyof Values] = node.attributes.value
-        // console.log(values)
       }
     })
 
