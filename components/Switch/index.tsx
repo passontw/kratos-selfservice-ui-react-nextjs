@@ -69,6 +69,9 @@ const CustomizedSwitches: React.FC<SwitchProps> = ({
   const dispatch = useDispatch()
   const [checked, setChecked] = React.useState(on)
 
+  console.log("passRef%%%1", passRef)
+  console.log("passRef%%%2", passRef.current)
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (origin === "MFA") {
       dispatch(setMfaModalOpen(true))
