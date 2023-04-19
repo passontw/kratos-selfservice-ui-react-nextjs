@@ -82,8 +82,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   componentDidMount() {
     this.initializeValues(this.filterNodes())
     console.log('this.formRef', this.formRef)
-    console.log('this.formRef', this.formRef.submit())
-
   }
 
   componentDidUpdate(prevProps: Props<T>) {
@@ -136,9 +134,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     // Prevent all native handlers
     event.stopPropagation()
     event.preventDefault()
-    if(this.formRef){
-      alert('asd')
-    }
 
     // Prevent double submission!
     if (this.state.isLoading) {
@@ -189,9 +184,10 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   handleClick = (ref:any) => {
     console.log('[form click ref]', this.formRef)
     console.log('[handleClick ref]', ref )
-    if(this.formRef.current){
+    if(this.formRef){
       console.log('have form click ref', this.formRef)
-      this.formRef.current.sumbit()
+      this.formRef.sumbit()
+      ref.sumbit()
     }
   }
 
