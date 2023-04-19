@@ -42,10 +42,11 @@ const StyledImageText = styled("div")(() => ({
 
 const StyledProfileImageWrap = styled("div")(() => ({
   position: "relative",
+  width: "168px",
 }))
 
 const StyledProfileImage = styled("img")(() => ({
-  width: "168px",
+  width: "100%",
 }))
 
 const StyledEditButton = styled("img")(() => ({
