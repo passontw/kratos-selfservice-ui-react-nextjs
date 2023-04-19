@@ -24,6 +24,7 @@ export function NodeInputSubmit<T>({
   disabled,
   dispatchSubmit,
 }: NodeInputProps) {
+  const boxRef = useRef(null)
   const activeNav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
   // const sixDigitCode = useSelector(selectSixDigitCode)
@@ -116,7 +117,7 @@ export function NodeInputSubmit<T>({
         </Box>
       ) : (
         <>
-          <Box onClick={() => console.log("i clicked on this btn")}>
+          <Box ref={boxRef}>
             <Button
               style={
                 showButton
@@ -167,6 +168,7 @@ export function NodeInputSubmit<T>({
                   origin="ACC_LINK"
                   on={getNodeLabel(node).split(" ")[0] === "Unlink"}
                   change={dispatchSubmit}
+                  passRef={boxRef}
                 />
                 <Box onClick={dispatchSubmit}>test</Box>
               </Box>
