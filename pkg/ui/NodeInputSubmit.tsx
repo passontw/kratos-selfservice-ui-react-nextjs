@@ -162,6 +162,7 @@ export function NodeInputSubmit<T>({
                   on={getNodeLabel(node).split(" ")[0] === "Unlink"}
                   change={dispatchSubmit}
                 />
+                <Box onClick={dispatchSubmit}>test</Box>
               </Box>
             </Box>
           )}
