@@ -96,6 +96,15 @@ const StyledFieldSpacer = styled("div")(() => ({
   marginTop: "25px",
 }))
 
+const StyledBirthdayYear = styled("div")(() => ({
+  width: "100%",
+}))
+
+const StyledBirthdayMonth = styled("div")(() => ({
+  width: "100%",
+  marginRight: "24px",
+}))
+
 export {
   StyledProfileArea,
   StyledImageUpload,
@@ -113,4 +122,6 @@ export {
   StyledBirthdayWrap,
   StyledSubmitButton,
   StyledFieldSpacer,
+  StyledBirthdayYear,
+  StyledBirthdayMonth,
 }

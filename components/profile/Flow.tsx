@@ -1,5 +1,7 @@
 import {
+  StyledBirthdayMonth,
   StyledBirthdayWrap,
+  StyledBirthdayYear,
   StyledEditButton,
   StyledFieldSpacer,
   StyledFieldTitle,
@@ -387,58 +389,62 @@ export default class Flow<T extends Values> extends Component<
                 )}
               </StyledFieldSpacer>
 
-              {/* Birthday Section */}
-              <StyledFieldTitle>Date of Birth</StyledFieldTitle>
-
               <StyledFieldSpacer>
+                {/* Birthday Section */}
+                <StyledFieldTitle>Date of Birth</StyledFieldTitle>
+
                 <StyledBirthdayWrap>
                   {/* birthdayMonth node */}
-                  {birthdayMonthNode && (
-                    <Node
-                      disabled={isLoading}
-                      node={birthdayMonthNode}
-                      value={values[birthdayMonthNodeId]}
-                      dispatchSubmit={this.handleSubmit}
-                      setValue={(value) =>
-                        new Promise((resolve) => {
-                          this.setState(
-                            (state) => ({
-                              ...state,
-                              values: {
-                                ...state.values,
-                                [getNodeId(birthdayMonthNode)]: value,
-                              },
-                            }),
-                            resolve,
-                          )
-                        })
-                      }
-                    />
-                  )}
+                  <StyledBirthdayMonth>
+                    {birthdayMonthNode && (
+                      <Node
+                        disabled={isLoading}
+                        node={birthdayMonthNode}
+                        value={values[birthdayMonthNodeId]}
+                        dispatchSubmit={this.handleSubmit}
+                        setValue={(value) =>
+                          new Promise((resolve) => {
+                            this.setState(
+                              (state) => ({
+                                ...state,
+                                values: {
+                                  ...state.values,
+                                  [getNodeId(birthdayMonthNode)]: value,
+                                },
+                              }),
+                              resolve,
+                            )
+                          })
+                        }
+                      />
+                    )}
+                  </StyledBirthdayMonth>
 
                   {/* birthdayYear node */}
-                  {birthdayYearNode && (
-                    <Node
-                      disabled={isLoading}
-                      node={birthdayYearNode}
-                      value={values[birthdayYearNodeId]}
-                      dispatchSubmit={this.handleSubmit}
-                      setValue={(value) =>
-                        new Promise((resolve) => {
-                          this.setState(
-                            (state) => ({
-                              ...state,
-                              values: {
-                                ...state.values,
-                                [getNodeId(birthdayYearNode)]: value,
-                              },
-                            }),
-                            resolve,
-                          )
-                        })
-                      }
-                    />
-                  )}
+                  <StyledBirthdayYear>
+                    {birthdayYearNode && (
+                      <Node
+                        disabled={isLoading}
+                        node={birthdayYearNode}
+                        value={values[birthdayYearNodeId]}
+                        dispatchSubmit={this.handleSubmit}
+                        setValue={(value) =>
+                          new Promise((resolve) => {
+                            this.setState(
+                              (state) => ({
+                                ...state,
+                                values: {
+                                  ...state.values,
+                                  [getNodeId(birthdayYearNode)]: value,
+                                },
+                              }),
+                              resolve,
+                            )
+                          })
+                        }
+                      />
+                    )}
+                  </StyledBirthdayYear>
                 </StyledBirthdayWrap>
               </StyledFieldSpacer>
 
