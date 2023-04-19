@@ -51,7 +51,7 @@ export const Node = ({
   if (isUiNodeInputAttributes(node.attributes)) {
     return (
       <NodeInput
-        ref={ref}
+        // ref={ref}
         dispatchSubmit={dispatchSubmit}
         value={value}
         setValue={setValue}
