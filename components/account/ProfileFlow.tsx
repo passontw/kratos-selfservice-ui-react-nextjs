@@ -228,7 +228,7 @@ export default class Flow<T extends Values> extends Component<
 
     return (
       <>
-        <button onClick={handleTestSubmit}>TEST</button>
+        <button onClick={() => handleTestSubmit()}>TEST</button>
         <form
           action={flow.ui.action}
           method={flow.ui.method}
