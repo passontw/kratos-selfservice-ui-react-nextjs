@@ -74,7 +74,8 @@ const CustomizedSwitches: React.FC<SwitchProps> = ({
       setChecked(event.target.checked)
       change(event.target.checked)
     } else if (origin === "ACC_LINK") {
-      change()
+      setChecked(event.target.checked)
+      // change()
     }
   }
 
