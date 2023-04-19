@@ -22,7 +22,9 @@ export function NodeInputSubmit<T>({
   node,
   attributes,
   disabled,
+  dispatchSubmit,
 }: NodeInputProps) {
+  const boxRef = useRef(null)
   const activeNav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
   // const sixDigitCode = useSelector(selectSixDigitCode)
@@ -40,6 +42,7 @@ export function NodeInputSubmit<T>({
     margin: "36px 0px 0px",
     fontSize: "16px",
     fontFamily: "Open Sans",
+    color: "#FFF",
     width:
       isDialogForgotPswd || activeNav === Navs.SETTINGS || linkRelated
         ? "95px"
@@ -89,6 +92,13 @@ export function NodeInputSubmit<T>({
       ? "Resend"
       : getNodeLabel(node)
 
+  const clickHandler = ()=>{
+    if(boxRef.current) {
+      console.log('boxRef.current', boxRef.current)
+      boxRef.current.click()
+    }
+  }
+
   return (
     <>
       {getNodeLabel(node) === "Resend code" ? (
@@ -114,21 +124,27 @@ export function NodeInputSubmit<T>({
         </Box>
       ) : (
         <>
-          <Button
-            style={
-              showButton ? (resendLink ? linkStyle : defaultStyle) : hiddenStyle
-            }
-            name={attributes.name}
-            value={attributes.value || ""}
-            disabled={attributes.disabled || disabled}
-            // disabled={
-            //   buttonText === "Verify" && sixDigitCode.length !== 6
-            //     ? true
-            //     : attributes.disabled || disabled
-            // }
-          >
-            {buttonText}
-          </Button>
+          <Box ref={boxRef}>
+            <Button
+              style={
+                showButton
+                  ? resendLink
+                    ? linkStyle
+                    : defaultStyle
+                  : hiddenStyle
+              }
+              name={attributes.name}
+              value={attributes.value || ""}
+              disabled={attributes.disabled || disabled}
+              // disabled={
+              //   buttonText === "Verify" && sixDigitCode.length !== 6
+              //     ? true
+              //     : attributes.disabled || disabled
+              // }
+            >
+              {buttonText}
+            </Button>
+          </Box>
           {linkRelated && (
             <Box
               height="40px"
@@ -155,7 +171,12 @@ export function NodeInputSubmit<T>({
                 </Box>
               </Box>
               <Box>
-                <Switch />
+                <Switch
+                  origin="ACC_LINK"
+                  on={getNodeLabel(node).split(" ")[0] === "Unlink"}
+                  change={clickHandler}
+                />
+                <Box onClick={dispatchSubmit}>test</Box>
               </Box>
             </Box>
           )}
