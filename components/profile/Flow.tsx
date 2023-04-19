@@ -312,8 +312,10 @@ export default class Flow<T extends Values> extends Component<
               <StyledEditButton src={"/images/edit-icon.png"} />
             </StyledProfileImageWrap>
 
-            <StyledImageTitle>master123@gmail.com</StyledImageTitle>
-            <StyledImageText>Joined since May 2022</StyledImageText>
+            <StyledImageTitle>{flow?.identity.traits.email}</StyledImageTitle>
+            <StyledImageText>
+              Joined since {flow?.identity.created_at.split("T")[0]}
+            </StyledImageText>
           </StyledImageUpload>
 
           <StyledSideWrap>
