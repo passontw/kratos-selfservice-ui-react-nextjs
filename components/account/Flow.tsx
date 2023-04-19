@@ -182,10 +182,10 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   }
 
   handleClick = () => {
-    console.log('form click ref')
-    if(this.formRef){
-      console.log('have form click ref')
-      this.formRef.sumbit()
+    console.log('form click ref', this.formRef.current)
+    if(this.formRef.current){
+      console.log('have form click ref', this.formRef.current)
+      this.formRef.current.sumbit()
     }
   }
 
@@ -209,7 +209,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         action={flow.ui.action}
         method={flow.ui.method}
         onSubmit={this.handleSubmit}
-        ref={this.formRef}
+        ref={f => (this.formRef = f)}
       >
         <Box display="flex" flexWrap="wrap" gap="36px">
           {!hideGlobalMessages ? (
