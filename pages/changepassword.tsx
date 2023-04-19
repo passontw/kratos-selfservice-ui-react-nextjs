@@ -2,9 +2,9 @@ import {
   StyledChangePasswordArea,
   StyledAccount,
   StyledEmail,
+  StyledChangePasswordDeco
 } from "../styles/pages/changepassword.styles"
 import { SettingsFlow, UpdateSettingsFlowBody } from "@ory/client"
-import { H3 } from "@ory/themes"
 import cloneDeep from "lodash/cloneDeep"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
@@ -138,6 +138,7 @@ const ChangePassword: NextPage = () => {
   return (
     <AccountLayout>
       <StyledChangePasswordArea marginTop="48px" >
+        <StyledChangePasswordDeco src={"/images/purple-deco.png"} />
         <div>
         <StyledAccount>Account</StyledAccount>
         <StyledEmail>{email}</StyledEmail>

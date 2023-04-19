@@ -30,4 +30,11 @@ const StyledEmail = styled("p")<{}>(() => ({
   margin: "0px",
 }))
 
-export { StyledChangePasswordArea, StyledAccount, StyledEmail }
+const StyledChangePasswordDeco = styled("img")(() => ({}))
+
+export {
+  StyledChangePasswordArea,
+  StyledAccount,
+  StyledEmail,
+  StyledChangePasswordDeco,
+}
