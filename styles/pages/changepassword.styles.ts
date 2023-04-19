@@ -17,6 +17,9 @@ const StyledChangePasswordArea = styled("div")<{ marginTop?: string }>(
     },
   }),
 )
+const StyledSection = styled("section")<{}>(() => ({
+  padding: "16px 32px 32px",
+}))
 
 const StyledAccount = styled("p")<{}>(() => ({
   color: "#717197",
@@ -32,10 +35,12 @@ const StyledEmail = styled("p")<{}>(() => ({
 
 const StyledChangePasswordDeco = styled("img")(() => ({
   width: "100%",
+  height: "16px",
 }))
 
 export {
   StyledChangePasswordArea,
+  StyledSection,
   StyledAccount,
   StyledEmail,
   StyledChangePasswordDeco,
