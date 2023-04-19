@@ -228,7 +228,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 node={node}
                 value={values[id]}
                 dispatchSubmit={this.handleSubmit}
-                handleClick={this.handleClick}
+                handleClick={this.handleClick(this.formRef)}
                 setValue={(value) =>
                   new Promise((resolve) => {
                     this.setState(

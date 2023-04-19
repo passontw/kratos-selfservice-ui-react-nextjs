@@ -20,7 +20,7 @@ interface Props {
   value: any
   setValue: ValueSetter
   dispatchSubmit: FormDispatcher
-  handleClick: Function
+  handleClick?: any
 }
 
 export const Node = ({
