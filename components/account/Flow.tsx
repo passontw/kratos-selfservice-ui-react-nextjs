@@ -182,10 +182,9 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   }
 
   handleClick = (ref:any) => {
-    console.log('[form click ref]', this.formRef)
-    console.log('[handleClick ref]', ref )
-    if(this.formRef){
-      console.log('have form click ref', this.formRef)
+    console.log('[form click ref]', ref)
+    if(ref){
+      console.log('have form click ref', ref)
       ref.sumbit()
     }
   }
