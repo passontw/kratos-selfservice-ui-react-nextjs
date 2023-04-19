@@ -30,7 +30,9 @@ const StyledEmail = styled("p")<{}>(() => ({
   margin: "0px",
 }))
 
-const StyledChangePasswordDeco = styled("img")(() => ({}))
+const StyledChangePasswordDeco = styled("img")(() => ({
+  width: "100%",
+}))
 
 export {
   StyledChangePasswordArea,
