@@ -1,5 +1,5 @@
 import { UiNode, UiNodeInputAttributes } from "@ory/client"
-import { FormEvent, MouseEvent } from "react"
+import { FormEvent, MouseEvent, Ref } from "react"
 
 export type ValueSetter = (
   value: string | number | boolean | undefined,
@@ -16,4 +16,5 @@ export interface NodeInputProps {
   disabled: boolean
   dispatchSubmit: FormDispatcher
   setValue: ValueSetter
+  ref?: Ref<HTMLButtonElement>
 }

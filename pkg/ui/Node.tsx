@@ -30,6 +30,7 @@ export const Node = ({
   setValue,
   disabled,
   dispatchSubmit,
+  ref,
 }: Props) => {
   if (isUiNodeImageAttributes(node.attributes)) {
     return <NodeImage node={node} attributes={node.attributes} />
@@ -50,6 +51,7 @@ export const Node = ({
   if (isUiNodeInputAttributes(node.attributes)) {
     return (
       <NodeInput
+        ref={ref}
         dispatchSubmit={dispatchSubmit}
         value={value}
         setValue={setValue}
