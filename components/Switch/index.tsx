@@ -80,7 +80,7 @@ const CustomizedSwitches: React.FC<SwitchProps> = ({
       change(event.target.checked)
     } else if (origin === "ACC_LINK") {
       setChecked(event.target.checked)
-      if (passRef.current) {
+      if (passRef?.current) {
         passRef.current.click()
       }
       // change()
