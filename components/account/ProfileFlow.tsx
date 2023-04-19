@@ -227,58 +227,50 @@ export default class Flow<T extends Values> extends Component<
     }
 
     return (
-      <>
-        <button onClick={() => handleTestSubmit()}>TEST</button>
-        <form
-          action={flow.ui.action}
-          method={flow.ui.method}
-          onSubmit={this.handleSubmit}
-        >
-          {!hideGlobalMessages ? (
-            <Messages messages={flow.ui.messages} />
-          ) : null}
-          {nodes.map((node, k) => {
-            const id = getNodeId(node) as keyof Values
-            const isShow =
-              node.attributes.name === "csrf_token" ||
-              node.attributes.name === "traits.loginVerification" ||
-              node.attributes.type === "submit"
-            const isSubmitBtn = node.attributes.name === "method"
-            if (isSubmitBtn) {
-              console.log("@modal submit Btn", node)
-            }
+      <form
+        action={flow.ui.action}
+        method={flow.ui.method}
+        onSubmit={this.handleSubmit}
+      >
+        {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
+        {nodes.map((node, k) => {
+          const id = getNodeId(node) as keyof Values
+          const isShow =
+            node.attributes.name === "csrf_token" ||
+            node.attributes.name === "traits.loginVerification" ||
+            node.attributes.type === "submit"
+          const isSubmitBtn = node.attributes.name === "method"
+          if (isSubmitBtn) {
+            console.log("@modal submit Btn", node)
+          }
 
-            return (
-              <span
-                key={`${id}-${k}`}
-                style={isShow ? {} : { display: "none" }}
-              >
-                <Node
-                  // ref={isSubmitBtn ? this.submitButton : null}
-                  disabled={isLoading}
-                  node={node}
-                  value={values[id]}
-                  dispatchSubmit={this.handleSubmit}
-                  setValue={(value) =>
-                    new Promise((resolve) => {
-                      this.setState(
-                        (state) => ({
-                          ...state,
-                          values: {
-                            ...state.values,
-                            [getNodeId(node)]: value,
-                          },
-                        }),
-                        resolve,
-                      )
-                    })
-                  }
-                />
-              </span>
-            )
-          })}
-        </form>
-      </>
+          return (
+            <span key={`${id}-${k}`} style={isShow ? {} : { display: "none" }}>
+              <Node
+                // ref={isSubmitBtn ? this.submitButton : null}
+                disabled={isLoading}
+                node={node}
+                value={values[id]}
+                dispatchSubmit={this.handleSubmit}
+                setValue={(value) =>
+                  new Promise((resolve) => {
+                    this.setState(
+                      (state) => ({
+                        ...state,
+                        values: {
+                          ...state.values,
+                          [getNodeId(node)]: value,
+                        },
+                      }),
+                      resolve,
+                    )
+                  })
+                }
+              />
+            </span>
+          )
+        })}
+      </form>
     )
   }
 }
