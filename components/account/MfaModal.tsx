@@ -33,9 +33,7 @@ const MfaModal: React.FC<MfaModalProps> = ({ submit }) => {
       <Box display="flex">
         <Box>Cancel</Box>
         <Box
-          onClick={(e) => {
-            submit(e)
-          }}
+          onClick={submit}
         >
           {btnText}
         </Box>
