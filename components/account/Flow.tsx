@@ -14,7 +14,9 @@ import {
   UiTextTypeEnum,
 } from "@ory/client"
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
-import { Component, FormEvent, MouseEvent } from "react"
+import { RefObject } from 'react'
+
+import { Component, FormEvent, MouseEvent, createRef, ReactHTMLElement } from "react"
 
 import { Messages } from "./Messages"
 import { Node } from "./Node"
@@ -66,12 +68,16 @@ type State<T> = {
 }
 
 export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
+
+  private formRef: any;
+  
   constructor(props: Props<T>) {
     super(props)
     this.state = {
       values: emptyState(),
       isLoading: false,
     }
+    this.formRef = createRef()
   }
 
   componentDidMount() {
@@ -175,6 +181,14 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       })
   }
 
+  handleClick = () => {
+    console.log('form click ref')
+    if(this.formRef){
+      console.log('have form click ref')
+      this.formRef.sumbit()
+    }
+  }
+
   render() {
     const { hideGlobalMessages, flow } = this.props
     const { values, isLoading } = this.state
@@ -195,6 +209,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         action={flow.ui.action}
         method={flow.ui.method}
         onSubmit={this.handleSubmit}
+        ref={this.formRef}
       >
         <Box display="flex" flexWrap="wrap" gap="36px">
           {!hideGlobalMessages ? (
@@ -213,6 +228,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 node={node}
                 value={values[id]}
                 dispatchSubmit={this.handleSubmit}
+                handleClick={this.handleClick}
                 setValue={(value) =>
                   new Promise((resolve) => {
                     this.setState(

@@ -23,8 +23,9 @@ export function NodeInputSubmit<T>({
   attributes,
   disabled,
   dispatchSubmit,
+  handleClick,
 }: NodeInputProps) {
-  const boxRef = useRef(null)
+  
   const activeNav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
   // const sixDigitCode = useSelector(selectSixDigitCode)
@@ -92,13 +93,6 @@ export function NodeInputSubmit<T>({
       ? "Resend"
       : getNodeLabel(node)
 
-  const clickHandler = ()=>{
-    if(boxRef.current) {
-      console.log('boxRef.current', boxRef.current)
-      boxRef.current.click()
-    }
-  }
-
   return (
     <>
       {getNodeLabel(node) === "Resend code" ? (
@@ -124,7 +118,7 @@ export function NodeInputSubmit<T>({
         </Box>
       ) : (
         <>
-          <Box ref={boxRef}>
+          <Box>
             <Button
               style={
                 showButton
@@ -174,7 +168,7 @@ export function NodeInputSubmit<T>({
                 <Switch
                   origin="ACC_LINK"
                   on={getNodeLabel(node).split(" ")[0] === "Unlink"}
-                  change={clickHandler}
+                  change={handleClick}
                 />
                 <Box onClick={dispatchSubmit}>test</Box>
               </Box>
