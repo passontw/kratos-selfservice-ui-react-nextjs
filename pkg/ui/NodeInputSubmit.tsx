@@ -24,8 +24,8 @@ export function NodeInputSubmit<T>({
   disabled,
   dispatchSubmit,
   handleClick,
+  ref,
 }: NodeInputProps) {
-  
   const activeNav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
   // const sixDigitCode = useSelector(selectSixDigitCode)
@@ -92,6 +92,8 @@ export function NodeInputSubmit<T>({
       : getNodeLabel(node) === "Resend code"
       ? "Resend"
       : getNodeLabel(node)
+
+  console.log("@modal NodeInputSubmit props ref:", ref)
 
   return (
     <>

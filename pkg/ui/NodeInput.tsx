@@ -6,6 +6,7 @@ import { NodeInputSubmit } from "./NodeInputSubmit"
 import { NodeInputProps } from "./helpers"
 
 export function NodeInput<T>(props: NodeInputProps) {
+  console.log("@Modal NodeInputProps:", props)
   const { attributes } = props
 
   console.log(attributes)
