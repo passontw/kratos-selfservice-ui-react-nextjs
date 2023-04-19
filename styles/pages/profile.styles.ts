@@ -57,6 +57,7 @@ const StyledEditButton = styled("img")(() => ({
 const StyledSideWrap = styled("div")(() => ({
   display: "flex",
   flexDirection: "column",
+  width: "100%",
 }))
 
 const StyledSideInputs = styled("div")(() => ({
@@ -81,6 +82,10 @@ const StyledBirthdayWrap = styled("div")(() => ({
   justifyContent: "space-between",
 }))
 
+const StyledSubmitButton = styled("div")(() => ({
+  width: "76px",
+}))
+
 export {
   StyledProfileArea,
   StyledImageUpload,
@@ -96,4 +101,5 @@ export {
   StyledFieldTitle,
   StyledSubmitArea,
   StyledBirthdayWrap,
+  StyledSubmitButton,
 }

@@ -12,6 +12,7 @@ import {
   StyledSideInputs,
   StyledSideWrap,
   StyledSubmitArea,
+  StyledSubmitButton,
 } from "../../styles/pages/profile.styles"
 import {
   LoginFlow,
@@ -411,6 +412,7 @@ export default class Flow<T extends Values> extends Component<
                     }
                   />
                 )}
+                
                 {/* birthdayYear node */}
                 {birthdayYearNode && (
                   <Node
@@ -438,26 +440,28 @@ export default class Flow<T extends Values> extends Component<
               {/* method node (submit button) */}
               {methodNode && (
                 <StyledSubmitArea>
-                  <Node
-                    disabled={isLoading}
-                    node={methodNode}
-                    value={values[methodNodeId]}
-                    dispatchSubmit={this.handleSubmit}
-                    setValue={(value) =>
-                      new Promise((resolve) => {
-                        this.setState(
-                          (state) => ({
-                            ...state,
-                            values: {
-                              ...state.values,
-                              [getNodeId(methodNode)]: value,
-                            },
-                          }),
-                          resolve,
-                        )
-                      })
-                    }
-                  />
+                  <StyledSubmitButton>
+                    <Node
+                      disabled={isLoading}
+                      node={methodNode}
+                      value={values[methodNodeId]}
+                      dispatchSubmit={this.handleSubmit}
+                      setValue={(value) =>
+                        new Promise((resolve) => {
+                          this.setState(
+                            (state) => ({
+                              ...state,
+                              values: {
+                                ...state.values,
+                                [getNodeId(methodNode)]: value,
+                              },
+                            }),
+                            resolve,
+                          )
+                        })
+                      }
+                    />
+                  
                 </StyledSubmitArea>
               )}
             </StyledSideInputs>
