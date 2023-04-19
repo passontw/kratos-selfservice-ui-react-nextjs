@@ -116,21 +116,27 @@ export function NodeInputSubmit<T>({
         </Box>
       ) : (
         <>
-          <Button
-            style={
-              showButton ? (resendLink ? linkStyle : defaultStyle) : hiddenStyle
-            }
-            name={attributes.name}
-            value={attributes.value || ""}
-            disabled={attributes.disabled || disabled}
-            // disabled={
-            //   buttonText === "Verify" && sixDigitCode.length !== 6
-            //     ? true
-            //     : attributes.disabled || disabled
-            // }
-          >
-            {buttonText}
-          </Button>
+          <Box onClick={() => console.log("i clicked on this btn")}>
+            <Button
+              style={
+                showButton
+                  ? resendLink
+                    ? linkStyle
+                    : defaultStyle
+                  : hiddenStyle
+              }
+              name={attributes.name}
+              value={attributes.value || ""}
+              disabled={attributes.disabled || disabled}
+              // disabled={
+              //   buttonText === "Verify" && sixDigitCode.length !== 6
+              //     ? true
+              //     : attributes.disabled || disabled
+              // }
+            >
+              {buttonText}
+            </Button>
+          </Box>
           {linkRelated && (
             <Box
               height="40px"
