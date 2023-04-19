@@ -9,7 +9,6 @@ const StyledProfileArea = styled("div")<{ paddingRight?: string }>(
     backgroundColor: "#272735",
     paddingLeft: "74px",
     paddingRight: paddingRight ? paddingRight : "48px",
-    paddingBottom: "96px",
     borderRadius: "12px",
   }),
 )
@@ -63,10 +62,11 @@ const StyledSideWrap = styled("div")(() => ({
 }))
 
 const StyledSideInputs = styled("div")(() => ({
-  padding: "48px 48px",
+  padding: "48px",
+  paddingBottom: "0px",
 }))
 
-const StyledFieldTitle = styled("div")<{ topSpacing: boolean }>(
+const StyledFieldTitle = styled("div")<{ topSpacing?: boolean }>(
   ({ topSpacing }) => ({
     marginTop: topSpacing ? "24px" : 0,
     fontSize: "14px",
@@ -89,6 +89,11 @@ const StyledBirthdayWrap = styled("div")(() => ({
 
 const StyledSubmitButton = styled("div")(() => ({
   width: "76px",
+  marginBottom: "84px",
+}))
+
+const StyledFieldSpacer = styled("div")(() => ({
+  marginTop: "25px",
 }))
 
 export {
@@ -107,4 +112,5 @@ export {
   StyledSubmitArea,
   StyledBirthdayWrap,
   StyledSubmitButton,
+  StyledFieldSpacer,
 }

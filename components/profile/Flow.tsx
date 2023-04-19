@@ -1,6 +1,7 @@
 import {
   StyledBirthdayWrap,
   StyledEditButton,
+  StyledFieldSpacer,
   StyledFieldTitle,
   StyledForm,
   StyledImageText,
@@ -302,6 +303,7 @@ export default class Flow<T extends Values> extends Component<
 
             {/* Temporary placeholder, need to merge with the input above
             when there is actual image upload */}
+            {console.log("@profile flow:", flow)}
 
             <StyledProfileImageWrap>
               <StyledProfileImage src={"/images/profile-pic.png"} />
@@ -359,82 +361,87 @@ export default class Flow<T extends Values> extends Component<
               })}
 
               {/* gender node */}
-              <StyledFieldTitle>Gender</StyledFieldTitle>
-              {genderNode && (
-                <Node
-                  disabled={isLoading}
-                  node={genderNode}
-                  value={values[genderNodeId]}
-                  dispatchSubmit={this.handleSubmit}
-                  setValue={(value) =>
-                    new Promise((resolve) => {
-                      this.setState(
-                        (state) => ({
-                          ...state,
-                          values: {
-                            ...state.values,
-                            [getNodeId(genderNode)]: value,
-                          },
-                        }),
-                        resolve,
-                      )
-                    })
-                  }
-                />
-              )}
+              <StyledFieldSpacer>
+                <StyledFieldTitle>Gender</StyledFieldTitle>
+                {genderNode && (
+                  <Node
+                    disabled={isLoading}
+                    node={genderNode}
+                    value={values[genderNodeId]}
+                    dispatchSubmit={this.handleSubmit}
+                    setValue={(value) =>
+                      new Promise((resolve) => {
+                        this.setState(
+                          (state) => ({
+                            ...state,
+                            values: {
+                              ...state.values,
+                              [getNodeId(genderNode)]: value,
+                            },
+                          }),
+                          resolve,
+                        )
+                      })
+                    }
+                  />
+                )}
+              </StyledFieldSpacer>
 
               {/* Birthday Section */}
               <StyledFieldTitle>Date of Birth</StyledFieldTitle>
 
-              <StyledBirthdayWrap>
-                {/* birthdayMonth node */}
-                {birthdayMonthNode && (
-                  <Node
-                    disabled={isLoading}
-                    node={birthdayMonthNode}
-                    value={values[birthdayMonthNodeId]}
-                    dispatchSubmit={this.handleSubmit}
-                    setValue={(value) =>
-                      new Promise((resolve) => {
-                        this.setState(
-                          (state) => ({
-                            ...state,
-                            values: {
-                              ...state.values,
-                              [getNodeId(birthdayMonthNode)]: value,
-                            },
-                          }),
-                          resolve,
-                        )
-                      })
-                    }
-                  />
-                )}
+              <StyledFieldSpacer>
+                <StyledBirthdayWrap>
+                  {/* birthdayMonth node */}
+                  {birthdayMonthNode && (
+                    <Node
+                      disabled={isLoading}
+                      node={birthdayMonthNode}
+                      value={values[birthdayMonthNodeId]}
+                      dispatchSubmit={this.handleSubmit}
+                      setValue={(value) =>
+                        new Promise((resolve) => {
+                          this.setState(
+                            (state) => ({
+                              ...state,
+                              values: {
+                                ...state.values,
+                                [getNodeId(birthdayMonthNode)]: value,
+                              },
+                            }),
+                            resolve,
+                          )
+                        })
+                      }
+                    />
+                  )}
 
-                {/* birthdayYear node */}
-                {birthdayYearNode && (
-                  <Node
-                    disabled={isLoading}
-                    node={birthdayYearNode}
-                    value={values[birthdayYearNodeId]}
-                    dispatchSubmit={this.handleSubmit}
-                    setValue={(value) =>
-                      new Promise((resolve) => {
-                        this.setState(
-                          (state) => ({
-                            ...state,
-                            values: {
-                              ...state.values,
-                              [getNodeId(birthdayYearNode)]: value,
-                            },
-                          }),
-                          resolve,
-                        )
-                      })
-                    }
-                  />
-                )}
-              </StyledBirthdayWrap>
+                  {/* birthdayYear node */}
+                  {birthdayYearNode && (
+                    <Node
+                      disabled={isLoading}
+                      node={birthdayYearNode}
+                      value={values[birthdayYearNodeId]}
+                      dispatchSubmit={this.handleSubmit}
+                      setValue={(value) =>
+                        new Promise((resolve) => {
+                          this.setState(
+                            (state) => ({
+                              ...state,
+                              values: {
+                                ...state.values,
+                                [getNodeId(birthdayYearNode)]: value,
+                              },
+                            }),
+                            resolve,
+                          )
+                        })
+                      }
+                    />
+                  )}
+                </StyledBirthdayWrap>
+              </StyledFieldSpacer>
+
               {/* method node (submit button) */}
               {methodNode && (
                 <StyledSubmitArea>
