@@ -14,7 +14,9 @@ const StyledProfileArea = styled("div")<{ paddingRight?: string }>(
   }),
 )
 
-const StyledProfileDeco = styled("img")(() => ({}))
+const StyledProfileDeco = styled("img")(() => ({
+  width: "100%",
+}))
 
 const StyledForm = styled("div")(() => ({
   display: "flex",

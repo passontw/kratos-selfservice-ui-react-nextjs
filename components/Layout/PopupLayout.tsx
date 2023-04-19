@@ -29,7 +29,7 @@ const PopupLayout: React.FC<PopupLayoutProps> = ({ children }) => {
           {dialog.children}
         </Dialog>
       )}
-      {dialog2 && (
+      {/* {dialog2 && (
         <SubDialog
           width={dialog2.width}
           height={dialog2.height}
@@ -39,7 +39,7 @@ const PopupLayout: React.FC<PopupLayoutProps> = ({ children }) => {
         >
           {dialog2.children}
         </SubDialog>
-      )}
+      )} */}
     </>
   )
 }

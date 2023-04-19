@@ -1,8 +1,15 @@
 import FormGroup from "@mui/material/FormGroup"
 import Stack from "@mui/material/Stack"
-import Switch, { SwitchProps } from "@mui/material/Switch"
+import Switch from "@mui/material/Switch"
 import { styled } from "@mui/material/styles"
 import React from "react"
+import { useDispatch } from "react-redux"
+
+import { ValueSetter } from "../../pkg/ui/helpers"
+import {
+  setMfaModalOpen,
+  setMfaState,
+} from "../../state/store/slice/layoutSlice"
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,
@@ -45,18 +52,34 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
   },
 }))
 
-export default function CustomizedSwitches() {
-  const [checked, setChecked] = React.useState(true)
+interface SwitchProps {
+  on: boolean
+  change: ValueSetter
+  origin: string
+}
+
+const CustomizedSwitches: React.FC<SwitchProps> = ({
+  on,
+  change,
+  origin = "",
+}) => {
+  const dispatch = useDispatch()
+  const [checked, setChecked] = React.useState(on)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (origin === "MFA") {
+      dispatch(setMfaModalOpen(true))
+      dispatch(setMfaState(event.target.checked))
+    }
     setChecked(event.target.checked)
+    change(event.target.checked)
   }
 
   return (
     <FormGroup>
       <Stack direction="row" spacing={1} alignItems="center">
         <AntSwitch
-          // defaultChecked
+          defaultChecked={checked}
           inputProps={{ "aria-label": "controlled" }}
           checked={checked}
           onChange={handleChange}
@@ -65,3 +88,5 @@ export default function CustomizedSwitches() {
     </FormGroup>
   )
 }
+
+export default CustomizedSwitches

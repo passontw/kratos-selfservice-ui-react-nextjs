@@ -8,6 +8,8 @@ export interface LayoutSliceStateI {
   dialog2?: DialogProps | null;
   dialogLayer: number;
   sixDigitCode: string;
+  mfaModalOpen: boolean;
+  mfaState?: boolean;
 }
 
 export interface DialogProps {

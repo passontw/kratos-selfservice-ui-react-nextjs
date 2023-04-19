@@ -16,8 +16,10 @@ import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
 import { Component, FormEvent, MouseEvent } from "react"
 
 import { Node } from "../../pkg/ui/Node"
+import { setDialog, setMfaModalOpen } from "../../state/store/slice/layoutSlice"
 
 import { Messages } from "./Messages"
+import MfaModal from "./MfaModal"
 
 export type Values = Partial<
   | UpdateLoginFlowBody
@@ -54,6 +56,12 @@ export type Props<T> = {
   onSubmit: (values: T) => Promise<void>
   // Do not show the global messages. Useful when rendering them elsewhere.
   hideGlobalMessages?: boolean
+  // modal is open or not
+  modalOpen?: boolean
+  // state of mfa
+  // mfaState: boolean
+  // dispatch function
+  dispatch?: any
 }
 
 function emptyState<T>() {
@@ -85,6 +93,23 @@ export default class Flow<T extends Values> extends Component<
     if (prevProps.flow !== this.props.flow) {
       // Flow has changed, reload the values!
       this.initializeValues(this.filterNodes())
+    }
+    if (this.props.modalOpen) {
+      this.props.dispatch(
+        setDialog({
+          title: `2-Step Verification`,
+          titleHeight: "58px",
+          width: 480,
+          height: 268,
+          center: true,
+          children: (
+            <MfaModal
+              // mfaState={this.props.mfaState}
+              submit={this.handleSubmit}
+            />
+          ),
+        }),
+      )
     }
   }
 

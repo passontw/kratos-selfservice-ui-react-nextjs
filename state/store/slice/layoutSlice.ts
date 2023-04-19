@@ -12,12 +12,12 @@ import { DialogProps, LayoutSliceStateI } from '../../../types/model/stateModels
 const initialState: LayoutSliceStateI = {
   activeNav: Navs.HOME,
   activeStage: Stage.NONE,
-  // this state should be moved to a separate slice, just for convenience
-  // it's not related to layout
   dialog: null,
   dialog2: null,
   dialogLayer: 0,
   sixDigitCode: '',
+  mfaModalOpen: false,
+  mfaState: undefined,
 };
 
 export const layoutSlice = createSlice({
@@ -41,6 +41,18 @@ export const layoutSlice = createSlice({
       { payload }: PayloadAction<string>
     ) => {
       state.sixDigitCode = payload;
+    },
+    setMfaModalOpen: (
+      state: LayoutSliceStateI,
+      { payload }: PayloadAction<boolean>
+    ) => {
+      state.mfaModalOpen = payload;
+    },
+    setMfaState: (
+      state: LayoutSliceStateI,
+      { payload }: PayloadAction<boolean>
+    ) => {
+      state.mfaState = payload;
     },
     setDialog: (state: any, { payload }: PayloadAction<DialogProps | null>) => {
       if (payload === null) {
@@ -89,6 +101,18 @@ export const selectSixDigitCode = (state: {
   };
 }) => state.layout.sixDigitCode;
 
+export const selectMfaModalOpen = (state: {
+  layout: {
+    mfaModalOpen: boolean;
+  };
+}) => state.layout.mfaModalOpen;
+
+export const selectMfaState = (state: {
+  layout: {
+    mfaState: boolean;
+  };
+}) => state.layout.mfaState;
+
 export const selectDialog = (state: {
   layout: {
     dialog: DialogProps;
@@ -106,6 +130,8 @@ export const {
   setActiveNav,
   setActiveStage,
   setSixDigitCode,
+  setMfaModalOpen,
+  setMfaState,
   setDialog,
 } = layoutSlice.actions;
 

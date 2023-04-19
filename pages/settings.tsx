@@ -54,20 +54,6 @@ function SettingsCard({
   )
 }
 
-const refreshSessions = (setSessions) => {
-  axios
-    .get("/api/.ory/sessions", {
-      headers: { withCredentials: true },
-    })
-    .then((resp) => {
-      const { data } = resp
-      setSessions(data)
-    })
-    .catch((error) => {
-      setSessions([])
-    })
-}
-
 const Settings: NextPage = () => {
   const dispatch = useDispatch()
   const [confirmPasswordError, setConfirmPasswordError] = useState("")
@@ -164,6 +150,7 @@ const Settings: NextPage = () => {
         nextFlow.ui.nodes[passwordIndex].messages = [passwordMessage]
       }
 
+      console.log("🚀 ~ file: settings.tsx:153 ~ onSubmit ~ errors:", errors)
       if (errors.confirmPassword) {
         setConfirmPasswordError(errors.confirmPassword)
       } else {
@@ -184,6 +171,7 @@ const Settings: NextPage = () => {
             {/* <Messages messages={flow?.ui.messages} /> */}
             <Flow
               hideGlobalMessages
+              confirmPasswordError={confirmPasswordError}
               onSubmit={onSubmit}
               only="password"
               flow={flow}

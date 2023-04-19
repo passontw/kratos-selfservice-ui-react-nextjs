@@ -19,8 +19,10 @@ import {
   selectActiveNav,
   selectActiveStage,
   selectDialog,
+  selectMfaState,
   setActiveStage,
   setDialog,
+  setMfaModalOpen,
 } from "../../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../../types/enum"
 
@@ -63,10 +65,12 @@ const Dialog: React.FC<DialogProps> = ({
     if (reason === "escapeKeyDown") return
     if (reason === "backdropClick") return
     dispatch(setDialog(null))
+    dispatch(setDialog(null))
   }
 
   const activeNav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
+  const mfaState = useSelector(selectMfaState)
 
   return (
     <MuiDialog
@@ -90,10 +94,15 @@ const Dialog: React.FC<DialogProps> = ({
     >
       {title && (
         <StyledDialogTitle titleHeight={titleHeight}>
-          <div>{title}</div>
+          <div>
+            {title.includes("2-Step")
+              ? `Turn ${mfaState ? "on" : "off"} 2-Step Verification`
+              : title}
+          </div>
           <IconButton
             onClick={(e) => {
               dispatch(setActiveStage(Stage.NONE))
+              dispatch(setMfaModalOpen(false))
               if (activeNav === Navs.RECOVERY) {
                 router.push("/login")
               }
@@ -136,7 +145,9 @@ const Dialog: React.FC<DialogProps> = ({
               cursor: "pointer",
             }}
             onClick={(e) => {
-              router.push("/login")
+              if (activeStage === Stage.FORGOT_PASSWORD) {
+                router.push("/login")
+              }
               handleClose(e, "")
               dispatch(setActiveStage(Stage.NONE))
             }}
