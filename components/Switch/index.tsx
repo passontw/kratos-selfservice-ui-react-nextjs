@@ -57,20 +57,15 @@ interface SwitchProps {
   change: any
   // change: ValueSetter | FormDispatcher
   origin: string
-  passRef?: any
 }
 
 const CustomizedSwitches: React.FC<SwitchProps> = ({
   on,
   change,
   origin = "",
-  passRef,
 }) => {
   const dispatch = useDispatch()
   const [checked, setChecked] = React.useState(on)
-
-  console.log("passRef%%%1", passRef)
-  console.log("passRef%%%2", passRef?.current)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (origin === "MFA") {
@@ -80,9 +75,7 @@ const CustomizedSwitches: React.FC<SwitchProps> = ({
       change(event.target.checked)
     } else if (origin === "ACC_LINK") {
       setChecked(event.target.checked)
-      if (passRef?.current) {
-        passRef.current.click()
-      }
+      change()
       // change()
     }
   }
