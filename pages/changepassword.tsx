@@ -1,5 +1,6 @@
 import {
   StyledChangePasswordArea,
+  StyledSection,
   StyledAccount,
   StyledEmail,
   StyledChangePasswordDeco
@@ -139,10 +140,10 @@ const ChangePassword: NextPage = () => {
     <AccountLayout>
       <StyledChangePasswordArea marginTop="48px" >
         <StyledChangePasswordDeco src={"/images/change-password-deco.png"} />
-        <div>
+        <StyledSection>
         <StyledAccount>Account</StyledAccount>
         <StyledEmail>{email}</StyledEmail>
-        </div>
+        </StyledSection>
       </StyledChangePasswordArea>
       <StyledChangePasswordArea>
         <SettingsCard only="password" flow={flow}>
