@@ -323,17 +323,15 @@ export default class Flow<T extends Values> extends Component<
 
                 return (
                   <>
-                    <StyledFieldTitle>
-                      {node.attributes.title === "traits.name"
+                    <StyledFieldTitle
+                      topSpacing={node.attributes.name === "traits.phone"}
+                    >
+                      {node.attributes.name === "traits.name"
                         ? "Username"
-                        : node.attributes.title === "traits.phone"
+                        : node.attributes.name === "traits.phone"
                         ? "Phone"
                         : ""}
                     </StyledFieldTitle>
-                    {console.log(
-                      "@profile LOGGIN TITLE:",
-                      node.attributes.title,
-                    )}
 
                     <Node
                       key={`${id}-${k}`}

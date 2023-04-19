@@ -66,11 +66,14 @@ const StyledSideInputs = styled("div")(() => ({
   padding: "48px 48px",
 }))
 
-const StyledFieldTitle = styled("div")(() => ({
-  fontSize: "14px",
-  color: "#717197;",
-  fontWeight: 400,
-}))
+const StyledFieldTitle = styled("div")<{ topSpacing: boolean }>(
+  ({ topSpacing }) => ({
+    marginTop: topSpacing ? "24px" : 0,
+    fontSize: "14px",
+    color: "#717197;",
+    fontWeight: 400,
+  }),
+)
 
 const StyledSubmitArea = styled("div")(() => ({
   marginTop: "48px",
