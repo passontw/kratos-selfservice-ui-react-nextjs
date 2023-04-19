@@ -324,16 +324,16 @@ export default class Flow<T extends Values> extends Component<
                 return (
                   <>
                     <StyledFieldTitle>
-                      {console.log(
-                        "@profile LOGGIN TITLE:",
-                        node.attributes.title,
-                      )}
                       {node.attributes.title === "traits.name"
                         ? "Username"
                         : node.attributes.title === "traits.phone"
                         ? "Phone"
                         : ""}
                     </StyledFieldTitle>
+                    {console.log(
+                      "@profile LOGGIN TITLE:",
+                      node.attributes.title,
+                    )}
 
                     <Node
                       key={`${id}-${k}`}
