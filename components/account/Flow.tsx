@@ -14,9 +14,8 @@ import {
   UiTextTypeEnum,
 } from "@ory/client"
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
-import { RefObject } from 'react'
 
-import { Component, FormEvent, MouseEvent, createRef, ReactHTMLElement } from "react"
+import React, { Component, FormEvent, MouseEvent, ReactHTMLElement } from "react"
 
 import { Messages } from "./Messages"
 import { Node } from "./Node"
@@ -77,11 +76,13 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       values: emptyState(),
       isLoading: false,
     }
-    this.formRef = createRef()
+    this.formRef = React.createRef()
   }
 
   componentDidMount() {
     this.initializeValues(this.filterNodes())
+    console.log('this.formRef', this.formRef)
+    console.log('this.formRef.current', this.formRef.current)
   }
 
   componentDidUpdate(prevProps: Props<T>) {
