@@ -51,7 +51,6 @@ const ChangePassword: NextPage = () => {
   const [flow, setFlow] = useState<SettingsFlow>()
   const dispatch = useDispatch()
   const email = flow?.identity.traits?.email
-  // const email = "master123@gmail.com"
 
   // Get ?flow=... from the URL
   const router = useRouter()
@@ -138,9 +137,11 @@ const ChangePassword: NextPage = () => {
 
   return (
     <AccountLayout>
-      <StyledChangePasswordArea marginTop="48px">
+      <StyledChangePasswordArea marginTop="48px" >
+        <div>
         <StyledAccount>Account</StyledAccount>
         <StyledEmail>{email}</StyledEmail>
+        </div>
       </StyledChangePasswordArea>
       <StyledChangePasswordArea>
         <SettingsCard only="password" flow={flow}>

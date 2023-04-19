@@ -7,6 +7,7 @@ const StyledChangePasswordArea = styled("div")<{ marginTop?: string }>(
     width: "100%",
     fontFamily: "Open Sans",
     marginTop: marginTop ?? "36px",
+    flexWrap: "wrap",
     ">div": {
       backgroundColor: "transparent",
       padding: "32px",
@@ -17,12 +18,16 @@ const StyledChangePasswordArea = styled("div")<{ marginTop?: string }>(
   }),
 )
 
-const StyledAccount = styled("div")<{}>(() => ({
+const StyledAccount = styled("p")<{}>(() => ({
   color: "#717197",
+  padding: "8px 0px",
+  margin: "0px",
 }))
 
-const StyledEmail = styled("div")<{}>(() => ({
+const StyledEmail = styled("p")<{}>(() => ({
   color: "#A5A5A9",
+  padding: "8px 0px",
+  margin: "0px",
 }))
 
 export { StyledChangePasswordArea, StyledAccount, StyledEmail }
