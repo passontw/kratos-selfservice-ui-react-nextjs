@@ -16,9 +16,6 @@ export interface NodeInputProps {
   disabled: boolean
   dispatchSubmit: FormDispatcher
   setValue: ValueSetter
-<<<<<<< HEAD
   ref?: Ref<HTMLButtonElement>
-=======
   handleClick: Function
->>>>>>> 8fb9da6b7b60ccb39b4e0e56d55112b8ec48fc96
 }

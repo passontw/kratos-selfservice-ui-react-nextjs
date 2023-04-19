@@ -9,7 +9,6 @@ export function NodeInputButton<T>({
   setValue,
   disabled,
   dispatchSubmit,
-  ref,
 }: NodeInputProps) {
   // Some attributes have dynamic JavaScript - this is for example required for WebAuthn.
   const onClick = (e: React.MouseEvent | React.FormEvent<HTMLFormElement>) => {
