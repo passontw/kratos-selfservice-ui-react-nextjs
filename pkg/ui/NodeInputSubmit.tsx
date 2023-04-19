@@ -40,6 +40,7 @@ export function NodeInputSubmit<T>({
     margin: "36px 0px 0px",
     fontSize: "16px",
     fontFamily: "Open Sans",
+    color: "#FFF",
     width:
       isDialogForgotPswd || activeNav === Navs.SETTINGS || linkRelated
         ? "95px"
