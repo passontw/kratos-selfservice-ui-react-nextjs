@@ -14,9 +14,8 @@ import {
   UiTextTypeEnum,
 } from "@ory/client"
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
-import { RefObject } from 'react'
 
-import { Component, FormEvent, MouseEvent, createRef, ReactHTMLElement } from "react"
+import React, { Component, FormEvent, MouseEvent, ReactHTMLElement } from "react"
 
 import { Messages } from "./Messages"
 import { Node } from "./Node"
@@ -77,11 +76,12 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       values: emptyState(),
       isLoading: false,
     }
-    this.formRef = createRef()
+    this.formRef = React.createRef()
   }
 
   componentDidMount() {
     this.initializeValues(this.filterNodes())
+    console.log('this.formRef', this.formRef)
   }
 
   componentDidUpdate(prevProps: Props<T>) {
@@ -181,11 +181,11 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       })
   }
 
-  handleClick = () => {
-    console.log('form click ref', this.formRef.current)
-    if(this.formRef.current){
-      console.log('have form click ref', this.formRef.current)
-      this.formRef.current.sumbit()
+  handleClick = (ref:any) => {
+    console.log('[form click ref]', ref)
+    if(ref){
+      console.log('have form click ref', ref)
+      ref.sumbit()
     }
   }
 
@@ -228,7 +228,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 node={node}
                 value={values[id]}
                 dispatchSubmit={this.handleSubmit}
-                handleClick={this.handleClick}
+                handleClick={this.handleClick(this.formRef)}
                 setValue={(value) =>
                   new Promise((resolve) => {
                     this.setState(
