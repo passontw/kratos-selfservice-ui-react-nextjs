@@ -185,7 +185,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     console.log('[form click ref]', ref)
     if(ref){
       console.log('have form click ref', ref)
-      ref.sumbit()
+      // ref.sumbit()
     }
   }
 
@@ -228,7 +228,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 node={node}
                 value={values[id]}
                 dispatchSubmit={this.handleSubmit}
-                handleClick={this.handleClick(this.formRef)}
+                handleClick={()=>this.formRef.submit()}
                 setValue={(value) =>
                   new Promise((resolve) => {
                     this.setState(
