@@ -2,10 +2,10 @@ import FormGroup from "@mui/material/FormGroup"
 import Stack from "@mui/material/Stack"
 import Switch from "@mui/material/Switch"
 import { styled } from "@mui/material/styles"
-import React from "react"
+import React, { FormEvent } from "react"
 import { useDispatch } from "react-redux"
 
-import { ValueSetter } from "../../pkg/ui/helpers"
+import { FormDispatcher, ValueSetter } from "../../pkg/ui/helpers"
 import {
   setMfaModalOpen,
   setMfaState,
@@ -54,7 +54,8 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 
 interface SwitchProps {
   on: boolean
-  change: ValueSetter
+  change: any
+  // change: ValueSetter | FormDispatcher
   origin: string
 }
 
@@ -70,9 +71,11 @@ const CustomizedSwitches: React.FC<SwitchProps> = ({
     if (origin === "MFA") {
       dispatch(setMfaModalOpen(true))
       dispatch(setMfaState(event.target.checked))
+      setChecked(event.target.checked)
+      change(event.target.checked)
+    } else if (origin === "ACC_LINK") {
+      change()
     }
-    setChecked(event.target.checked)
-    change(event.target.checked)
   }
 
   return (

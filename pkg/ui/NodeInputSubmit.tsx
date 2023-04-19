@@ -22,6 +22,7 @@ export function NodeInputSubmit<T>({
   node,
   attributes,
   disabled,
+  dispatchSubmit,
 }: NodeInputProps) {
   const activeNav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
@@ -156,7 +157,11 @@ export function NodeInputSubmit<T>({
                 </Box>
               </Box>
               <Box>
-                <Switch />
+                <Switch
+                  origin="ACC_LINK"
+                  on={getNodeLabel(node).split(" ")[0] === "Unlink"}
+                  change={dispatchSubmit}
+                />
               </Box>
             </Box>
           )}
