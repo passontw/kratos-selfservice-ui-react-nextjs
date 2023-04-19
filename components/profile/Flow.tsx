@@ -412,7 +412,7 @@ export default class Flow<T extends Values> extends Component<
                     }
                   />
                 )}
-                
+
                 {/* birthdayYear node */}
                 {birthdayYearNode && (
                   <Node
@@ -461,7 +461,7 @@ export default class Flow<T extends Values> extends Component<
                         })
                       }
                     />
-                  
+                  </StyledSubmitButton>
                 </StyledSubmitArea>
               )}
             </StyledSideInputs>
