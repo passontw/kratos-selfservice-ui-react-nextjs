@@ -17,6 +17,11 @@ const MfaModal: React.FC<MfaModalProps> = ({ submit }) => {
     : "You will no longer receive a code if we notice an attempted login from an unrecognized device or browser. Are you sure to proceed?"
   const btnText = mfaState ? "Turn on" : "Turn off"
 
+  const handleSubmit = () => {
+    submit(new Event("submit", { bubbles: true }));
+    // close modal
+  };
+
   return (
     <>
       <Box>
@@ -33,7 +38,7 @@ const MfaModal: React.FC<MfaModalProps> = ({ submit }) => {
       <Box display="flex">
         <Box>Cancel</Box>
         <Box
-          onClick={submit}
+          onClick={handleSubmit}
         >
           {btnText}
         </Box>

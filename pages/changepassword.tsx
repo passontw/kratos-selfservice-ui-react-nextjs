@@ -138,7 +138,7 @@ const ChangePassword: NextPage = () => {
   return (
     <AccountLayout>
       <StyledChangePasswordArea marginTop="48px" >
-        <StyledChangePasswordDeco src={"/images/purple-deco.png"} />
+        <StyledChangePasswordDeco src={"/images/change-password-deco.png"} />
         <div>
         <StyledAccount>Account</StyledAccount>
         <StyledEmail>{email}</StyledEmail>
