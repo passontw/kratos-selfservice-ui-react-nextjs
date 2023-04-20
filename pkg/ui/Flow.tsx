@@ -124,7 +124,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     if (!flow) {
       return []
     }
-    const nodes = flow?.ui?.nodes || [];
+    const nodes = flow?.ui?.nodes || []
     return nodes.filter(({ group }) => {
       if (!only) {
         return true
@@ -197,6 +197,13 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       // Nodes have only one element? It is probably just the CSRF Token
       // and the filter did not match any elements!
       return null
+    }
+
+    console.log("nodes", nodes)
+    if (this.props.router?.pathname === "/registration") {
+      let temp = nodes[3]
+      nodes[3] = nodes[4]
+      nodes[4] = temp
     }
 
     return (

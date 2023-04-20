@@ -101,6 +101,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             borderRadius: "8px",
             padding: isInputLabel ? "0px 0px 0px 82px" : "12px 16px",
             margin: "0px",
+            fontFamily: "Open Sans",
           }}
           placeholder={
             isInputLabel

@@ -1,20 +1,19 @@
 import "../styles/globals.css"
+// import "../styles/react-toastify.min.css"
 import "@fontsource/open-sans"
 import "@fontsource/teko"
 import Box from "@mui/material/Box"
+import { createTheme, ThemeProvider, styled } from "@mui/material/styles"
 import { globalStyles, ThemeProps } from "@ory/themes"
 import type { AppProps } from "next/app"
 import { Provider } from "react-redux"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-
 import { createGlobalStyle } from "styled-components"
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 
 import AppsList from "../components/AppsList"
 import PopupLayout from "../components/Layout/PopupLayout"
 import store from "../state/store"
-
 
 const GlobalStyle = createGlobalStyle((props: ThemeProps) =>
   globalStyles(props),
@@ -31,11 +30,9 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: [
-      'Open Sans',
-    ].join(','),
+    fontFamily: ["Open Sans"].join(","),
   },
-});
+})
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
