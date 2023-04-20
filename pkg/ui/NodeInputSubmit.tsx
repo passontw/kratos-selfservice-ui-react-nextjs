@@ -73,6 +73,8 @@ export function NodeInputSubmit<T>({
     marginTop: "11px",
   }
 
+  console.log("NodeInputSubmit", getNodeLabel(node))
+
   const showButton = [
     "Save",
     "Submit",
