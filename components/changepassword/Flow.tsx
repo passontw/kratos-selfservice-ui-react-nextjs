@@ -157,12 +157,6 @@ export default class Flow<T extends Values> extends Component<
 
     return this.props
       .onSubmit(this.state.values, this.state.confirmPassword)
-      .then(() => {
-        console.log(this.props.flow)
-        if (this.props.flow?.state === "success") {
-          showToast("Password changed.")
-        }
-      })
       .finally(() => {
         // We wait for reconciliation and update the state after 50ms
         // Done submitting - update loading status
@@ -170,6 +164,10 @@ export default class Flow<T extends Values> extends Component<
           ...state,
           isLoading: false,
         }))
+        console.log("1", this.props.flow)
+        if (this.props.flow?.state === "success") {
+          showToast("Password changed.")
+        }
       })
   }
 
@@ -201,7 +199,7 @@ export default class Flow<T extends Values> extends Component<
         method={flow.ui.method}
         onSubmit={this.handleSubmit}
       >
-        {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
+        {/* {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null} */}
         <NodeInputHidden
           value={values[getNodeId(csrfTokenNode)]}
           node={csrfTokenNode}
