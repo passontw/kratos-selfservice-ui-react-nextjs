@@ -135,7 +135,8 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           placeholder={
             isInputLabel
               ? ""
-              : nav === Navs.SETTINGS && attributes.name === "password"
+              : (nav === Navs.SETTINGS || nav === Navs.CHANGEPASSWORD) &&
+                attributes.name === "password"
               ? "Enter new password"
               : label
           }

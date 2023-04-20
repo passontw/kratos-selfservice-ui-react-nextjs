@@ -122,7 +122,7 @@ const Profile: NextPage = () => {
       <StyledProfileArea paddingRight="0">
         <SettingsCard only="profile" flow={flow}>
           {/* <H3>Profile Settings</H3> */}
-          <Messages messages={flow?.ui.messages} />
+          {/* <Messages messages={flow?.ui.messages} /> */}
           <Flow
             hideGlobalMessages
             onSubmit={onSubmit}

@@ -25,7 +25,7 @@ export function NodeInputSubmit<T>({
   dispatchSubmit,
   ref,
 }: NodeInputProps) {
-  const switchRef:any = useRef()
+  const switchRef: any = useRef()
   const activeNav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
   // const sixDigitCode = useSelector(selectSixDigitCode)
@@ -91,11 +91,13 @@ export function NodeInputSubmit<T>({
       ? "Verify"
       : getNodeLabel(node) === "Resend code"
       ? "Resend"
+      : getNodeLabel(node) === "Sign in"
+      ? "Login"
       : getNodeLabel(node)
 
   const handleClick = () => {
     console.log("[handleClick]", switchRef)
-    if(switchRef.current) {
+    if (switchRef.current) {
       switchRef.current
     }
   }
@@ -125,25 +127,25 @@ export function NodeInputSubmit<T>({
       ) : (
         <>
           <Box>
-              <Button
-                style={
-                  showButton
-                    ? resendLink
-                      ? linkStyle
-                      : defaultStyle
-                    : hiddenStyle
-                }
-                name={attributes.name}
-                value={attributes.value || ""}
-                disabled={attributes.disabled || disabled}
-                // disabled={
-                //   buttonText === "Verify" && sixDigitCode.length !== 6
-                //     ? true
-                //     : attributes.disabled || disabled
-                // }
-              >
-                {buttonText}
-              </Button>
+            <Button
+              style={
+                showButton
+                  ? resendLink
+                    ? linkStyle
+                    : defaultStyle
+                  : hiddenStyle
+              }
+              name={attributes.name}
+              value={attributes.value || ""}
+              disabled={attributes.disabled || disabled}
+              // disabled={
+              //   buttonText === "Verify" && sixDigitCode.length !== 6
+              //     ? true
+              //     : attributes.disabled || disabled
+              // }
+            >
+              {buttonText}
+            </Button>
           </Box>
           {linkRelated && (
             <Box
