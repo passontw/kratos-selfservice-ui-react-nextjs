@@ -16,7 +16,7 @@ import { NodeText } from "./NodeText"
 import { FormDispatcher, ValueSetter } from "./helpers"
 
 interface Props {
-  ref?: RefObject<HTMLButtonElement> | null
+  ref?: HTMLButtonElement | null
   node: UiNode
   disabled: boolean
   value: any
