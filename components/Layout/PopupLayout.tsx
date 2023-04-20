@@ -25,6 +25,8 @@ const PopupLayout: React.FC<PopupLayoutProps> = ({ children }) => {
           center={dialog.center}
           title={dialog.title}
           titleHeight={dialog.titleHeight}
+          padding={dialog.padding}
+          icon={dialog.icon}
         >
           {dialog.children}
         </Dialog>

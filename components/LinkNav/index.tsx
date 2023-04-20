@@ -8,7 +8,7 @@ import {
 
 const LinkNav = () => {
     return (
-        <StyledNav>
+      <StyledNav>
         <StyledLink>Terms of Service</StyledLink>
         <StyledLine />
         <StyledLink>Privacy Policy</StyledLink>
