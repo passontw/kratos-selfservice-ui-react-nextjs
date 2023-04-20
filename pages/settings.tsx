@@ -165,7 +165,7 @@ const Settings: NextPage = () => {
       <div className="resetWrapper">
         <SettingsCard only="password" flow={flow}>
           <Box>
-            <Box fontSize="20px" fontFamily="open sans" color="#FFF">
+            <Box fontSize="20px" fontFamily="open sans" color="#FFF" mb="24px">
               Change Password
             </Box>
             {/* <Messages messages={flow?.ui.messages} /> */}

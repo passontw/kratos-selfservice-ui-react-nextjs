@@ -48,8 +48,7 @@ export function NodeInputSubmit<T>({
       isDialogForgotPswd || activeNav === Navs.SETTINGS || linkRelated
         ? "95px"
         : "100%",
-    position:
-      isDialogForgotPswd || activeNav === Navs.SETTINGS ? "absolute" : "unset",
+    position: isDialogForgotPswd ? "absolute" : "unset",
     right:
       activeNav === Navs.SETTINGS
         ? "0px"
