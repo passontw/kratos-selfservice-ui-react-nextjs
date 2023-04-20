@@ -23,6 +23,7 @@ import { NodeInputHidden } from "../../pkg/ui/NodeInputHidden"
 import { NodeInputSubmit } from "../../pkg/ui/NodeInputSubmit"
 import Eye from "../../public/images/eyes"
 import { StyledDefaultInput, StyledPasswordIcon } from "../../styles/share"
+import { showToast } from "../Toast"
 
 import { Messages } from "./Messages"
 
@@ -93,7 +94,7 @@ export default class Flow<T extends Values> extends Component<
   }
 
   componentDidUpdate(prevProps: Props<T>) {
-    console.log("flow", this.props.flow)
+    // console.log("flow", this.props.flow)
     if (prevProps.flow !== this.props.flow) {
       // Flow has changed, reload the values!
       this.initializeValues(this.filterNodes())
@@ -156,8 +157,11 @@ export default class Flow<T extends Values> extends Component<
 
     return this.props
       .onSubmit(this.state.values, this.state.confirmPassword)
-      .then((data) => {
-        console.log("changepswd data", data)
+      .then(() => {
+        console.log(this.props.flow)
+        if (this.props.flow?.state === "success") {
+          showToast("Password changed.")
+        }
       })
       .finally(() => {
         // We wait for reconciliation and update the state after 50ms
