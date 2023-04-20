@@ -12,6 +12,7 @@ import { ReactNode, useState, useEffect } from "react"
 import { useDispatch } from "react-redux"
 
 import AccountLayout from "../components/Layout/AccountLayout"
+import { showToast } from "../components/Toast"
 import Flow from "../components/profile/Flow"
 import { Messages } from "../components/profile/Messages"
 import { ActionCard, Methods } from "../pkg"
@@ -97,7 +98,10 @@ const Profile: NextPage = () => {
           })
           .then(({ data }) => {
             // The settings have been saved and the flow was updated. Let's show it to the user!
-            console.log("settings have been updated", data)
+            if (data.state === "success") {
+              console.log("settings have been updated", data)
+              showToast("Profile updated successfully")
+            }
             setFlow(data)
           })
           .catch(handleFlowError(router, "profile", setFlow))
