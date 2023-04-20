@@ -112,8 +112,6 @@ const Account: NextPage = () => {
   }
 
   const onSubmit = (values: UpdateSettingsFlowBody) => {
-    s
-
     return (
       router
         // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
