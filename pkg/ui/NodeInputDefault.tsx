@@ -78,18 +78,20 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   const genderRadios = [
     {
       label: "Male",
-      value: "0",
+      value: 1,
     },
     {
       label: "Female",
-      value: "1",
+      value: 2,
     },
     {
       label: "Undisclosed",
-      value: "2",
+      value: 3,
     },
   ]
-  const [gender, setGender] = useState(genderRadios[2].value)
+  const [gender, setGender] = useState(
+    attributes.name === "traits.gender" ? value : genderRadios[2].value,
+  )
 
   console.log("attributes@@@", attributes.name)
   console.log("value@@@", value)
@@ -209,7 +211,10 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           <RadioGroup
             label="Gender"
             value={gender}
-            onChange={(e) => setGender(e.target.value)}
+            onChange={(e) => {
+              setGender(e.target.value)
+              setValue(e.target.value)
+            }}
             radios={genderRadios}
             direction="row"
             custom
