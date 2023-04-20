@@ -93,6 +93,7 @@ export default class Flow<T extends Values> extends Component<
   }
 
   componentDidUpdate(prevProps: Props<T>) {
+    console.log("flow", this.props.flow)
     if (prevProps.flow !== this.props.flow) {
       // Flow has changed, reload the values!
       this.initializeValues(this.filterNodes())
@@ -263,6 +264,7 @@ export default class Flow<T extends Values> extends Component<
               borderRadius: "8px",
               padding: "12px 16px",
               margin: "0px",
+              fontFamily: "open sans",
             }}
           />
           <StyledPasswordIcon isError={confirmPasswordError}>
