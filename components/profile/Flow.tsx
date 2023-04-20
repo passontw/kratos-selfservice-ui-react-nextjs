@@ -226,12 +226,6 @@ export default class Flow<T extends Values> extends Component<
       nodes,
     )
 
-    // acquire genderNode
-    const { node: genderNode, nodeId: genderNodeId } = this.spliceNode(
-      "traits.gender",
-      nodes,
-    )
-
     // acquire emailNode
     const { node: emailNode, nodeId: emailNodeId } = this.spliceNode(
       "traits.email",
