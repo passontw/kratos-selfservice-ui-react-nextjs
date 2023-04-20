@@ -3,7 +3,7 @@ import {
   StyledSection,
   StyledAccount,
   StyledEmail,
-  StyledChangePasswordDeco
+  StyledChangePasswordDeco,
 } from "../styles/pages/changepassword.styles"
 import { SettingsFlow, UpdateSettingsFlowBody } from "@ory/client"
 import cloneDeep from "lodash/cloneDeep"
@@ -138,16 +138,16 @@ const ChangePassword: NextPage = () => {
 
   return (
     <AccountLayout>
-      <StyledChangePasswordArea marginTop="48px" >
+      <StyledChangePasswordArea marginTop="48px">
         <StyledChangePasswordDeco src={"/images/change-password-deco.png"} />
         <StyledSection>
-        <StyledAccount>Account</StyledAccount>
-        <StyledEmail>{email}</StyledEmail>
+          <StyledAccount>Account</StyledAccount>
+          <StyledEmail>{email}</StyledEmail>
         </StyledSection>
       </StyledChangePasswordArea>
       <StyledChangePasswordArea>
         <SettingsCard only="password" flow={flow}>
-          <Messages messages={flow?.ui.messages} />
+          {/* <Messages messages={flow?.ui.messages} /> */}
           <Flow
             hideGlobalMessages
             confirmPasswordError={confirmPasswordError}
