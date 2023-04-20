@@ -25,7 +25,7 @@ export function NodeInputSubmit<T>({
   dispatchSubmit,
   ref,
 }: NodeInputProps) {
-  const switchRef = useRef(null)
+  const switchRef:any = useRef()
   const activeNav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
   // const sixDigitCode = useSelector(selectSixDigitCode)
@@ -85,7 +85,7 @@ export function NodeInputSubmit<T>({
     "Unlink google",
     "Unlink apple",
   ].includes(getNodeLabel(node))
-  console.log("ppp", getNodeLabel(node))
+
   const buttonText =
     activeNav === Navs.VERIFICATION && getNodeLabel(node) === "Submit"
       ? "Verify"
@@ -93,14 +93,12 @@ export function NodeInputSubmit<T>({
       ? "Resend"
       : getNodeLabel(node)
 
-  console.log("@modal Ref NodeInputSubmit props ref:", ref)
-
   const handleClick = () => {
-    console.log("[handleClick]", switchRef)
-    console.log("[handleClick current]", switchRef.current)
+    console.log("[handleClick]", switchRef.current)
+    if(switchRef.current) {
+      switchRef.current.click()
+    }
   }
-
-
   return (
     <>
       {getNodeLabel(node) === "Resend code" ? (
@@ -127,26 +125,27 @@ export function NodeInputSubmit<T>({
       ) : (
         <>
           <Box>
-            <Button
-              ref={switchRef}
-              style={
-                showButton
-                  ? resendLink
-                    ? linkStyle
-                    : defaultStyle
-                  : hiddenStyle
-              }
-              name={attributes.name}
-              value={attributes.value || ""}
-              disabled={attributes.disabled || disabled}
-              // disabled={
-              //   buttonText === "Verify" && sixDigitCode.length !== 6
-              //     ? true
-              //     : attributes.disabled || disabled
-              // }
-            >
-              {buttonText}
-            </Button>
+            <button ref={switchRef}>
+              <Button
+                style={
+                  showButton
+                    ? resendLink
+                      ? linkStyle
+                      : defaultStyle
+                    : hiddenStyle
+                }
+                name={attributes.name}
+                value={attributes.value || ""}
+                disabled={attributes.disabled || disabled}
+                // disabled={
+                //   buttonText === "Verify" && sixDigitCode.length !== 6
+                //     ? true
+                //     : attributes.disabled || disabled
+                // }
+              >
+                {buttonText}
+              </Button>
+            </button>
           </Box>
           {linkRelated && (
             <Box
