@@ -246,7 +246,7 @@ export default class Flow<T extends Values> extends Component<
 
           return (
             <span key={`${id}-${k}`} style={isShow ? {} : { display: "none" }}>
-              {console.log("@modal Ref PorfileFlow ref:", this.submitButton)}
+              {console.log("@modal Ref ProfileFlow ref:", this.submitButton)}
               <Node
                 ref={isSubmitBtn ? this.submitButton : null}
                 disabled={isLoading}
