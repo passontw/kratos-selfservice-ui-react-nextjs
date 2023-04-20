@@ -16,5 +16,5 @@ export interface NodeInputProps {
   disabled: boolean
   dispatchSubmit: FormDispatcher
   setValue: ValueSetter
-  ref?: Ref<HTMLButtonElement>
+  ref?: HTMLButtonElement | null | undefined
 }

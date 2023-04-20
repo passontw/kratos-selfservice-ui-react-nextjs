@@ -13,7 +13,7 @@ import {
   UiTextTypeEnum,
 } from "@ory/client"
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
-import { Component, FormEvent, MouseEvent, createRef } from "react"
+import { Component, FormEvent, MouseEvent, createRef, RefObject } from "react"
 
 import { Node } from "../../pkg/ui/Node"
 import { setDialog, setMfaModalOpen } from "../../state/store/slice/layoutSlice"
@@ -77,7 +77,7 @@ export default class Flow<T extends Values> extends Component<
   Props<T>,
   State<T>
 > {
-  private submitButton: React.RefObject<HTMLButtonElement>
+  private submitButton: HTMLButtonElement | null
 
   constructor(props: Props<T>) {
     super(props)
@@ -85,7 +85,7 @@ export default class Flow<T extends Values> extends Component<
       values: emptyState(),
       isLoading: false,
     }
-    this.submitButton = createRef<HTMLButtonElement>()
+    this.submitButton = createRef<HTMLButtonElement>().current
   }
 
   componentDidMount() {
