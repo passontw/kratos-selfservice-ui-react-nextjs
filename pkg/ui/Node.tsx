@@ -32,6 +32,8 @@ export const Node = ({
   dispatchSubmit,
   ref,
 }: Props) => {
+  console.log("@modal Ref Node ref:", ref)
+
   if (isUiNodeImageAttributes(node.attributes)) {
     return <NodeImage node={node} attributes={node.attributes} />
   }
