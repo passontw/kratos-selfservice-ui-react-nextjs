@@ -77,7 +77,7 @@ export default class Flow<T extends Values> extends Component<
   Props<T>,
   State<T>
 > {
-  private submitButton: HTMLButtonElement | null
+  private submitButton: RefObject<HTMLButtonElement> | null
 
   constructor(props: Props<T>) {
     super(props)
@@ -85,7 +85,7 @@ export default class Flow<T extends Values> extends Component<
       values: emptyState(),
       isLoading: false,
     }
-    this.submitButton = createRef<HTMLButtonElement>().current
+    this.submitButton = createRef<HTMLButtonElement>()
   }
 
   componentDidMount() {

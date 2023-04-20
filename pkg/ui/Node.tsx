@@ -6,7 +6,7 @@ import {
   isUiNodeScriptAttributes,
   isUiNodeTextAttributes,
 } from "@ory/integrations/ui"
-import { ReactHTMLElement, Ref } from "react"
+import { ReactHTMLElement, Ref, RefObject } from "react"
 
 import { NodeAnchor } from "./NodeAnchor"
 import { NodeImage } from "./NodeImage"
@@ -16,7 +16,7 @@ import { NodeText } from "./NodeText"
 import { FormDispatcher, ValueSetter } from "./helpers"
 
 interface Props {
-  ref?: HTMLButtonElement | null
+  ref?: RefObject<HTMLButtonElement> | null
   node: UiNode
   disabled: boolean
   value: any
@@ -52,15 +52,20 @@ export const Node = ({
 
   if (isUiNodeInputAttributes(node.attributes)) {
     return (
-      <NodeInput
-        ref={ref}
-        dispatchSubmit={dispatchSubmit}
-        value={value}
-        setValue={setValue}
-        node={node}
-        disabled={disabled}
-        attributes={node.attributes}
-      />
+      <>
+        <button ref={ref} onClick={() => alert("tester")}>
+          Tester
+        </button>
+        <NodeInput
+          ref={ref}
+          dispatchSubmit={dispatchSubmit}
+          value={value}
+          setValue={setValue}
+          node={node}
+          disabled={disabled}
+          attributes={node.attributes}
+        />
+      </>
     )
   }
 
