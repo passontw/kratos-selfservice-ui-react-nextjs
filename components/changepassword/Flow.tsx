@@ -21,9 +21,8 @@ import { Component, FormEvent } from "react"
 import { NodeInputDefault } from "../../pkg/ui/NodeInputDefault"
 import { NodeInputHidden } from "../../pkg/ui/NodeInputHidden"
 import { NodeInputSubmit } from "../../pkg/ui/NodeInputSubmit"
-import Eye from '../../public/images/eyes'
-import { StyledDefaultInput, StyledPasswordIcon } from '../../styles/share'
-
+import Eye from "../../public/images/eyes"
+import { StyledDefaultInput, StyledPasswordIcon } from "../../styles/share"
 
 import { Messages } from "./Messages"
 
@@ -85,7 +84,7 @@ export default class Flow<T extends Values> extends Component<
       values: emptyState(),
       confirmPassword: "",
       isLoading: false,
-      type: "text"
+      type: "text",
     }
   }
 
@@ -156,6 +155,9 @@ export default class Flow<T extends Values> extends Component<
 
     return this.props
       .onSubmit(this.state.values, this.state.confirmPassword)
+      .then((data) => {
+        console.log("changepswd data", data)
+      })
       .finally(() => {
         // We wait for reconciliation and update the state after 50ms
         // Done submitting - update loading status
@@ -167,7 +169,7 @@ export default class Flow<T extends Values> extends Component<
   }
 
   handleEye = () => {
-    let type = this.state.type === "password" ? "text": "password"
+    let type = this.state.type === "password" ? "text" : "password"
     this.setState((state) => ({ ...state, type: type }))
   }
 
@@ -224,10 +226,12 @@ export default class Flow<T extends Values> extends Component<
           }
           attributes={passwordNode.attributes}
         />
-       
-       { !confirmPasswordError && <Box color="#7E7E89" fontSize="13px" fontFamily="open sans">
-          A number and combination of characters. (min 8 characters)
-        </Box> }
+
+        {!confirmPasswordError && (
+          <Box color="#7E7E89" fontSize="13px" fontFamily="open sans">
+            A number and combination of characters. (min 8 characters)
+          </Box>
+        )}
 
         <Box color="#717197" fontSize="14px" fontFamily="open sans" mt="24px">
           Confirm New Password *
@@ -257,8 +261,8 @@ export default class Flow<T extends Values> extends Component<
               color: "#fff",
               caretColor: "#fff",
               borderRadius: "8px",
-              padding: '12px 16px',
-              margin: "0px"
+              padding: "12px 16px",
+              margin: "0px",
             }}
           />
           <StyledPasswordIcon isError={confirmPasswordError}>
