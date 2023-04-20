@@ -67,8 +67,6 @@ type State<T> = {
 }
 
 export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
-
-  private formRef: any;
   
   constructor(props: Props<T>) {
     super(props)
@@ -76,12 +74,10 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       values: emptyState(),
       isLoading: false,
     }
-    this.formRef = React.createRef()
   }
 
   componentDidMount() {
     this.initializeValues(this.filterNodes())
-    console.log('this.formRef', this.formRef)
   }
 
   componentDidUpdate(prevProps: Props<T>) {
@@ -201,7 +197,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         action={flow.ui.action}
         method={flow.ui.method}
         onSubmit={this.handleSubmit}
-        ref={f => (this.formRef = f)}
       >
         <Box display="flex" flexWrap="wrap" gap="36px">
           {!hideGlobalMessages ? (
@@ -220,7 +215,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 node={node}
                 value={values[id]}
                 dispatchSubmit={this.handleSubmit}
-                handleClick={()=>console.log('this.formRef')}
                 setValue={(value) =>
                   new Promise((resolve) => {
                     this.setState(

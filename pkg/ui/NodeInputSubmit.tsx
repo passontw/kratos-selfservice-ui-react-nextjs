@@ -23,9 +23,9 @@ export function NodeInputSubmit<T>({
   attributes,
   disabled,
   dispatchSubmit,
-  handleClick,
   ref,
 }: NodeInputProps) {
+  const switchRef = useRef(null)
   const activeNav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
   // const sixDigitCode = useSelector(selectSixDigitCode)
@@ -95,6 +95,14 @@ export function NodeInputSubmit<T>({
 
   console.log("@modal NodeInputSubmit props ref:", ref)
 
+  const handleClick = () => {
+    console.log('handleClick')
+  }
+
+  useEffect(()=>{
+    console.log('switchRef', switchRef.current)
+  },[switchRef.current])
+
   return (
     <>
       {getNodeLabel(node) === "Resend code" ? (
@@ -122,6 +130,7 @@ export function NodeInputSubmit<T>({
         <>
           <Box>
             <Button
+              ref= {switchRef}
               style={
                 showButton
                   ? resendLink
