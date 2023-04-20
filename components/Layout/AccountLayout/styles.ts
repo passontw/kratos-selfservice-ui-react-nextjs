@@ -10,7 +10,23 @@ const StyledWrapper = styled("div")(() => ({
   width: "100vw",
 }))
 
-const StyledHeader = styled("div")(() => ({
+const StyledMenuWrapper = styled("div")(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  width: "400px",
+  backgroundColor: "#161622",
+  [theme.breakpoints.down("sm")]: {
+    display: "none",
+  },
+}))
+
+const StyledDropdownMenu = styled("div")(({ theme }) => ({
+  [theme.breakpoints.down("sm")]: {
+    display: "none",
+  },
+}))
+
+const StyledHeader = styled("div")(({ theme }) => ({
   fontFamily: "teko",
   textTransform: "uppercase",
   fontWeight: 500,
@@ -22,6 +38,20 @@ const StyledHeader = styled("div")(() => ({
   justifyContent: "start",
   alignItems: "center",
   gap: "16px",
+  [theme.breakpoints.down("sm")]: {
+    padding: "0px",
+    gap: "6px",
+  },
+}))
+
+const StyledMobieHeaderWrapper = styled("div")(({ theme }) => ({
+  display: "none",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: "40px",
+  [theme.breakpoints.down("sm")]: {
+    display: "flex",
+  },
 }))
 
 const StyledImg = styled("img")(() => ({
@@ -30,4 +60,22 @@ const StyledImg = styled("img")(() => ({
 
 const StyledContent = styled("div")(() => ({}))
 
-export { StyledWrapper, StyledContent, StyledHeader, StyledImg }
+const StyledContentWrapper = styled("div")(({ theme }) => ({
+  position: "relative",
+  padding: "48px 48px 0px",
+  width: "76%",
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+  },
+}))
+
+export {
+  StyledWrapper,
+  StyledContent,
+  StyledHeader,
+  StyledImg,
+  StyledMenuWrapper,
+  StyledDropdownMenu,
+  StyledMobieHeaderWrapper,
+  StyledContentWrapper,
+}

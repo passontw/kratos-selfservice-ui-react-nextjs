@@ -1,16 +1,28 @@
 import Box from "@mui/material/Box"
 import { ReactNode } from "react"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 
 import DefaultAvatar from "../../../public/images/DefaultAvatar"
 import Dropdown from "../../../public/images/Dropdown"
 import Cmid from "../../../public/images/app_icons/Cmid"
+import Hambuger from "../../../public/images/Menu/Hambuger"
 import { selectActiveNav } from "../../../state/store/slice/layoutSlice"
-import { Navs } from "../../../types/enum"
+import { Navs,Icon } from "../../../types/enum"
 import AccountMenu from "../../AccountMenu"
 import DropdownMenu from "../../DropdownMenu"
+import { setDialog, setMfaModalOpen } from "../../../state/store/slice/layoutSlice"
 
-import { StyledWrapper, StyledContent, StyledHeader } from "./styles"
+import { 
+  StyledWrapper, 
+  StyledContent, 
+  StyledHeader, 
+  StyledMenuWrapper, 
+  StyledDropdownMenu, 
+  StyledMobieHeaderWrapper,
+  StyledContentWrapper
+
+} from "./styles"
+import MfaModal from '../../account/MfaModal'
 
 interface AccountLayoutProps {
   children: ReactNode
@@ -18,6 +30,7 @@ interface AccountLayoutProps {
 
 const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
   const activeNav = useSelector(selectActiveNav)
+  const dispatch = useDispatch()
 
   const renderTitle = (activeNav: string) => {
     let title = ""
@@ -44,32 +57,60 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
     return title
   }
 
+  const handleModal = ()=>{
+    dispatch(
+      setDialog({
+        title: `Cooler Master ID`,
+        titleHeight: "60px",
+        width:  '100vw',
+        height: '100%',
+        center: true,
+        padding: '0px',
+        icon: Icon.MENU,
+        children: (
+          <AccountMenu />
+        ),
+      }),
+    )
+
+  }
+
   return (
     <StyledWrapper>
       <Box display="flex" width="100%">
-        <Box
-          display="flex"
-          flexDirection="column"
-          width="400px"
-          bgcolor="#161622"
-        >
+        <StyledMenuWrapper>
           <StyledHeader>
             <Cmid />
             <div>Cooler Master ID</div>
           </StyledHeader>
           <AccountMenu />
-        </Box>
-        <Box px="48px" pt="48px" width="76%" position="relative">
+        </StyledMenuWrapper>
+
+        <StyledContentWrapper>
+          <StyledMobieHeaderWrapper>
+            <StyledHeader>
+              <Cmid />
+              <div>Cooler Master ID</div>
+            </StyledHeader>
+            <Box             
+            sx={{
+              "&:hover": {
+                cursor: "pointer",
+              },
+            }} onClick={handleModal}><Hambuger/></Box>
+          </StyledMobieHeaderWrapper>
+          
           <Box display="flex" justifyContent="space-between">
             <Box fontFamily="Teko" fontSize="48px" color="#A2A1C6">
               {renderTitle(activeNav)}
             </Box>
-            <Box>
+            <StyledDropdownMenu>
               <DropdownMenu />
-            </Box>
+            </StyledDropdownMenu>
           </Box>
           <StyledContent>{children}</StyledContent>
-        </Box>
+        </StyledContentWrapper>
+
       </Box>
     </StyledWrapper>
   )

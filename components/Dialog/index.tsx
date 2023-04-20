@@ -5,6 +5,7 @@ import MuiDialog from "@mui/material/Dialog"
 import IconButton from "@mui/material/IconButton"
 import Slide from "@mui/material/Slide"
 import Zoom from "@mui/material/Zoom"
+import MenuCloseIcon from "../../public/images/Menu/CloseIcon"
 import { TransitionProps } from "@mui/material/transitions"
 import { useRouter } from "next/router"
 import React, {
@@ -24,7 +25,7 @@ import {
   setDialog,
   setMfaModalOpen,
 } from "../../state/store/slice/layoutSlice"
-import { Navs, Stage } from "../../types/enum"
+import { Navs, Stage, Icon } from "../../types/enum"
 
 import { StyledDialogContent, StyledDialogTitle } from "./styles"
 
@@ -34,7 +35,9 @@ export interface DialogProps {
   width?: string | number
   height?: string | number
   center?: boolean
+  padding?: string
   children?: any
+  icon?: Icon
 }
 
 const Transition = forwardRef(function Transition(
@@ -56,6 +59,8 @@ const Dialog: React.FC<DialogProps> = ({
   width,
   height,
   center,
+  padding,
+  icon,
   children,
 }) => {
   const dispatch = useDispatch()
@@ -66,6 +71,18 @@ const Dialog: React.FC<DialogProps> = ({
     if (reason === "backdropClick") return
     dispatch(setDialog(null))
     dispatch(setDialog(null))
+  }
+  
+  const handleCloseIcon = ()=>{
+    console.log('icon', icon)
+    if (icon === Icon.MENU)  return <MenuCloseIcon />
+
+    return <CloseIcon
+      sx={{
+        color: "#78787E",
+      }}
+      fontSize="small"
+    />
   }
 
   const activeNav = useSelector(selectActiveNav)
@@ -114,16 +131,11 @@ const Dialog: React.FC<DialogProps> = ({
               },
             }}
           >
-            <CloseIcon
-              sx={{
-                color: "#78787E",
-              }}
-              fontSize="small"
-            />
+          {handleCloseIcon()}
           </IconButton>
         </StyledDialogTitle>
       )}
-      <StyledDialogContent center={center}>
+      <StyledDialogContent center={center} padding={padding}>
         {React.cloneElement(children, { onClick: handleClose })}
         {activeStage === Stage.FORGOT_PASSWORD && (
           <Box

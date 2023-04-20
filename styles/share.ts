@@ -87,7 +87,9 @@ export const StyledTagPc = styled.div`
   }
 `
 export const StyledNav = styled.div`
+  display: none;
   @media only screen and (min-width: 600px) {
+    display: inline-block;
     position: absolute;
     bottom: 20px;
     right: 20px;
