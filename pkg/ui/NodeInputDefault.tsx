@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 
+import RadioGroup from "../../components/RadioGroup"
 import RecoveryProcess from "../../components/changepassword/RecoveryProcess"
 import CodeInput from "../../components/verification/CodeInput"
 import Eye from "../../public/images/eyes"
@@ -73,6 +74,25 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
       }),
     )
   }
+
+  const genderRadios = [
+    {
+      label: "Male",
+      value: "0",
+    },
+    {
+      label: "Female",
+      value: "1",
+    },
+    {
+      label: "Undisclosed",
+      value: "2",
+    },
+  ]
+  const [gender, setGender] = useState(genderRadios[2].value)
+
+  console.log("attributes@@@", attributes.name)
+  console.log("value@@@", value)
 
   // Render a generic text input field.
   return (
@@ -181,6 +201,20 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
         >
           A combination of numbers and characters. (min 8 characters)
         </span>
+      )}
+
+      {nav === Navs.PROFILE && attributes.name === "traits.gender" && (
+        <Box>
+          {/* <Box>Gender</Box> */}
+          <RadioGroup
+            label="Gender"
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+            radios={genderRadios}
+            direction="row"
+            custom
+          />
+        </Box>
       )}
     </>
   )
