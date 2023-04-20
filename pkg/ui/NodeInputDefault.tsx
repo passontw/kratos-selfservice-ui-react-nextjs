@@ -74,6 +74,8 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     )
   }
 
+  console.log("attributes@@@", attributes.name)
+
   // Render a generic text input field.
   return (
     <>
