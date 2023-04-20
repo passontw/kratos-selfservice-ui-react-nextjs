@@ -103,7 +103,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   console.log("value@@@", value)
 
   const verifyCodeConditions =
-    (activeStage === Stage.VERIFY_CODE && nav === Navs.RECOVERY) ||
+    (activeStage === Stage.VERIFY_CODE && nav !== Navs.RECOVERY) ||
     (nav === Navs.VERIFICATION && activeStage === Stage.NONE)
 
   // Render a generic text input field.
