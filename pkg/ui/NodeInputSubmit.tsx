@@ -25,7 +25,7 @@ export function NodeInputSubmit<T>({
   dispatchSubmit,
   ref,
 }: NodeInputProps) {
-  const switchRef = useRef(null)
+  const switchRef:any = useRef()
   const activeNav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
   // const sixDigitCode = useSelector(selectSixDigitCode)
@@ -85,7 +85,7 @@ export function NodeInputSubmit<T>({
     "Unlink google",
     "Unlink apple",
   ].includes(getNodeLabel(node))
-  console.log("ppp", getNodeLabel(node))
+
   const buttonText =
     activeNav === Navs.VERIFICATION && getNodeLabel(node) === "Submit"
       ? "Verify"
@@ -93,13 +93,10 @@ export function NodeInputSubmit<T>({
       ? "Resend"
       : getNodeLabel(node)
 
-  console.log("@modal Ref NodeInputSubmit props ref:", ref)
-
   const handleClick = () => {
     console.log("[handleClick]", switchRef)
     console.log("[handleClick current]", switchRef.current)
   }
-
 
   return (
     <>
@@ -127,8 +124,8 @@ export function NodeInputSubmit<T>({
       ) : (
         <>
           <Box>
+            <a ref={switchRef}>testdaf</a>
             <Button
-              ref={switchRef}
               style={
                 showButton
                   ? resendLink
