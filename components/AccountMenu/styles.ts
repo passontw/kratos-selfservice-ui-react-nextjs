@@ -14,6 +14,7 @@ const StyledWrapper = styled("div")(({ theme }) => ({
     marginTop: "0px",
     paddingTop: "60px",
     backgroundColor: "#000",
+    height: "100%",
   },
 }))
 
