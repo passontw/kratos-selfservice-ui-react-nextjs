@@ -247,7 +247,7 @@ export default class Flow<T extends Values> extends Component<
           return (
             <span key={`${id}-${k}`} style={isShow ? {} : { display: "none" }}>
               <Node
-                // ref={isSubmitBtn ? thi s.submitButton : null}
+                ref={isSubmitBtn ? this.submitButton : null}
                 disabled={isLoading}
                 node={node}
                 value={values[id]}
