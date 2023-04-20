@@ -94,10 +94,11 @@ export function NodeInputSubmit<T>({
       : getNodeLabel(node)
 
   const handleClick = () => {
-    console.log("[handleClick]", switchRef)
-    console.log("[handleClick current]", switchRef.current)
+    console.log("[handleClick]", switchRef.current)
+    if(switchRef.current) {
+      switchRef.current.click()
+    }
   }
-
   return (
     <>
       {getNodeLabel(node) === "Resend code" ? (
