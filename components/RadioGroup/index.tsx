@@ -61,7 +61,7 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
   // meta,
   placement,
   custom = false,
-  color = "currentColor",
+  color = "#FFF",
   direction = "row",
   ...restParam
 }) => {
