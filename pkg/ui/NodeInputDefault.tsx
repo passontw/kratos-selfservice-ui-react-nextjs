@@ -93,6 +93,12 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     attributes.name === "traits.gender" ? value : genderRadios[2].value,
   )
 
+  useEffect(() => {
+    if (attributes.name === "traits.gender") {
+      setGender(value)
+    }
+  }, [value])
+
   console.log("attributes@@@", attributes.name)
   console.log("value@@@", value)
 
