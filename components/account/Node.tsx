@@ -20,7 +20,6 @@ interface Props {
   value: any
   setValue: ValueSetter
   dispatchSubmit: FormDispatcher
-  handleClick?: any
 }
 
 export const Node = ({
@@ -29,7 +28,6 @@ export const Node = ({
   setValue,
   disabled,
   dispatchSubmit,
-  handleClick
 }: Props) => {
   if (isUiNodeImageAttributes(node.attributes)) {
     return <NodeImage node={node} attributes={node.attributes} />
@@ -56,7 +54,6 @@ export const Node = ({
         node={node}
         disabled={disabled}
         attributes={node.attributes}
-        handleClick={handleClick}
       />
     )
   }
