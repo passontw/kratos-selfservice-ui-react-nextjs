@@ -28,6 +28,7 @@ import {
 import { Navs, Stage, Icon } from "../../types/enum"
 
 import { StyledDialogContent, StyledDialogTitle } from "./styles"
+import Cmid from '../../public/images/app_icons/Cmid'
 
 export interface DialogProps {
   title?: string
@@ -85,6 +86,15 @@ const Dialog: React.FC<DialogProps> = ({
     />
   }
 
+  const mobileHeader = (title:string)=>{
+    return (
+      <Box display="flex" gap="6px" justifyContent="center" alignItems="center" fontFamily="Teko" fontSize="36px" textTransform="uppercase">
+        <Cmid />
+        <div>{title}</div>
+      </Box>
+    )
+  }
+
   const activeNav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
   const mfaState = useSelector(selectMfaState)
@@ -114,7 +124,7 @@ const Dialog: React.FC<DialogProps> = ({
           <div>
             {title.includes("2-Step")
               ? `Turn ${mfaState ? "on" : "off"} 2-Step Verification`
-              : title}
+              : title.includes("Cooler Master ID") ? mobileHeader(title) : title}
           </div>
           <IconButton
             onClick={(e) => {

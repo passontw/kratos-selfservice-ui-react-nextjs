@@ -60,7 +60,6 @@ const AccountMenu: React.FC<AccountMenuProps> = () => {
     return (
       <>
         {active && (
-          
           <StyledVercelWrapper>
             <Vercel color={color} />
           </StyledVercelWrapper>
