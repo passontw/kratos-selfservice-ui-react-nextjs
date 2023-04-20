@@ -261,7 +261,7 @@ const Verification: NextPage = () => {
             onSubmit={onSubmit}
             flow={flow}
             code={sixDigitCode}
-            hideGlobalMessages
+            // hideGlobalMessages
           />
         </StyledMenuWrapper>
       </div>
