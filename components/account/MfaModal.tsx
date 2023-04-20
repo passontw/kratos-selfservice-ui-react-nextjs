@@ -18,9 +18,9 @@ const MfaModal: React.FC<MfaModalProps> = ({ submit }) => {
   const btnText = mfaState ? "Turn on" : "Turn off"
 
   const handleSubmit = () => {
-    submit(new Event("submit", { bubbles: true }));
+    submit(new Event("submit", { bubbles: true }))
     // close modal
-  };
+  }
 
   return (
     <>
@@ -37,11 +37,7 @@ const MfaModal: React.FC<MfaModalProps> = ({ submit }) => {
       </Box>
       <Box display="flex">
         <Box>Cancel</Box>
-        <Box
-          onClick={handleSubmit}
-        >
-          {btnText}
-        </Box>
+        <Box onClick={handleSubmit}>{btnText}</Box>
       </Box>
     </>
   )
