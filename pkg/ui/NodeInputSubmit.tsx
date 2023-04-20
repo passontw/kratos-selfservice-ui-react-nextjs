@@ -94,9 +94,9 @@ export function NodeInputSubmit<T>({
       : getNodeLabel(node)
 
   const handleClick = () => {
-    console.log("[handleClick]", switchRef.current)
+    console.log("[handleClick]", switchRef)
     if(switchRef.current) {
-      switchRef.current.click()
+      switchRef.current
     }
   }
   return (
@@ -125,7 +125,6 @@ export function NodeInputSubmit<T>({
       ) : (
         <>
           <Box>
-            <button ref={switchRef}>
               <Button
                 style={
                   showButton
@@ -145,7 +144,6 @@ export function NodeInputSubmit<T>({
               >
                 {buttonText}
               </Button>
-            </button>
           </Box>
           {linkRelated && (
             <Box
