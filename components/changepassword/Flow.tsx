@@ -95,12 +95,12 @@ export default class Flow<T extends Values> extends Component<
 
   componentDidUpdate(prevProps: Props<T>) {
     console.log("flow", this.props.flow)
-    if (this.props.flow?.state === "success") {
-      showToast("Password changed.")
-    }
     if (prevProps.flow !== this.props.flow) {
       // Flow has changed, reload the values!
       this.initializeValues(this.filterNodes())
+      if (this.props.flow?.state === "success") {
+        showToast("Password changed.")
+      }
     }
   }
 
