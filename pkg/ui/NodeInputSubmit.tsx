@@ -124,26 +124,27 @@ export function NodeInputSubmit<T>({
       ) : (
         <>
           <Box>
-            <a ref={switchRef}>testdaf</a>
-            <Button
-              style={
-                showButton
-                  ? resendLink
-                    ? linkStyle
-                    : defaultStyle
-                  : hiddenStyle
-              }
-              name={attributes.name}
-              value={attributes.value || ""}
-              disabled={attributes.disabled || disabled}
-              // disabled={
-              //   buttonText === "Verify" && sixDigitCode.length !== 6
-              //     ? true
-              //     : attributes.disabled || disabled
-              // }
-            >
-              {buttonText}
-            </Button>
+            <button ref={switchRef}>
+              <Button
+                style={
+                  showButton
+                    ? resendLink
+                      ? linkStyle
+                      : defaultStyle
+                    : hiddenStyle
+                }
+                name={attributes.name}
+                value={attributes.value || ""}
+                disabled={attributes.disabled || disabled}
+                // disabled={
+                //   buttonText === "Verify" && sixDigitCode.length !== 6
+                //     ? true
+                //     : attributes.disabled || disabled
+                // }
+              >
+                {buttonText}
+              </Button>
+            </button>
           </Box>
           {linkRelated && (
             <Box
