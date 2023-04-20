@@ -270,7 +270,8 @@ export default class Flow<T extends Values> extends Component<
         method={flow.ui.method}
         onSubmit={this.handleSubmit}
       >
-        {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
+        {/* custom ui do not display messages*/}
+        {/* {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null} */}
 
         <StyledForm>
           <StyledImageUpload>
