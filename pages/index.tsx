@@ -6,6 +6,7 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
+import { showToast } from "../components/Toast"
 import RecoveryProcess from "../components/changepassword/RecoveryProcess"
 import { DocsButton, MarginCard, LogoutLink } from "../pkg"
 import ory from "../pkg/sdk"
@@ -86,6 +87,9 @@ const Home: NextPage = () => {
       <Card wide>
         <div className={"row"}>
           <button onClick={() => openDialog()}>open modal</button>
+          <button onClick={() => showToast("Password changed")}>
+            show toast
+          </button>
           <DocsButton
             unresponsive
             testid="login"
