@@ -2,24 +2,29 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import React, { useEffect } from "react"
 
+import { LogoutLink } from "../../pkg"
+
 import Export from "../../public/images/Menu/Export"
 import Lock from "../../public/images/Menu/Lock"
 import ServiceManagement from "../../public/images/Menu/ServiceManagement"
 import Tool from "../../public/images/Menu/Tool"
 import User from "../../public/images/Menu/User"
 import Vercel from "../../public/images/Menu/Vector"
+import LogOut from "../../public/images/Menu/LogOut"
 
 import {
   StyledWrapper,
   StyledMenuItem,
   StyledVercelWrapper,
-  StyledImg,
+  StyledLine,
+  StyledMobile
 } from "./styles"
 
 interface AccountMenuProps {}
 
 const AccountMenu: React.FC<AccountMenuProps> = () => {
   const router = useRouter()
+  const onLogout = LogoutLink()
 
   const accountMenuData = [
     { name: "Personal Info", path: "/profile", icon: "User" },
@@ -49,11 +54,13 @@ const AccountMenu: React.FC<AccountMenuProps> = () => {
       Lock: Lock,
       ServiceManagement: ServiceManagement,
       Export: Export,
+      LogOut: LogOut
     }
     const IconComponent = appIconMapping[icon]
     return (
       <>
         {active && (
+          
           <StyledVercelWrapper>
             <Vercel color={color} />
           </StyledVercelWrapper>
@@ -76,6 +83,14 @@ const AccountMenu: React.FC<AccountMenuProps> = () => {
           </StyledMenuItem>
         </Link>
       ))}
+      
+      <StyledMobile>
+        <StyledLine />
+        <StyledMenuItem onClick={onLogout}>
+          <LogOut />
+          Log out
+        </StyledMenuItem>
+      </StyledMobile>
     </StyledWrapper>
   )
 }
