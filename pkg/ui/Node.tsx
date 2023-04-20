@@ -53,9 +53,6 @@ export const Node = ({
   if (isUiNodeInputAttributes(node.attributes)) {
     return (
       <>
-        <button ref={ref} onClick={() => alert("tester")}>
-          Tester
-        </button>
         <NodeInput
           ref={ref}
           dispatchSubmit={dispatchSubmit}
