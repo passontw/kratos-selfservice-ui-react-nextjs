@@ -17,8 +17,8 @@ import Flow from "../components/changepassword/Flow"
 import { Methods, Messages, ActionCard } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
-import { setActiveNav } from "../state/store/slice/layoutSlice"
-import { Navs } from "../types/enum"
+import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
+import { Navs, Stage } from "../types/enum"
 import { updatePasswordSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 
@@ -75,6 +75,7 @@ const ChangePassword: NextPage = () => {
 
   useEffect(() => {
     dispatch(setActiveNav(Navs.CHANGEPASSWORD))
+    dispatch(setActiveStage(Stage.NONE))
   }, [])
 
   const onSubmit = async (values: UpdateSettingsFlowBody, confirmPassword) => {
