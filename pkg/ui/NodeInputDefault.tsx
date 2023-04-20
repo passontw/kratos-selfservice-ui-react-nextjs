@@ -118,7 +118,8 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           className="my-text-input"
           style={{
             display:
-              label === "Verify code" && nav !== Navs.RECOVERY
+              (label === "Verify code" && nav !== Navs.RECOVERY) ||
+              attributes.name === "traits.gender"
                 ? "none"
                 : "unset",
             border: isError ? "1px solid #F24867" : "none",
@@ -217,7 +218,6 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             Gender
           </Box>
           <RadioGroup
-            label="Gender"
             value={gender}
             onChange={(e) => {
               setGender(e.target.value)
