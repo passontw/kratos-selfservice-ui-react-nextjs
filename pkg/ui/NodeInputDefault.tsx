@@ -213,7 +213,9 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
 
       {nav === Navs.PROFILE && attributes.name === "traits.gender" && (
         <Box>
-          {/* <Box>Gender</Box> */}
+          <Box fontSize="14px" color="#717197" fontFamily="open sans">
+            Gender
+          </Box>
           <RadioGroup
             label="Gender"
             value={gender}

@@ -73,7 +73,7 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
         <FormHelperText
           sx={{
             fontSize: "14px",
-            color: "#24292B",
+            color: "#FFF",
           }}
         >
           {label}{" "}
