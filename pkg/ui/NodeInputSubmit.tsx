@@ -96,12 +96,10 @@ export function NodeInputSubmit<T>({
   console.log("@modal Ref NodeInputSubmit props ref:", ref)
 
   const handleClick = () => {
-    console.log("handleClick")
+    console.log("[handleClick]", switchRef)
+    console.log("[handleClick current]", switchRef.current)
   }
 
-  useEffect(() => {
-    console.log("switchRef", switchRef.current)
-  }, [switchRef.current])
 
   return (
     <>
