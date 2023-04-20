@@ -97,6 +97,7 @@ const Profile: NextPage = () => {
           })
           .then(({ data }) => {
             // The settings have been saved and the flow was updated. Let's show it to the user!
+            console.log("settings have been updated", data)
             setFlow(data)
           })
           .catch(handleFlowError(router, "profile", setFlow))
