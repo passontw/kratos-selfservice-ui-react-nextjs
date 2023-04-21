@@ -155,7 +155,6 @@ const Export: NextPage = () => {
             Export
           </Box>
         </Box>
-
         <Box
           display="flex"
           alignItems="center"
@@ -184,8 +183,6 @@ const Export: NextPage = () => {
           </Box>
         </Box>
       </Box>
-      <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
-      <LinkNav />
     </AccountLayout>
   )
 }
