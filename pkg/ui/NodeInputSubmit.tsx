@@ -133,7 +133,7 @@ export function NodeInputSubmit<T>({
           <Box>
               <Button
                 style={
-                  hiddenStyle
+                  showButton ? (resendLink ? linkStyle : defaultStyle) : hiddenStyle
                 }
                 name={attributes.name}
                 value={attributes.value || ""}
