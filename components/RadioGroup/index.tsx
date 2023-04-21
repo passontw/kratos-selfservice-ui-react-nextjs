@@ -73,7 +73,7 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
         <FormHelperText
           sx={{
             fontSize: "14px",
-            color: "#FFF",
+            color: "#717197",
           }}
         >
           {label}{" "}
@@ -117,9 +117,9 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
                   name={(restParam.name as string) || "localRadio"}
                   sx={{
                     "& span:before": {
-                      width: "10px",
-                      height: "10px",
-                      background: "#fff",
+                      width: "15px",
+                      height: "15px",
+                      background: "#CA4AE8",
                       borderRadius: "24px",
                       margin: "auto",
                     },

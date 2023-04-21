@@ -29,8 +29,6 @@ export function NodeInputButton<T>({
     setValue(attributes.value).then(() => dispatchSubmit(e))
   }
 
-  console.log("input button", getNodeLabel(node))
-
   return (
     <>
       <Button

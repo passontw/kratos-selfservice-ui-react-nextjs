@@ -218,6 +218,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
         <Box color="#FFF" ml="3px" position="relative">
           <RadioGroup
             value={gender}
+            label="Gender"
             onChange={(e) => {
               setGender(e.target.value)
               setValue(e.target.value)

@@ -102,11 +102,11 @@ const StyledFieldSpacer = styled("div")(() => ({
 
 const StyledBirthdayYear = styled("div")(() => ({
   width: "100%",
+  marginRight: "24px",
 }))
 
 const StyledBirthdayMonth = styled("div")(() => ({
   width: "100%",
-  marginRight: "24px",
 }))
 
 export {
