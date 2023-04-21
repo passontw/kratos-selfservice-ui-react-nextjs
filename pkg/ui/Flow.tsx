@@ -201,9 +201,9 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
 
     console.log("nodes", nodes)
     if (this.props.router?.pathname === "/registration") {
-      let temp = nodes[3]
-      nodes[3] = nodes[4]
-      nodes[4] = temp
+      // let temp = nodes[3]
+      // nodes[3] = nodes[4]
+      // nodes[4] = temp
     }
 
     return (

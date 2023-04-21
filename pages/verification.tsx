@@ -44,7 +44,7 @@ const Verification: NextPage = () => {
     user,
     type,
   } = router.query
-    
+
   const email = router.query.user as string
 
   useEffect(() => {
@@ -167,32 +167,42 @@ const Verification: NextPage = () => {
         console.log("data", data)
         setVerifySuccess(data.state === "passed_challenge")
         setFlow(data)
-        if (type === 'login') {
+        if (type === "login") {
           const values = JSON.parse(localStorage.getItem(localStorageKey))
-          ory.createBrowserLoginFlow({
-            refresh: Boolean(refresh),
-            aal: aal ? String(aal) : undefined,
-            returnTo: Boolean(login_challenge)
-              ? NEXT_PUBLIC_REDIRECT_URI
-              : undefined,
-          }).then(({data}) => {
-            const csrfNode = data.ui.nodes.find(node => node.attributes.name === "csrf_token")
-            
-            return ory
-            .updateLoginFlow({
-              flow: String(data?.id),
-              updateLoginFlowBody: {...values, csrf_token: csrfNode?.attributes.value},
-            }).then(() => flow)
-          }).then(flow => {
-            if (flow?.return_to) {
-              window.location.href = flow?.return_to
-              return
-            }
-            router.push("/profile")
-          }).catch(error => {
-            console.log(error)
-          })
-          return;
+          ory
+            .createBrowserLoginFlow({
+              refresh: Boolean(refresh),
+              aal: aal ? String(aal) : undefined,
+              returnTo: Boolean(login_challenge)
+                ? NEXT_PUBLIC_REDIRECT_URI
+                : undefined,
+            })
+            .then(({ data }) => {
+              const csrfNode = data.ui.nodes.find(
+                (node) => node.attributes.name === "csrf_token",
+              )
+
+              return ory
+                .updateLoginFlow({
+                  flow: String(data?.id),
+                  updateLoginFlowBody: {
+                    ...values,
+                    csrf_token: csrfNode?.attributes.value,
+                  },
+                })
+                .then(() => flow)
+            })
+            .then((flow) => {
+              if (flow?.return_to) {
+                window.location.href = flow?.return_to
+                return
+              }
+              router.push("/profile")
+            })
+            .catch((error) => {
+              console.log(error)
+            })
+          return
         }
       })
       .catch((err: any) => {
@@ -224,28 +234,35 @@ const Verification: NextPage = () => {
     <>
       <div className="mainWrapper">
         <StyledMenuWrapper>
-        <div>
-          <title>Verify your account - Ory NextJS Integration Example</title>
-          <meta name="description" content="NextJS + React + Vercel + Ory" />
-        </div>
-        <CmidHead />
-        <Box mt="62px" display="flex" flexDirection="column">
-          <span style={{ color: "#FFF", fontSize: "36px", fontFamily: "Teko" }}>
-            {verifySuccess ? "Verified Success" : "Verify Account"}
-          </span>
-          <span
-            style={{
-              color: "#A5A5A9",
-              marginBottom: "48px",
-              fontFamily: "open sans",
-            }}
-          >
-            {verifySuccess
-              ? "Congratulation, your account is approved"
-              : `Enter the 6-digit code we sent to ${email} to verify account.`}
-          </span>
-        </Box>
-        <Flow onSubmit={onSubmit} flow={flow} code={sixDigitCode} />
+          <div>
+            <title>Verify your account - Ory NextJS Integration Example</title>
+            <meta name="description" content="NextJS + React + Vercel + Ory" />
+          </div>
+          <CmidHead />
+          <Box mt="62px" display="flex" flexDirection="column">
+            <span
+              style={{ color: "#FFF", fontSize: "36px", fontFamily: "Teko" }}
+            >
+              {verifySuccess ? "Verified Success" : "Verify Account"}
+            </span>
+            <span
+              style={{
+                color: "#A5A5A9",
+                marginBottom: "48px",
+                fontFamily: "open sans",
+              }}
+            >
+              {verifySuccess
+                ? "Congratulation, your account is approved"
+                : `Enter the 6-digit code we sent to ${email} to verify account.`}
+            </span>
+          </Box>
+          <Flow
+            onSubmit={onSubmit}
+            flow={flow}
+            code={sixDigitCode}
+            // hideGlobalMessages
+          />
         </StyledMenuWrapper>
       </div>
     </>

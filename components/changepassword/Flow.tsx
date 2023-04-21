@@ -21,9 +21,9 @@ import { Component, FormEvent } from "react"
 import { NodeInputDefault } from "../../pkg/ui/NodeInputDefault"
 import { NodeInputHidden } from "../../pkg/ui/NodeInputHidden"
 import { NodeInputSubmit } from "../../pkg/ui/NodeInputSubmit"
-import Eye from '../../public/images/eyes'
-import { StyledDefaultInput, StyledPasswordIcon } from '../../styles/share'
-
+import Eye from "../../public/images/eyes"
+import { StyledDefaultInput, StyledPasswordIcon } from "../../styles/share"
+import { showToast } from "../Toast"
 
 import { Messages } from "./Messages"
 
@@ -85,7 +85,7 @@ export default class Flow<T extends Values> extends Component<
       values: emptyState(),
       confirmPassword: "",
       isLoading: false,
-      type: "text"
+      type: "text",
     }
   }
 
@@ -94,9 +94,13 @@ export default class Flow<T extends Values> extends Component<
   }
 
   componentDidUpdate(prevProps: Props<T>) {
+    console.log("flow", this.props.flow)
     if (prevProps.flow !== this.props.flow) {
       // Flow has changed, reload the values!
       this.initializeValues(this.filterNodes())
+      if (this.props.flow?.state === "success") {
+        showToast("Password changed.")
+      }
     }
   }
 
@@ -167,7 +171,7 @@ export default class Flow<T extends Values> extends Component<
   }
 
   handleEye = () => {
-    let type = this.state.type === "password" ? "text": "password"
+    let type = this.state.type === "password" ? "text" : "password"
     this.setState((state) => ({ ...state, type: type }))
   }
 
@@ -194,7 +198,7 @@ export default class Flow<T extends Values> extends Component<
         method={flow.ui.method}
         onSubmit={this.handleSubmit}
       >
-        {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
+        {/* {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null} */}
         <NodeInputHidden
           value={values[getNodeId(csrfTokenNode)]}
           node={csrfTokenNode}
@@ -224,10 +228,12 @@ export default class Flow<T extends Values> extends Component<
           }
           attributes={passwordNode.attributes}
         />
-       
-       { !confirmPasswordError && <Box color="#7E7E89" fontSize="13px" fontFamily="open sans">
-          A number and combination of characters. (min 8 characters)
-        </Box> }
+
+        {!confirmPasswordError && (
+          <Box color="#7E7E89" fontSize="13px" fontFamily="open sans">
+            A number and combination of characters. (min 8 characters)
+          </Box>
+        )}
 
         <Box color="#717197" fontSize="14px" fontFamily="open sans" mt="24px">
           Confirm New Password *
@@ -257,8 +263,9 @@ export default class Flow<T extends Values> extends Component<
               color: "#fff",
               caretColor: "#fff",
               borderRadius: "8px",
-              padding: '12px 16px',
-              margin: "0px"
+              padding: "12px 16px",
+              margin: "0px",
+              fontFamily: "open sans",
             }}
           />
           <StyledPasswordIcon isError={confirmPasswordError}>

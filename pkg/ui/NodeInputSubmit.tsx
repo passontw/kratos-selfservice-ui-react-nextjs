@@ -47,8 +47,7 @@ export function NodeInputSubmit<T>({
       isDialogForgotPswd || activeNav === Navs.SETTINGS || linkRelated
         ? "95px"
         : "100%",
-    position:
-      isDialogForgotPswd || activeNav === Navs.SETTINGS ? "absolute" : "unset",
+    position: isDialogForgotPswd ? "absolute" : "unset",
     right:
       activeNav === Navs.SETTINGS
         ? "0px"
@@ -73,6 +72,8 @@ export function NodeInputSubmit<T>({
     marginTop: "11px",
   }
 
+  console.log("NodeInputSubmit", getNodeLabel(node))
+
   const showButton = [
     "Save",
     "Submit",
@@ -90,6 +91,8 @@ export function NodeInputSubmit<T>({
       ? "Verify"
       : getNodeLabel(node) === "Resend code"
       ? "Resend"
+      : getNodeLabel(node) === "Sign in"
+      ? "Login"
       : getNodeLabel(node)
 
   const handleClick = () => {

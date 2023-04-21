@@ -102,14 +102,15 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   console.log("attributes@@@", attributes.name)
   console.log("value@@@", value)
 
+  const verifyCodeConditions =
+    (activeStage === Stage.VERIFY_CODE && nav !== Navs.RECOVERY) ||
+    (nav === Navs.VERIFICATION && activeStage === Stage.NONE)
+
   // Render a generic text input field.
   return (
     <>
       {/* <CodeInput /> */}
-      {((activeStage === Stage.VERIFY_CODE && nav !== Navs.RECOVERY) ||
-        (nav === Navs.VERIFICATION && activeStage === Stage.NONE)) && (
-        <CodeInput />
-      )}
+      {verifyCodeConditions && <CodeInput />}
       <StyledDefaultInput isInputLabel={isInputLabel}>
         {isInputLabel && (
           <StyledDefaultLabel isError={isError}>{label}</StyledDefaultLabel>
@@ -135,7 +136,8 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           placeholder={
             isInputLabel
               ? ""
-              : nav === Navs.SETTINGS && attributes.name === "password"
+              : (nav === Navs.SETTINGS || nav === Navs.CHANGEPASSWORD) &&
+                attributes.name === "password"
               ? "Enter new password"
               : label
           }
