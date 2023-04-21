@@ -19,8 +19,9 @@ import {
   selectMfaModalOpen,
   selectMfaState,
   setActiveNav,
+  setActiveStage,
 } from "../state/store/slice/layoutSlice"
-import { Navs } from "../types/enum"
+import { Navs, Stage } from "../types/enum"
 
 interface Props {
   flow?: SettingsFlow
@@ -143,6 +144,7 @@ const Account: NextPage = () => {
   }
   useEffect(() => {
     dispatch(setActiveNav(Navs.ACCOUNT))
+    dispatch(setActiveStage(Stage.NONE))
   }, [])
 
   useEffect(() => {

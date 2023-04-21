@@ -3,7 +3,7 @@ import {
   StyledSection,
   StyledAccount,
   StyledEmail,
-  StyledChangePasswordDeco
+  StyledChangePasswordDeco,
 } from "../styles/pages/changepassword.styles"
 import { SettingsFlow, UpdateSettingsFlowBody } from "@ory/client"
 import cloneDeep from "lodash/cloneDeep"
@@ -17,8 +17,8 @@ import Flow from "../components/changepassword/Flow"
 import { Methods, Messages, ActionCard } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
-import { setActiveNav } from "../state/store/slice/layoutSlice"
-import { Navs } from "../types/enum"
+import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
+import { Navs, Stage } from "../types/enum"
 import { updatePasswordSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 
@@ -75,6 +75,7 @@ const ChangePassword: NextPage = () => {
 
   useEffect(() => {
     dispatch(setActiveNav(Navs.CHANGEPASSWORD))
+    dispatch(setActiveStage(Stage.NONE))
   }, [])
 
   const onSubmit = async (values: UpdateSettingsFlowBody, confirmPassword) => {
@@ -138,16 +139,16 @@ const ChangePassword: NextPage = () => {
 
   return (
     <AccountLayout>
-      <StyledChangePasswordArea marginTop="48px" >
+      <StyledChangePasswordArea marginTop="48px">
         <StyledChangePasswordDeco src={"/images/change-password-deco.png"} />
         <StyledSection>
-        <StyledAccount>Account</StyledAccount>
-        <StyledEmail>{email}</StyledEmail>
+          <StyledAccount>Account</StyledAccount>
+          <StyledEmail>{email}</StyledEmail>
         </StyledSection>
       </StyledChangePasswordArea>
       <StyledChangePasswordArea>
         <SettingsCard only="password" flow={flow}>
-          <Messages messages={flow?.ui.messages} />
+          {/* <Messages messages={flow?.ui.messages} /> */}
           <Flow
             hideGlobalMessages
             confirmPasswordError={confirmPasswordError}

@@ -77,15 +77,12 @@ export default class Flow<T extends Values> extends Component<
   Props<T>,
   State<T>
 > {
-  private submitButton: RefObject<HTMLButtonElement> | null
-
   constructor(props: Props<T>) {
     super(props)
     this.state = {
       values: emptyState(),
       isLoading: false,
     }
-    this.submitButton = createRef<HTMLButtonElement>()
   }
 
   componentDidMount() {
@@ -108,7 +105,7 @@ export default class Flow<T extends Values> extends Component<
           children: (
             <MfaModal
               // mfaState={this.props.mfaState}
-              submit={this.handleSubmit}
+              submit={(e)=>this.handleSubmit(e, true)}
             />
           ),
         }),
@@ -155,11 +152,16 @@ export default class Flow<T extends Values> extends Component<
   }
 
   // Handles form submission
-  handleSubmit = (event: FormEvent<HTMLFormElement> | MouseEvent) => {
+  handleSubmit = (event: FormEvent<HTMLFormElement> | MouseEvent, isModal?:boolean) => {
     // Prevent all native handlers
     event.stopPropagation()
     event.preventDefault()
 
+    if(isModal) {
+      const clickProfileBtn =  document.querySelector(".profile >button")
+      clickProfileBtn.click()
+    }
+    
     // Prevent double submission!
     if (this.state.isLoading) {
       return Promise.resolve()
@@ -221,11 +223,6 @@ export default class Flow<T extends Values> extends Component<
       return null
     }
 
-    const handleTestSubmit = () => {
-      console.log("@modal clicking...")
-      this.submitButton.current?.click()
-    }
-
     return (
       <form
         action={flow.ui.action}
@@ -246,9 +243,7 @@ export default class Flow<T extends Values> extends Component<
 
           return (
             <span key={`${id}-${k}`} style={isShow ? {} : { display: "none" }}>
-              {console.log("@modal Ref ProfileFlow ref:", this.submitButton)}
               <Node
-                // ref={isSubmitBtn ? this.submitButton?.current : null}
                 disabled={isLoading}
                 node={node}
                 value={values[id]}

@@ -18,8 +18,8 @@ import { Messages } from "../components/profile/Messages"
 import { ActionCard, Methods } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
-import { setActiveNav } from "../state/store/slice/layoutSlice"
-import { Navs } from "../types/enum"
+import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
+import { Navs, Stage } from "../types/enum"
 
 interface Props {
   flow?: SettingsFlow
@@ -55,6 +55,7 @@ const Profile: NextPage = () => {
 
   useEffect(() => {
     dispatch(setActiveNav(Navs.PROFILE))
+    dispatch(setActiveStage(Stage.NONE))
   }, [])
 
   useEffect(() => {
@@ -122,7 +123,7 @@ const Profile: NextPage = () => {
       <StyledProfileArea paddingRight="0">
         <SettingsCard only="profile" flow={flow}>
           {/* <H3>Profile Settings</H3> */}
-          <Messages messages={flow?.ui.messages} />
+          {/* <Messages messages={flow?.ui.messages} /> */}
           <Flow
             hideGlobalMessages
             onSubmit={onSubmit}

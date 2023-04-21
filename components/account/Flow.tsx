@@ -1,3 +1,4 @@
+import { Grid } from '@mui/material'
 import Box from "@mui/material/Box"
 import {
   LoginFlow,
@@ -198,7 +199,8 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         method={flow.ui.method}
         onSubmit={this.handleSubmit}
       >
-        <Box display="flex" flexWrap="wrap" gap="36px">
+        <Box >
+          <Box display="flex">
           {!hideGlobalMessages ? (
             <Messages messages={flow.ui.messages} />
           ) : null}
@@ -232,6 +234,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
               />
             )
           })}
+          </Box>
         </Box>
       </form>
     )

@@ -366,7 +366,7 @@ export default class Flow<T extends Values> extends Component<
 
               {/* gender node */}
               <StyledFieldSpacer>
-                <StyledFieldTitle>Gender</StyledFieldTitle>
+                {/* <StyledFieldTitle>Gender</StyledFieldTitle> */}
                 {genderNode && (
                   <Node
                     disabled={isLoading}
@@ -394,34 +394,7 @@ export default class Flow<T extends Values> extends Component<
               <StyledFieldSpacer>
                 {/* Birthday Section */}
                 <StyledFieldTitle>Date of Birth</StyledFieldTitle>
-
                 <StyledBirthdayWrap>
-                  {/* birthdayMonth node */}
-                  <StyledBirthdayMonth>
-                    {birthdayMonthNode && (
-                      <Node
-                        disabled={isLoading}
-                        node={birthdayMonthNode}
-                        value={values[birthdayMonthNodeId]}
-                        dispatchSubmit={this.handleSubmit}
-                        setValue={(value) =>
-                          new Promise((resolve) => {
-                            this.setState(
-                              (state) => ({
-                                ...state,
-                                values: {
-                                  ...state.values,
-                                  [getNodeId(birthdayMonthNode)]: value,
-                                },
-                              }),
-                              resolve,
-                            )
-                          })
-                        }
-                      />
-                    )}
-                  </StyledBirthdayMonth>
-
                   {/* birthdayYear node */}
                   <StyledBirthdayYear>
                     {birthdayYearNode && (
@@ -447,6 +420,31 @@ export default class Flow<T extends Values> extends Component<
                       />
                     )}
                   </StyledBirthdayYear>
+                  {/* birthdayMonth node */}
+                  <StyledBirthdayMonth>
+                    {birthdayMonthNode && (
+                      <Node
+                        disabled={isLoading}
+                        node={birthdayMonthNode}
+                        value={values[birthdayMonthNodeId]}
+                        dispatchSubmit={this.handleSubmit}
+                        setValue={(value) =>
+                          new Promise((resolve) => {
+                            this.setState(
+                              (state) => ({
+                                ...state,
+                                values: {
+                                  ...state.values,
+                                  [getNodeId(birthdayMonthNode)]: value,
+                                },
+                              }),
+                              resolve,
+                            )
+                          })
+                        }
+                      />
+                    )}
+                  </StyledBirthdayMonth>
                 </StyledBirthdayWrap>
               </StyledFieldSpacer>
 

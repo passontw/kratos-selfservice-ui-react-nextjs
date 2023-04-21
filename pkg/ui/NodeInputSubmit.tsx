@@ -25,7 +25,6 @@ export function NodeInputSubmit<T>({
   dispatchSubmit,
   ref,
 }: NodeInputProps) {
-  const switchRef:any = useRef()
   const activeNav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
   // const sixDigitCode = useSelector(selectSixDigitCode)
@@ -48,8 +47,7 @@ export function NodeInputSubmit<T>({
       isDialogForgotPswd || activeNav === Navs.SETTINGS || linkRelated
         ? "95px"
         : "100%",
-    position:
-      isDialogForgotPswd || activeNav === Navs.SETTINGS ? "absolute" : "unset",
+    position: isDialogForgotPswd ? "absolute" : "unset",
     right:
       activeNav === Navs.SETTINGS
         ? "0px"
@@ -74,6 +72,8 @@ export function NodeInputSubmit<T>({
     marginTop: "11px",
   }
 
+  console.log("NodeInputSubmit", getNodeLabel(node))
+
   const showButton = [
     "Save",
     "Submit",
@@ -91,12 +91,17 @@ export function NodeInputSubmit<T>({
       ? "Verify"
       : getNodeLabel(node) === "Resend code"
       ? "Resend"
+      : getNodeLabel(node) === "Sign in"
+      ? "Login"
       : getNodeLabel(node)
 
   const handleClick = () => {
-    console.log("[handleClick]", switchRef.current)
-    if(switchRef.current) {
-      switchRef.current.click()
+    const clickAppleBtn =  document.querySelector(".apple >button")
+    const clickGoogleBtn = document.querySelector(".google >button")
+    if(attributes.value === 'apple') {
+      clickAppleBtn.click()
+    }else {
+      clickGoogleBtn.click()
     }
   }
   return (
@@ -125,7 +130,6 @@ export function NodeInputSubmit<T>({
       ) : (
         <>
           <Box>
-            <button ref={switchRef}>
               <Button
                 style={
                   showButton
@@ -137,6 +141,7 @@ export function NodeInputSubmit<T>({
                 name={attributes.name}
                 value={attributes.value || ""}
                 disabled={attributes.disabled || disabled}
+                className={attributes.value}
                 // disabled={
                 //   buttonText === "Verify" && sixDigitCode.length !== 6
                 //     ? true
@@ -145,7 +150,6 @@ export function NodeInputSubmit<T>({
               >
                 {buttonText}
               </Button>
-            </button>
           </Box>
           {linkRelated && (
             <Box
@@ -178,7 +182,6 @@ export function NodeInputSubmit<T>({
                   on={getNodeLabel(node).split(" ")[0] === "Unlink"}
                   change={handleClick}
                 />
-                <Box onClick={dispatchSubmit}>test</Box>
               </Box>
             </Box>
           )}
