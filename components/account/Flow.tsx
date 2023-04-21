@@ -184,7 +184,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
 
     // Filter the nodes - only show the ones we want
     const nodes = this.filterNodes()
-
     if (!flow) {
       // No flow was set yet? It's probably still loading...
       //
@@ -200,41 +199,62 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         onSubmit={this.handleSubmit}
       >
         <Box >
-          <Box display="flex">
+          <Grid container spacing={4} flexDirection= "row-reverse">
           {!hideGlobalMessages ? (
             <Messages messages={flow.ui.messages} />
           ) : null}
           {nodes.map((node, k) => {
-            // console.log(node)
             const id = getNodeId(node) as keyof Values
+            if(node.attributes.type =='hidden') {
+              return <Node
+              key={`${id}-${k}`}
+              disabled={isLoading}
+              node={node}
+              value={values[id]}
+              dispatchSubmit={this.handleSubmit}
+              setValue={(value) =>
+                new Promise((resolve) => {
+                  this.setState(
+                    (state) => ({
+                      ...state,
+                      values: {
+                        ...state.values,
+                        [getNodeId(node)]: value,
+                      },
+                    }),
+                    resolve,
+                  )
+                })
+              }/>
+            } else {
+              return <Grid item xs={12} md={6}>
+              <Node
+              key={`${id}-${k}`}
+              disabled={isLoading}
+              node={node}
+              value={values[id]}
+              dispatchSubmit={this.handleSubmit}
+              setValue={(value) =>
+                new Promise((resolve) => {
+                  this.setState(
+                    (state) => ({
+                      ...state,
+                      values: {
+                        ...state.values,
+                        [getNodeId(node)]: value,
+                      },
+                    }),
+                    resolve,
+                  )
+                })
+              }/>
+              </Grid>
+            }
             // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
             // if (node.meta.label?.text === "E-Mail") return
-
-            return (
-              <Node
-                key={`${id}-${k}`}
-                disabled={isLoading}
-                node={node}
-                value={values[id]}
-                dispatchSubmit={this.handleSubmit}
-                setValue={(value) =>
-                  new Promise((resolve) => {
-                    this.setState(
-                      (state) => ({
-                        ...state,
-                        values: {
-                          ...state.values,
-                          [getNodeId(node)]: value,
-                        },
-                      }),
-                      resolve,
-                    )
-                  })
-                }
-              />
-            )
+            
           })}
-          </Box>
+          </Grid>
         </Box>
       </form>
     )

@@ -1,3 +1,4 @@
+import { Grid } from '@mui/material'
 import Box from "@mui/material/Box"
 import { getNodeLabel } from "@ory/integrations/ui"
 import { Button } from "@ory/themes"
@@ -132,11 +133,7 @@ export function NodeInputSubmit<T>({
           <Box>
               <Button
                 style={
-                  showButton
-                    ? resendLink
-                      ? linkStyle
-                      : defaultStyle
-                    : hiddenStyle
+                  hiddenStyle
                 }
                 name={attributes.name}
                 value={attributes.value || ""}
@@ -153,8 +150,7 @@ export function NodeInputSubmit<T>({
           </Box>
           {linkRelated && (
             <Box
-              height="40px"
-              maxWidth="400px"
+              boxSizing="border-box"
               width="100%"
               bgcolor="#272735"
               borderRadius="12px"
@@ -162,9 +158,10 @@ export function NodeInputSubmit<T>({
               p="24px"
               alignItems="center"
               justifyContent="space-between"
+              
             >
               <Box display="flex" gap="20px" alignItems="center">
-                <Box>
+                <Box height="40px">
                   {getNodeLabel(node).includes("google") ? (
                     <Google />
                   ) : getNodeLabel(node).includes("apple") ? (
@@ -184,6 +181,8 @@ export function NodeInputSubmit<T>({
                 />
               </Box>
             </Box>
+    
+
           )}
         </>
       )}
