@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material'
+import { Grid } from "@mui/material"
 import Box from "@mui/material/Box"
 import { getNodeLabel } from "@ory/integrations/ui"
 import { Button } from "@ory/themes"
@@ -81,10 +81,10 @@ export function NodeInputSubmit<T>({
     "Resend code",
     "Sign in",
     "Sign up",
-    "Link apple",
-    "Link google",
-    "Unlink google",
-    "Unlink apple",
+    // "Link apple",
+    // "Link google",
+    // "Unlink google",
+    // "Unlink apple",
   ].includes(getNodeLabel(node))
 
   const buttonText =
@@ -97,11 +97,11 @@ export function NodeInputSubmit<T>({
       : getNodeLabel(node)
 
   const handleClick = () => {
-    const clickAppleBtn =  document.querySelector(".apple >button")
+    const clickAppleBtn = document.querySelector(".apple >button")
     const clickGoogleBtn = document.querySelector(".google >button")
-    if(attributes.value === 'apple') {
+    if (attributes.value === "apple") {
       clickAppleBtn.click()
-    }else {
+    } else {
       clickGoogleBtn.click()
     }
   }
@@ -131,22 +131,26 @@ export function NodeInputSubmit<T>({
       ) : (
         <>
           <Box>
-              <Button
-                style={
-                  showButton ? (resendLink ? linkStyle : defaultStyle) : hiddenStyle
-                }
-                name={attributes.name}
-                value={attributes.value || ""}
-                disabled={attributes.disabled || disabled}
-                className={attributes.value}
-                // disabled={
-                //   buttonText === "Verify" && sixDigitCode.length !== 6
-                //     ? true
-                //     : attributes.disabled || disabled
-                // }
-              >
-                {buttonText}
-              </Button>
+            <Button
+              style={
+                showButton
+                  ? resendLink
+                    ? linkStyle
+                    : defaultStyle
+                  : hiddenStyle
+              }
+              name={attributes.name}
+              value={attributes.value || ""}
+              disabled={attributes.disabled || disabled}
+              className={attributes.value}
+              // disabled={
+              //   buttonText === "Verify" && sixDigitCode.length !== 6
+              //     ? true
+              //     : attributes.disabled || disabled
+              // }
+            >
+              {buttonText}
+            </Button>
           </Box>
           {linkRelated && (
             <Box
@@ -158,7 +162,6 @@ export function NodeInputSubmit<T>({
               p="24px"
               alignItems="center"
               justifyContent="space-between"
-              
             >
               <Box display="flex" gap="20px" alignItems="center">
                 <Box height="40px">
@@ -181,8 +184,6 @@ export function NodeInputSubmit<T>({
                 />
               </Box>
             </Box>
-    
-
           )}
         </>
       )}

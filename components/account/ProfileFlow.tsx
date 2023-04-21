@@ -95,6 +95,7 @@ export default class Flow<T extends Values> extends Component<
       this.initializeValues(this.filterNodes())
     }
     if (this.props.modalOpen) {
+      console.log("flow", this.props.flow)
       this.props.dispatch(
         setDialog({
           title: `2-Step Verification`,
@@ -104,8 +105,8 @@ export default class Flow<T extends Values> extends Component<
           center: true,
           children: (
             <MfaModal
-              // mfaState={this.props.mfaState}
-              submit={(e)=>this.handleSubmit(e, true)}
+              email={this.props.flow.identity.traits.email}
+              submit={(e) => this.handleSubmit(e, true)}
             />
           ),
         }),
@@ -152,16 +153,19 @@ export default class Flow<T extends Values> extends Component<
   }
 
   // Handles form submission
-  handleSubmit = (event: FormEvent<HTMLFormElement> | MouseEvent, isModal?:boolean) => {
+  handleSubmit = (
+    event: FormEvent<HTMLFormElement> | MouseEvent,
+    isModal?: boolean,
+  ) => {
     // Prevent all native handlers
     event.stopPropagation()
     event.preventDefault()
 
-    if(isModal) {
-      const clickProfileBtn =  document.querySelector(".profile >button")
+    if (isModal) {
+      const clickProfileBtn = document.querySelector(".profile >button")
       clickProfileBtn.click()
     }
-    
+
     // Prevent double submission!
     if (this.state.isLoading) {
       return Promise.resolve()
