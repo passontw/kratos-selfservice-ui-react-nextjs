@@ -90,18 +90,20 @@ const Account: NextPage = () => {
   const deleteAccountPromt = async () => {
     const confirmResult = confirm("是否確定刪除帳號?")
     if (confirmResult) {
+      console.log(1)
       const { data } = await axios.get("/api/.ory/sessions/whoami", {
         headers: { withCredentials: true },
       })
-
+      console.log(2, data)
       const { traits } = data.identity
       // return;
+      console.log(3, traits)
+      console.log("🚀 ~ file: account.tsx:108 ~ deleteAccountPromt ~ `/account?flow=${flowId || flow.id}&user=${traits.email}`:", `/account?flow=${flowId || flow.id}&user=${traits.email}`)
+      console.log("🚀 ~ file: account.tsx:108 ~ deleteAccountPromt ~ flow?.return_to:", flow?.return_to)
       return router
         .push(
-          flow?.return_to ||
-            `/account?flow=${flowId || flow.id}&user=${traits.email}`,
+          `/account?flow=${flowId || flow.id}&user=${traits.email}`,
         )
-        .then(() => {})
     }
   }
 
