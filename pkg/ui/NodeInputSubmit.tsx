@@ -25,7 +25,6 @@ export function NodeInputSubmit<T>({
   dispatchSubmit,
   ref,
 }: NodeInputProps) {
-  const switchRef:any = useRef()
   const activeNav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
   // const sixDigitCode = useSelector(selectSixDigitCode)
@@ -94,9 +93,12 @@ export function NodeInputSubmit<T>({
       : getNodeLabel(node)
 
   const handleClick = () => {
-    console.log("[handleClick]", switchRef)
-    if(switchRef.current) {
-      switchRef.current
+    const clickAppleBtn =  document.querySelector(".apple >button")
+    const clickGoogleBtn = document.querySelector(".google >button")
+    if(attributes.value === 'apple') {
+      clickAppleBtn.click()
+    }else {
+      clickGoogleBtn.click()
     }
   }
   return (
@@ -136,6 +138,7 @@ export function NodeInputSubmit<T>({
                 name={attributes.name}
                 value={attributes.value || ""}
                 disabled={attributes.disabled || disabled}
+                className={attributes.value}
                 // disabled={
                 //   buttonText === "Verify" && sixDigitCode.length !== 6
                 //     ? true
