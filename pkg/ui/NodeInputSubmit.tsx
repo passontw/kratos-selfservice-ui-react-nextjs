@@ -75,7 +75,7 @@ export function NodeInputSubmit<T>({
 
   console.log("NodeInputSubmit", getNodeLabel(node))
 
-  const showButton = [
+  let showButton = [
     "Save",
     "Submit",
     "Resend code",
@@ -86,6 +86,15 @@ export function NodeInputSubmit<T>({
     // "Unlink google",
     // "Unlink apple",
   ].includes(getNodeLabel(node))
+
+  console.log("<---------------")
+  console.log("activeNav", activeNav)
+  console.log("node", getNodeLabel(node))
+  console.log("--------------->")
+
+  if (activeNav === Navs.ACCOUNT && getNodeLabel(node) === "Save") {
+    showButton = false
+  }
 
   const buttonText =
     activeNav === Navs.VERIFICATION && getNodeLabel(node) === "Submit"

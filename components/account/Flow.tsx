@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material'
+import { Grid } from "@mui/material"
 import Box from "@mui/material/Box"
 import {
   LoginFlow,
@@ -15,8 +15,12 @@ import {
   UiTextTypeEnum,
 } from "@ory/client"
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
-
-import React, { Component, FormEvent, MouseEvent, ReactHTMLElement } from "react"
+import React, {
+  Component,
+  FormEvent,
+  MouseEvent,
+  ReactHTMLElement,
+} from "react"
 
 import { Messages } from "./Messages"
 import { Node } from "./Node"
@@ -68,7 +72,6 @@ type State<T> = {
 }
 
 export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
-  
   constructor(props: Props<T>) {
     super(props)
     this.state = {
@@ -198,62 +201,75 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         method={flow.ui.method}
         onSubmit={this.handleSubmit}
       >
-        <Box >
-          <Grid container spacing={4} flexDirection= "row-reverse">
-          {!hideGlobalMessages ? (
-            <Messages messages={flow.ui.messages} />
-          ) : null}
-          {nodes.map((node, k) => {
-            const id = getNodeId(node) as keyof Values
-            if(node.attributes.type =='hidden') {
-              return <Node
-              key={`${id}-${k}`}
-              disabled={isLoading}
-              node={node}
-              value={values[id]}
-              dispatchSubmit={this.handleSubmit}
-              setValue={(value) =>
-                new Promise((resolve) => {
-                  this.setState(
-                    (state) => ({
-                      ...state,
-                      values: {
-                        ...state.values,
-                        [getNodeId(node)]: value,
-                      },
-                    }),
-                    resolve,
-                  )
-                })
-              }/>
-            } else {
-              return <Grid item xs={12} md={6}>
-              <Node
-              key={`${id}-${k}`}
-              disabled={isLoading}
-              node={node}
-              value={values[id]}
-              dispatchSubmit={this.handleSubmit}
-              setValue={(value) =>
-                new Promise((resolve) => {
-                  this.setState(
-                    (state) => ({
-                      ...state,
-                      values: {
-                        ...state.values,
-                        [getNodeId(node)]: value,
-                      },
-                    }),
-                    resolve,
-                  )
-                })
-              }/>
-              </Grid>
-            }
-            // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
-            // if (node.meta.label?.text === "E-Mail") return
-            
-          })}
+        <Box>
+          <Grid container spacing={4} flexDirection="row-reverse">
+            {!hideGlobalMessages ? (
+              <Messages messages={flow.ui.messages} />
+            ) : null}
+            {nodes.map((node, k) => {
+              const excludedFields = {
+                account: ["email"],
+              }
+              // const pathname = window.location.pathname.slice(
+              //   1,
+              // ) as keyof typeof excludedFields
+
+              if (node.attributes.name.includes("email")) return
+              const id = getNodeId(node) as keyof Values
+              if (node.attributes.type == "hidden") {
+                return (
+                  <Node
+                    key={`${id}-${k}`}
+                    disabled={isLoading}
+                    node={node}
+                    value={values[id]}
+                    dispatchSubmit={this.handleSubmit}
+                    setValue={(value) =>
+                      new Promise((resolve) => {
+                        this.setState(
+                          (state) => ({
+                            ...state,
+                            values: {
+                              ...state.values,
+                              [getNodeId(node)]: value,
+                            },
+                          }),
+                          resolve,
+                        )
+                      })
+                    }
+                  />
+                )
+              } else {
+                return (
+                  <Grid item xs={12} md={6}>
+                    <Node
+                      key={`${id}-${k}`}
+                      disabled={isLoading}
+                      node={node}
+                      value={values[id]}
+                      dispatchSubmit={this.handleSubmit}
+                      setValue={(value) =>
+                        new Promise((resolve) => {
+                          this.setState(
+                            (state) => ({
+                              ...state,
+                              values: {
+                                ...state.values,
+                                [getNodeId(node)]: value,
+                              },
+                            }),
+                            resolve,
+                          )
+                        })
+                      }
+                    />
+                  </Grid>
+                )
+              }
+              // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
+              // if (node.meta.label?.text === "E-Mail") return
+            })}
           </Grid>
         </Box>
       </form>

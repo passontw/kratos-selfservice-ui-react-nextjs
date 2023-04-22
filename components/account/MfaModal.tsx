@@ -64,6 +64,7 @@ const MfaModal: React.FC<MfaModalProps> = ({ submit, email }) => {
           borderRadius="8px"
           p="12px 20px"
           onClick={() => {
+            dispatch(setMfaModalOpen(false))
             dispatch(setDialog(null))
           }}
           sx={{

@@ -62,7 +62,10 @@ type State<T> = {
   isLoading: boolean
 }
 
-export default class Flow<T extends Values> extends Component<Props<T>, State<T>> {
+export default class Flow<T extends Values> extends Component<
+  Props<T>,
+  State<T>
+> {
   constructor(props: Props<T>) {
     super(props)
     this.state = {

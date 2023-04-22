@@ -30,12 +30,10 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   const dispatch = useDispatch()
   const nav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
-  const sixDigitCode = useSelector(selectSixDigitCode)
   const { node, attributes, value = "", setValue, disabled } = props
   const label = node.meta.label?.text === "ID" ? "Email" : node.meta.label?.text
   const [isError, setIsError] = useState(node.messages.length > 0)
   const [inputType, setInputType] = useState(attributes.type)
-  const inputRef = useRef(null)
 
   useEffect(() => {
     setIsError(node.messages.length > 0)
@@ -105,6 +103,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   const verifyCodeConditions =
     (activeStage === Stage.VERIFY_CODE && nav !== Navs.RECOVERY) ||
     (nav === Navs.VERIFICATION && activeStage === Stage.NONE)
+  // || activeStage === Stage.DELETE_ACCOUNT
 
   // Render a generic text input field.
   return (
@@ -119,7 +118,9 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           className="my-text-input"
           style={{
             display:
-              (label === "Verify code" && nav !== Navs.RECOVERY) ||
+              (label === "Verify code" &&
+                nav !== Navs.RECOVERY &&
+                nav !== Navs.ACCOUNT) ||
               attributes.name === "traits.gender"
                 ? "none"
                 : "unset",
@@ -149,7 +150,6 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           type={inputType}
           name={attributes.name}
           value={value}
-          // value={label === "Verify code" ? sixDigitCode : value}
           disabled={attributes.disabled || disabled}
           help={node.messages.length > 0}
           state={
@@ -162,7 +162,6 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
               {node.messages.map(({ type, text, id }, k) => {
                 let displayText = text
                 if (text.includes("is missing")) {
-                  // const field = text.split(" ")[1]
                   displayText = "This field is required, please fill it out."
                 }
                 return (

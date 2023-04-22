@@ -8,6 +8,7 @@ import { ReactNode, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import AccountLayout from "../components/Layout/AccountLayout"
+import DeleteAccConfirm from "../components/account/DeleteAccConfirm"
 import { Flow } from "../components/account/Flow"
 import ProfileFlow from "../components/account/ProfileFlow"
 import VerificationModal from "../components/account/VerificationModal"
@@ -20,6 +21,7 @@ import {
   selectMfaState,
   setActiveNav,
   setActiveStage,
+  setDialog,
 } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
 
@@ -65,12 +67,22 @@ function SettingsCard({
 const Account: NextPage = () => {
   const dispatch = useDispatch()
   const [sessions, setSessions] = useState([])
+  const [showModal, setShowModal] = useState(false)
   const [flow, setFlow] = useState<SettingsFlow>()
   const router = useRouter()
   const mfaModalOpen = useSelector(selectMfaModalOpen)
   const mfaState = useSelector(selectMfaState)
+  const [confirmDelete, setConfirmDelete] = useState(false)
 
   const { flow: flowId, return_to: returnTo } = router.query
+
+  const handleConfirmDelete = () => {
+    setConfirmDelete(true)
+  }
+
+  const handleCloseDelete = () => {
+    setShowModal(false)
+  }
 
   const deleteAccount = async () => {
     const { data } = await axios.get("/api/.ory/sessions/whoami", {
@@ -95,24 +107,44 @@ const Account: NextPage = () => {
   }
 
   const deleteAccountPromt = async () => {
-    const confirmResult = confirm("是否確定刪除帳號?")
-    if (confirmResult) {
-      console.log(1)
-      const { data } = await axios.get("/api/.ory/sessions/whoami", {
-        headers: { withCredentials: true },
-      })
-      console.log(2, data)
-      const { traits } = data.identity
-      // return;
-      console.log(3, traits)
-      console.log("🚀 ~ file: account.tsx:108 ~ deleteAccountPromt ~ `/account?flow=${flowId || flow.id}&user=${traits.email}`:", `/account?flow=${flowId || flow.id}&user=${traits.email}`)
-      console.log("🚀 ~ file: account.tsx:108 ~ deleteAccountPromt ~ flow?.return_to:", flow?.return_to)
-      return router
-        .push(
-          `/account?flow=${flowId || flow.id}&user=${traits.email}`,
-        )
-    }
+    dispatch(
+      setDialog({
+        title: "Delete Account",
+        titleHeight: "56px",
+        width: 480,
+        height: 238,
+        center: true,
+        children: <DeleteAccConfirm confirmDelete={handleConfirmDelete} />,
+      }),
+    )
   }
+
+  useEffect(() => {
+    const activateDeleteProcess = async () => {
+      if (confirmDelete) {
+        const { data } = await axios.get("/api/.ory/sessions/whoami", {
+          headers: { withCredentials: true },
+        })
+        console.log(2, data)
+        const { traits } = data.identity
+        // return;
+        console.log(3, traits)
+        console.log(
+          "🚀 ~ file: account.tsx:108 ~ deleteAccountPromt ~ `/account?flow=${flowId || flow.id}&user=${traits.email}`:",
+          `/account?flow=${flowId || flow?.id}&user=${traits.email}`,
+        )
+        console.log(
+          "🚀 ~ file: account.tsx:108 ~ deleteAccountPromt ~ flow?.return_to:",
+          flow?.return_to,
+        )
+        setShowModal(true)
+        return router.push(
+          `/account?flow=${flowId || flow?.id}&user=${traits.email}`,
+        )
+      }
+    }
+    activateDeleteProcess()
+  }, [confirmDelete])
 
   const onSubmit = (values: UpdateSettingsFlowBody) => {
     return (
@@ -259,7 +291,24 @@ const Account: NextPage = () => {
             </Box>
           </Box>
           {/* <button onClick={deleteAccountPromt}>刪除帳號</button> */}
-          <VerificationModal deleteAccount={deleteAccount} />
+          {showModal && (
+            <Box
+              position="fixed"
+              bgcolor="#000"
+              width="100%"
+              height="100%"
+              top="0"
+              left="0"
+              sx={{
+                opacity: 0.5,
+              }}
+            ></Box>
+          )}
+          <VerificationModal
+            deleteAccount={deleteAccount}
+            show={showModal}
+            close={handleCloseDelete}
+          />
         </SettingsCard>
       </Box>
     </AccountLayout>

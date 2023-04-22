@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box"
 import { VerificationFlow, UpdateVerificationFlowBody } from "@ory/client"
 import { CardTitle } from "@ory/themes"
 import { AxiosError } from "axios"
@@ -7,13 +8,20 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import queryString from "query-string"
 import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 
 import { ActionCard, CenterLink, MarginCard } from "../../pkg"
 import ory from "../../pkg/sdk"
+import { setActiveStage } from "../../state/store/slice/layoutSlice"
+import { Stage } from "../../types/enum"
+import Text from "../Text"
 
 import Flow from "./VerificationFlow"
 
 const Verification: NextPage = (props) => {
+  const dispatch = useDispatch()
+  const { show, close } = props
+  console.log("show", show)
   const [initFlow, setInitFlow] = useState(false)
   const [flow, setFlow] = useState<VerificationFlow>()
 
@@ -161,21 +169,50 @@ const Verification: NextPage = (props) => {
   }
 
   return (
-    <>
-      <Head>
-        <title>Verify your account - Ory NextJS Integration Example</title>
-        <meta name="description" content="NextJS + React + Vercel + Ory" />
-      </Head>
-      <MarginCard>
-        <CardTitle>Verify your account</CardTitle>
-        <Flow onSubmit={onSubmit} flow={flow} />
-      </MarginCard>
-      <ActionCard>
-        <Link href="/" passHref>
-          <CenterLink>Go back</CenterLink>
-        </Link>
-      </ActionCard>
-    </>
+    <Box display={show ? "block" : "none"}>
+      <Box
+        width="100%"
+        maxWidth="438px"
+        bgcolor="#272735"
+        p="0 32px 32px 32px"
+        borderRadius="12px"
+        position="fixed"
+        top="35vh"
+        left="40vw"
+      >
+        <Head>
+          <title>Verify your account - Ory NextJS Integration Example</title>
+          <meta name="description" content="NextJS + React + Vercel + Ory" />
+        </Head>
+        <Box>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Text size="20px" my="32px" color="#FFF">
+              Delete Account
+            </Text>
+            {/* <Box
+              color="#FFF"
+              onClick={() => {
+                dispatch(setActiveStage(Stage.NONE))
+                router.push("/account")
+                close()
+              }}
+            >
+              X
+            </Box> */}
+          </Box>
+
+          <Text>
+            Enter the 6-digit code we sent to master123@gmail.com to finish the
+            deletion process.
+          </Text>
+          <Flow onSubmit={onSubmit} flow={flow} />
+        </Box>
+      </Box>
+    </Box>
   )
 }
 
