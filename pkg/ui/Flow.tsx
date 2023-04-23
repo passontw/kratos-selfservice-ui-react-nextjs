@@ -224,7 +224,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     const { values, isLoading } = this.state
 
     // Filter the nodes - only show the ones we want
-    const nodes = this.filterNodes()
+    let nodes = this.filterNodes()
 
     if (!flow) {
       // No flow was set yet? It's probably still loading...
@@ -234,12 +234,16 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       return null
     }
 
-    console.log("nodes", nodes)
+    
     if (this.props.router?.pathname === "/registration") {
       // let temp = nodes[3]
       // nodes[3] = nodes[4]
       // nodes[4] = temp
+      
+      const list = ["Name", "E-Mail", "Password", "Sign up"]
+      nodes = nodes.map((item)=>item).sort((a, b)=> list.indexOf(a.meta.label?.text) - list.indexOf(b.meta.label?.text))
     }
+
 
     return (
       <form

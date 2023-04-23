@@ -81,6 +81,7 @@ a:link {
   color: #ca4ae8;
   background-color: transparent;
   text-decoration: none;
+  padding: 5px;
 }
 
 a:visited {
