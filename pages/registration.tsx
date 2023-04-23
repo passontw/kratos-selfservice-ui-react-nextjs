@@ -255,12 +255,12 @@ const Registration: NextPage = () => {
             paddingBottom="86px"
           >
             <Box>By signing up for Cooler Master ID,</Box>
-            <Box>
-              you agree to our
+            <Box display="flex" gap="5px" mt="2px">
+              you agree to our{" "}
               <Link className="link" href="/">
                 Terms of Service
               </Link>{" "}
-              &
+              &{" "}
               <Link className="link" href="/">
                 Privacy Policy
               </Link>

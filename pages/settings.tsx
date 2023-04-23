@@ -8,6 +8,8 @@ import { useRouter } from "next/router"
 import { ReactNode, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
+import CmidHead from "../components/CmidHead"
+import MenuFooter from "../components/MenuFooter"
 import Flow from "../components/changepassword/Flow"
 import { ActionCard, Messages, Methods, LogoutLink } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
@@ -44,7 +46,7 @@ function SettingsCard({
       width="100%"
       height="100%"
       maxWidth="564px"
-      maxHeight="375px"
+      maxHeight="343px"
       bgcolor="#272735"
       borderRadius="12px"
       p="32px"
@@ -184,4 +186,3 @@ const Settings: NextPage = () => {
 }
 
 export default Settings
-
