@@ -3,4 +3,5 @@
 @import "./login.css";
 @import "./registration.css";
 @import "./verification.css";
+@import "./react-toastify.min.css";
 @import "./reset.css";

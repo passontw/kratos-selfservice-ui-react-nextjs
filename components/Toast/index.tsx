@@ -4,7 +4,7 @@ import { toast } from "react-toastify"
 
 import SuccessIcon from "../../public/images/SuccessIcon"
 
-import { StyledMessage, StyledStatus } from "./styles"
+import { StyledMessage, StyledStatus, StyleSucess, StyleError } from "./styles"
 
 /**
  *
@@ -16,11 +16,14 @@ import { StyledMessage, StyledStatus } from "./styles"
 export const showToast = (
   message: string,
   success: boolean = true,
+  hideProgressBar: boolean = true,
   position = toast.POSITION.BOTTOM_LEFT,
+  stylesucess = StyleSucess,
+  styleerror = StyleError
 ) => {
   return success
-    ? toast(<Success message={message} />, { position })
-    : toast.error(message, { position })
+    ? toast(<Success message={message} />, { position, hideProgressBar, style: stylesucess })
+    : toast.error(message, { position, style: styleerror })
 }
 
 interface SuccessProps {
@@ -29,7 +32,7 @@ interface SuccessProps {
 
 const Success: React.FC<SuccessProps> = ({ message }) => {
   return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
+    <Box display="flex" alignItems="center">
       <StyledStatus>
         <SuccessIcon />
       </StyledStatus>

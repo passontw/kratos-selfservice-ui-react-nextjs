@@ -1,21 +1,31 @@
-import { Box, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Box, Typography } from "@mui/material"
+import { styled } from "@mui/material/styles"
+
+// sucess
+export const StyleSucess = {
+  background: "#1B2B30",
+  border: "1px solid #4AE8AF",
+}
+
+export const StyleError = {
+  background: "#2C1B29",
+  border: "1px solid #F24867",
+}
 
 export const StyledStatus = styled(Box)(({ theme }) => ({
-	display: 'flex',
-	justifyContent: 'center',
-	alignItems: 'center',
-	background: 'rgba(54, 179, 126, 0.16)',
-	borderRadius: '12px',
-	width: 40,
-	height: 40,
-	marginRight: '12px'
-
-}));
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  background: "transparent",
+  borderRadius: "12px",
+  width: 40,
+  height: 40,
+  marginRight: "12px",
+}))
 
 export const StyledMessage = styled(Typography)(({ theme }) => ({
-	fontSize: '14px', // anchornav width 228 + gap 12
-	color: '#212B36',
-	fontWeight: 600,
-	borderRadius: '8px'
-}));
+  fontSize: "14px", // anchornav width 228 + gap 12
+  color: "#FFF",
+  fontWeight: 600,
+  borderRadius: "8px",
+}))
