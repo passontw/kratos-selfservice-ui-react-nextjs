@@ -109,12 +109,12 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
               <DropdownMenu />
             </StyledDropdownMenu>
           </Box>
-          <StyledContent>{children}
-            <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
-            <LinkNav />
+          <StyledContent>
+            {children}
           </StyledContent>
+          <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
+          <LinkNav />
         </StyledContentWrapper>
-
       </Box>
     </StyledWrapper>
   )

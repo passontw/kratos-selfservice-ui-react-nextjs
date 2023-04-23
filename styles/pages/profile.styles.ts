@@ -10,7 +10,7 @@ const StyledProfileArea = styled("div")<{ paddingRight?: string }>(
     paddingLeft: "74px",
     paddingRight: paddingRight ? paddingRight : "48px",
     borderRadius: "12px",
-    maxHeight: "602px",
+    minHeight: "602px",
   }),
 )
 
