@@ -63,7 +63,7 @@ export function NodeInputSubmit<T>({
   const linkStyle = {
     backgroundColor: "transparent",
     background: "none",
-    color: "#454545",
+    color: "#CA4AE8",
     border: "none",
     padding: "0",
     cursor: "pointer",
@@ -87,17 +87,13 @@ export function NodeInputSubmit<T>({
     // "Unlink apple",
   ].includes(getNodeLabel(node))
 
-  console.log("<---------------")
-  console.log("activeNav", activeNav)
-  console.log("node", getNodeLabel(node))
-  console.log("--------------->")
-
   if (activeNav === Navs.ACCOUNT && getNodeLabel(node) === "Save") {
     showButton = false
   }
 
   const buttonText =
-    activeNav === Navs.VERIFICATION && getNodeLabel(node) === "Submit"
+    (activeNav === Navs.VERIFICATION || activeNav === Navs.RECOVERY) &&
+    getNodeLabel(node) === "Submit"
       ? "Verify"
       : getNodeLabel(node) === "Resend code"
       ? "Resend"

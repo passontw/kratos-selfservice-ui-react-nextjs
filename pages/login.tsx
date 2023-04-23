@@ -17,8 +17,13 @@ import MenuTag from "../components/MenuTag"
 import { LogoutLink, Flow } from "../pkg"
 import { handleGetFlowError, handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
-import { selectActiveNav, setActiveNav } from "../state/store/slice/layoutSlice"
-import { Navs } from "../types/enum"
+import {
+  selectActiveNav,
+  setActiveNav,
+  setActiveStage,
+  setDialog,
+} from "../state/store/slice/layoutSlice"
+import { Navs, Stage } from "../types/enum"
 import { loginFormSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 
@@ -70,6 +75,8 @@ const Login: NextPage = () => {
 
   useEffect(() => {
     dispatch(setActiveNav(Navs.LOGIN))
+    dispatch(setActiveStage(Stage.NONE))
+    dispatch(setDialog(null))
   }, [])
 
   // Get ?flow=... from the URL

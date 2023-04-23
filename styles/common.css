@@ -98,3 +98,7 @@ a:active {
   color: #ca4ae8;
   background-color: transparent;
 }
+
+.button:hover {
+  filter: brightness(110%);
+}

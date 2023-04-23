@@ -101,7 +101,9 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   console.log("value@@@", value)
 
   const verifyCodeConditions =
-    (activeStage === Stage.VERIFY_CODE && nav !== Navs.RECOVERY) ||
+    (activeStage === Stage.VERIFY_CODE &&
+      // nav !== Navs.RECOVERY &&
+      nav !== Navs.LOGIN) ||
     (nav === Navs.VERIFICATION && activeStage === Stage.NONE)
   // || activeStage === Stage.DELETE_ACCOUNT
 
@@ -119,7 +121,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           style={{
             display:
               (label === "Verify code" &&
-                nav !== Navs.RECOVERY &&
+                // nav !== Navs.RECOVERY &&
                 nav !== Navs.ACCOUNT) ||
               attributes.name === "traits.gender"
                 ? "none"
