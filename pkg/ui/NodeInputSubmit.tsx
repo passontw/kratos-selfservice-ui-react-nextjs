@@ -28,7 +28,7 @@ export function NodeInputSubmit<T>({
 }: NodeInputProps) {
   const activeNav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
-  // const sixDigitCode = useSelector(selectSixDigitCode)
+  const sixDigitCode = useSelector(selectSixDigitCode)
   const isDialogForgotPswd =
     activeStage === Stage.FORGOT_PASSWORD && getNodeLabel(node) === "Submit"
   const isSignINOUT = ["Sign in", "Sign up"].includes(getNodeLabel(node))

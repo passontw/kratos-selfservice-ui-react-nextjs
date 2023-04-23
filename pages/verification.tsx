@@ -8,6 +8,7 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import CmidHead from "../components/CmidHead"
+import MenuFooter from "../components/MenuFooter"
 import { Flow } from "../components/verification/Flow"
 import ory from "../pkg/sdk"
 import {
@@ -250,6 +251,7 @@ const Verification: NextPage = () => {
                 color: "#A5A5A9",
                 marginBottom: "48px",
                 fontFamily: "open sans",
+                fontSize: "14px",
               }}
             >
               {verifySuccess
@@ -263,6 +265,7 @@ const Verification: NextPage = () => {
             code={sixDigitCode}
             // hideGlobalMessages
           />
+          <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
         </StyledMenuWrapper>
       </div>
     </>

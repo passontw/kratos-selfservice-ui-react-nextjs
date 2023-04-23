@@ -103,6 +103,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   console.log("value@@@", value)
 
   const verifyCodeConditions =
+    attributes.name !== "code" ||
     (activeStage === Stage.VERIFY_CODE &&
       // nav !== Navs.RECOVERY &&
       nav !== Navs.LOGIN) ||
@@ -113,7 +114,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   return (
     <>
       {/* <CodeInput /> */}
-      {verifyCodeConditions && <CodeInput />}
+      {verifyCodeConditions && <CodeInput show={attributes.name} />}
       <StyledDefaultInput isInputLabel={isInputLabel}>
         {isInputLabel && (
           <StyledDefaultLabel isError={isError}>{label}</StyledDefaultLabel>
