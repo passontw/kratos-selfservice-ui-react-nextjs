@@ -170,7 +170,11 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
                   <span
                     key={`${id}-${k}`}
                     data-testid={`ui/message/${id}`}
-                    style={{ color: "#F24867", fontSize: "13px" }}
+                    style={{
+                      color: "#F24867",
+                      fontSize: "13px",
+                      fontFamily: "Open Sans",
+                    }}
                   >
                     {displayText}
                   </span>
