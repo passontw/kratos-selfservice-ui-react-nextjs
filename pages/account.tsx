@@ -210,6 +210,7 @@ const Account: NextPage = () => {
       .catch(handleFlowError(router, "account", setFlow))
   }, [flowId, router, router.isReady, returnTo, flow])
 
+  
   return (
     <AccountLayout>
       <Box display="flex" flexDirection="column">

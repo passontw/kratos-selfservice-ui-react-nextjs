@@ -94,11 +94,19 @@ export default class Flow<T extends Values> extends Component<
   }
 
   componentDidUpdate(prevProps: Props<T>) {
-    console.log("flow", this.props.flow)
+    const oidcGroup =  this.props.flow.ui.nodes.filter((item)=> item.group === 'oidc' && item.attributes.name === 'unlink')    
     if (prevProps.flow !== this.props.flow) {
       // Flow has changed, reload the values!
       this.initializeValues(this.filterNodes())
-      if (this.props.flow?.state === "success") {
+      // if (oidcGroup.type === "") {
+      //   showToast("Password changed.")
+      // }
+      if(oidcGroup.length > 0 && this.props.flow?.state === "success"){
+        showToast(`${oidcGroup[0].meta.label?.text}`)
+        return
+      } 
+
+      if (this.props.flow?.state === "success") {    
         showToast("Password changed.")
       }
     }
