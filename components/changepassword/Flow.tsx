@@ -85,7 +85,7 @@ export default class Flow<T extends Values> extends Component<
       values: emptyState(),
       confirmPassword: "",
       isLoading: false,
-      type: "text",
+      type: "password",
     }
   }
 
@@ -283,7 +283,7 @@ export default class Flow<T extends Values> extends Component<
               color: "#fff",
               caretColor: "#fff",
               borderRadius: "8px",
-              padding: "12px 16px",
+              padding: "12px 50px 12px 16px",
               margin: "0px",
               fontFamily: "open sans",
             }}

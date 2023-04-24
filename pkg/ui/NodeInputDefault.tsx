@@ -139,7 +139,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             color: "#fff",
             caretColor: "#fff",
             borderRadius: "8px",
-            padding: isInputLabel ? "0px 0px 0px 82px" : "12px 16px",
+            padding: isInputLabel ? "0px 0px 0px 82px" : "12px 50px 12px 16px",
             margin: "0px",
             fontFamily: "Open Sans",
           }}
