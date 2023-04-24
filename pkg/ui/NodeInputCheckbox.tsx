@@ -32,14 +32,14 @@ export function NodeInputCheckbox<T>({
         gap={attributes.name === "traits.loginVerification" ? "14px" : "20px"}
         alignItems="center"
       >
-        <Box>
+        <Box mt="4px">
           {attributes.name === "traits.loginVerification" ? <Mail /> : "???"}
         </Box>
         <Box fontFamily="open sans" color="#FFF" fontSize="20px">
           {attributes.name === "traits.loginVerification" ? "Email" : "???"}
         </Box>
       </Box>
-      <Box>
+      <Box mt="12px">
         <Switch on={attributes.value} change={setValue} origin="MFA" />
         <Checkbox
           style={{ display: "none" }}
