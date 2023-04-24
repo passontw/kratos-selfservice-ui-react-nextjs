@@ -51,7 +51,6 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   }
 
   const onClick = () => {
-    
     // This section is only used for WebAuthn. The script is loaded via a <script> node
     // and the functions are available on the global window level. Unfortunately, there
     // is currently no better way than executing eval / function here at this moment.
@@ -59,7 +58,6 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
       const run = new Function(attributes.onclick)
       run()
     }
-
   }
 
   const openDialog = () => {
@@ -103,7 +101,6 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   console.log("value@@@", value)
 
   const verifyCodeConditions =
-    attributes.name !== "code" ||
     (activeStage === Stage.VERIFY_CODE &&
       // nav !== Navs.RECOVERY &&
       nav !== Navs.LOGIN) ||
@@ -152,8 +149,8 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           onChange={(e) => {
             setValue(e.target.value)
           }}
-          onKeyDown={(e)=>{
-            e.stopPropagation();
+          onKeyDown={(e) => {
+            e.stopPropagation()
             e.preventDefault()
           }}
           type={inputType}
