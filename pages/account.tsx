@@ -24,6 +24,7 @@ import {
   setDialog,
 } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
+import { showToast } from '../components/Toast'
 
 interface Props {
   flow?: SettingsFlow
@@ -210,6 +211,17 @@ const Account: NextPage = () => {
       .catch(handleFlowError(router, "account", setFlow))
   }, [flowId, router, router.isReady, returnTo, flow])
   
+  
+  useEffect(()=>{
+    console.log("flow?.ui.messages", flow?.ui.messages)
+    if(flow?.ui.messages?.length > 0){
+      flow?.ui.messages.map((item)=>{
+        showToast(`${item.text}`)
+      })
+    }
+    
+  },[flow?.ui.messages])
+
   return (
     <AccountLayout>
       <Box display="flex" flexDirection="column">
