@@ -6,6 +6,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
+import AppsList from '../components/AppsList'
 
 import CmidHead from "../components/CmidHead"
 import MenuFooter from "../components/MenuFooter"
@@ -270,6 +271,7 @@ const Registration: NextPage = () => {
         </StyledMenuWrapper>
         <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
       </div>
+      <AppsList />
     </>
   )
 }

@@ -11,6 +11,7 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import { api } from "../axios/api"
+import AppsList from '../components/AppsList'
 import CmidHead from "../components/CmidHead"
 import MenuFooter from "../components/MenuFooter"
 import MenuTag from "../components/MenuTag"
@@ -326,11 +327,11 @@ const Login: NextPage = () => {
             Welcome back
           </Box>
           <Flow onSubmit={onSubmit} flow={flow} router={router} />
-
           <MenuTag />
         </StyledMenuWrapper>
         <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
       </div>
+      <AppsList />
     </>
   )
 }
