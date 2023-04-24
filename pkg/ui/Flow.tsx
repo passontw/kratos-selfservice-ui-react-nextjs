@@ -234,16 +234,19 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       return null
     }
 
-    
     if (this.props.router?.pathname === "/registration") {
       // let temp = nodes[3]
       // nodes[3] = nodes[4]
       // nodes[4] = temp
-      
-      const list = ["Name", "E-Mail", "Password", "Sign up"]
-      nodes = nodes.map((item)=>item).sort((a, b)=> list.indexOf(a.meta.label?.text) - list.indexOf(b.meta.label?.text))
-    }
 
+      const list = ["Name", "E-Mail", "Password", "Sign up"]
+      nodes = nodes
+        .map((item) => item)
+        .sort(
+          (a, b) =>
+            list.indexOf(a.meta.label?.text) - list.indexOf(b.meta.label?.text),
+        )
+    }
 
     return (
       <form
@@ -251,7 +254,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         method={flow.ui.method}
         onSubmit={this.handleSubmit}
       >
-        {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
         {nodes.map((node, k) => {
           console.log("@filterNodes node:", node)
 
@@ -307,6 +309,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
             />
           )
         })}
+        {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
         {!this.props.hideSocialLogin && (
           <Box
             mt="8px"

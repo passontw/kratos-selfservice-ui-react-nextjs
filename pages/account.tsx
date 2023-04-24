@@ -8,6 +8,7 @@ import { ReactNode, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import AccountLayout from "../components/Layout/AccountLayout"
+import { showToast } from "../components/Toast"
 import DeleteAccConfirm from "../components/account/DeleteAccConfirm"
 import { Flow } from "../components/account/Flow"
 import ProfileFlow from "../components/account/ProfileFlow"
@@ -24,7 +25,6 @@ import {
   setDialog,
 } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
-import { showToast } from '../components/Toast'
 
 interface Props {
   flow?: SettingsFlow
@@ -207,26 +207,25 @@ const Account: NextPage = () => {
         returnTo: "/account",
       })
       .then(({ data }) => {
+        console.log("_data", data)
         setFlow(data)
       })
       .catch(handleFlowError(router, "account", setFlow))
   }, [flowId, router, router.isReady, returnTo, flow])
-  
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     console.log("flow?.ui.messages", flow?.ui.messages)
     console.log("flow", flow)
-    if(flow?.ui.messages?.length > 0){
-      flow?.ui.messages.map((item)=>{
+    if (flow?.ui.messages?.length > 0) {
+      flow?.ui.messages.map((item) => {
         showToast(toastContent)
       })
     }
-  },[flow?.ui.messages])
+  }, [flow?.ui.messages])
 
-  const handleToast = (text:string)=>{
+  const handleToast = (text: string) => {
     setToastContent(text)
   }
-
 
   return (
     <AccountLayout>

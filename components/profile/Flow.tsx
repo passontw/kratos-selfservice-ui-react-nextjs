@@ -34,6 +34,8 @@ import {
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
 import { Component, FormEvent, MouseEvent } from "react"
 
+import { convertDateString } from "../../util/formatter"
+
 import { Messages } from "./Messages"
 import { Node } from "./Node"
 
@@ -314,7 +316,8 @@ export default class Flow<T extends Values> extends Component<
 
             <StyledImageTitle>{flow?.identity.traits.email}</StyledImageTitle>
             <StyledImageText>
-              Joined since {flow?.identity.created_at.split("T")[0]}
+              Joined since{" "}
+              {convertDateString(flow?.identity.created_at.split("T")[0])}
             </StyledImageText>
           </StyledImageUpload>
 
