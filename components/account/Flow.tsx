@@ -203,7 +203,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         onSubmit={this.handleSubmit}
       >
         <Box>
-          <Grid container spacing={4} flexDirection="row-reverse">
+          <Grid container spacing={4} flexDirection={{xs: "column-reverse",md: "row-reverse"}}>
             {!hideGlobalMessages ? (
               <Messages messages={flow.ui.messages} />
             ) : null}
