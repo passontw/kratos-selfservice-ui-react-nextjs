@@ -215,10 +215,11 @@ const Account: NextPage = () => {
 
   useEffect(() => {
     console.log("flow?.ui.messages", flow?.ui.messages)
-    console.log("flow", flow)
     if (flow?.ui.messages?.length > 0) {
-      flow?.ui.messages.map((item) => {
-        showToast(toastContent)
+      flow?.ui.messages.map((item)=>{
+        if(item.type === "success"){
+          showToast(toastContent)
+        }
       })
     }
   }, [flow?.ui.messages])
