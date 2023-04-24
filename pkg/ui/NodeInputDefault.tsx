@@ -150,8 +150,11 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             setValue(e.target.value)
           }}
           onKeyDown={(e) => {
-            e.stopPropagation()
-            e.preventDefault()
+            if(e.key === 'Enter') {
+              e.stopPropagation()
+              e.preventDefault()
+            }
+
           }}
           type={inputType}
           name={attributes.name}

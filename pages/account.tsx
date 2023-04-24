@@ -210,6 +210,9 @@ const Account: NextPage = () => {
       .catch(handleFlowError(router, "account", setFlow))
   }, [flowId, router, router.isReady, returnTo, flow])
 
+  useEffect(()=>{
+    console.log("[flow]", flow)
+  },[flow])
   
   return (
     <AccountLayout>
