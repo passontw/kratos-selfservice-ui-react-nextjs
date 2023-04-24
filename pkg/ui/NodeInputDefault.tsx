@@ -31,7 +31,14 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   const nav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
   const { node, attributes, value = "", setValue, disabled } = props
-  const label = node.meta.label?.text === "ID" ? "Email" : node.meta.label?.text
+  const label =
+    node.meta.label?.text === "ID"
+      ? "Email"
+      : node.meta.label?.text === "Name"
+      ? "Username"
+      : node.meta.label?.text === "E-Mail"
+      ? "Email"
+      : node.meta.label?.text
   const [isError, setIsError] = useState(node.messages.length > 0)
   const [inputType, setInputType] = useState(attributes.type)
 
@@ -150,11 +157,10 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             setValue(e.target.value)
           }}
           onKeyDown={(e) => {
-            if(e.key === 'Enter') {
+            if (e.key === "Enter") {
               e.stopPropagation()
               e.preventDefault()
             }
-
           }}
           type={inputType}
           name={attributes.name}

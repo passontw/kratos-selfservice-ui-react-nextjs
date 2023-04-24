@@ -254,6 +254,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         method={flow.ui.method}
         onSubmit={this.handleSubmit}
       >
+        {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
         {nodes.map((node, k) => {
           console.log("@filterNodes node:", node)
 
@@ -309,7 +310,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
             />
           )
         })}
-        {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
         {!this.props.hideSocialLogin && (
           <Box
             mt="8px"
@@ -341,9 +341,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 this.props.router.push(redirrectPath)
               }}
             >
-              {this.props.router?.pathname === "/login"
-                ? " Sign up"
-                : " Sign in"}
+              {this.props.router?.pathname === "/login" ? " Sign up" : " Login"}
             </Box>
           </Box>
         )}

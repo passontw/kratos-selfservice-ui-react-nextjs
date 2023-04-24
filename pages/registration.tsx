@@ -255,7 +255,7 @@ const Registration: NextPage = () => {
             paddingBottom="86px"
           >
             <Box>By signing up for Cooler Master ID,</Box>
-            <Box display="flex" gap="5px" mt="2px">
+            <Box display="flex" mt="2px" alignItems="center">
               you agree to our{" "}
               <Link className="link" href="/">
                 Terms of Service
