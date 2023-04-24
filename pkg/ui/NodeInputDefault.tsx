@@ -162,7 +162,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
               e.preventDefault()
             }
           }}
-          type={inputType}
+          type={inputType === 'email' ? 'text' : inputType }
           name={attributes.name}
           value={value}
           disabled={attributes.disabled || disabled}
