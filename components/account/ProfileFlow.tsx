@@ -20,6 +20,7 @@ import { setDialog, setMfaModalOpen } from "../../state/store/slice/layoutSlice"
 
 import { Messages } from "./Messages"
 import MfaModal from "./MfaModal"
+import { getNodeLabel } from "@ory/integrations/ui"
 
 export type Values = Partial<
   | UpdateLoginFlowBody
@@ -62,6 +63,7 @@ export type Props<T> = {
   // mfaState: boolean
   // dispatch function
   dispatch?: any
+  // handleToast?: any
 }
 
 function emptyState<T>() {
@@ -95,7 +97,6 @@ export default class Flow<T extends Values> extends Component<
       this.initializeValues(this.filterNodes())
     }
     if (this.props.modalOpen) {
-      console.log("flow", this.props.flow)
       this.props.dispatch(
         setDialog({
           title: `2-Step Verification`,
@@ -107,6 +108,7 @@ export default class Flow<T extends Values> extends Component<
             <MfaModal
               email={this.props.flow.identity.traits.email}
               submit={(e) => this.handleSubmit(e, true)}
+              // handleToast={this.props.handleToast}
             />
           ),
         }),

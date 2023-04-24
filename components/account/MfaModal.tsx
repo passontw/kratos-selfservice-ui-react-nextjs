@@ -11,9 +11,10 @@ import {
 interface MfaModalProps {
   email: string
   submit: (event: any) => void
+  handleToast?: (value?: string) => void
 }
 
-const MfaModal: React.FC<MfaModalProps> = ({ submit, email }) => {
+const MfaModal: React.FC<MfaModalProps> = ({ submit, email, handleToast }) => {
   const dispatch = useDispatch()
   const mfaState = useSelector(selectMfaState)
   console.log("mfaState", mfaState)
@@ -27,6 +28,7 @@ const MfaModal: React.FC<MfaModalProps> = ({ submit, email }) => {
     // close modal
     dispatch(setMfaModalOpen(false))
     dispatch(setDialog(null))
+    // handleToast("modal")
   }
 
   return (

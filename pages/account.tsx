@@ -217,7 +217,7 @@ const Account: NextPage = () => {
     console.log("flow?.ui.messages", flow?.ui.messages)
     if (flow?.ui.messages?.length > 0) {
       flow?.ui.messages.map((item)=>{
-        if(item.type === "success"){
+        if(item.type === "success" && toastContent!== ''){
           showToast(toastContent)
         }
       })

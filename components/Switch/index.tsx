@@ -64,7 +64,7 @@ const CustomizedSwitches: React.FC<SwitchProps> = ({
   on,
   change,
   origin = "",
-  handleToast,
+  handleToast = ()=>{},
 }) => {
   const dispatch = useDispatch()
   const [checked, setChecked] = React.useState(on)
@@ -79,8 +79,8 @@ const CustomizedSwitches: React.FC<SwitchProps> = ({
       setChecked(event.target.checked)
       change()
       // change()
+      handleToast()
     }
-    handleToast()
   }
 
   return (
