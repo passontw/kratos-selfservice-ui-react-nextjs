@@ -3,6 +3,7 @@ import { UiText } from "@ory/client"
 import { Alert, AlertContent } from "@ory/themes"
 
 import ErrorIcon from "../../public/images/ErrorIcon"
+import SuccessIcon from "../../public/images/SuccessIcon"
 
 interface MessageProps {
   message: UiText
@@ -31,12 +32,12 @@ export const Message = ({ message }: MessageProps) => {
           justifyContent="center"
           alignItems="center"
           gap="8px"
-          bgcolor="#FFC9E0"
+          bgcolor={message.type === "error" ? "#FFC9E0" : "#D9F7E2"}
           borderRadius="8px"
           p="12px 16px"
         >
           <Box>
-            <ErrorIcon />
+            {message.type === "error" ? <ErrorIcon /> : <SuccessIcon />}
           </Box>
           <Box
             fontFamily="open sans"
