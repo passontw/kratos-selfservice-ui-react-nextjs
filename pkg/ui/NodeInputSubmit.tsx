@@ -24,6 +24,7 @@ export function NodeInputSubmit<T>({
   attributes,
   disabled,
   dispatchSubmit,
+  handleToast,
   ref,
 }: NodeInputProps) {
   const activeNav = useSelector(selectActiveNav)
@@ -184,6 +185,7 @@ export function NodeInputSubmit<T>({
                   origin="ACC_LINK"
                   on={getNodeLabel(node).split(" ")[0] === "Unlink"}
                   change={handleClick}
+                  handleToast={()=>handleToast(getNodeLabel(node))}
                 />
               </Box>
             </Box>

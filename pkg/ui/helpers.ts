@@ -17,4 +17,5 @@ export interface NodeInputProps {
   dispatchSubmit: FormDispatcher
   setValue: ValueSetter
   ref?: HTMLButtonElement | null | undefined
+  handleToast?: any
 }

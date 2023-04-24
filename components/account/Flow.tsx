@@ -181,6 +181,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       })
   }
 
+
   render() {
     const { hideGlobalMessages, flow } = this.props
     const { values, isLoading } = this.state
@@ -249,6 +250,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                       node={node}
                       value={values[id]}
                       dispatchSubmit={this.handleSubmit}
+                      handleToast={this.props?.handleToast}
                       setValue={(value) =>
                         new Promise((resolve) => {
                           this.setState(

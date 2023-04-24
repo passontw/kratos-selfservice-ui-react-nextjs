@@ -74,6 +74,7 @@ const Account: NextPage = () => {
   const mfaModalOpen = useSelector(selectMfaModalOpen)
   const mfaState = useSelector(selectMfaState)
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [toastContent, setToastContent] = useState("")
 
   const { flow: flowId, return_to: returnTo } = router.query
 
@@ -217,11 +218,15 @@ const Account: NextPage = () => {
     console.log("flow", flow)
     if(flow?.ui.messages?.length > 0){
       flow?.ui.messages.map((item)=>{
-        showToast(`${item.text}`)
+        showToast(toastContent)
       })
     }
-    
   },[flow?.ui.messages])
+
+  const handleToast = (text:string)=>{
+    setToastContent(text)
+  }
+
 
   return (
     <AccountLayout>
@@ -246,6 +251,7 @@ const Account: NextPage = () => {
             onSubmit={onSubmit}
             only="oidc"
             flow={flow}
+            handleToast={handleToast}
           />
         </SettingsCard>
         <SettingsCard only="profile" flow={flow}>
