@@ -6,8 +6,8 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-import AppsList from '../components/AppsList'
 
+import AppsList from "../components/AppsList"
 import CmidHead from "../components/CmidHead"
 import MenuFooter from "../components/MenuFooter"
 // Import render helpers
@@ -16,7 +16,11 @@ import { ActionCard, Flow, CenterLink, MarginCard } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 // Import the SDK
 import ory from "../pkg/sdk"
-import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
+import {
+  setActiveNav,
+  setActiveStage,
+  setLockCodeResend,
+} from "../state/store/slice/layoutSlice"
 import { StyledMenuWrapper } from "../styles/share"
 import { Navs, Stage } from "../types/enum"
 import { registrationFormSchema } from "../util/schemas"
@@ -48,6 +52,7 @@ const Registration: NextPage = () => {
 
   useEffect(() => {
     dispatch(setActiveNav(Navs.REGISTER))
+    dispatch(setLockCodeResend(false))
   }, [])
 
   // The "flow" represents a registration process and contains
