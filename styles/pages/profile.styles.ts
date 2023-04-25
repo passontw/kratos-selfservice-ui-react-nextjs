@@ -34,6 +34,9 @@ const StyledForm = styled("div")(({ theme }) => ({
 }))
 
 const StyledImageUpload = styled("div")(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
   borderRight: "1px solid #1F1F2A",
   paddingRight: "64px",
   paddingTop: "165px",
@@ -44,6 +47,7 @@ const StyledImageUpload = styled("div")(({ theme }) => ({
 }))
 
 const StyledImageTitle = styled("div")(() => ({
+  textAlign: "center",
   marginTop: "40px",
   fontSize: "16px",
   fontWeight: 600,
@@ -102,7 +106,7 @@ const StyledFieldTitle = styled("div")<{ topSpacing?: boolean }>(
 )
 
 const StyledSubmitArea = styled("div")(() => ({
-  marginTop: "48px",
+  marginTop: "38px",
   width: "100%",
   display: "flex",
   justifyContent: "end",
