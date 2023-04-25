@@ -66,6 +66,9 @@ function DropdownComponent() {
           onClick={onLogout}
           sx={{
             cursor: "pointer",
+            ":hover": {
+              filter: "brightness(0.9)",
+            },
           }}
         >
           <Box mt="5px">

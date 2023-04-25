@@ -1,3 +1,4 @@
+import { Grid } from "@mui/material"
 import Box from "@mui/material/Box"
 import { getNodeLabel } from "@ory/integrations/ui"
 import { Button } from "@ory/themes"
@@ -23,11 +24,12 @@ export function NodeInputSubmit<T>({
   attributes,
   disabled,
   dispatchSubmit,
+  handleToast,
   ref,
 }: NodeInputProps) {
   const activeNav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
-  // const sixDigitCode = useSelector(selectSixDigitCode)
+  const sixDigitCode = useSelector(selectSixDigitCode)
   const isDialogForgotPswd =
     activeStage === Stage.FORGOT_PASSWORD && getNodeLabel(node) === "Submit"
   const isSignINOUT = ["Sign in", "Sign up"].includes(getNodeLabel(node))
@@ -62,7 +64,7 @@ export function NodeInputSubmit<T>({
   const linkStyle = {
     backgroundColor: "transparent",
     background: "none",
-    color: "#454545",
+    color: "#CA4AE8",
     border: "none",
     padding: "0",
     cursor: "pointer",
@@ -72,22 +74,25 @@ export function NodeInputSubmit<T>({
     marginTop: "11px",
   }
 
-  console.log("NodeInputSubmit", getNodeLabel(node))
-
-  const showButton = [
+  let showButton = [
     "Save",
     "Submit",
     "Resend code",
     "Sign in",
     "Sign up",
-    "Link apple",
-    "Link google",
-    "Unlink google",
-    "Unlink apple",
+    // "Link apple",
+    // "Link google",
+    // "Unlink google",
+    // "Unlink apple",
   ].includes(getNodeLabel(node))
 
+  if (activeNav === Navs.ACCOUNT && getNodeLabel(node) === "Save") {
+    showButton = false
+  }
+
   const buttonText =
-    activeNav === Navs.VERIFICATION && getNodeLabel(node) === "Submit"
+    (activeNav === Navs.VERIFICATION || activeNav === Navs.RECOVERY) &&
+    getNodeLabel(node) === "Submit"
       ? "Verify"
       : getNodeLabel(node) === "Resend code"
       ? "Resend"
@@ -96,11 +101,11 @@ export function NodeInputSubmit<T>({
       : getNodeLabel(node)
 
   const handleClick = () => {
-    const clickAppleBtn =  document.querySelector(".apple >button")
+    const clickAppleBtn = document.querySelector(".apple >button")
     const clickGoogleBtn = document.querySelector(".google >button")
-    if(attributes.value === 'apple') {
+    if (attributes.value === "apple") {
       clickAppleBtn.click()
-    }else {
+    } else {
       clickGoogleBtn.click()
     }
   }
@@ -130,31 +135,30 @@ export function NodeInputSubmit<T>({
       ) : (
         <>
           <Box>
-              <Button
-                style={
-                  showButton
-                    ? resendLink
-                      ? linkStyle
-                      : defaultStyle
-                    : hiddenStyle
-                }
-                name={attributes.name}
-                value={attributes.value || ""}
-                disabled={attributes.disabled || disabled}
-                className={attributes.value}
-                // disabled={
-                //   buttonText === "Verify" && sixDigitCode.length !== 6
-                //     ? true
-                //     : attributes.disabled || disabled
-                // }
-              >
-                {buttonText}
-              </Button>
+            <Button
+              style={
+                showButton
+                  ? resendLink
+                    ? linkStyle
+                    : defaultStyle
+                  : hiddenStyle
+              }
+              name={attributes.name}
+              value={attributes.value || ""}
+              disabled={attributes.disabled || disabled}
+              className={attributes.value}
+              // disabled={
+              //   buttonText === "Verify" && sixDigitCode.length !== 6
+              //     ? true
+              //     : attributes.disabled || disabled
+              // }
+            >
+              {buttonText}
+            </Button>
           </Box>
           {linkRelated && (
             <Box
-              height="40px"
-              maxWidth="400px"
+              boxSizing="border-box"
               width="100%"
               bgcolor="#272735"
               borderRadius="12px"
@@ -164,7 +168,7 @@ export function NodeInputSubmit<T>({
               justifyContent="space-between"
             >
               <Box display="flex" gap="20px" alignItems="center">
-                <Box>
+                <Box height="40px">
                   {getNodeLabel(node).includes("google") ? (
                     <Google />
                   ) : getNodeLabel(node).includes("apple") ? (
@@ -181,6 +185,7 @@ export function NodeInputSubmit<T>({
                   origin="ACC_LINK"
                   on={getNodeLabel(node).split(" ")[0] === "Unlink"}
                   change={handleClick}
+                  handleToast={()=>handleToast(getNodeLabel(node))}
                 />
               </Box>
             </Box>

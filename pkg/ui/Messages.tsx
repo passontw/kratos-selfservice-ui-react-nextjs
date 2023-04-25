@@ -2,6 +2,9 @@ import Box from "@mui/material/Box"
 import { UiText } from "@ory/client"
 import { Alert, AlertContent } from "@ory/themes"
 
+import ErrorIcon from "../../public/images/ErrorIcon"
+import SuccessIcon from "../../public/images/SuccessIcon"
+
 interface MessageProps {
   message: UiText
 }
@@ -11,11 +14,38 @@ export const Message = ({ message }: MessageProps) => {
     message.text.substring(0, 10),
   )
 
+  let displayMessage = message.text
+  if (displayMessage.includes("The provided credentials are invalid")) {
+    displayMessage =
+      "The provided credentials are invalid. Please try again or sign up."
+  }
+  if (displayMessage.includes("An account with the same identifier")) {
+    displayMessage =
+      "Email account already existed. Please try login or forgot password."
+  }
+
   return dontShowMsg ? null : (
     <Alert severity={message.type === "error" ? "error" : "info"}>
       <AlertContent data-testid={`ui/message/${message.id}`}>
-        <Box color={message.type === "error" ? "#F44336" : "#74e279"}>
-          {message.text}
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          gap="8px"
+          bgcolor={message.type === "error" ? "#FFC9E0" : "#D9F7E2"}
+          borderRadius="8px"
+          p="12px 16px"
+        >
+          <Box>
+            {message.type === "error" ? <ErrorIcon /> : <SuccessIcon />}
+          </Box>
+          <Box
+            fontFamily="open sans"
+            fontSize="14px"
+            color={message.type === "error" ? "#F44336" : "#74e279"}
+          >
+            {displayMessage}
+          </Box>
         </Box>
       </AlertContent>
     </Alert>
@@ -33,10 +63,10 @@ export const Messages = ({ messages }: MessagesProps) => {
   }
 
   return (
-    <div>
+    <Box>
       {messages.map((message) => (
         <Message key={message.id} message={message} />
       ))}
-    </div>
+    </Box>
   )
 }

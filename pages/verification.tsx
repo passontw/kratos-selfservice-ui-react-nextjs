@@ -6,8 +6,10 @@ import { useRouter } from "next/router"
 import queryString from "query-string"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import AppsList from '../components/AppsList'
 
 import CmidHead from "../components/CmidHead"
+import MenuFooter from "../components/MenuFooter"
 import { Flow } from "../components/verification/Flow"
 import ory from "../pkg/sdk"
 import {
@@ -242,6 +244,7 @@ const Verification: NextPage = () => {
                 color: "#A5A5A9",
                 marginBottom: "48px",
                 fontFamily: "open sans",
+                fontSize: "14px",
               }}
             >
               {verifySuccess
@@ -249,9 +252,16 @@ const Verification: NextPage = () => {
                 : `Enter the 6-digit code we sent to ${email} to verify account.`}
             </span>
           </Box>
-          <Flow onSubmit={onSubmit} flow={flow} code={sixDigitCode} />
+          <Flow
+            onSubmit={onSubmit}
+            flow={flow}
+            code={sixDigitCode}
+            // hideGlobalMessages
+          />
+          <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
         </StyledMenuWrapper>
       </div>
+      <AppsList />
     </>
   )
 }

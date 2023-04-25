@@ -35,10 +35,10 @@ const StyledDialogContent = styled(DialogContent, {
     },
     "&::-webkit-scrollbar-track": {
       borderRadius: 4,
-      backgroundColor: "#FFF",
+      backgroundColor: "#272735",
     },
     "&::-webkit-scrollbar-thumb": {
-      background: "lightgray",
+      background: "#272735",
       borderRadius: 4,
     },
   }),

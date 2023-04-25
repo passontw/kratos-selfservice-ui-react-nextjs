@@ -26,9 +26,10 @@ export enum Stage {
   VERIFY_CODE = "VERIFY_CODE",
   VERIFY_EMAIL = "VERIFY_EMAIL",
   RESET_PASSWORD = "RESET_PASSWORD",
+  DELETE_ACCOUNT = "DELETE_ACCOUNT",
 }
 
 export enum Icon {
   MENU = "MENU",
-  DIALOG = "DIALOG"
+  DIALOG = "DIALOG",
 }

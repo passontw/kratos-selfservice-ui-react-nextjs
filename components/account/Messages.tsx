@@ -27,9 +27,12 @@ export const Messages = ({ messages }: MessagesProps) => {
 
   return (
     <div>
-      {messages.map((message) => (
-        <Message key={message.id} message={message} />
-      ))}
+      {messages.map((message) => {
+        if (message.text.includes("An email containing")) {
+          return
+        }
+        return <Message key={message.id} message={message} />
+      })}
     </div>
   )
 }

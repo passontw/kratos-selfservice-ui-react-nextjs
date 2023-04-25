@@ -62,6 +62,7 @@ export type Props<T> = {
   hideGlobalMessages?: boolean
   // hide social login options
   hideSocialLogin?: boolean
+  code?: string
 }
 
 function emptyState<T>() {
@@ -91,6 +92,40 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       // Flow has changed, reload the values!
       this.initializeValues(this.filterNodes())
     }
+    if (prevProps.code !== this.props.code) {
+      this.setCodeValue(this.props.code)
+    }
+  }
+
+  setCodeValue = async (code: string | undefined) => {
+    const nodeId = "code"
+    const node = this.getNodeById(nodeId)
+
+    if (node) {
+      await this.handleSetValue(node, code)
+    }
+  }
+
+  getNodeById = (nodeId: keyof Values): UiNode | undefined => {
+    const nodes = this.filterNodes()
+    return nodes.find((node) => getNodeId(node) === nodeId)
+  }
+
+  handleSetValue = async (node: UiNode, value: any) => {
+    const id = getNodeId(node) as keyof Values
+
+    return new Promise((resolve) => {
+      this.setState(
+        (state) => ({
+          ...state,
+          values: {
+            ...state.values,
+            [id]: value,
+          },
+        }),
+        resolve,
+      )
+    })
   }
 
   initializeValues = (nodes: Array<UiNode> = []) => {
@@ -189,7 +224,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     const { values, isLoading } = this.state
 
     // Filter the nodes - only show the ones we want
-    const nodes = this.filterNodes()
+    let nodes = this.filterNodes()
 
     if (!flow) {
       // No flow was set yet? It's probably still loading...
@@ -199,11 +234,18 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       return null
     }
 
-    console.log("nodes", nodes)
     if (this.props.router?.pathname === "/registration") {
       // let temp = nodes[3]
       // nodes[3] = nodes[4]
       // nodes[4] = temp
+
+      const list = ["Name", "E-Mail", "Password", "Sign up"]
+      nodes = nodes
+        .map((item) => item)
+        .sort(
+          (a, b) =>
+            list.indexOf(a.meta.label?.text) - list.indexOf(b.meta.label?.text),
+        )
     }
 
     return (
@@ -239,14 +281,15 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           // if (node.meta.label?.text === "E-Mail") return
           console.log("@node.meta", node.meta)
           console.log("@node.meta222", node.meta.label?.text)
-          if (node.meta.label?.text === "Resend code") return
+          // if (node.meta.label?.text === "Resend code") return
 
           return (
             <Node
               key={`${id}-${k}`}
               disabled={isLoading}
               node={node}
-              value={values[id]}
+              value={getNodeId(node) === "code" ? this.props.code : values[id]}
+              // value={values[id]}
               dispatchSubmit={this.handleSubmit}
               setValue={(value) =>
                 new Promise((resolve) => {
@@ -255,7 +298,9 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                       ...state,
                       values: {
                         ...state.values,
-                        [getNodeId(node)]: value,
+                        [getNodeId(node)]:
+                          getNodeId(node) === "code" ? this.props.code : value,
+                        // [getNodeId(node)]: value,
                       },
                     }),
                     resolve,
@@ -296,9 +341,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 this.props.router.push(redirrectPath)
               }}
             >
-              {this.props.router?.pathname === "/login"
-                ? " Sign up"
-                : " Sign in"}
+              {this.props.router?.pathname === "/login" ? " Sign up" : " Login"}
             </Box>
           </Box>
         )}

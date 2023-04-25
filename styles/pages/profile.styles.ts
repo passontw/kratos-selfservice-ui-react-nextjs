@@ -3,29 +3,44 @@ import { styled } from "@mui/system"
 import { WHITE } from "../../constants/colors"
 
 const StyledProfileArea = styled("div")<{ paddingRight?: string }>(
-  ({ paddingRight }) => ({
+  ({ theme, paddingRight }) => ({
     fontFamily: "Open Sans",
     marginTop: "48px",
     backgroundColor: "#272735",
     paddingLeft: "74px",
     paddingRight: paddingRight ? paddingRight : "48px",
     borderRadius: "12px",
-    maxHeight: "602px",
+    minHeight: "602px",
+    [theme.breakpoints.down("sm")]: {
+      paddingLeft: "0px",
+    },
   }),
 )
 
-const StyledProfileDeco = styled("img")(() => ({
+const StyledProfileDeco = styled("img")(({ theme }) => ({
   width: "100%",
+  [theme.breakpoints.down("sm")]: {
+    display: "none",
+  },
 }))
 
-const StyledForm = styled("div")(() => ({
+const StyledForm = styled("div")(({ theme }) => ({
   display: "flex",
+  [theme.breakpoints.down("sm")]: {
+    flexFlow: "wrap",
+    width: "100%",
+    justifyContent: "center",
+  },
 }))
 
-const StyledImageUpload = styled("div")(() => ({
+const StyledImageUpload = styled("div")(({ theme }) => ({
   borderRight: "1px solid #1F1F2A",
   paddingRight: "64px",
   paddingTop: "165px",
+  [theme.breakpoints.down("sm")]: {
+    paddingRight: "0px",
+    paddingTop: "48px",
+  },
 }))
 
 const StyledImageTitle = styled("div")(() => ({
@@ -43,9 +58,13 @@ const StyledImageText = styled("div")(() => ({
   color: "#7E7E89",
 }))
 
-const StyledProfileImageWrap = styled("div")(() => ({
+const StyledProfileImageWrap = styled("div")(({ theme }) => ({
   position: "relative",
   width: "168px",
+  [theme.breakpoints.down("sm")]: {
+    margin: "auto",
+    width: "100px",
+  },
 }))
 
 const StyledProfileImage = styled("img")(() => ({
@@ -65,9 +84,12 @@ const StyledSideWrap = styled("div")(() => ({
   width: "100%",
 }))
 
-const StyledSideInputs = styled("div")(() => ({
+const StyledSideInputs = styled("div")(({ theme }) => ({
   padding: "48px",
   paddingBottom: "0px",
+  [theme.breakpoints.down("sm")]: {
+    padding: "24px 20px",
+  },
 }))
 
 const StyledFieldTitle = styled("div")<{ topSpacing?: boolean }>(
@@ -91,9 +113,12 @@ const StyledBirthdayWrap = styled("div")(() => ({
   justifyContent: "space-between",
 }))
 
-const StyledSubmitButton = styled("div")(() => ({
+const StyledSubmitButton = styled("div")(({ theme }) => ({
   width: "76px",
   marginBottom: "84px",
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+  },
 }))
 
 const StyledFieldSpacer = styled("div")(() => ({

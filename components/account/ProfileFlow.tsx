@@ -20,6 +20,7 @@ import { setDialog, setMfaModalOpen } from "../../state/store/slice/layoutSlice"
 
 import { Messages } from "./Messages"
 import MfaModal from "./MfaModal"
+import { getNodeLabel } from "@ory/integrations/ui"
 
 export type Values = Partial<
   | UpdateLoginFlowBody
@@ -62,6 +63,7 @@ export type Props<T> = {
   // mfaState: boolean
   // dispatch function
   dispatch?: any
+  // handleToast?: any
 }
 
 function emptyState<T>() {
@@ -104,8 +106,9 @@ export default class Flow<T extends Values> extends Component<
           center: true,
           children: (
             <MfaModal
-              // mfaState={this.props.mfaState}
-              submit={(e)=>this.handleSubmit(e, true)}
+              email={this.props.flow.identity.traits.email}
+              submit={(e) => this.handleSubmit(e, true)}
+              // handleToast={this.props.handleToast}
             />
           ),
         }),
@@ -152,16 +155,19 @@ export default class Flow<T extends Values> extends Component<
   }
 
   // Handles form submission
-  handleSubmit = (event: FormEvent<HTMLFormElement> | MouseEvent, isModal?:boolean) => {
+  handleSubmit = (
+    event: FormEvent<HTMLFormElement> | MouseEvent,
+    isModal?: boolean,
+  ) => {
     // Prevent all native handlers
     event.stopPropagation()
     event.preventDefault()
 
-    if(isModal) {
-      const clickProfileBtn =  document.querySelector(".profile >button")
+    if (isModal) {
+      const clickProfileBtn = document.querySelector(".profile >button")
       clickProfileBtn.click()
     }
-    
+
     // Prevent double submission!
     if (this.state.isLoading) {
       return Promise.resolve()

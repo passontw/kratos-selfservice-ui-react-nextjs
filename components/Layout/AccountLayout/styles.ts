@@ -6,8 +6,9 @@ const StyledWrapper = styled("div")(() => ({
   display: "flex",
   backgroundColor: "#1F1F2A",
   // flexDirection: "column",
-  height: "100vh",
+  height: "100%",
   width: "100vw",
+  minHeight: "100vh",
 }))
 
 const StyledMenuWrapper = styled("div")(({ theme }) => ({
@@ -62,7 +63,7 @@ const StyledContent = styled("div")(() => ({}))
 
 const StyledContentWrapper = styled("div")(({ theme }) => ({
   position: "relative",
-  padding: "48px 48px 0px",
+  padding: "48px 48px 110px",
   width: "76%",
   [theme.breakpoints.down("sm")]: {
     width: "100%",

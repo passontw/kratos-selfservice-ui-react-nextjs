@@ -23,6 +23,8 @@ import {
 
 } from "./styles"
 import MfaModal from '../../account/MfaModal'
+import MenuFooter from '../../MenuFooter'
+import LinkNav from '../../LinkNav'
 
 interface AccountLayoutProps {
   children: ReactNode
@@ -72,7 +74,6 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
         ),
       }),
     )
-
   }
 
   return (
@@ -108,9 +109,12 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
               <DropdownMenu />
             </StyledDropdownMenu>
           </Box>
-          <StyledContent>{children}</StyledContent>
+          <StyledContent>
+            {children}
+          </StyledContent>
+          <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
+          <LinkNav />
         </StyledContentWrapper>
-
       </Box>
     </StyledWrapper>
   )

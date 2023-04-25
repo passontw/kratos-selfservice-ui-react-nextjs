@@ -11,7 +11,6 @@ import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { createGlobalStyle } from "styled-components"
 
-import AppsList from "../components/AppsList"
 import PopupLayout from "../components/Layout/PopupLayout"
 import store from "../state/store"
 
@@ -45,7 +44,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <div className="overlay-image"></div>
               </div>
               <Component {...pageProps} />
-              <AppsList />
+              
             </Box>
             <ToastContainer />
           </PopupLayout>
