@@ -45,7 +45,9 @@ const Title = styled.h3`
   margin: 0;
 `
 
-const CodeInput = () => {
+const CodeInput = (props: any) => {
+  const { show } = props
+  // console.log("show@@@", show)
   const dispatch = useDispatch()
   const [code, setCode] = useState(Array(6).fill(""))
   const firstInputRef = useRef(null)
@@ -101,7 +103,7 @@ const CodeInput = () => {
     }
   }
 
-  return (
+  return show !== "email" ? (
     <Container>
       <Title>Verification Code</Title>
       <InputsWrapper>
@@ -118,7 +120,7 @@ const CodeInput = () => {
         ))}
       </InputsWrapper>
     </Container>
-  )
+  ) : null
 }
 
 export default CodeInput

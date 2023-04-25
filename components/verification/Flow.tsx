@@ -190,6 +190,8 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
 
     const nodes = this.filterNodes()
 
+    console.log("nodes", nodes)
+
     if (!flow) {
       return null
     }
@@ -203,7 +205,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
         {nodes.map((node, k) => {
           const excludedFields = {
-            verification: ["email"],
+            // verification: ["email"],
           }
 
           const pathname = window.location.pathname.slice(

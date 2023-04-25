@@ -6,6 +6,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
+import AppsList from '../components/AppsList'
 
 import CmidHead from "../components/CmidHead"
 import MenuFooter from "../components/MenuFooter"
@@ -255,12 +256,12 @@ const Registration: NextPage = () => {
             paddingBottom="86px"
           >
             <Box>By signing up for Cooler Master ID,</Box>
-            <Box>
-              you agree to our
+            <Box display="flex" mt="2px" alignItems="center">
+              you agree to our{" "}
               <Link className="link" href="/">
                 Terms of Service
               </Link>{" "}
-              &
+              &{" "}
               <Link className="link" href="/">
                 Privacy Policy
               </Link>
@@ -270,6 +271,7 @@ const Registration: NextPage = () => {
         </StyledMenuWrapper>
         <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
       </div>
+      <AppsList />
     </>
   )
 }

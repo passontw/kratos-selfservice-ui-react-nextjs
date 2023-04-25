@@ -30,12 +30,17 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   const dispatch = useDispatch()
   const nav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
-  const sixDigitCode = useSelector(selectSixDigitCode)
   const { node, attributes, value = "", setValue, disabled } = props
-  const label = node.meta.label?.text === "ID" ? "Email" : node.meta.label?.text
+  const label =
+    node.meta.label?.text === "ID"
+      ? "Email"
+      : node.meta.label?.text === "Name"
+      ? "Username"
+      : node.meta.label?.text === "E-Mail"
+      ? "Email"
+      : node.meta.label?.text
   const [isError, setIsError] = useState(node.messages.length > 0)
   const [inputType, setInputType] = useState(attributes.type)
-  const inputRef = useRef(null)
 
   useEffect(() => {
     setIsError(node.messages.length > 0)
@@ -103,14 +108,17 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   console.log("value@@@", value)
 
   const verifyCodeConditions =
-    (activeStage === Stage.VERIFY_CODE && nav !== Navs.RECOVERY) ||
+    (activeStage === Stage.VERIFY_CODE &&
+      // nav !== Navs.RECOVERY &&
+      nav !== Navs.LOGIN) ||
     (nav === Navs.VERIFICATION && activeStage === Stage.NONE)
+  // || activeStage === Stage.DELETE_ACCOUNT
 
   // Render a generic text input field.
   return (
     <>
       {/* <CodeInput /> */}
-      {verifyCodeConditions && <CodeInput />}
+      {verifyCodeConditions && <CodeInput show={attributes.name} />}
       <StyledDefaultInput isInputLabel={isInputLabel}>
         {isInputLabel && (
           <StyledDefaultLabel isError={isError}>{label}</StyledDefaultLabel>
@@ -119,7 +127,9 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           className="my-text-input"
           style={{
             display:
-              (label === "Verify code" && nav !== Navs.RECOVERY) ||
+              (label === "Verify code" &&
+                // nav !== Navs.RECOVERY &&
+                nav !== Navs.ACCOUNT) ||
               attributes.name === "traits.gender"
                 ? "none"
                 : "unset",
@@ -129,7 +139,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             color: "#fff",
             caretColor: "#fff",
             borderRadius: "8px",
-            padding: isInputLabel ? "0px 0px 0px 82px" : "12px 16px",
+            padding: isInputLabel ? "0px 50px 0px 82px" : "12px 50px 12px 16px",
             margin: "0px",
             fontFamily: "Open Sans",
           }}
@@ -146,10 +156,15 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           onChange={(e) => {
             setValue(e.target.value)
           }}
-          type={inputType}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.stopPropagation()
+              e.preventDefault()
+            }
+          }}
+          type={inputType === 'email' ? 'text' : inputType }
           name={attributes.name}
           value={value}
-          // value={label === "Verify code" ? sixDigitCode : value}
           disabled={attributes.disabled || disabled}
           help={node.messages.length > 0}
           state={
@@ -162,14 +177,17 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
               {node.messages.map(({ type, text, id }, k) => {
                 let displayText = text
                 if (text.includes("is missing")) {
-                  // const field = text.split(" ")[1]
                   displayText = "This field is required, please fill it out."
                 }
                 return (
                   <span
                     key={`${id}-${k}`}
                     data-testid={`ui/message/${id}`}
-                    style={{ color: "#F24867", fontSize: "13px" }}
+                    style={{
+                      color: "#F24867",
+                      fontSize: "13px",
+                      fontFamily: "Open Sans",
+                    }}
                   >
                     {displayText}
                   </span>

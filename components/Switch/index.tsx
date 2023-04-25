@@ -57,12 +57,14 @@ interface SwitchProps {
   change: any
   // change: ValueSetter | FormDispatcher
   origin: string
+  handleToast: any
 }
 
 const CustomizedSwitches: React.FC<SwitchProps> = ({
   on,
   change,
   origin = "",
+  handleToast = ()=>{},
 }) => {
   const dispatch = useDispatch()
   const [checked, setChecked] = React.useState(on)
@@ -77,6 +79,7 @@ const CustomizedSwitches: React.FC<SwitchProps> = ({
       setChecked(event.target.checked)
       change()
       // change()
+      handleToast()
     }
   }
 

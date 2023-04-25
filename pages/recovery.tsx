@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux"
 import styled from "styled-components"
 
 import { api } from "../axios/api"
+import AppsList from '../components/AppsList'
 import CmidHead from "../components/CmidHead"
 import MenuFooter from "../components/MenuFooter"
 import { LogoutLink, Flow } from "../pkg"
@@ -197,6 +198,7 @@ const Recovery: NextPage = () => {
         </StyledMenuWrapper>
         <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
       </div>
+      <AppsList />
     </>
   )
 }

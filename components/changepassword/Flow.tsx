@@ -85,7 +85,7 @@ export default class Flow<T extends Values> extends Component<
       values: emptyState(),
       confirmPassword: "",
       isLoading: false,
-      type: "text",
+      type: "password",
     }
   }
 
@@ -94,10 +94,20 @@ export default class Flow<T extends Values> extends Component<
   }
 
   componentDidUpdate(prevProps: Props<T>) {
-    console.log("flow", this.props.flow)
+    const oidcGroup = this.props.flow.ui.nodes.filter(
+      (item) => item.group === "oidc" && item.attributes.name === "unlink",
+    )
     if (prevProps.flow !== this.props.flow) {
       // Flow has changed, reload the values!
       this.initializeValues(this.filterNodes())
+      // if (oidcGroup.type === "") {
+      //   showToast("Password changed.")
+      // }
+      if (oidcGroup.length > 0 && this.props.flow?.state === "success") {
+        showToast(`${oidcGroup[0].meta.label?.text}`)
+        return
+      }
+
       if (this.props.flow?.state === "success") {
         showToast("Password changed.")
       }
@@ -254,7 +264,17 @@ export default class Flow<T extends Values> extends Component<
             name="confirmPassword"
             value={this.state.confirmPassword}
             state={isEmpty(confirmPasswordError) ? undefined : "error"}
-            subtitle={<span>{confirmPasswordError}</span>}
+            subtitle={
+              <span
+                style={{
+                  color: "#F24867",
+                  fontFamily: "open sans",
+                  fontSize: "13px",
+                }}
+              >
+                {confirmPasswordError}
+              </span>
+            }
             style={{
               display: "unset",
               border: confirmPasswordError ? "1px solid #F24867" : "none",
@@ -263,7 +283,7 @@ export default class Flow<T extends Values> extends Component<
               color: "#fff",
               caretColor: "#fff",
               borderRadius: "8px",
-              padding: "12px 16px",
+              padding: "12px 50px 12px 16px",
               margin: "0px",
               fontFamily: "open sans",
             }}

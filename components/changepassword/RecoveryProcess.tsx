@@ -18,6 +18,7 @@ import {
   selectDialog,
   setActiveStage,
   selectActiveStage,
+  selectSixDigitCode,
 } from "../../state/store/slice/layoutSlice"
 import { Stage } from "../../types/enum"
 
@@ -29,6 +30,7 @@ const RecoveryProcess: NextPage = () => {
   )
   const dispatch = useDispatch()
   const activeStage = useSelector(selectActiveStage)
+  const sixDigitCode = useSelector(selectSixDigitCode)
   // Get ?flow=... from the URL
   const router = useRouter()
   const { flow: flowId, return_to: returnTo } = router.query
@@ -136,7 +138,12 @@ const RecoveryProcess: NextPage = () => {
               Email *
             </Box>
           )}
-          <Flow onSubmit={onSubmit} flow={flow} hideSocialLogin />
+          <Flow
+            onSubmit={onSubmit}
+            flow={flow}
+            code={sixDigitCode}
+            hideSocialLogin
+          />
         </Box>
         {/* <ActionCard>
         <Link href="/" passHref>

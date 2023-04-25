@@ -4,6 +4,21 @@ html {
   background-color: #1f1f2a;
 }
 
+/* Scrollbar styles */
+html::-webkit-scrollbar {
+  width: 5px;
+}
+
+html::-webkit-scrollbar-track {
+  border-radius: 4px;
+  background-color: #272735;
+}
+
+html::-webkit-scrollbar-thumb {
+  background: #272735;
+  border-radius: 4px;
+}
+
 .background-wrapper {
   position: absolute;
   top: 0;
@@ -81,6 +96,7 @@ a:link {
   color: #ca4ae8;
   background-color: transparent;
   text-decoration: none;
+  padding: 5px;
 }
 
 a:visited {
@@ -97,4 +113,8 @@ a:hover {
 a:active {
   color: #ca4ae8;
   background-color: transparent;
+}
+
+.button:hover {
+  filter: brightness(110%);
 }
