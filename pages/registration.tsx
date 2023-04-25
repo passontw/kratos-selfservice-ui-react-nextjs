@@ -6,12 +6,10 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-
+import queryString from "query-string"
 import CmidHead from "../components/CmidHead"
 import MenuFooter from "../components/MenuFooter"
-// Import render helpers
-// import Flow from '../components/registration/Flow';
-import { ActionCard, Flow, CenterLink, MarginCard } from "../pkg"
+import { Flow } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 // Import the SDK
 import ory from "../pkg/sdk"
@@ -20,6 +18,8 @@ import { StyledMenuWrapper } from "../styles/share"
 import { Navs, Stage } from "../types/enum"
 import { registrationFormSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
+
+const localStorageKey = "!@#$%^&*()registedata"
 
 const getNextFlow = (flow) => {
   if (!flow) return flow
@@ -46,6 +46,7 @@ const Registration: NextPage = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    localStorage.removeItem(localStorageKey)
     dispatch(setActiveNav(Navs.REGISTER))
   }, [])
 
@@ -104,20 +105,20 @@ const Registration: NextPage = () => {
                 updateRegistrationFlowBody: values,
               })
               .then(({ data }) => {
-                // If we ended up here, it means we are successfully signed up!
-                //
-                // You can do cool stuff here, like having access to the identity which just signed up:
-                // console.log("This is the user session: ", data, data.identity)
-
-                // For now however we just want to redirect home!
-                return router
-                  .push(
-                    flow?.return_to ||
-                      `/verification?user=${values["traits.email"]}&csrf=${values.csrf_token}`,
-                  )
-                  .then(() => {
-                    dispatch(setActiveStage(Stage.VERIFY_CODE))
+                return ory
+                .createBrowserLogoutFlow()
+                .then(({ data: logoutFlow }) => {
+                  return ory.updateLogoutFlow({
+                    token: logoutFlow.logout_token,
                   })
+                })
+                .then(() => {
+                  localStorage.setItem(localStorageKey, JSON.stringify(values))
+                  window.location.href = `/verification?${queryString.stringify(
+                    router.query,
+                  )}&user=${values["traits.email"]}&type=registe`
+                  return
+                })
               })
               .catch(handleFlowError(router, "registration", setFlow))
               .catch((err: any) => {
@@ -214,10 +215,6 @@ const Registration: NextPage = () => {
         nextFlow.ui.nodes[passwordIndex].messages = []
       }
 
-      console.log(
-        "🚀 ~ file: registration.tsx:184 ~ onSubmit ~ nextFlow:",
-        nextFlow,
-      )
       setFlow(nextFlow)
       // setErrors(errors);
       return false

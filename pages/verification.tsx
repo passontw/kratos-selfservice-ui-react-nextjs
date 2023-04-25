@@ -164,45 +164,39 @@ const Verification: NextPage = () => {
       })
       .then(({ data }) => {
         // Form submission was successful, show the message to the user!
-        console.log("data", data)
         setVerifySuccess(data.state === "passed_challenge")
         setFlow(data)
-        if (type === "login") {
-          const values = JSON.parse(localStorage.getItem(localStorageKey))
-          ory
-            .createBrowserLoginFlow({
-              refresh: Boolean(refresh),
-              aal: aal ? String(aal) : undefined,
-              returnTo: Boolean(login_challenge)
-                ? NEXT_PUBLIC_REDIRECT_URI
-                : undefined,
-            })
-            .then(({ data }) => {
-              const csrfNode = data.ui.nodes.find(
-                (node) => node.attributes.name === "csrf_token",
-              )
+        
+        if (type === 'registe') {
+          router.push("/login");
+        }
 
-              return ory
-                .updateLoginFlow({
-                  flow: String(data?.id),
-                  updateLoginFlowBody: {
-                    ...values,
-                    csrf_token: csrfNode?.attributes.value,
-                  },
-                })
-                .then(() => flow)
-            })
-            .then((flow) => {
-              if (flow?.return_to) {
-                window.location.href = flow?.return_to
-                return
-              }
-              router.push("/profile")
-            })
-            .catch((error) => {
-              console.log(error)
-            })
-          return
+        if (type === 'login') {
+          const values = JSON.parse(localStorage.getItem(localStorageKey))
+          return ory.createBrowserLoginFlow({
+            refresh: Boolean(refresh),
+            aal: aal ? String(aal) : undefined,
+            returnTo: Boolean(login_challenge)
+              ? NEXT_PUBLIC_REDIRECT_URI
+              : undefined,
+          }).then(({ data }) => {
+            const csrfNode = data.ui.nodes.find(node => node.attributes.name === "csrf_token")
+
+            return ory
+              .updateLoginFlow({
+                flow: String(data?.id),
+                updateLoginFlowBody: { ...values, csrf_token: csrfNode?.attributes.value },
+              }).then(() => flow)
+          }).then(flow => {
+            if (flow?.return_to) {
+              window.location.href = flow?.return_to
+              return
+            }
+            router.push("/profile")
+          }).catch(error => {
+            console.log(error)
+          })
+          return;
         }
       })
       .catch((err: any) => {
@@ -240,9 +234,7 @@ const Verification: NextPage = () => {
           </div>
           <CmidHead />
           <Box mt="62px" display="flex" flexDirection="column">
-            <span
-              style={{ color: "#FFF", fontSize: "36px", fontFamily: "Teko" }}
-            >
+            <span style={{ color: "#FFF", fontSize: "36px", fontFamily: "Teko" }}>
               {verifySuccess ? "Verified Success" : "Verify Account"}
             </span>
             <span
@@ -257,12 +249,7 @@ const Verification: NextPage = () => {
                 : `Enter the 6-digit code we sent to ${email} to verify account.`}
             </span>
           </Box>
-          <Flow
-            onSubmit={onSubmit}
-            flow={flow}
-            code={sixDigitCode}
-            // hideGlobalMessages
-          />
+          <Flow onSubmit={onSubmit} flow={flow} code={sixDigitCode} />
         </StyledMenuWrapper>
       </div>
     </>
