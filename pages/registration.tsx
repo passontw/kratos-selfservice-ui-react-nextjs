@@ -17,7 +17,7 @@ import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
 import { StyledMenuWrapper } from "../styles/share"
-import { Navs, Stage } from "../types/enum"
+import { Navs } from "../types/enum"
 import { registrationFormSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 
@@ -55,6 +55,7 @@ const Registration: NextPage = () => {
   // The "flow" represents a registration process and contains
   // information about the form we need to render (e.g. username + password)
   const [flow, setFlow] = useState<RegistrationFlow>()
+  console.log("🚀 ~ file: registration.tsx:58 ~ flow:", flow)
 
   // Get ?flow=... from the URL
   const { flow: flowId, return_to: returnTo } = router.query
@@ -107,20 +108,11 @@ const Registration: NextPage = () => {
                 updateRegistrationFlowBody: values,
               })
               .then(({ data }) => {
-                return ory
-                .createBrowserLogoutFlow()
-                .then(({ data: logoutFlow }) => {
-                  return ory.updateLogoutFlow({
-                    token: logoutFlow.logout_token,
-                  })
-                })
-                .then(() => {
-                  localStorage.setItem(localStorageKey, JSON.stringify(values))
+                localStorage.setItem(localStorageKey, JSON.stringify(values))
                   window.location.href = `/verification?${queryString.stringify(
                     router.query,
                   )}&user=${values["traits.email"]}&type=registe`
                   return
-                })
               })
               .catch(handleFlowError(router, "registration", setFlow))
               .catch((err: any) => {
