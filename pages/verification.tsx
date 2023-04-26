@@ -256,7 +256,7 @@ const Verification: NextPage = () => {
               }}
             >
               {verifySuccess
-                ? "Congratulation, your account is approved"
+                ? "Congratulation, your account is approved. You will be automatically redirected to %service% in 5 seconds. "
                 : `Enter the 6-digit code we sent to ${email} to verify account.`}
             </span>
           </Box>
