@@ -2,8 +2,9 @@ import FormGroup from "@mui/material/FormGroup"
 import Stack from "@mui/material/Stack"
 import Switch from "@mui/material/Switch"
 import { styled } from "@mui/material/styles"
-import React, { FormEvent } from "react"
+import React, { FormEvent, useEffect } from "react"
 import { useDispatch } from "react-redux"
+import { useThrottleCallback } from "./../../util/useThrottle"
 
 import { FormDispatcher, ValueSetter } from "../../pkg/ui/helpers"
 import {
@@ -68,6 +69,12 @@ const CustomizedSwitches: React.FC<SwitchProps> = ({
 }) => {
   const dispatch = useDispatch()
   const [checked, setChecked] = React.useState(on)
+  const delayThrottleCallback = useThrottleCallback(5000)
+  const handleClick = ()=>{
+    delayThrottleCallback(()=>{
+      handleToast()
+    })
+  }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (origin === "MFA") {
@@ -78,8 +85,8 @@ const CustomizedSwitches: React.FC<SwitchProps> = ({
     } else if (origin === "ACC_LINK") {
       setChecked(event.target.checked)
       change()
+      handleClick()
       // change()
-      handleToast()
     }
   }
 

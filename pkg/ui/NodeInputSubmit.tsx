@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux"
 
 import Switch from "../../components/Switch"
 import Timer from "../../components/Timer"
+import { showToast } from '../../components/Toast'
 import Apple from "../../public/images/login_icons/Apple"
 import Google from "../../public/images/login_icons/Google"
 import {
@@ -27,8 +28,9 @@ export function NodeInputSubmit<T>({
   attributes,
   disabled,
   dispatchSubmit,
-  handleToast,
+  // handleToast,
   ref,
+  test,
 }: NodeInputProps) {
   const dispatch = useDispatch()
   const codeLocked = useSelector(selectLockCodeResend)
@@ -114,6 +116,7 @@ export function NodeInputSubmit<T>({
       clickGoogleBtn.click()
     }
   }
+
   return (
     <>
       {getNodeLabel(node) === "Resend code" ? (
@@ -201,7 +204,7 @@ export function NodeInputSubmit<T>({
                   origin="ACC_LINK"
                   on={getNodeLabel(node).split(" ")[0] === "Unlink"}
                   change={handleClick}
-                  handleToast={() => handleToast(getNodeLabel(node))}
+                  handleToast={()=>showToast(`${getNodeLabel(node)}`)}
                 />
               </Box>
             </Box>

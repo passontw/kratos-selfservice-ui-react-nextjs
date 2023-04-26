@@ -138,6 +138,7 @@ const RecoveryProcess: NextPage = () => {
               Email *
             </Box>
           )}
+
           <Flow
             onSubmit={onSubmit}
             flow={flow}

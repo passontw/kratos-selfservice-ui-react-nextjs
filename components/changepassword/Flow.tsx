@@ -238,17 +238,14 @@ export default class Flow<T extends Values> extends Component<
           }
           attributes={passwordNode.attributes}
         />
-
         {!confirmPasswordError && (
           <Box color="#7E7E89" fontSize="13px" fontFamily="open sans">
             A number and combination of characters. (min 8 characters)
           </Box>
         )}
-
         <Box color="#717197" fontSize="14px" fontFamily="open sans" mt="24px">
           Confirm New Password *
         </Box>
-
         <StyledDefaultInput>
           <TextInput
             // title="Confirm New Password *"
@@ -292,6 +289,7 @@ export default class Flow<T extends Values> extends Component<
             <Eye setInputType={this.handleEye} />
           </StyledPasswordIcon>
         </StyledDefaultInput>
+        TESTERSON
         <Box position="relative" width="76px" mt="24px">
           <NodeInputSubmit
             value={values[getNodeId(submitNode)]}
