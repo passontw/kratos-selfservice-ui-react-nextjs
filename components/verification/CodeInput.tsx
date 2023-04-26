@@ -19,15 +19,20 @@ const InputsWrapper = styled.div`
   gap: 16px;
 `
 
-const Input = styled.input`
+interface InputProps {
+  error?: boolean
+}
+
+const Input = styled.input<InputProps>`
   width: 48px;
   height: 54px;
   background: #37374f;
-  border: 1px solid #37374f;
+  border: 1px solid ${(props) => (props.error ? "red" : "#37374f")};
   border-radius: 8px;
   text-align: center;
   font-size: 20px;
   color: #fff;
+
   &:focus {
     outline: none;
     box-shadow: none;
@@ -45,11 +50,16 @@ const Title = styled.h3`
   margin: 0;
 `
 
-const CodeInput = (props: any) => {
-  const { show } = props
+interface CodeInput {
+  show: string
+  validationMsgs: any
+}
+
+const CodeInput: React.FC<CodeInput> = ({ show, validationMsgs }) => {
   // console.log("show@@@", show)
   const dispatch = useDispatch()
   const [code, setCode] = useState(Array(6).fill(""))
+  const [isTouched, setIsTouched] = useState(false)
   const firstInputRef = useRef(null)
 
   useEffect(() => {
@@ -57,6 +67,11 @@ const CodeInput = (props: any) => {
   }, [])
 
   const handleInputChange = (e, index) => {
+    // if inputs are yet untouched set them to touched as inputs are being typed in
+    if (!isTouched) {
+      setIsTouched(true)
+    }
+
     const value = e.target.value
 
     let updatedCode = [...code]
@@ -103,10 +118,18 @@ const CodeInput = (props: any) => {
     }
   }
 
+  console.log("@validation code:", code)
+  console.log("@validation validationMsgs:", validationMsgs)
+
+  const isEmpty = code.every((item) => item === "")
+  const isInValid =
+    validationMsgs[0]?.text ===
+    "The recovery code is invalid or has already been used. Please try again."
+
   return show !== "email" ? (
     <Container>
       <Title>Verification Code</Title>
-      <InputsWrapper>
+      <InputsWrapper onClick={() => !isTouched && setIsTouched(true)}>
         {code.map((digit, index) => (
           <Input
             id={`input-${index}`}
@@ -116,9 +139,34 @@ const CodeInput = (props: any) => {
             ref={index === 0 ? firstInputRef : null}
             onChange={(e) => handleInputChange(e, index)}
             onKeyDown={(e) => handleKeyDown(e, index)}
+            error={isEmpty && isTouched}
           />
         ))}
       </InputsWrapper>
+      {isEmpty && isTouched && (
+        <div
+          style={{
+            fontFamily: "Open Sans",
+            fontWeight: 400,
+            fontSize: "13px",
+            color: "red",
+          }}
+        >
+          Required
+        </div>
+      )}
+      {isInValid && (
+        <div
+          style={{
+            fontFamily: "Open Sans",
+            fontWeight: 400,
+            fontSize: "13px",
+            color: "red",
+          }}
+        >
+          {validationMsgs[0].text}
+        </div>
+      )}
     </Container>
   ) : null
 }

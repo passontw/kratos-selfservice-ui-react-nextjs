@@ -18,4 +18,5 @@ export interface NodeInputProps {
   setValue: ValueSetter
   ref?: HTMLButtonElement | null | undefined
   handleToast?: any
+  validationMsgs?: any
 }

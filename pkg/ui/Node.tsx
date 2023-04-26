@@ -22,6 +22,7 @@ interface Props {
   value: any
   setValue: ValueSetter
   dispatchSubmit: FormDispatcher
+  validationMsgs: any
 }
 
 export const Node = ({
@@ -31,6 +32,7 @@ export const Node = ({
   disabled,
   dispatchSubmit,
   ref,
+  validationMsgs,
 }: Props) => {
   console.log("@modal Ref Node ref:", ref)
 
@@ -61,6 +63,7 @@ export const Node = ({
           node={node}
           disabled={disabled}
           attributes={node.attributes}
+          validationMsgs={validationMsgs}
         />
       </>
     )

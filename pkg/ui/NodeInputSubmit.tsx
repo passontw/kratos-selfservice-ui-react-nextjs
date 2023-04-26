@@ -26,6 +26,7 @@ export function NodeInputSubmit<T>({
   dispatchSubmit,
   handleToast,
   ref,
+  test,
 }: NodeInputProps) {
   const activeNav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
@@ -109,6 +110,7 @@ export function NodeInputSubmit<T>({
       clickGoogleBtn.click()
     }
   }
+
   return (
     <>
       {getNodeLabel(node) === "Resend code" ? (
@@ -185,7 +187,7 @@ export function NodeInputSubmit<T>({
                   origin="ACC_LINK"
                   on={getNodeLabel(node).split(" ")[0] === "Unlink"}
                   change={handleClick}
-                  handleToast={()=>handleToast(getNodeLabel(node))}
+                  handleToast={() => handleToast(getNodeLabel(node))}
                 />
               </Box>
             </Box>

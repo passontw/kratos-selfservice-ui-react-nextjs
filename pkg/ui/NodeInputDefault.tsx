@@ -30,7 +30,14 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   const dispatch = useDispatch()
   const nav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
-  const { node, attributes, value = "", setValue, disabled } = props
+  const {
+    node,
+    attributes,
+    value = "",
+    setValue,
+    disabled,
+    validationMsgs,
+  } = props
   const label =
     node.meta.label?.text === "ID"
       ? "Email"
@@ -117,8 +124,9 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   // Render a generic text input field.
   return (
     <>
-      {/* <CodeInput /> */}
-      {verifyCodeConditions && <CodeInput show={attributes.name} />}
+      {verifyCodeConditions && (
+        <CodeInput show={attributes.name} validationMsgs={validationMsgs} />
+      )}
       <StyledDefaultInput isInputLabel={isInputLabel}>
         {isInputLabel && (
           <StyledDefaultLabel isError={isError}>{label}</StyledDefaultLabel>
@@ -162,7 +170,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
               e.preventDefault()
             }
           }}
-          type={inputType === 'email' ? 'text' : inputType }
+          type={inputType === "email" ? "text" : inputType}
           name={attributes.name}
           value={value}
           disabled={attributes.disabled || disabled}
@@ -219,7 +227,6 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           Forgot Password?
         </span>
       )}
-
       {attributes.name === "password" && nav === "REGISTER" && !isError && (
         <span
           style={{
@@ -231,7 +238,6 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           A combination of numbers and characters. (min 8 characters)
         </span>
       )}
-
       {nav === Navs.PROFILE && attributes.name === "traits.gender" && (
         <Box color="#FFF" ml="3px" position="relative">
           <RadioGroup
