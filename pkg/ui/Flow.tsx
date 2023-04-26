@@ -337,6 +337,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 ? "Don’t have an account?"
                 : "Already have an account?"}
             </Box>
+
             <Box
               color="#CA4AE8"
               sx={{
