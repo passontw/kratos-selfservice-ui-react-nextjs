@@ -19,10 +19,14 @@ import {
   StyledLine,
   StyledMobile
 } from "./styles"
+import { useDispatch } from 'react-redux'
+import { setDialog } from '../../state/store/slice/layoutSlice'
+import { Box } from '@mui/material'
 
 interface AccountMenuProps {}
 
 const AccountMenu: React.FC<AccountMenuProps> = () => {
+  const dispatch = useDispatch()
   const router = useRouter()
   const onLogout = LogoutLink()
 
@@ -72,6 +76,9 @@ const AccountMenu: React.FC<AccountMenuProps> = () => {
   return (
     <StyledWrapper>
       {accountMenuData.map((item) => (
+        <Box  onClick={()=> {
+          dispatch(setDialog(null))
+        }}>
         <Link key={item.name} href={item.path} passHref>
           <StyledMenuItem active={item.path === router.pathname}>
             <Component
@@ -80,7 +87,9 @@ const AccountMenu: React.FC<AccountMenuProps> = () => {
               icon={item.icon}
             />
           </StyledMenuItem>
-        </Link>
+        </Link>          
+        </Box>
+
       ))}
       
       <StyledMobile>

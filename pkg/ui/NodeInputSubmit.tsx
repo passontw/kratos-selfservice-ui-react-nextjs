@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux"
 
 import Switch from "../../components/Switch"
 import Timer from "../../components/Timer"
+import { showToast } from '../../components/Toast'
 import Apple from "../../public/images/login_icons/Apple"
 import Google from "../../public/images/login_icons/Google"
 import {
@@ -27,7 +28,7 @@ export function NodeInputSubmit<T>({
   attributes,
   disabled,
   dispatchSubmit,
-  handleToast,
+  // handleToast,
   ref,
 }: NodeInputProps) {
   const dispatch = useDispatch()
@@ -201,7 +202,7 @@ export function NodeInputSubmit<T>({
                   origin="ACC_LINK"
                   on={getNodeLabel(node).split(" ")[0] === "Unlink"}
                   change={handleClick}
-                  handleToast={() => handleToast(getNodeLabel(node))}
+                  handleToast={()=>showToast(`${getNodeLabel(node)}`)}
                 />
               </Box>
             </Box>
