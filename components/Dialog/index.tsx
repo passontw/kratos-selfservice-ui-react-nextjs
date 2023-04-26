@@ -76,7 +76,7 @@ const Dialog: React.FC<DialogProps> = ({
   
   const handleCloseIcon = ()=>{
     console.log('icon', icon)
-    if (icon === Icon.MENU)  return <MenuCloseIcon />
+    if (icon === Icon.MENU)  return <MenuCloseIcon  />
 
     return <CloseIcon
       sx={{

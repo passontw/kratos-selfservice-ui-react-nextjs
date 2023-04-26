@@ -178,7 +178,8 @@ const Verification: NextPage = (props) => {
         borderRadius="12px"
         position="fixed"
         top="35vh"
-        left="40vw"
+        left="50%"
+        marginLeft="-219px"
       >
         <Head>
           <title>Verify your account - Ory NextJS Integration Example</title>

@@ -213,20 +213,20 @@ const Account: NextPage = () => {
       .catch(handleFlowError(router, "account", setFlow))
   }, [flowId, router, router.isReady, returnTo, flow])
 
-  useEffect(() => {
-    console.log("flow?.ui.messages", flow?.ui.messages)
-    if (flow?.ui.messages?.length > 0) {
-      flow?.ui.messages.map((item)=>{
-        if(item.type === "success" && toastContent!== ''){
-          showToast(toastContent)
-        }
-      })
-    }
-  }, [flow?.ui.messages])
+  // useEffect(() => {
+  //   console.log("flow?.ui.messages", flow?.ui.messages)
+  //   if (flow?.ui.messages?.length > 0) {
+  //     flow?.ui.messages.map((item)=>{
+  //       if(item.type === "success" && toastContent!== ''){
+  //         showToast(toastContent)
+  //       }
+  //     })
+  //   }
+  // }, [flow?.ui.messages])
 
-  const handleToast = (text: string) => {
-    setToastContent(text)
-  }
+  // const handleToast = (text: string) => {
+  //   setToastContent(text)
+  // }
 
   return (
     <AccountLayout>
@@ -251,7 +251,7 @@ const Account: NextPage = () => {
             onSubmit={onSubmit}
             only="oidc"
             flow={flow}
-            handleToast={handleToast}
+            // handleToast={handleToast}
           />
         </SettingsCard>
         <SettingsCard only="profile" flow={flow}>
