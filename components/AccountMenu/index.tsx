@@ -75,8 +75,8 @@ const AccountMenu: React.FC<AccountMenuProps> = () => {
   }
   return (
     <StyledWrapper>
-      {accountMenuData.map((item) => (
-        <Box  onClick={()=> {
+      {accountMenuData.map((item, index) => (
+        <Box key={`account-menu-${index}`} onClick={()=> {
           dispatch(setDialog(null))
         }}>
         <Link key={item.name} href={item.path} passHref>
