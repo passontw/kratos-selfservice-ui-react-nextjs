@@ -18,7 +18,6 @@ import { LogoutLink, Flow } from "../pkg"
 import { handleGetFlowError, handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import {
-  selectActiveNav,
   setActiveNav,
   setActiveStage,
   setDialog,
@@ -294,8 +293,8 @@ const Login: NextPage = () => {
       return false
     }
   }
-
-  if (isEmpty(flow?.ui)) return null
+  console.log("🚀 ~ file: login.tsx:336 ~ //onSubmit ~ flow?.ui:", flow?.ui)
+  if (isEmpty(flow?.ui) || isEmpty(flow?.ui?.action)) return null
 
   return (
     <>
