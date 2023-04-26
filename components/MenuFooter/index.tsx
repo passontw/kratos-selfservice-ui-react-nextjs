@@ -12,9 +12,9 @@ const MenuFooter = ({Copyright}:{Copyright:string})=>{
     return (
         <StyledFooter>
         <Box display={{xs:'flex', sm:'none'}} alignItems='center' marginBottom="12px">
-            <StyledLink>Terms of Service</StyledLink>
+        <StyledLink target="_blank" href='./termsofuseagreement'>Terms of Service</StyledLink>
             <StyledLine />
-            <StyledLink>Privacy Policy</StyledLink>
+            <StyledLink target="_blank" href='./privacypolicy'>Privacy Policy</StyledLink>
         </Box>
         <StyledCopyright>
             { Copyright }

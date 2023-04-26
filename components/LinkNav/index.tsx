@@ -1,3 +1,5 @@
+
+import Link from 'next/link'
 import React from 'react'
 import {
     StyledNav,
@@ -9,9 +11,9 @@ import {
 const LinkNav = () => {
     return (
       <StyledNav>
-        <StyledLink>Terms of Service</StyledLink>
+        <StyledLink target="_blank" href='./termsofuseagreement'>Terms of Service</StyledLink>
         <StyledLine />
-        <StyledLink>Privacy Policy</StyledLink>
+        <StyledLink target="_blank" href='./privacypolicy'>Privacy Policy</StyledLink>
       </StyledNav>
     )
 }
