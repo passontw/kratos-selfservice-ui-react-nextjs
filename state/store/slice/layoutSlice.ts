@@ -21,6 +21,7 @@ const initialState: LayoutSliceStateI = {
   sixDigitCode: "",
   mfaModalOpen: false,
   mfaState: undefined,
+  lockCodeResend: false,
 }
 
 export const layoutSlice = createSlice({
@@ -44,6 +45,12 @@ export const layoutSlice = createSlice({
       { payload }: PayloadAction<string>,
     ) => {
       state.sixDigitCode = payload
+    },
+    setLockCodeResend: (
+      state: LayoutSliceStateI,
+      { payload }: PayloadAction<boolean>,
+    ) => {
+      state.lockCodeResend = payload
     },
     setMfaModalOpen: (
       state: LayoutSliceStateI,
@@ -89,6 +96,12 @@ export const selectSixDigitCode = (state: {
   }
 }) => state.layout.sixDigitCode
 
+export const selectLockCodeResend = (state: {
+  layout: {
+    lockCodeResend: boolean
+  }
+}) => state.layout.lockCodeResend
+
 export const selectMfaModalOpen = (state: {
   layout: {
     mfaModalOpen: boolean
@@ -118,6 +131,7 @@ export const {
   setActiveNav,
   setActiveStage,
   setSixDigitCode,
+  setLockCodeResend,
   setMfaModalOpen,
   setMfaState,
   setDialog,

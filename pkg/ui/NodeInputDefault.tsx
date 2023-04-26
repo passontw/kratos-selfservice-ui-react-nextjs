@@ -211,21 +211,24 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
         )}
       </StyledDefaultInput>
       {attributes.name === "password" && nav === "LOGIN" && (
-        <span
-          style={{
-            color: "#CA4AE8",
-            fontSize: "16px",
+        <Box
+          width="fit-content"
+          color="#CA4AE8"
+          fontSize="16px"
+          position="relative"
+          fontFamily="Open Sans"
+          sx={{
             cursor: "pointer",
-            fontFamily: "Open Sans",
-            position: "relative",
-            paddingBottom: "36px",
+            ":hover": {
+              filter: "brightness(1.5)",
+            },
           }}
           onClick={() => {
             openDialog()
           }}
         >
           Forgot Password?
-        </span>
+        </Box>
       )}
       {attributes.name === "password" && nav === "REGISTER" && !isError && (
         <span

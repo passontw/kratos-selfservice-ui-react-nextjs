@@ -1,8 +1,8 @@
+import { Box } from '@mui/material'
 import React from 'react'
 import {
     StyledCopyright,
     StyledFooter,
-    StyledNav,
     StyledLink,
     StyledLine
   } from "../../styles/share"
@@ -11,11 +11,11 @@ import {
 const MenuFooter = ({Copyright}:{Copyright:string})=>{
     return (
         <StyledFooter>
-        <StyledNav className="mobie">
-        <StyledLink>Terms of Service</StyledLink>
-        <StyledLine />
-        <StyledLink>Privacy Policy</StyledLink>
-        </StyledNav>
+        <Box display={{xs:'flex', sm:'none'}} alignItems='center' marginBottom="12px">
+            <StyledLink>Terms of Service</StyledLink>
+            <StyledLine />
+            <StyledLink>Privacy Policy</StyledLink>
+        </Box>
         <StyledCopyright>
             { Copyright }
         </StyledCopyright>

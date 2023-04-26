@@ -341,6 +341,9 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
               color="#CA4AE8"
               sx={{
                 cursor: "pointer",
+                ":hover": {
+                  filter: "brightness(1.5)",
+                },
               }}
               onClick={() => {
                 const redirrectPath =
