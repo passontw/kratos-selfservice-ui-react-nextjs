@@ -9,13 +9,25 @@ const StyledWrapper = styled("div")(() => ({
   height: "100%",
   width: "100vw",
   minHeight: "100vh",
+  overflowY: "hidden",
+  "&::-webkit-scrollbar": {
+    width: 5,
+    height: 0,
+  },
+  "&::-webkit-scrollbar-track": {
+    borderRadius: 4,
+    backgroundColor: "#272735",
+  },
+  "&::-webkit-scrollbar-thumb": {
+    background: "#272735",
+    borderRadius: 4,
+  },
 }))
 
 const StyledMenuWrapper = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   width: "400px",
-  minWidth: "400px",
   backgroundColor: "#161622",
   [theme.breakpoints.down("sm")]: {
     display: "none",
@@ -65,14 +77,11 @@ const StyledContent = styled("div")(() => ({}))
 const StyledContentWrapper = styled("div")(({ theme }) => ({
   position: "relative",
   padding: "48px 48px 110px",
-  width: "76%",
+  width: "100%",
   minWidth: "880px",
   boxSizing: "border-box",
   [theme.breakpoints.down("sm")]: {
-    padding: "20px 20px 180px",
     width: "100%",
-    minWidth: "calc(100% - 40px)",
-    boxSizing: "border-box",
   },
 }))
 

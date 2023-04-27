@@ -13,6 +13,7 @@ const StyledProfileArea = styled("div")<{ paddingRight?: string }>(
     minHeight: "602px",
     [theme.breakpoints.down("sm")]: {
       paddingLeft: "0px",
+      marginTop: "0px",
     },
   }),
 )
@@ -30,6 +31,7 @@ const StyledForm = styled("div")(({ theme }) => ({
     flexFlow: "wrap",
     width: "100%",
     justifyContent: "center",
+    height: "683px",
   },
 }))
 
@@ -42,17 +44,20 @@ const StyledImageUpload = styled("div")(({ theme }) => ({
   paddingTop: "165px",
   [theme.breakpoints.down("sm")]: {
     paddingRight: "0px",
-    paddingTop: "48px",
+    paddingTop: "32px",
     borderRight: "1px solid transparent",
   },
 }))
 
-const StyledImageTitle = styled("div")(() => ({
+const StyledImageTitle = styled("div")(({ theme }) => ({
   textAlign: "center",
   marginTop: "40px",
   fontSize: "16px",
   fontWeight: 600,
   color: WHITE,
+  [theme.breakpoints.down("sm")]: {
+    marginTop: "12px",
+  },
 }))
 
 const StyledImageText = styled("div")(() => ({
@@ -93,24 +98,31 @@ const StyledSideInputs = styled("div")(({ theme }) => ({
   padding: "48px",
   paddingBottom: "0px",
   [theme.breakpoints.down("sm")]: {
-    padding: "24px 20px",
+    padding: "12px 20px 24px",
   },
 }))
 
 const StyledFieldTitle = styled("div")<{ topSpacing?: boolean }>(
-  ({ topSpacing }) => ({
+  ({ topSpacing, theme }) => ({
     marginTop: topSpacing ? "24px" : 0,
     fontSize: "14px",
     color: "#717197;",
     fontWeight: 400,
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "13px",
+      marginTop: "18px",
+    },
   }),
 )
 
-const StyledSubmitArea = styled("div")(() => ({
+const StyledSubmitArea = styled("div")(({ theme }) => ({
   marginTop: "38px",
   width: "100%",
   display: "flex",
   justifyContent: "end",
+  [theme.breakpoints.down("sm")]: {
+    marginTop: "12px",
+  },
 }))
 
 const StyledBirthdayWrap = styled("div")(() => ({
@@ -123,11 +135,16 @@ const StyledSubmitButton = styled("div")(({ theme }) => ({
   marginBottom: "84px",
   [theme.breakpoints.down("sm")]: {
     width: "100%",
+    marginBottom: "0px",
+    marginTop: "10px",
   },
 }))
 
-const StyledFieldSpacer = styled("div")(() => ({
+const StyledFieldSpacer = styled("div")(({ theme }) => ({
   marginTop: "25px",
+  [theme.breakpoints.down("sm")]: {
+    marginTop: "12px",
+  },
 }))
 
 const StyledBirthdayYear = styled("div")(() => ({

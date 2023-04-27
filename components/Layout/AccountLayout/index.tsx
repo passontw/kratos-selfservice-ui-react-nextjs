@@ -4,27 +4,29 @@ import { useSelector, useDispatch } from "react-redux"
 
 import DefaultAvatar from "../../../public/images/DefaultAvatar"
 import Dropdown from "../../../public/images/Dropdown"
-import Cmid from "../../../public/images/app_icons/Cmid"
 import Hambuger from "../../../public/images/Menu/Hambuger"
+import Cmid from "../../../public/images/app_icons/Cmid"
 import { selectActiveNav } from "../../../state/store/slice/layoutSlice"
-import { Navs,Icon } from "../../../types/enum"
+import {
+  setDialog,
+  setMfaModalOpen,
+} from "../../../state/store/slice/layoutSlice"
+import { Navs, Icon } from "../../../types/enum"
 import AccountMenu from "../../AccountMenu"
 import DropdownMenu from "../../DropdownMenu"
-import { setDialog, setMfaModalOpen } from "../../../state/store/slice/layoutSlice"
+import LinkNav from "../../LinkNav"
+import MenuFooter from "../../MenuFooter"
+import MfaModal from "../../account/MfaModal"
 
-import { 
-  StyledWrapper, 
-  StyledContent, 
-  StyledHeader, 
-  StyledMenuWrapper, 
-  StyledDropdownMenu, 
+import {
+  StyledWrapper,
+  StyledContent,
+  StyledHeader,
+  StyledMenuWrapper,
+  StyledDropdownMenu,
   StyledMobieHeaderWrapper,
-  StyledContentWrapper
-
+  StyledContentWrapper,
 } from "./styles"
-import MfaModal from '../../account/MfaModal'
-import MenuFooter from '../../MenuFooter'
-import LinkNav from '../../LinkNav'
 
 interface AccountLayoutProps {
   children: ReactNode
@@ -59,19 +61,17 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
     return title
   }
 
-  const handleModal = ()=>{
+  const handleModal = () => {
     dispatch(
       setDialog({
         title: `Cooler Master ID`,
-        titleHeight: "60px",
-        width:  '100vw',
-        height: '100%',
+        titleHeight: "MENU",
+        width: "100vw",
+        height: "100%",
         center: true,
-        padding: '0px',
+        padding: "0px",
         icon: Icon.MENU,
-        children: (
-          <AccountMenu />
-        ),
+        children: <AccountMenu />,
       }),
     )
   }
@@ -93,25 +93,35 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
               <Cmid />
               <div>Cooler Master ID</div>
             </StyledHeader>
-            <Box             
-            sx={{
-              "&:hover": {
-                cursor: "pointer",
-              },
-            }} onClick={handleModal}><Hambuger/></Box>
+            <Box
+              sx={{
+                "&:hover": {
+                  cursor: "pointer",
+                },
+              }}
+              onClick={handleModal}
+            >
+              <Hambuger />
+            </Box>
           </StyledMobieHeaderWrapper>
-          
+
           <Box display="flex" justifyContent="space-between">
-            <Box fontFamily="Teko" fontSize="48px" color="#A2A1C6">
+            <Box
+              fontFamily="Teko"
+              fontSize="48px"
+              color="#A2A1C6"
+              display={{
+                sm: "inline-block",
+                xs: activeNav === Navs.PROFILE ? "none" : "inline-block",
+              }}
+            >
               {renderTitle(activeNav)}
             </Box>
             <StyledDropdownMenu>
               <DropdownMenu />
             </StyledDropdownMenu>
           </Box>
-          <StyledContent>
-            {children}
-          </StyledContent>
+          <StyledContent>{children}</StyledContent>
           <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
           <LinkNav />
         </StyledContentWrapper>

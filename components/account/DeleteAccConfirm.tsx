@@ -36,9 +36,12 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
           borderRadius="8px"
           position="absolute"
           right="30px"
-          mt="30px"
+          mt="25px"
           sx={{
             cursor: "pointer",
+            "&:hover": {
+              filter: "brightness(0.9)",
+            },
           }}
           onClick={() => {
             confirmDelete()
@@ -62,9 +65,12 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
           fontFamily="open sans"
           fontSize="16px"
           right="140px"
-          mt="30px"
+          mt="25px"
           sx={{
             cursor: "pointer",
+            "&:hover": {
+              filter: "brightness(0.9)",
+            },
           }}
           onClick={(e) => {
             close?.()

@@ -19,6 +19,28 @@ html::-webkit-scrollbar-thumb {
   border-radius: 4px;
 }
 
+.main-container {
+  position: relative;
+  display: flex;
+  overflow-y: hidden;
+}
+
+.main-container::-webkit-scrollbar {
+  width: 3px;
+  height: 9px;
+  padding: 2px;
+}
+
+.main-container::-webkit-scrollbar-track {
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.main-container::-webkit-scrollbar-thumb {
+  background: #000;
+  border-radius: 4px;
+}
+
 .background-wrapper {
   position: absolute;
   top: 0;

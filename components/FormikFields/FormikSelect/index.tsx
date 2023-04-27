@@ -80,7 +80,10 @@ const FormikSelect: React.FC<FormikSelectProps> = ({
           <Box
             mb="8px"
             color="#717197"
-            fontSize="14px"
+            fontSize={{
+              sm: "14px",
+              xs: "13px",
+            }}
             display="flex"
             alignItems="center"
           >

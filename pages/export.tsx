@@ -85,7 +85,10 @@ const Export: NextPage = () => {
         flexDirection="column"
         position="relative"
         height="100%"
-        marginTop="48px"
+        marginTop={{
+          sm: "48px",
+          xs: "24px",
+        }}
       >
         <p
           style={{
