@@ -285,7 +285,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
                 title="Gender"
                 defaultValue={defaultSelectValue}
                 options={genderRadios}
-                width={"calc(100vw - 130px)"}
+                width={"calc(100vw)"}
                 onChange={(selectedOption: SelectOption) => {
                   setGender(selectedOption.value)
                   setValue(selectedOption.value)
