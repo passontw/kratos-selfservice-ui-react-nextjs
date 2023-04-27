@@ -15,7 +15,7 @@ const StyledSelect = styled("div")<StyledSelectProps>(
   ({ width, label, disabled, keepBorder }) => ({
     fontSize: "12px",
     width,
-    maxWidth: "calc(100vw - 85px)",
+    maxWidth: "calc(100vw - 140px)",
     border: keepBorder ? "1px solid #38383F" : "none",
     borderRadius: keepBorder ? "6px" : "0",
     display: label ? "flex" : "initial",
