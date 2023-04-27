@@ -293,7 +293,7 @@ const Login: NextPage = () => {
       return false
     }
   }
-  console.log("🚀 ~ file: login.tsx:336 ~ //onSubmit ~ flow?.ui:", flow?.ui)
+
   if (isEmpty(flow?.ui) || isEmpty(flow?.ui?.action)) return null
 
   return (

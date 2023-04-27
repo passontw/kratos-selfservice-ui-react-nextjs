@@ -93,7 +93,7 @@ const Account: NextPage = () => {
 
     return axios
       .delete(
-        `${process.env.ORY_SDK_URL}/admin/identities/${data.identity.id}`,
+        `${process.env.ORY_CUSTOM_DOMAIN}/admin/identities/${data.identity.id}`,
         {
           headers: {
             Accept: "application/json",
@@ -101,7 +101,7 @@ const Account: NextPage = () => {
           },
         },
       )
-      .then((resp) => {
+      .then(() => {
         router.replace("/")
       })
       .catch((error) => {
@@ -286,7 +286,7 @@ const Account: NextPage = () => {
               display="flex"
               gap="15px"
               width="fit-content"
-              onClick={deleteAccountPromt}
+              onClick={deleteAccount}
               sx={{
                 cursor: "pointer",
               }}
