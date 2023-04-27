@@ -69,6 +69,7 @@ const StyledContentWrapper = styled("div")(({ theme }) => ({
   minWidth: "880px",
   [theme.breakpoints.down("sm")]: {
     width: "100%",
+    minWidth: "100%",
   },
 }))
 
