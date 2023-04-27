@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 
 import RadioGroup from "../../components/RadioGroup"
+import Select from "../../components/Select"
 import RecoveryProcess from "../../components/changepassword/RecoveryProcess"
 import CodeInput from "../../components/verification/CodeInput"
 import Eye from "../../public/images/eyes"
@@ -21,6 +22,7 @@ import {
   StyledPasswordIcon,
 } from "../../styles/share"
 import { Navs, Stage } from "../../types/enum"
+import { SelectOption } from "../../types/general"
 import { CenterLink } from "../styled"
 
 import { NodeInputProps } from "./helpers"
@@ -105,9 +107,19 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     attributes.name === "traits.gender" ? value : genderRadios[2].value,
   )
 
+  const [defaultSelectValue, setDefaultSelectValue] = useState(
+    genderRadios.find((g) => g.value === value),
+  )
+
+  // const defaultSelectValue = genderRadios.find((g) => g.value === gender)
+
   useEffect(() => {
     if (attributes.name === "traits.gender") {
+      console.log("value", value)
       setGender(value)
+      setDefaultSelectValue(
+        genderRadios.find((g) => g.value === parseInt(value)),
+      )
     }
   }, [value])
 
@@ -241,21 +253,47 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           A combination of numbers and characters. (min 8 characters)
         </span>
       )}
-      {nav === Navs.PROFILE && attributes.name === "traits.gender" && (
-        <Box color="#FFF" ml="3px" position="relative">
-          <RadioGroup
-            value={gender}
-            label="Gender"
-            onChange={(e) => {
-              setGender(e.target.value)
-              setValue(e.target.value)
-            }}
-            radios={genderRadios}
-            direction="row"
-            custom
-          />
-        </Box>
-      )}
+      {nav === Navs.PROFILE &&
+        attributes.name === "traits.gender" &&
+        defaultSelectValue && (
+          <Box color="#FFF" ml="3px" position="relative">
+            <Box
+              display={{
+                xs: "none",
+                sm: "inline-block",
+              }}
+            >
+              <RadioGroup
+                value={gender}
+                label="Gender"
+                onChange={(e) => {
+                  setGender(e.target.value)
+                  setValue(e.target.value)
+                }}
+                radios={genderRadios}
+                direction="row"
+                custom
+              />
+            </Box>
+            <Box
+              display={{
+                sm: "none",
+                xs: "inline-block",
+              }}
+            >
+              <Select
+                title="Gender"
+                defaultValue={defaultSelectValue}
+                options={genderRadios}
+                width={"calc(100vw - 130px)"}
+                onChange={(selectedOption: SelectOption) => {
+                  setGender(selectedOption.value)
+                  setValue(selectedOption.value)
+                }}
+              />
+            </Box>
+          </Box>
+        )}
     </>
   )
 }

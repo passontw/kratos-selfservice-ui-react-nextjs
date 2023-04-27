@@ -18,7 +18,7 @@ export function NodeInputCheckbox<T>({
   return (
     <Box
       display="flex"
-      width={{sx: "100%", md: "50%"}}
+      width={{ sx: "100%", md: "48%" }}
       height={attributes.name === "traits.loginVerification" ? "74px" : "88px"}
       bgcolor="#272735"
       borderRadius="12px"
