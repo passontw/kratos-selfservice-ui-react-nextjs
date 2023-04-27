@@ -15,6 +15,7 @@ const StyledMenuWrapper = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   width: "400px",
+  minWidth: "400px",
   backgroundColor: "#161622",
   [theme.breakpoints.down("sm")]: {
     display: "none",
@@ -65,8 +66,11 @@ const StyledContentWrapper = styled("div")(({ theme }) => ({
   position: "relative",
   padding: "48px 48px 110px",
   width: "76%",
+  minWidth: "880px",
   [theme.breakpoints.down("sm")]: {
+    padding: "20px 20px 180px",
     width: "100%",
+    minWidth: "100%",
   },
 }))
 

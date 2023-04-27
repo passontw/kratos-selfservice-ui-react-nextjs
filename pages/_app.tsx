@@ -44,7 +44,6 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <div className="overlay-image"></div>
               </div>
               <Component {...pageProps} />
-              
             </Box>
             <ToastContainer />
           </PopupLayout>

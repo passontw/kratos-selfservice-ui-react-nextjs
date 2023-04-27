@@ -6,4 +6,11 @@
   align-items: center;
   background-color: transparent;
   /* background: url() no-repeat center center fixed; */
+  margin: 0px 20px;
+}
+
+.resetWrapper div:nth-child(7) {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }

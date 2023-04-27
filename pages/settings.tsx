@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux"
 
 import CmidHead from "../components/CmidHead"
 import MenuFooter from "../components/MenuFooter"
+import Cmid from "../public/images/app_icons/Cmid"
 import Flow from "../components/changepassword/Flow"
 import { ActionCard, Messages, Methods, LogoutLink } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
@@ -18,6 +19,7 @@ import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
 import { updatePasswordSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
+import LinkNav from '../components/LinkNav'
 
 interface Props {
   flow?: SettingsFlow
@@ -50,6 +52,7 @@ function SettingsCard({
       bgcolor="#272735"
       borderRadius="12px"
       p="32px"
+      position="relative"
     >
       {children}
     </Box>
@@ -163,6 +166,16 @@ const Settings: NextPage = () => {
 
   return (
     <>
+      <Box position='absolute' display='flex' alignItems='center' justifyContent={{xs:'center', sm: 'left'}} width='100%' gap='16px' padding={{xs:'35px 0px 0px', sm:'48px 0px 0px 48px'}} >
+        <Cmid />
+        <Box fontFamily="Teko" fontSize={{xs:'24px', sm:'32px'}} color="#fff" lineHeight='44px' textTransform="uppercase" >Cooler Master ID</Box>
+      </Box>
+      <div style={{
+        position: 'absolute',
+        background: 'linear-gradient(180deg, rgba(29, 29, 40, 0.2) -23.39%, #1D1D28 50%);',
+        height: '100vh',
+        width: '100vw',
+      }}></div>
       <div className="resetWrapper">
         <SettingsCard only="password" flow={flow}>
           <Box>
@@ -180,6 +193,8 @@ const Settings: NextPage = () => {
           </Box>
         </SettingsCard>
       </div>
+      <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
+      <LinkNav />
     </>
   )
 }

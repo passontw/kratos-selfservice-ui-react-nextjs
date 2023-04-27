@@ -11,6 +11,7 @@ export interface LayoutSliceStateI {
   sixDigitCode: string
   mfaModalOpen: boolean
   mfaState?: boolean
+  lockCodeResend: boolean
 }
 
 export interface DialogProps {

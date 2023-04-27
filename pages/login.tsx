@@ -10,7 +10,7 @@ import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
 import { api } from "../axios/api"
-import AppsList from '../components/AppsList'
+import AppsList from "../components/AppsList"
 import CmidHead from "../components/CmidHead"
 import MenuFooter from "../components/MenuFooter"
 import MenuTag from "../components/MenuTag"
@@ -21,6 +21,7 @@ import {
   setActiveNav,
   setActiveStage,
   setDialog,
+  setLockCodeResend,
 } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
 import { loginFormSchema } from "../util/schemas"
@@ -76,6 +77,7 @@ const Login: NextPage = () => {
     dispatch(setActiveNav(Navs.LOGIN))
     dispatch(setActiveStage(Stage.NONE))
     dispatch(setDialog(null))
+    dispatch(setLockCodeResend(false))
   }, [])
 
   // Get ?flow=... from the URL
@@ -320,7 +322,9 @@ const Login: NextPage = () => {
           return "Sign In (ID can be Email or Username)"
         })()}
         </CardTitle> */}
-          <CmidHead />
+          <Box display="flex" justifyContent={{xs: 'center', sm: 'left'}}>
+            <CmidHead /> 
+          </Box>
           <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
             Welcome back
           </Box>

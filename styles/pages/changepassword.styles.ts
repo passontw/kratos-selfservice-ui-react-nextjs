@@ -14,7 +14,8 @@ const StyledChangePasswordArea = styled("div")<{ marginTop?: string }>(
       padding: "32px",
       margin: "0px",
       border: "none",
-      width: "500px",
+      width: "100%",
+      maxWidth: "500px",
     },
   }),
 )
@@ -34,9 +35,12 @@ const StyledEmail = styled("p")<{}>(() => ({
   margin: "0px",
 }))
 
-const StyledChangePasswordDeco = styled("img")(() => ({
+const StyledChangePasswordDeco = styled("img")(({ theme }) => ({
   width: "100%",
   height: "16px",
+  [theme.breakpoints.down("sm")]: {
+    display: "none",
+  },
 }))
 
 export {

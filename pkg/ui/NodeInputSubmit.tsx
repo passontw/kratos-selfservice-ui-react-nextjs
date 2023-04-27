@@ -4,16 +4,20 @@ import { getNodeLabel } from "@ory/integrations/ui"
 import { Button } from "@ory/themes"
 import { NodeNextResponse } from "next/dist/server/base-http/node"
 import { useState, useEffect, useRef } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 import Switch from "../../components/Switch"
+import Timer from "../../components/Timer"
+import { showToast } from '../../components/Toast'
 import Apple from "../../public/images/login_icons/Apple"
 import Google from "../../public/images/login_icons/Google"
 import {
   selectActiveNav,
   selectActiveStage,
   selectDialog,
+  selectLockCodeResend,
   selectSixDigitCode,
+  setLockCodeResend,
 } from "../../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../../types/enum"
 
@@ -24,9 +28,12 @@ export function NodeInputSubmit<T>({
   attributes,
   disabled,
   dispatchSubmit,
-  handleToast,
+  // handleToast,
   ref,
+  test,
 }: NodeInputProps) {
+  const dispatch = useDispatch()
+  const codeLocked = useSelector(selectLockCodeResend)
   const activeNav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
   const sixDigitCode = useSelector(selectSixDigitCode)
@@ -64,7 +71,7 @@ export function NodeInputSubmit<T>({
   const linkStyle = {
     backgroundColor: "transparent",
     background: "none",
-    color: "#CA4AE8",
+    color: codeLocked ? "#454545" : "#CA4AE8",
     border: "none",
     padding: "0",
     cursor: "pointer",
@@ -109,6 +116,7 @@ export function NodeInputSubmit<T>({
       clickGoogleBtn.click()
     }
   }
+
   return (
     <>
       {getNodeLabel(node) === "Resend code" ? (
@@ -119,8 +127,9 @@ export function NodeInputSubmit<T>({
           gap="4px"
         >
           <Box fontFamily="open sans" color="#A5A5A9" fontSize="14px">
-            Didn’t receive?
+            Didn't receive?
           </Box>
+
           <Button
             style={
               showButton ? (resendLink ? linkStyle : defaultStyle) : hiddenStyle
@@ -128,9 +137,19 @@ export function NodeInputSubmit<T>({
             name={attributes.name}
             value={attributes.value || ""}
             disabled={attributes.disabled || disabled}
+            onClick={(e) => {
+              if (!codeLocked) {
+                dispatch(setLockCodeResend(true))
+              } else {
+                e.preventDefault()
+                e.stopPropagation()
+              }
+            }}
           >
             {buttonText}
           </Button>
+
+          <Box>{codeLocked && <Timer />}</Box>
         </Box>
       ) : (
         <>
@@ -185,7 +204,7 @@ export function NodeInputSubmit<T>({
                   origin="ACC_LINK"
                   on={getNodeLabel(node).split(" ")[0] === "Unlink"}
                   change={handleClick}
-                  handleToast={()=>handleToast(getNodeLabel(node))}
+                  handleToast={()=>showToast(`${getNodeLabel(node)}`)}
                 />
               </Box>
             </Box>

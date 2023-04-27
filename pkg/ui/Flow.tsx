@@ -251,7 +251,9 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         method={flow.ui.method}
         onSubmit={this.handleSubmit}
       >
-        {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
+        {!hideGlobalMessages && window.location.pathname !== "/recovery" ? (
+          <Messages messages={flow.ui.messages} />
+        ) : null}
         {nodes.map((node, k) => {
           console.log("@filterNodes node:", node)
 
@@ -281,30 +283,37 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           // if (node.meta.label?.text === "Resend code") return
 
           return (
-            <Node
-              key={`${id}-${k}`}
-              disabled={isLoading}
-              node={node}
-              value={getNodeId(node) === "code" ? this.props.code : values[id]}
-              // value={values[id]}
-              dispatchSubmit={this.handleSubmit}
-              setValue={(value) =>
-                new Promise((resolve) => {
-                  this.setState(
-                    (state) => ({
-                      ...state,
-                      values: {
-                        ...state.values,
-                        [getNodeId(node)]:
-                          getNodeId(node) === "code" ? this.props.code : value,
-                        // [getNodeId(node)]: value,
-                      },
-                    }),
-                    resolve,
-                  )
-                })
-              }
-            />
+            <>
+              <Node
+                key={`${id}-${k}`}
+                disabled={isLoading}
+                node={node}
+                value={
+                  getNodeId(node) === "code" ? this.props.code : values[id]
+                }
+                // value={values[id]}
+                dispatchSubmit={this.handleSubmit}
+                setValue={(value) =>
+                  new Promise((resolve) => {
+                    this.setState(
+                      (state) => ({
+                        ...state,
+                        values: {
+                          ...state.values,
+                          [getNodeId(node)]:
+                            getNodeId(node) === "code"
+                              ? this.props.code
+                              : value,
+                          // [getNodeId(node)]: value,
+                        },
+                      }),
+                      resolve,
+                    )
+                  })
+                }
+                validationMsgs={flow.ui.messages}
+              />
+            </>
           )
         })}
         {!this.props.hideSocialLogin && (
@@ -325,10 +334,14 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 ? "Don’t have an account?"
                 : "Already have an account?"}
             </Box>
+
             <Box
               color="#CA4AE8"
               sx={{
                 cursor: "pointer",
+                ":hover": {
+                  filter: "brightness(1.5)",
+                },
               }}
               onClick={() => {
                 const redirrectPath =
@@ -361,7 +374,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           </Box>
         )}
         {!this.props.hideSocialLogin && (
-          <Box display="flex" gap="24px" justifyContent="center" my="24px">
+          <Box display="flex" gap="24px" justifyContent="center" my="24px" height="44px">
             <Button
               name="provider"
               value="google"

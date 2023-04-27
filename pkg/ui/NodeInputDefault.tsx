@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 
 import RadioGroup from "../../components/RadioGroup"
+import Select from "../../components/Select"
 import RecoveryProcess from "../../components/changepassword/RecoveryProcess"
 import CodeInput from "../../components/verification/CodeInput"
 import Eye from "../../public/images/eyes"
@@ -21,6 +22,7 @@ import {
   StyledPasswordIcon,
 } from "../../styles/share"
 import { Navs, Stage } from "../../types/enum"
+import { SelectOption } from "../../types/general"
 import { CenterLink } from "../styled"
 
 import { NodeInputProps } from "./helpers"
@@ -30,7 +32,14 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   const dispatch = useDispatch()
   const nav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
-  const { node, attributes, value = "", setValue, disabled } = props
+  const {
+    node,
+    attributes,
+    value = "",
+    setValue,
+    disabled,
+    validationMsgs,
+  } = props
   const label =
     node.meta.label?.text === "ID"
       ? "Email"
@@ -98,9 +107,19 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     attributes.name === "traits.gender" ? value : genderRadios[2].value,
   )
 
+  const [defaultSelectValue, setDefaultSelectValue] = useState(
+    genderRadios.find((g) => g.value === value),
+  )
+
+  // const defaultSelectValue = genderRadios.find((g) => g.value === gender)
+
   useEffect(() => {
     if (attributes.name === "traits.gender") {
+      console.log("value", value)
       setGender(value)
+      setDefaultSelectValue(
+        genderRadios.find((g) => g.value === parseInt(value)),
+      )
     }
   }, [value])
 
@@ -117,8 +136,9 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   // Render a generic text input field.
   return (
     <>
-      {/* <CodeInput /> */}
-      {verifyCodeConditions && <CodeInput show={attributes.name} />}
+      {verifyCodeConditions && (
+        <CodeInput show={attributes.name} validationMsgs={validationMsgs} />
+      )}
       <StyledDefaultInput isInputLabel={isInputLabel}>
         {isInputLabel && (
           <StyledDefaultLabel isError={isError}>{label}</StyledDefaultLabel>
@@ -162,7 +182,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
               e.preventDefault()
             }
           }}
-          type={inputType === 'email' ? 'text' : inputType }
+          type={inputType === "email" ? "text" : inputType}
           name={attributes.name}
           value={value}
           disabled={attributes.disabled || disabled}
@@ -178,6 +198,10 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
                 let displayText = text
                 if (text.includes("is missing")) {
                   displayText = "This field is required, please fill it out."
+                }
+                if (text.includes("is not valid")) {
+                  displayText =
+                    "Invalid email format, please check and try again."
                 }
                 return (
                   <span
@@ -203,23 +227,25 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
         )}
       </StyledDefaultInput>
       {attributes.name === "password" && nav === "LOGIN" && (
-        <span
-          style={{
-            color: "#CA4AE8",
-            fontSize: "16px",
+        <Box
+          width="fit-content"
+          color="#CA4AE8"
+          fontSize="16px"
+          position="relative"
+          fontFamily="Open Sans"
+          sx={{
             cursor: "pointer",
-            fontFamily: "Open Sans",
-            position: "relative",
-            paddingBottom: "36px",
+            ":hover": {
+              filter: "brightness(1.5)",
+            },
           }}
           onClick={() => {
             openDialog()
           }}
         >
           Forgot Password?
-        </span>
+        </Box>
       )}
-
       {attributes.name === "password" && nav === "REGISTER" && !isError && (
         <span
           style={{
@@ -231,22 +257,47 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           A combination of numbers and characters. (min 8 characters)
         </span>
       )}
-
-      {nav === Navs.PROFILE && attributes.name === "traits.gender" && (
-        <Box color="#FFF" ml="3px" position="relative">
-          <RadioGroup
-            value={gender}
-            label="Gender"
-            onChange={(e) => {
-              setGender(e.target.value)
-              setValue(e.target.value)
-            }}
-            radios={genderRadios}
-            direction="row"
-            custom
-          />
-        </Box>
-      )}
+      {nav === Navs.PROFILE &&
+        attributes.name === "traits.gender" &&
+        defaultSelectValue && (
+          <Box color="#FFF" ml="3px" position="relative">
+            <Box
+              display={{
+                xs: "none",
+                sm: "inline-block",
+              }}
+            >
+              <RadioGroup
+                value={gender}
+                label="Gender"
+                onChange={(e) => {
+                  setGender(e.target.value)
+                  setValue(e.target.value)
+                }}
+                radios={genderRadios}
+                direction="row"
+                custom
+              />
+            </Box>
+            <Box
+              display={{
+                sm: "none",
+                xs: "inline-block",
+              }}
+            >
+              <Select
+                title="Gender"
+                defaultValue={defaultSelectValue}
+                options={genderRadios}
+                width={"calc(100vw)"}
+                onChange={(selectedOption: SelectOption) => {
+                  setGender(selectedOption.value)
+                  setValue(selectedOption.value)
+                }}
+              />
+            </Box>
+          </Box>
+        )}
     </>
   )
 }

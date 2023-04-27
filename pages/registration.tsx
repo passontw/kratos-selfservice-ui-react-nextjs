@@ -15,7 +15,11 @@ import { Flow } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 // Import the SDK
 import ory from "../pkg/sdk"
-import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
+import {
+  setActiveNav,
+  setActiveStage,
+  setLockCodeResend,
+} from "../state/store/slice/layoutSlice"
 import { StyledMenuWrapper } from "../styles/share"
 import { Navs } from "../types/enum"
 import { registrationFormSchema } from "../util/schemas"
@@ -50,6 +54,7 @@ const Registration: NextPage = () => {
   useEffect(() => {
     localStorage.removeItem(localStorageKey)
     dispatch(setActiveNav(Navs.REGISTER))
+    dispatch(setLockCodeResend(false))
   }, [])
 
   // The "flow" represents a registration process and contains

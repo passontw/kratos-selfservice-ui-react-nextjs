@@ -15,7 +15,7 @@ export const Message = ({ message }: MessageProps) => {
     <Alert severity={message.type === "error" ? "error" : "info"}>
       <AlertContent data-testid={`ui/message/${message.id}`}>
         <Box color={message.type === "error" ? "#F44336" : "#74e279"}>
-          {message.text}
+          {message.text === "You successfully verified your email address." ? null : message.text}
         </Box>
       </AlertContent>
     </Alert>
@@ -31,7 +31,6 @@ export const Messages = ({ messages }: MessagesProps) => {
     // No messages? Do nothing.
     return null
   }
-
   return (
     <div>
       {messages.map((message) => (
