@@ -10,13 +10,10 @@ import {
   UpdateRegistrationFlowBody,
   UpdateSettingsFlowBody,
   UpdateVerificationFlowBody,
-  UiNodeGroupEnum,
-  UiTextTypeEnum,
 } from "@ory/client"
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
 import { Button } from "@ory/themes"
 import { Component, FormEvent, MouseEvent } from "react"
-import { useSelector } from "react-redux"
 
 import Apple from "../../public/images/login_icons/Apple"
 import Google from "../../public/images/login_icons/Google"

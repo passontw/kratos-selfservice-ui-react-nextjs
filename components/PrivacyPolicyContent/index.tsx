@@ -25,10 +25,10 @@ const PrivacyPolicyContent = ()=> {
       </StyledSection>
 
       <StyledTitle >BEHAVIORAL ADVERTISING</StyledTitle>
-      <StyledDiv >
+      <StyledDiv>
       We analyze non-personal information that we collect on the Cooler Master Sites, or obtain from third parties, and organize it into anonymous user profiles, groups, and audiences, based on factors such as age, gender, geography, interests, and online actions. We, our clients, and/or partners then use these anonymous user profiles, groups, and audiences to design and deliver customized advertising campaigns or other relevant content. We and our clients also use this data for other related purposes (e.g. to do research regarding the results of our online advertising campaigns or to better understand the interests or activities of our visitors.) The behavioral categories we use to customize the ads you may see or for related purposes do not use personal information such as your name, address, e-mail address, phone number, birth date, or social security number. Our technology and services are designed to limit our use of data for purposes of behavioral advertising to anonymous, non-personal information.
       </StyledDiv>
-      <StyledDiv >
+      <StyledDiv>
       When you visit any of the Cooler Master Sites and view ads from Cooler Master’s advertisers, Cooler Master automatically receives and stores certain types of non-personal information including IP address, web pages viewed, date and time, and responses to advertisements delivered. While each advertising technology uses different types of technology to collect this information, including log files, cookies, and pixels, none of the foregoing by itself or together can be tracked to a specific individual’s personal information, and the non-personal information collected by Cooler Master Technology Incwill not be shared with third parties, except as expressly indicated in this policy. The non-personal information collected through your use of the Cooler Master Sites is used: to provide relevant, targeted advertising and improve Cooler Master’s advertising technology; to monitor website traffic; to collect statistical data; to determine the effectiveness of advertisements and content; and to collect data across multiple websites to categorize likely consumer interest segments for use in online behavioral advertising. Cooler Master may track visits to the Cooler Master Sites and this information may be used over time to help predict your consumer interest segments and select the ad content you see. Cooler Master may also use non-personally identifiable profile-based anonymous information with other non-personal information.
       </StyledDiv>
 
@@ -56,18 +56,18 @@ const PrivacyPolicyContent = ()=> {
       <StyledSection >
       The Cooler Master Sites may use “cookies” and “web beacons” to speed navigation, keep track of items viewed, clicked on, and/or shared, including links and advertisements, and provide you with custom-tailored services. A “web beacon” is an embedded GIF file that specifically helps us track whether you have viewed a specific piece of content. We also use “cookies” to remember information you gave us so you don’t have to re-enter it each time you visit the Cooler Master Sites. By showing us how and when visitors use the Cooler Master Sites, “cookies” and “web beacons” allow us to see which Cooler Master Site areas and content are popular, and help us target content and advertisements based on user behavior. In addition, “cookies” will allow us to display in your profile which Cooler Master and affiliated websites you have visited, unless you opt out of that feature in your account. We also collect IP addresses for system administration and to report aggregate information to any sponsors. Some advertisers or websites that have links on our site may also use their own “cookies.” We do not control these “cookies.” You should check the privacy policy of these advertisers or websites to see whether and how they use “cookies.” Most browsers are initially set to accept “cookies.” If you'd prefer, you can set yours to refuse “cookies.” You will not be able to fully use the Cooler Master Sites if you turn off the “cookies" option.
       </StyledSection>
-      <StyledDiv >
+      <StyledDiv>
       If you have any questions or concerns about this policy you may contact us or write to the following address:
       </StyledDiv>
-      <StyledDiv >
+      <StyledDiv>
       https://www.coolermaster.com/regional-sole-distributor/
       </StyledDiv>
-      <StyledDiv >
+      <StyledDiv>
       E-mail: data-protection@coolermaster.com
       </StyledDiv>
 
       <StyledTitle>DETAILED STATEMENT ON COOLER MASTER’S COLLECTION AND USE OF PERSONAL INFORMATION.</StyledTitle>
-      <StyledDiv >
+      <StyledDiv>
       Through the Cooler Master Sites, users may enter personal information about themselves. This policy explains Cooler Master’s online information collection and use practices for the Cooler Master Sites, and the choices users can make about the way we use and share such information. Please take the time to read and understand this policy so that you can understand how we use your personal information. Please note that our online information collection and use practices may differ from our practices regarding information obtained offline.
       </StyledDiv>
       <StyledSection >
@@ -75,7 +75,7 @@ const PrivacyPolicyContent = ()=> {
       </StyledSection>
 
       <StyledTitle>DETAILED STATEMENT ON COOLER MASTER’S COLLECTION AND USE OF PERSONAL INFORMATION.</StyledTitle>
-      <StyledDiv >
+      <StyledDiv>
       Through the Cooler Master Sites, users may enter personal information about themselves. This policy explains Cooler Master’s online information collection and use practices for the Cooler Master Sites, and the choices users can make about the way we use and share such information. Please take the time to read and understand this policy so that you can understand how we use your personal information. Please note that our online information collection and use practices may differ from our practices regarding information obtained offline.
       </StyledDiv>
       <StyledSection>
@@ -83,7 +83,7 @@ const PrivacyPolicyContent = ()=> {
       </StyledSection>
 
       <StyledTitle>THE INFORMATION WE COLLECT.</StyledTitle>
-      <StyledDiv >
+      <StyledDiv>
       We may collect information about you through a variety of methods, such as your participation in chat rooms, forums or the like, documents and information that you submit to us, transactions in which you may engage with us or any affiliated companies of Cooler Master Technology Inc. (collectively, “Cooler Master Affiliates”), and/or through visits that you may make to the website(s) operated and/or controlled by Cooler Master or Cooler Master’s Affiliates (collectively, “the Cooler Master Sites”). This policy applies to all personal information that we may collect and maintain about our users via the Cooler Master Sites, such as:
       </StyledDiv>
       <ul>

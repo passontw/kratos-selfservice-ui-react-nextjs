@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box"
 import { LoginFlow } from "@ory/client"
-import axios from "axios"
 import { AxiosError } from "axios"
 import cloneDeep from "lodash/cloneDeep"
 import isEmpty from "lodash/isEmpty"
@@ -8,7 +7,7 @@ import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import queryString from "query-string"
 import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 
 import { api } from "../axios/api"
 import AppsList from "../components/AppsList"
@@ -19,7 +18,6 @@ import { LogoutLink, Flow } from "../pkg"
 import { handleGetFlowError, handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import {
-  selectActiveNav,
   setActiveNav,
   setActiveStage,
   setDialog,
@@ -297,8 +295,8 @@ const Login: NextPage = () => {
       return false
     }
   }
-
-  if (isEmpty(flow?.ui)) return null
+  console.log("🚀 ~ file: login.tsx:336 ~ //onSubmit ~ flow?.ui:", flow?.ui)
+  if (isEmpty(flow?.ui) || isEmpty(flow?.ui?.action)) return null
 
   return (
     <>
