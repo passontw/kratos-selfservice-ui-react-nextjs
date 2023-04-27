@@ -88,8 +88,10 @@ const Dialog: React.FC<DialogProps> = ({
 
   const mobileHeader = (title:string)=>{
     return (
-      <Box display="flex" gap="6px" justifyContent="center" alignItems="center" fontFamily="Teko" fontSize="36px" textTransform="uppercase">
-        <Cmid />
+      <Box display="flex" gap="6px" justifyContent="center" alignItems="center" fontFamily="Teko" fontSize="20px" textTransform="uppercase">
+        <Box display="flex" width='31px'>
+          <Cmid />
+        </Box>
         <div>{title}</div>
       </Box>
     )
