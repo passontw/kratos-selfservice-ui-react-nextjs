@@ -43,6 +43,7 @@ const StyledImageUpload = styled("div")(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     paddingRight: "0px",
     paddingTop: "48px",
+    borderRight: "1px solid transparent",
   },
 }))
 
