@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box"
+import { useRouter } from "next/router"
 import { useState, useRef, useEffect } from "react"
 
 import { LogoutLink } from "../../pkg"
@@ -10,6 +11,7 @@ function DropdownComponent() {
   const [isOpen, setIsOpen] = useState(false)
   const ref = useRef(null)
   const onLogout = LogoutLink()
+  const router = useRouter();
 
   useEffect(() => {
     // add event listener to document to close dropdown when clicked outside
@@ -63,7 +65,10 @@ function DropdownComponent() {
           alignItems="center"
           gap="10px"
           zIndex={1}
-          onClick={onLogout}
+          onClick={() => {
+            onLogout();
+            window.location.replace("/login");
+          }}
           sx={{
             cursor: "pointer",
             ":hover": {
