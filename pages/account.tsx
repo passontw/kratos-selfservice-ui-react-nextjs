@@ -90,6 +90,7 @@ const Account: NextPage = () => {
     const { data } = await axios.get("/api/.ory/sessions/whoami", {
       headers: { withCredentials: true },
     })
+
     return axios
       .delete(
         `${process.env.ORY_SDK_URL}/admin/identities/${data.identity.id}`,
