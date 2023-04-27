@@ -374,7 +374,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           </Box>
         )}
         {!this.props.hideSocialLogin && (
-          <Box display="flex" gap="24px" justifyContent="center" my="24px">
+          <Box display="flex" gap="24px" justifyContent="center" my="24px" height="44px">
             <Button
               name="provider"
               value="google"
