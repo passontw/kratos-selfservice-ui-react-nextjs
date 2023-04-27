@@ -322,7 +322,9 @@ const Login: NextPage = () => {
           return "Sign In (ID can be Email or Username)"
         })()}
         </CardTitle> */}
-          <CmidHead />
+          <Box display="flex" justifyContent={{xs: 'center', sm: 'left'}}>
+            <CmidHead /> 
+          </Box>
           <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
             Welcome back
           </Box>
