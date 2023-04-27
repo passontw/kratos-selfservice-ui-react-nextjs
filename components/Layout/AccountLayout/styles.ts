@@ -67,6 +67,7 @@ const StyledContentWrapper = styled("div")(({ theme }) => ({
   padding: "48px 48px 110px",
   width: "76%",
   minWidth: "880px",
+  boxSizing: "border-box",
   [theme.breakpoints.down("sm")]: {
     padding: "20px 20px 180px",
     width: "100%",

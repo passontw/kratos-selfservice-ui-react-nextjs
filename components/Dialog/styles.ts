@@ -11,7 +11,7 @@ const StyledDialogTitle = styled(DialogTitle, {
   backgroundColor: "#272735",
   fontSize: "20px",
   fontFamily: "open sans",
-  padding: "16px 32px",
+  padding: "0px 32px",
   // fontWeight: 600,
   // lineHeight: '24px',
   height: titleHeight || "58px",
