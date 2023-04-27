@@ -35,9 +35,12 @@ const StyledEmail = styled("p")<{}>(() => ({
   margin: "0px",
 }))
 
-const StyledChangePasswordDeco = styled("img")(() => ({
+const StyledChangePasswordDeco = styled("img")(({ theme }) => ({
   width: "100%",
   height: "16px",
+  [theme.breakpoints.down("sm")]: {
+    display: "none",
+  },
 }))
 
 export {
