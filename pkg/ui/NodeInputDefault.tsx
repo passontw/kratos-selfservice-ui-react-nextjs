@@ -199,6 +199,10 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
                 if (text.includes("is missing")) {
                   displayText = "This field is required, please fill it out."
                 }
+                if (text.includes("is not valid")) {
+                  displayText =
+                    "Invalid email format, please check and try again."
+                }
                 return (
                   <span
                     key={`${id}-${k}`}
