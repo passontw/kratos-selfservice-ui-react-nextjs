@@ -286,7 +286,7 @@ const Account: NextPage = () => {
               display="flex"
               gap="15px"
               width="fit-content"
-              onClick={deleteAccount}
+              onClick={deleteAccountPromt}
               sx={{
                 cursor: "pointer",
               }}
