@@ -20,7 +20,6 @@ import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import {
   setActiveNav,
-  setActiveStage,
   setLockCodeResend,
 } from "../state/store/slice/layoutSlice"
 import { StyledMenuWrapper } from "../styles/share"
@@ -63,7 +62,6 @@ const Registration: NextPage = () => {
   // The "flow" represents a registration process and contains
   // information about the form we need to render (e.g. username + password)
   const [flow, setFlow] = useState<RegistrationFlow>()
-  console.log("🚀 ~ file: registration.tsx:58 ~ flow:", flow)
 
   // Get ?flow=... from the URL
   const { flow: flowId, return_to: returnTo } = router.query
@@ -90,7 +88,7 @@ const Registration: NextPage = () => {
     // Otherwise we initialize it
     ory
       .createBrowserRegistrationFlow({
-        returnTo: returnTo ? String(returnTo) : undefined,
+        returnTo: returnTo ? String(returnTo) : '/profile',
       })
       .then(({ data }) => {
         setFlow(data)
@@ -114,6 +112,14 @@ const Registration: NextPage = () => {
               .updateRegistrationFlow({
                 flow: String(flow?.id),
                 updateRegistrationFlowBody: values,
+              }).then(() => {
+                return ory
+                .createBrowserLogoutFlow()
+                .then(({ data: logoutFlow }) => {
+                  return ory.updateLogoutFlow({
+                    token: logoutFlow.logout_token,
+                  })
+                })
               })
               .then(({ data }) => {
                 localStorage.setItem(localStorageKey, JSON.stringify(values))

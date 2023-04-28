@@ -52,7 +52,7 @@ const validateLoginFlow = async (router, options) => {
         aal: aal ? String(aal) : undefined,
         returnTo: Boolean(login_challenge)
           ? NEXT_PUBLIC_REDIRECT_URI
-          : undefined,
+          : '/profile',
       })
 
       if (router.query.login_challenge) {
@@ -295,7 +295,7 @@ const Login: NextPage = () => {
       return false
     }
   }
-  console.log("🚀 ~ file: login.tsx:336 ~ //onSubmit ~ flow?.ui:", flow?.ui)
+
   if (isEmpty(flow?.ui) || isEmpty(flow?.ui?.action)) return null
 
   return (
@@ -322,7 +322,9 @@ const Login: NextPage = () => {
           return "Sign In (ID can be Email or Username)"
         })()}
         </CardTitle> */}
-          <CmidHead />
+          <Box display="flex" justifyContent={{xs: 'center', sm: 'left'}}>
+            <CmidHead /> 
+          </Box>
           <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
             Welcome back
           </Box>

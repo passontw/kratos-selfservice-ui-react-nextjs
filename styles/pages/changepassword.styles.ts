@@ -1,7 +1,7 @@
 import { styled } from "@mui/system"
 
 const StyledChangePasswordArea = styled("div")<{ marginTop?: string }>(
-  ({ marginTop }) => ({
+  ({ marginTop, theme }) => ({
     backgroundColor: "#272735",
     display: "flex",
     width: "100%",
@@ -16,6 +16,9 @@ const StyledChangePasswordArea = styled("div")<{ marginTop?: string }>(
       border: "none",
       width: "100%",
       maxWidth: "500px",
+    },
+    [theme.breakpoints.down("sm")]: {
+      marginTop: "24px",
     },
   }),
 )
@@ -35,9 +38,12 @@ const StyledEmail = styled("p")<{}>(() => ({
   margin: "0px",
 }))
 
-const StyledChangePasswordDeco = styled("img")(() => ({
+const StyledChangePasswordDeco = styled("img")(({ theme }) => ({
   width: "100%",
   height: "16px",
+  [theme.breakpoints.down("sm")]: {
+    display: "none",
+  },
 }))
 
 export {

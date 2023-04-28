@@ -62,6 +62,9 @@ export const StyledMenuWrapper = styled.div`
   @media only screen and (min-width: 600px) {
     padding: 80px 80px 0px 80px;
   }
+  @media only screen and (max-width: 600px) {
+    padding-top: 35px;
+  }
 `
 
 // [right] login main Terms of ServicePrivacy Policy

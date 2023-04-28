@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box"
 import { SettingsFlow, UpdateSettingsFlowBody } from "@ory/client"
-import { H3 } from "@ory/themes"
 import axios from "axios"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
@@ -8,12 +7,11 @@ import { ReactNode, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import AccountLayout from "../components/Layout/AccountLayout"
-import { showToast } from "../components/Toast"
 import DeleteAccConfirm from "../components/account/DeleteAccConfirm"
 import { Flow } from "../components/account/Flow"
 import ProfileFlow from "../components/account/ProfileFlow"
 import VerificationModal from "../components/account/VerificationModal"
-import { Methods, ActionCard, Messages } from "../pkg"
+import { Methods, Messages } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import Bin from "../public/images/Bin"
@@ -90,9 +88,10 @@ const Account: NextPage = () => {
     const { data } = await axios.get("/api/.ory/sessions/whoami", {
       headers: { withCredentials: true },
     })
+
     return axios
       .delete(
-        `${process.env.ORY_SDK_URL}/admin/identities/${data.identity.id}`,
+        `${process.env.ORY_CUSTOM_DOMAIN}/admin/identities/${data.identity.id}`,
         {
           headers: {
             Accept: "application/json",
@@ -100,7 +99,7 @@ const Account: NextPage = () => {
           },
         },
       )
-      .then((resp) => {
+      .then(() => {
         router.replace("/")
       })
       .catch((error) => {
@@ -221,7 +220,15 @@ const Account: NextPage = () => {
     <AccountLayout>
       <Box display="flex" flexDirection="column">
         <SettingsCard only="oidc" flow={flow}>
-          <Box color="#717197" fontFamily="open sans" fontSize="22px" mt="48px">
+          <Box
+            color="#717197"
+            fontFamily="open sans"
+            fontSize="22px"
+            marginTop={{
+              sm: "48px",
+              xs: "24px",
+            }}
+          >
             Account Linking
           </Box>
           <Box

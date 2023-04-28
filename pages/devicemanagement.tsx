@@ -42,7 +42,10 @@ const DeviceManagement: NextPage = () => {
         flexDirection="column"
         position="relative"
         height="100%"
-        marginTop="48px"
+        marginTop={{
+          sm: "48px",
+          xs: "24px",
+        }}
       ></Box>
       <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
       <LinkNav />

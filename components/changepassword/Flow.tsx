@@ -289,8 +289,7 @@ export default class Flow<T extends Values> extends Component<
             <Eye setInputType={this.handleEye} />
           </StyledPasswordIcon>
         </StyledDefaultInput>
-        TESTERSON
-        <Box position="relative" width="76px" mt="24px">
+        <Box position="relative" width={{xs:'100%', sm: '76px'}} mt="24px">
           <NodeInputSubmit
             value={values[getNodeId(submitNode)]}
             node={submitNode}

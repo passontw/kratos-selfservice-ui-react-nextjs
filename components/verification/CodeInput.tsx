@@ -17,6 +17,9 @@ const InputsWrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: 16px;
+  @media only screen and (max-width: 435px) {
+    gap: 6px;
+  }
 `
 
 interface InputProps {
@@ -32,6 +35,10 @@ const Input = styled.input<InputProps>`
   text-align: center;
   font-size: 20px;
   color: #fff;
+  @media only screen and (max-width: 435px) {
+    width: 45px;
+    height: 50px;
+  }
 
   &:focus {
     outline: none;
@@ -123,8 +130,9 @@ const CodeInput: React.FC<CodeInput> = ({ show, validationMsgs }) => {
 
   const isEmpty = code.every((item) => item === "")
   const isInValid =
+    validationMsgs &&
     validationMsgs[0]?.text ===
-    "The recovery code is invalid or has already been used. Please try again."
+      "The recovery code is invalid or has already been used. Please try again."
 
   return show !== "email" ? (
     <Container>

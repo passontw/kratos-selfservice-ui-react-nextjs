@@ -8,11 +8,11 @@ const StyledDialogTitle = styled(DialogTitle, {
 })<{ titleHeight?: number | string }>(({ titleHeight }) => ({
   color: "#FFF",
   // letterSpacing: '1px',
-  backgroundColor: "#272735",
+  backgroundColor: titleHeight === "MENU" ? "#1F1F2A" : "#272735",
   fontSize: "20px",
   fontFamily: "open sans",
-  padding: "16px 32px",
-  // fontWeight: 600,
+  padding: titleHeight === "MENU" ? "8px 32px" : "20px 32px",
+  // fontWeight: 600,MENU
   // lineHeight: '24px',
   height: titleHeight || "58px",
   // borderBottom: `1px solid #000`,

@@ -39,12 +39,12 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <PopupLayout>
-            <Box display="flex" position="relative">
-              <div className="background-wrapper">
+            <div className="main-container">
+              {/* <div className="background-wrapper">
                 <div className="overlay-image"></div>
-              </div>
+              </div> */}
               <Component {...pageProps} />
-            </Box>
+            </div>
             <ToastContainer />
           </PopupLayout>
         </ThemeProvider>
