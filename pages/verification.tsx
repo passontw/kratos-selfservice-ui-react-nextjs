@@ -150,6 +150,11 @@ const Verification: NextPage = () => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   const onSubmit = async (values: UpdateVerificationFlowBody) => {
+    const {code = ''} = values;
+    if (code.length !== 6) {
+      return null;
+    }
+
     await router
       // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
       // their data when they reload the page.
