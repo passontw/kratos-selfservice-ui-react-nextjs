@@ -32,7 +32,7 @@ const StyledAppItem = styled("div")(({ theme }) => ({
     flexDirection: "row",
     width: "182px",
     height: "100%",
-    padding: "14px 20px",
+    padding: "12px 16px",
   },
 }))
 
@@ -40,6 +40,7 @@ const StyledAppIcon = styled("div")(({ theme }) => ({
   width: "80px",
   [theme.breakpoints.down("sm")]: {
     width: "34px",
+    height: "34px",
   },
 }))
 
