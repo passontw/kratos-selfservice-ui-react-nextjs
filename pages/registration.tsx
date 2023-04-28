@@ -17,7 +17,6 @@ import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import {
   setActiveNav,
-  setActiveStage,
   setLockCodeResend,
 } from "../state/store/slice/layoutSlice"
 import { StyledMenuWrapper } from "../styles/share"
@@ -110,6 +109,14 @@ const Registration: NextPage = () => {
               .updateRegistrationFlow({
                 flow: String(flow?.id),
                 updateRegistrationFlowBody: values,
+              }).then(() => {
+                return ory
+                .createBrowserLogoutFlow()
+                .then(({ data: logoutFlow }) => {
+                  return ory.updateLogoutFlow({
+                    token: logoutFlow.logout_token,
+                  })
+                })
               })
               .then(({ data }) => {
                 localStorage.setItem(localStorageKey, JSON.stringify(values))
