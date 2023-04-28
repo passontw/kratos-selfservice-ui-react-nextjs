@@ -22,8 +22,11 @@ const StyledChangePasswordArea = styled("div")<{ marginTop?: string }>(
     },
   }),
 )
-const StyledSection = styled("section")<{}>(() => ({
+const StyledSection = styled("section")<{}>(({ theme }) => ({
   padding: "16px 32px 32px",
+  [theme.breakpoints.down("sm")]: {
+    padding: "16px 32px 16px",
+  },
 }))
 
 const StyledAccount = styled("p")<{}>(() => ({
