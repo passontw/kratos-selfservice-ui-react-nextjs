@@ -1,11 +1,4 @@
-import Box from "@mui/material/Box"
 import Image from "next/image"
-
-import Cmodx from "../../public/images/app_icons/Cmodx"
-import MasterControl, {
-  MasterControlProps,
-} from "../../public/images/app_icons/MasterControl"
-import Stormplay from "../../public/images/app_icons/Stormplay"
 
 import { StyledAppIcon, StyledAppItem, StyledAppTitle } from "./styles"
 
