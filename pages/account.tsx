@@ -90,9 +90,10 @@ const Account: NextPage = () => {
     const { data } = await axios.get("/api/.ory/sessions/whoami", {
       headers: { withCredentials: true },
     })
+
     return axios
       .delete(
-        `${process.env.ORY_SDK_URL}/admin/identities/${data.identity.id}`,
+        `${process.env.ORY_CUSTOM_DOMAIN}/admin/identities/${data.identity.id}`,
         {
           headers: {
             Accept: "application/json",
@@ -100,7 +101,7 @@ const Account: NextPage = () => {
           },
         },
       )
-      .then((resp) => {
+      .then(() => {
         router.replace("/")
       })
       .catch((error) => {

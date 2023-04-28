@@ -60,7 +60,6 @@ const Registration: NextPage = () => {
   // The "flow" represents a registration process and contains
   // information about the form we need to render (e.g. username + password)
   const [flow, setFlow] = useState<RegistrationFlow>()
-  console.log("🚀 ~ file: registration.tsx:58 ~ flow:", flow)
 
   // Get ?flow=... from the URL
   const { flow: flowId, return_to: returnTo } = router.query

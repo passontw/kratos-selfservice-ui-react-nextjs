@@ -155,7 +155,6 @@ const Settings: NextPage = () => {
         nextFlow.ui.nodes[passwordIndex].messages = [passwordMessage]
       }
 
-      console.log("🚀 ~ file: settings.tsx:153 ~ onSubmit ~ errors:", errors)
       if (errors.confirmPassword) {
         setConfirmPasswordError(errors.confirmPassword)
       } else {
