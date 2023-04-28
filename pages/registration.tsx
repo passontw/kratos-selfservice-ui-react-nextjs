@@ -88,7 +88,7 @@ const Registration: NextPage = () => {
     // Otherwise we initialize it
     ory
       .createBrowserRegistrationFlow({
-        returnTo: returnTo ? String(returnTo) : '/profile',
+        returnTo: returnTo ? String(returnTo) : "/profile",
       })
       .then(({ data }) => {
         setFlow(data)
@@ -112,14 +112,15 @@ const Registration: NextPage = () => {
               .updateRegistrationFlow({
                 flow: String(flow?.id),
                 updateRegistrationFlowBody: values,
-              }).then(() => {
+              })
+              .then(() => {
                 return ory
-                .createBrowserLogoutFlow()
-                .then(({ data: logoutFlow }) => {
-                  return ory.updateLogoutFlow({
-                    token: logoutFlow.logout_token,
+                  .createBrowserLogoutFlow()
+                  .then(({ data: logoutFlow }) => {
+                    return ory.updateLogoutFlow({
+                      token: logoutFlow.logout_token,
+                    })
                   })
-                })
               })
               .then(({ data }) => {
                 localStorage.setItem(localStorageKey, JSON.stringify(values))
@@ -251,9 +252,9 @@ const Registration: NextPage = () => {
           </Box>
           <Flow onSubmit={onSubmit} flow={nextFlow} router={router} />
           <StyledAppItemWrap>
-            <AppItem appIcon="MasterControl" appName="Master Control" id={1} />
-            <AppItem appIcon="Stormplay" appName="Stormplay" />
-            <AppItem appIcon="Cmodx" appName="CMODX" />
+            <AppItem appIcon="MasterControl" appName="Master Control" mobile />
+            <AppItem appIcon="Stormplay" appName="Stormplay" mobile />
+            <AppItem appIcon="Cmodx" appName="CMODX" mobile />
           </StyledAppItemWrap>
           <Box
             mt="30px"

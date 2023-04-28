@@ -12,21 +12,28 @@ import { StyledAppIcon, StyledAppItem, StyledAppTitle } from "./styles"
 interface AppItemProps {
   appIcon: string
   appName: string
-  id?: number
   mobile?: boolean
 }
 
-const AppItem: React.FC<AppItemProps> = ({ appIcon, appName, id }) => {
+const AppItem: React.FC<AppItemProps> = ({ appIcon, appName, mobile }) => {
   return (
     <StyledAppItem>
       <StyledAppIcon>
         {appIcon === "Cmodx" ? (
-          <Image src="/images/cmodx-logo.png" width="100%" height="100%" />
+          <Image
+            src={`/images/cmodx-logo${mobile ? "-mobile" : ""}.png`}
+            width="100%"
+            height="100%"
+          />
         ) : appIcon === "Stormplay" ? (
-          <Image src="/images/stormplay-logo.png" width="100%" height="100%" />
+          <Image
+            src={`/images/stormplay-logo${mobile ? "-mobile" : ""}.png`}
+            width="100%"
+            height="100%"
+          />
         ) : appIcon === "MasterControl" ? (
           <Image
-            src="/images/master-control-logo.png"
+            src={`/images/master-control-logo${mobile ? "-mobile" : ""}.png`}
             width="100%"
             height="100%"
           />
