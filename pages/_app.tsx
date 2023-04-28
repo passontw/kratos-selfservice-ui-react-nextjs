@@ -40,9 +40,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ThemeProvider theme={theme}>
           <PopupLayout>
             <div className="main-container">
-              <div className="background-wrapper">
+              {/* <div className="background-wrapper">
                 <div className="overlay-image"></div>
-              </div>
+              </div> */}
               <Component {...pageProps} />
             </div>
             <ToastContainer />
