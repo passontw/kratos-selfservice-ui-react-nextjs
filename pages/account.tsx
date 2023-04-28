@@ -222,7 +222,15 @@ const Account: NextPage = () => {
     <AccountLayout>
       <Box display="flex" flexDirection="column">
         <SettingsCard only="oidc" flow={flow}>
-          <Box color="#717197" fontFamily="open sans" fontSize="22px" mt="48px">
+          <Box
+            color="#717197"
+            fontFamily="open sans"
+            fontSize="22px"
+            marginTop={{
+              sm: "48px",
+              xs: "24px",
+            }}
+          >
             Account Linking
           </Box>
           <Box

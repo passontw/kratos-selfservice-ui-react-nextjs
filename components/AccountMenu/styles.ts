@@ -13,7 +13,7 @@ const StyledWrapper = styled("div")(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     marginTop: "0px",
     paddingTop: "60px",
-    backgroundColor: "#000",
+    backgroundColor: "#161622",
     height: "100%",
   },
 }))
@@ -55,10 +55,10 @@ const StyledVercelWrapper = styled("div")<{ active?: boolean }>(
 )
 
 const StyledLine = styled("div")<{ active?: boolean }>(() => ({
-  width: "calc(100% - 40px)",
+  width: "calc(100% - 60px)",
   height: "1px",
   backgroundColor: "#5C5C73",
-  margin: "0px 20px",
+  margin: "25px 30px",
 }))
 
 const StyledMobile = styled("div")<{}>(({ theme }) => ({

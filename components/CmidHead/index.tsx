@@ -6,7 +6,7 @@ interface CmidHeadProps {}
 
 const CmidHead: React.FC<CmidHeadProps> = () => {
   return (
-    <Box display="flex" gap="16px">
+    <Box display="flex" gap="16px" justifyContent="center">
       <Box>
         <Cmid />
       </Box>

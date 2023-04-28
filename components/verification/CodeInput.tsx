@@ -17,6 +17,9 @@ const InputsWrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: 16px;
+  @media only screen and (max-width: 440px) {
+    gap: 6px;
+  }
 `
 
 interface InputProps {
