@@ -100,7 +100,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     },
     {
       label: "Undisclosed",
-      value: 3,
+      value: 0,
     },
   ]
   const [gender, setGender] = useState(
@@ -116,9 +116,11 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   useEffect(() => {
     if (attributes.name === "traits.gender") {
       console.log("value", value)
-      setGender(value)
+      setGender(value ? value : 0)
       setDefaultSelectValue(
-        genderRadios.find((g) => g.value === parseInt(value)),
+        value
+          ? genderRadios.find((g) => g.value === parseInt(value))
+          : genderRadios[2],
       )
     }
   }, [value])
@@ -257,6 +259,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           A combination of numbers and characters. (min 8 characters)
         </span>
       )}
+      {console.log("defaultSelectValue", defaultSelectValue)}
       {nav === Navs.PROFILE &&
         attributes.name === "traits.gender" &&
         defaultSelectValue && (
