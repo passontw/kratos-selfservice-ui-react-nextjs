@@ -17,7 +17,7 @@ const InputsWrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: 16px;
-  @media only screen and (max-width: 440px) {
+  @media only screen and (max-width: 435px) {
     gap: 6px;
   }
 `
@@ -35,6 +35,10 @@ const Input = styled.input<InputProps>`
   text-align: center;
   font-size: 20px;
   color: #fff;
+  @media only screen and (max-width: 435px) {
+    width: 45px;
+    height: 50px;
+  }
 
   &:focus {
     outline: none;
