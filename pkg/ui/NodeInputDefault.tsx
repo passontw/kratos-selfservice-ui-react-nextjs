@@ -32,14 +32,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   const dispatch = useDispatch()
   const nav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
-  const {
-    node,
-    attributes,
-    value = "",
-    setValue,
-    disabled,
-    validationMsgs,
-  } = props
+  const { node, attributes, value, setValue, disabled, validationMsgs } = props
   const label =
     node.meta.label?.text === "ID"
       ? "Email"
@@ -107,15 +100,13 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     attributes.name === "traits.gender" ? value : genderRadios[2].value,
   )
 
-  const [defaultSelectValue, setDefaultSelectValue] = useState(
-    genderRadios.find((g) => g.value === value),
-  )
+  const defaultVal = genderRadios.find((g) => g.value === value)
+  const [defaultSelectValue, setDefaultSelectValue] = useState(defaultVal)
 
   // const defaultSelectValue = genderRadios.find((g) => g.value === gender)
 
   useEffect(() => {
-    if (attributes.name === "traits.gender") {
-      console.log("value", value)
+    if (value && attributes.name === "traits.gender") {
       setGender(value ? value : 0)
       setDefaultSelectValue(
         value
