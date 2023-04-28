@@ -4,11 +4,14 @@ import cloneDeep from "lodash/cloneDeep"
 import type { NextPage } from "next"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import queryString from "query-string"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-import queryString from "query-string"
-import AppsList from '../components/AppsList'
 
+import AppItem from "../components/AppItem"
+import { AppItemWrap, StyledAppItemWrap } from "../components/AppItem/styles"
+import AppItemCopy from "../components/AppItemCopy"
+import AppsList from "../components/AppsList"
 import CmidHead from "../components/CmidHead"
 import MenuFooter from "../components/MenuFooter"
 import { Flow } from "../pkg"
@@ -114,10 +117,10 @@ const Registration: NextPage = () => {
               })
               .then(({ data }) => {
                 localStorage.setItem(localStorageKey, JSON.stringify(values))
-                  window.location.href = `/verification?${queryString.stringify(
-                    router.query,
-                  )}&user=${values["traits.email"]}&type=registe`
-                  return
+                window.location.href = `/verification?${queryString.stringify(
+                  router.query,
+                )}&user=${values["traits.email"]}&type=registe`
+                return
               })
               .catch(handleFlowError(router, "registration", setFlow))
               .catch((err: any) => {
@@ -241,7 +244,13 @@ const Registration: NextPage = () => {
             Join us
           </Box>
           <Flow onSubmit={onSubmit} flow={nextFlow} router={router} />
+          <StyledAppItemWrap>
+            <AppItem appIcon="MasterControl" appName="Master Control" id={1} />
+            <AppItem appIcon="Stormplay" appName="Stormplay" />
+            <AppItem appIcon="Cmodx" appName="CMODX" />
+          </StyledAppItemWrap>
           <Box
+            mt="30px"
             color="#A5A5A9"
             fontSize="14px"
             fontFamily="open sans"
@@ -249,6 +258,7 @@ const Registration: NextPage = () => {
             display="flex"
             flexWrap="wrap"
             paddingBottom="86px"
+            whiteSpace="nowrap"
           >
             <Box>By signing up for Cooler Master ID,</Box>
             <Box display="flex" mt="2px" alignItems="center">

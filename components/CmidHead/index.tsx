@@ -2,18 +2,16 @@ import Box from "@mui/material/Box"
 
 import Cmid from "../../public/images/app_icons/Cmid"
 
+import { CmidHeadWrap } from "./styles"
+
 interface CmidHeadProps {}
 
 const CmidHead: React.FC<CmidHeadProps> = () => {
   return (
-    <Box display="flex" gap="16px">
-      <Box>
-        <Cmid />
-      </Box>
-      <Box fontFamily="Teko" color="#fff" fontSize="40px">
-        Cooler Master ID
-      </Box>
-    </Box>
+    <CmidHeadWrap>
+      <Cmid />
+      Cooler Master ID
+    </CmidHeadWrap>
   )
 }
 
