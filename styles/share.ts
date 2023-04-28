@@ -102,8 +102,11 @@ export const StyledLink = styled.a`
   font-family: "Open Sans";
   font-size: 14px;
   line-height: 20px;
-  color: #c0c0c0;
+  color: #c0c0c0 !important;
   cursor: pointer;
+  &:visited {
+    color: #c0c0c0 !important;
+  }
 `
 export const StyledLine = styled.span`
   display: inline-block;
