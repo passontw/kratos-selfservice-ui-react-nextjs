@@ -237,9 +237,9 @@ const Registration: NextPage = () => {
       <div className="mainWrapper">
         <StyledMenuWrapper>
           {/* <Head>
-        <title>Create account - Ory NextJS Integration Example</title>
-        <meta name="description" content="NextJS + React + Vercel + Ory" />
-      </Head> */}
+            <title>Create account - Ory NextJS Integration Example</title>
+            <meta name="description" content="NextJS + React + Vercel + Ory" />
+          </Head> */}
           <div>
             <title>Create account - Ory NextJS Integration Example</title>
             <meta name="description" content="NextJS + React + Vercel + Ory" />
@@ -251,20 +251,15 @@ const Registration: NextPage = () => {
             Join us
           </Box>
           <Flow onSubmit={onSubmit} flow={nextFlow} router={router} />
-          <StyledAppItemWrap>
-            <AppItem appIcon="MasterControl" appName="Master Control" mobile />
-            <AppItem appIcon="Stormplay" appName="Stormplay" mobile />
-            <AppItem appIcon="Cmodx" appName="CMODX" mobile />
-          </StyledAppItemWrap>
+          {/* Moblie Terms Start */}
           <Box
             mt="30px"
             color="#A5A5A9"
             fontSize="14px"
             fontFamily="open sans"
             justifyContent="center"
-            display="flex"
+            display={{ xs: "flex", md: "none" }}
             flexWrap="wrap"
-            paddingBottom="86px"
             whiteSpace="nowrap"
           >
             <Box>By signing up for Cooler Master ID,</Box>
@@ -280,6 +275,38 @@ const Registration: NextPage = () => {
               .
             </Box>
           </Box>
+          {/* Mobile Terms End */}
+          <StyledAppItemWrap>
+            <AppItem appIcon="MasterControl" appName="Master Control" mobile />
+            <AppItem appIcon="Stormplay" appName="Stormplay" mobile />
+            <AppItem appIcon="Cmodx" appName="CMODX" mobile />
+          </StyledAppItemWrap>
+          {/* Desktop Terms Start */}
+          <Box
+            mt="30px"
+            color="#A5A5A9"
+            fontSize="14px"
+            fontFamily="open sans"
+            justifyContent="center"
+            flexWrap="wrap"
+            paddingBottom="86px"
+            whiteSpace="nowrap"
+            display={{ xs: "none", md: "flex" }}
+          >
+            <Box>By signing up for Cooler Master ID,</Box>
+            <Box display="flex" mt="2px" alignItems="center">
+              you agree to our{" "}
+              <Link className="link" href="/">
+                Terms of Service
+              </Link>{" "}
+              &{" "}
+              <Link className="link" href="/">
+                Privacy Policy
+              </Link>
+              .
+            </Box>
+          </Box>
+          {/* Desktop Terms End */}
         </StyledMenuWrapper>
         <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
       </div>

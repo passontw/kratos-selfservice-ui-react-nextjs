@@ -8,6 +8,7 @@ const StyledAppItemWrap = styled("div")(({ theme }) => ({
   width: "100%",
   gap: "20px",
   margin: "10px",
+  marginTop: "60px",
   overflow: "scroll",
   "&::-webkit-scrollbar": {
     display: "none",
@@ -33,6 +34,7 @@ const StyledAppItem = styled("div")(({ theme }) => ({
     width: "182px",
     height: "100%",
     padding: "12px 16px",
+    marginBottom: "33px",
   },
 }))
 
