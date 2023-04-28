@@ -1,10 +1,16 @@
-interface MasterControlProps {
-  color?: string,
-  width?: string,
+export interface MasterControlProps {
+  id?: number
+  color?: string
+  width?: string
   height?: string
 }
 
-const MasterControl: React.FC<MasterControlProps> = ({ color = "#FFF", width = "80", height = "80" }) => {
+const MasterControl: React.FC<MasterControlProps> = ({
+  id,
+  color = "#FFF",
+  width = "80",
+  height = "80",
+}) => {
   return (
     <svg
       width={width}
@@ -42,7 +48,7 @@ const MasterControl: React.FC<MasterControlProps> = ({ color = "#FFF", width = "
                 cy="40.1478"
                 r="37.2666"
                 transform="rotate(60 39.8529 40.1478)"
-                fill="url(#paint0_linear_788_264)"
+                fill={`url(#paint0_${id})`}
               />
             </g>
           </g>
@@ -70,7 +76,7 @@ const MasterControl: React.FC<MasterControlProps> = ({ color = "#FFF", width = "
                   cy="40.1478"
                   r="37.2666"
                   transform="rotate(60 39.8529 40.1478)"
-                  fill="url(#paint1_linear_788_264)"
+                  fill={`url(#paint1_${id}`}
                 />
               </g>
             </g>
@@ -102,7 +108,7 @@ const MasterControl: React.FC<MasterControlProps> = ({ color = "#FFF", width = "
               cy="40.1388"
               r="34.6692"
               transform="rotate(60 39.8612 40.1388)"
-              fill="url(#paint2_linear_788_264)"
+              fill={`url(#paint2_${id}`}
             />
           </g>
         </g>
@@ -151,7 +157,7 @@ const MasterControl: React.FC<MasterControlProps> = ({ color = "#FFF", width = "
           />
         </filter>
         <linearGradient
-          id="paint0_linear_788_264"
+          id={`paint0_${id}`}
           x1="39.8528"
           y1="2.88124"
           x2="39.8528"
@@ -167,7 +173,7 @@ const MasterControl: React.FC<MasterControlProps> = ({ color = "#FFF", width = "
           <stop offset="1" stopColor="#FF008B" />
         </linearGradient>
         <linearGradient
-          id="paint1_linear_788_264"
+          id={`paint1_${id}`}
           x1="39.8528"
           y1="2.88124"
           x2="39.8528"
@@ -183,7 +189,7 @@ const MasterControl: React.FC<MasterControlProps> = ({ color = "#FFF", width = "
           <stop offset="1" stopColor="#FF008B" />
         </linearGradient>
         <linearGradient
-          id="paint2_linear_788_264"
+          id={`paint2_${id}`}
           x1="39.8611"
           y1="5.4696"
           x2="39.8611"
