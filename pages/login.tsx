@@ -52,7 +52,7 @@ const validateLoginFlow = async (router, options) => {
         aal: aal ? String(aal) : undefined,
         returnTo: Boolean(login_challenge)
           ? NEXT_PUBLIC_REDIRECT_URI
-          : undefined,
+          : '/profile',
       })
 
       if (router.query.login_challenge) {
