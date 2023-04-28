@@ -85,7 +85,7 @@ const Registration: NextPage = () => {
     // Otherwise we initialize it
     ory
       .createBrowserRegistrationFlow({
-        returnTo: returnTo ? String(returnTo) : undefined,
+        returnTo: returnTo ? String(returnTo) : '/profile',
       })
       .then(({ data }) => {
         setFlow(data)
