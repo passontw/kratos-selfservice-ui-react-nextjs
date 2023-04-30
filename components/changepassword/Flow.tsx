@@ -90,23 +90,30 @@ export default class Flow<T extends Values> extends Component<
   }
 
   componentDidMount() {
+    console.log(this.props.flow)
     this.initializeValues(this.filterNodes())
+
+    // const oidcGroup = this.props.flow.ui.nodes.filter(
+    //   (item) => item.group === "oidc" && item.attributes.name === "unlink",
+    // )
+    // console.log(oidcGroup)
   }
 
   componentDidUpdate(prevProps: Props<T>) {
-    const oidcGroup = this.props.flow.ui.nodes.filter(
-      (item) => item.group === "oidc" && item.attributes.name === "unlink",
-    )
+    // const oidcGroup = this.props.flow.ui.nodes.filter(
+    //   (item) => item.group === "oidc" && item.attributes.name === "unlink",
+    // )
     if (prevProps.flow !== this.props.flow) {
       // Flow has changed, reload the values!
       this.initializeValues(this.filterNodes())
       // if (oidcGroup.type === "") {
       //   showToast("Password changed.")
       // }
-      if (oidcGroup.length > 0 && this.props.flow?.state === "success") {
-        showToast(`${oidcGroup[0].meta.label?.text}`)
-        return
-      }
+      // if (oidcGroup.length > 0 && this.props.flow?.state === "success") {
+      //   showToast(`${oidcGroup[0].meta.label?.text}`)
+      //   return
+      // }
+      console.log(this.props.flow)
 
       if (this.props.flow?.state === "success") {
         showToast("Password changed.")
@@ -289,7 +296,7 @@ export default class Flow<T extends Values> extends Component<
             <Eye setInputType={this.handleEye} />
           </StyledPasswordIcon>
         </StyledDefaultInput>
-        <Box position="relative" width={{xs:'100%', sm: '76px'}} mt="24px">
+        <Box position="relative" width={{ xs: "100%", sm: "76px" }} mt="24px">
           <NodeInputSubmit
             value={values[getNodeId(submitNode)]}
             node={submitNode}

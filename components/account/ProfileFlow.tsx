@@ -13,6 +13,7 @@ import {
   UiTextTypeEnum,
 } from "@ory/client"
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
+import { getNodeLabel } from "@ory/integrations/ui"
 import { Component, FormEvent, MouseEvent, createRef, RefObject } from "react"
 
 import { Node } from "../../pkg/ui/Node"
@@ -20,7 +21,6 @@ import { setDialog, setMfaModalOpen } from "../../state/store/slice/layoutSlice"
 
 import { Messages } from "./Messages"
 import MfaModal from "./MfaModal"
-import { getNodeLabel } from "@ory/integrations/ui"
 
 export type Values = Partial<
   | UpdateLoginFlowBody
