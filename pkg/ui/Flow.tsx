@@ -85,10 +85,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   }
 
   componentDidUpdate(prevProps: Props<T>) {
-    if (prevProps.flow !== this.props.flow) {
-      // Flow has changed, reload the values!
-      this.initializeValues(this.filterNodes())
-    }
     if (prevProps.code !== this.props.code) {
       this.setCodeValue(this.props.code)
     }
@@ -209,10 +205,12 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       .finally(() => {
         // We wait for reconciliation and update the state after 50ms
         // Done submitting - update loading status
-        this.setState((state) => ({
-          ...state,
-          isLoading: false,
-        }))
+        this.setState((state) => {
+          return {
+            ...state,
+            isLoading: false,
+          }
+        })
       })
   }
 

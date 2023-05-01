@@ -11,15 +11,12 @@ import {
   UpdateRegistrationFlowBody,
   UpdateSettingsFlowBody,
   UpdateVerificationFlowBody,
-  UiNodeGroupEnum,
-  UiTextTypeEnum,
 } from "@ory/client"
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
 import React, {
   Component,
   FormEvent,
   MouseEvent,
-  ReactHTMLElement,
 } from "react"
 
 import { Messages } from "./Messages"
@@ -77,17 +74,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     this.state = {
       values: emptyState(),
       isLoading: false,
-    }
-  }
-
-  componentDidMount() {
-    this.initializeValues(this.filterNodes())
-  }
-
-  componentDidUpdate(prevProps: Props<T>) {
-    if (prevProps.flow !== this.props.flow) {
-      // Flow has changed, reload the values!
-      this.initializeValues(this.filterNodes())
     }
   }
 
