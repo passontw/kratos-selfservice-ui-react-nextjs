@@ -28,8 +28,6 @@ import {
   UpdateRegistrationFlowBody,
   UpdateSettingsFlowBody,
   UpdateVerificationFlowBody,
-  UiNodeGroupEnum,
-  UiTextTypeEnum,
 } from "@ory/client"
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
 import { Component, FormEvent, MouseEvent } from "react"
@@ -99,13 +97,6 @@ export default class Flow<T extends Values> extends Component<
 
   componentDidMount() {
     this.initializeValues(this.filterNodes())
-  }
-
-  componentDidUpdate(prevProps: Props<T>) {
-    if (prevProps.flow !== this.props.flow) {
-      // Flow has changed, reload the values!
-      this.initializeValues(this.filterNodes())
-    }
   }
 
   initializeValues = (nodes: Array<UiNode> = []) => {

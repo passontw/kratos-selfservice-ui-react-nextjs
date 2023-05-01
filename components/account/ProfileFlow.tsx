@@ -9,8 +9,6 @@ import {
   UpdateRegistrationFlowBody,
   UpdateSettingsFlowBody,
   UpdateVerificationFlowBody,
-  UiNodeGroupEnum,
-  UiTextTypeEnum,
 } from "@ory/client"
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
 import { Component, FormEvent, MouseEvent, createRef, RefObject } from "react"
@@ -20,7 +18,6 @@ import { setDialog, setMfaModalOpen } from "../../state/store/slice/layoutSlice"
 
 import { Messages } from "./Messages"
 import MfaModal from "./MfaModal"
-import { getNodeLabel } from "@ory/integrations/ui"
 
 export type Values = Partial<
   | UpdateLoginFlowBody
@@ -92,10 +89,6 @@ export default class Flow<T extends Values> extends Component<
   }
 
   componentDidUpdate(prevProps: Props<T>) {
-    if (prevProps.flow !== this.props.flow) {
-      // Flow has changed, reload the values!
-      this.initializeValues(this.filterNodes())
-    }
     if (this.props.modalOpen) {
       this.props.dispatch(
         setDialog({

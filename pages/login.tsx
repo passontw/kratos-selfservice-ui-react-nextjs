@@ -221,8 +221,6 @@ const Login: NextPage = () => {
               doConsentProcess(login_challenge as string, subject)
             } else {
               // Original Kratos flow
-              // console.log("data", data)
-              // console.log("flow", flow)
               if (flow?.return_to) {
                 window.location.href = flow?.return_to
                 return
@@ -291,7 +289,6 @@ const Login: NextPage = () => {
         setFlow(nextFlow)
       }
 
-      // setErrors(errors);
       return false
     }
   }

@@ -78,13 +78,6 @@ export default class Flow<T extends Values> extends Component<
     this.initializeValues(this.filterNodes())
   }
 
-  componentDidUpdate(prevProps: Props<T>) {
-    if (prevProps.flow !== this.props.flow) {
-      // Flow has changed, reload the values!
-      this.initializeValues(this.filterNodes())
-    }
-  }
-
   initializeValues = (nodes: Array<UiNode> = []) => {
     // Compute the values
     const values = emptyState<T>()
