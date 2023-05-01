@@ -32,14 +32,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   const dispatch = useDispatch()
   const nav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
-  const {
-    node,
-    attributes,
-    value = "",
-    setValue,
-    disabled,
-    validationMsgs,
-  } = props
+  const { node, attributes, value, setValue, disabled, validationMsgs } = props
   const label =
     node.meta.label?.text === "ID"
       ? "Email"
@@ -104,22 +97,34 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     },
   ]
   const [gender, setGender] = useState(
-    attributes.name === "traits.gender" ? value : genderRadios[2].value,
+    attributes.name === "traits.gender" && value
+      ? value
+      : genderRadios[2].value,
   )
 
+  const [selectValue, setSelectValue] = useState(undefined)
+  const [selectValue2, setSelectValue2] = useState(1)
+
+  console.log("gender", gender)
+
+  // const defaultVal = genderRadios.find((g) => g.value === gender)
   const [defaultSelectValue, setDefaultSelectValue] = useState(
-    genderRadios.find((g) => g.value === value),
+    genderRadios.find((g) => g.value === parseInt(gender)),
   )
-
-  // const defaultSelectValue = genderRadios.find((g) => g.value === gender)
 
   useEffect(() => {
-    if (attributes.name === "traits.gender") {
-      console.log("value", value)
-      setGender(value)
+    let genderVal = value
+    if (value && attributes.name === "traits.gender") {
+      setGender(value ? value : 3)
       setDefaultSelectValue(
-        genderRadios.find((g) => g.value === parseInt(value)),
+        value
+          ? genderRadios.find((g) => g.value === parseInt(value))
+          : genderRadios[2],
       )
+      setSelectValue(1)
+    }
+    if (value !== undefined && attributes.name === "traits.gender") {
+      setSelectValue2(undefined)
     }
   }, [value])
 
@@ -257,47 +262,59 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           A combination of numbers and characters. (min 8 characters)
         </span>
       )}
-      {nav === Navs.PROFILE &&
-        attributes.name === "traits.gender" &&
-        defaultSelectValue && (
-          <Box color="#FFF" ml="3px" position="relative">
-            <Box
-              display={{
-                xs: "none",
-                sm: "inline-block",
+      {nav === Navs.PROFILE && attributes.name === "traits.gender" && (
+        <Box color="#FFF" ml="3px" position="relative">
+          <Box
+            display={{
+              xs: "none",
+              sm: "inline-block",
+            }}
+          >
+            <RadioGroup
+              value={gender}
+              label="Gender"
+              onChange={(e) => {
+                setGender(e.target.value)
+                setValue(e.target.value)
               }}
-            >
-              <RadioGroup
-                value={gender}
-                label="Gender"
-                onChange={(e) => {
-                  setGender(e.target.value)
-                  setValue(e.target.value)
-                }}
-                radios={genderRadios}
-                direction="row"
-                custom
-              />
-            </Box>
-            <Box
-              display={{
-                sm: "none",
-                xs: "inline-block",
-              }}
-            >
+              radios={genderRadios}
+              direction="row"
+              custom
+            />
+          </Box>
+          <Box
+            display={{
+              sm: "none",
+              xs: "inline-block",
+            }}
+          >
+            {selectValue && (
               <Select
                 title="Gender"
                 defaultValue={defaultSelectValue}
                 options={genderRadios}
                 width={"calc(100vw)"}
                 onChange={(selectedOption: SelectOption) => {
-                  setGender(selectedOption.value)
-                  setValue(selectedOption.value)
+                  setGender(parseInt(selectedOption.value))
+                  setValue(parseInt(selectedOption.value))
                 }}
               />
-            </Box>
+            )}
+            {selectValue2 && (
+              <Select
+                title="Gender"
+                defaultValue={defaultSelectValue}
+                options={genderRadios}
+                width={"calc(100vw)"}
+                onChange={(selectedOption: SelectOption) => {
+                  setGender(parseInt(selectedOption.value))
+                  setValue(parseInt(selectedOption.value))
+                }}
+              />
+            )}
           </Box>
-        )}
+        </Box>
+      )}
     </>
   )
 }

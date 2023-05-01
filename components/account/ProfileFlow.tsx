@@ -11,6 +11,7 @@ import {
   UpdateVerificationFlowBody,
 } from "@ory/client"
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
+import { getNodeLabel } from "@ory/integrations/ui"
 import { Component, FormEvent, MouseEvent, createRef, RefObject } from "react"
 
 import { Node } from "../../pkg/ui/Node"

@@ -4,11 +4,14 @@ import cloneDeep from "lodash/cloneDeep"
 import type { NextPage } from "next"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import queryString from "query-string"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-import queryString from "query-string"
-import AppsList from '../components/AppsList'
 
+import AppItem from "../components/AppItem"
+import { AppItemWrap, StyledAppItemWrap } from "../components/AppItem/styles"
+import AppItemCopy from "../components/AppItemCopy"
+import AppsList from "../components/AppsList"
 import CmidHead from "../components/CmidHead"
 import MenuFooter from "../components/MenuFooter"
 import { Flow } from "../pkg"
@@ -85,7 +88,7 @@ const Registration: NextPage = () => {
     // Otherwise we initialize it
     ory
       .createBrowserRegistrationFlow({
-        returnTo: returnTo ? String(returnTo) : '/profile',
+        returnTo: returnTo ? String(returnTo) : "/profile",
       })
       .then(({ data }) => {
         setFlow(data)
@@ -109,21 +112,22 @@ const Registration: NextPage = () => {
               .updateRegistrationFlow({
                 flow: String(flow?.id),
                 updateRegistrationFlowBody: values,
-              }).then(() => {
+              })
+              .then(() => {
                 return ory
-                .createBrowserLogoutFlow()
-                .then(({ data: logoutFlow }) => {
-                  return ory.updateLogoutFlow({
-                    token: logoutFlow.logout_token,
+                  .createBrowserLogoutFlow()
+                  .then(({ data: logoutFlow }) => {
+                    return ory.updateLogoutFlow({
+                      token: logoutFlow.logout_token,
+                    })
                   })
-                })
               })
               .then(({ data }) => {
                 localStorage.setItem(localStorageKey, JSON.stringify(values))
-                  window.location.href = `/verification?${queryString.stringify(
-                    router.query,
-                  )}&user=${values["traits.email"]}&type=registe`
-                  return
+                window.location.href = `/verification?${queryString.stringify(
+                  router.query,
+                )}&user=${values["traits.email"]}&type=registe`
+                return
               })
               .catch(handleFlowError(router, "registration", setFlow))
               .catch((err: any) => {
@@ -233,9 +237,9 @@ const Registration: NextPage = () => {
       <div className="mainWrapper">
         <StyledMenuWrapper>
           {/* <Head>
-        <title>Create account - Ory NextJS Integration Example</title>
-        <meta name="description" content="NextJS + React + Vercel + Ory" />
-      </Head> */}
+            <title>Create account - Ory NextJS Integration Example</title>
+            <meta name="description" content="NextJS + React + Vercel + Ory" />
+          </Head> */}
           <div>
             <title>Create account - Ory NextJS Integration Example</title>
             <meta name="description" content="NextJS + React + Vercel + Ory" />
@@ -247,14 +251,16 @@ const Registration: NextPage = () => {
             Join us
           </Box>
           <Flow onSubmit={onSubmit} flow={nextFlow} router={router} />
+          {/* Moblie Terms Start */}
           <Box
+            mt="30px"
             color="#A5A5A9"
             fontSize="14px"
             fontFamily="open sans"
             justifyContent="center"
-            display="flex"
+            display={{ xs: "flex", md: "none" }}
             flexWrap="wrap"
-            paddingBottom="86px"
+            whiteSpace="nowrap"
           >
             <Box>By signing up for Cooler Master ID,</Box>
             <Box display="flex" mt="2px" alignItems="center">
@@ -269,6 +275,38 @@ const Registration: NextPage = () => {
               .
             </Box>
           </Box>
+          {/* Mobile Terms End */}
+          <StyledAppItemWrap>
+            <AppItem appIcon="MasterControl" appName="Master Control" mobile />
+            <AppItem appIcon="Stormplay" appName="Stormplay" mobile />
+            <AppItem appIcon="Cmodx" appName="CMODX" mobile />
+          </StyledAppItemWrap>
+          {/* Desktop Terms Start */}
+          <Box
+            mt="30px"
+            color="#A5A5A9"
+            fontSize="14px"
+            fontFamily="open sans"
+            justifyContent="center"
+            flexWrap="wrap"
+            paddingBottom="86px"
+            whiteSpace="nowrap"
+            display={{ xs: "none", md: "flex" }}
+          >
+            <Box>By signing up for Cooler Master ID,</Box>
+            <Box display="flex" mt="2px" alignItems="center">
+              you agree to our{" "}
+              <Link className="link" href="/">
+                Terms of Service
+              </Link>{" "}
+              &{" "}
+              <Link className="link" href="/">
+                Privacy Policy
+              </Link>
+              .
+            </Box>
+          </Box>
+          {/* Desktop Terms End */}
         </StyledMenuWrapper>
         <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
       </div>

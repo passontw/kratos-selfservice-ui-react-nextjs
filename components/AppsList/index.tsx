@@ -25,6 +25,9 @@ const AppsList: React.FC<AppsListProps> = () => {
       activeNav !== Navs.DEVICEMANAGEMENT &&
       activeNav !== Navs.CHANGEPASSWORD ? (
         <StyledWrapper>
+          <div className="background-wrapper">
+            <div className="overlay-image"></div>
+          </div>
           <StyledTagPc>
             <Box fontSize="30px" color="#fff">
               Access Anywhere With Cooler Master ID

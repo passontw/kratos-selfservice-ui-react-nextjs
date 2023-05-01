@@ -1,40 +1,45 @@
-import Box from "@mui/material/Box"
+import Image from "next/image"
 
-import Cmodx from "../../public/images/app_icons/Cmodx"
-import MasterControl from "../../public/images/app_icons/MasterControl"
-import Stormplay from "../../public/images/app_icons/Stormplay"
+import { StyledAppIcon, StyledAppItem, StyledAppTitle } from "./styles"
 
 interface AppItemProps {
   appIcon: string
   appName: string
+  mobile?: boolean
 }
 
-const appIconMapping = {
-  Cmodx: Cmodx,
-  MasterControl: MasterControl,
-  Stormplay: Stormplay,
-}
-
-const AppItem: React.FC<AppItemProps> = ({ appIcon, appName }) => {
-  const IconComponent = appIconMapping[appIcon]
+const AppItem: React.FC<AppItemProps> = ({ appIcon, appName, mobile }) => {
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      bgcolor="rgba(255, 255, 255, 0.1)"
-      borderRadius="20px"
-      width="170px"
-      height="162px"
-    >
-      <Box>
-        <IconComponent />
-      </Box>
-      <Box fontSize="18px" color="#fff" mt="10px">
-        {appName}
-      </Box>
-    </Box>
+    <StyledAppItem>
+      <StyledAppIcon>
+        {appIcon === "Cmodx" ? (
+          <Image
+            src={`/images/cmodx-logo${mobile ? "-mobile" : ""}.png`}
+            width="100%"
+            height="100%"
+          />
+        ) : appIcon === "Stormplay" ? (
+          <Image
+            src={`/images/stormplay-logo${mobile ? "-mobile" : ""}.png`}
+            width="100%"
+            height="100%"
+          />
+        ) : appIcon === "MasterControl" ? (
+          <Image
+            src={`/images/master-control-logo${mobile ? "-mobile" : ""}.png`}
+            width="100%"
+            height="100%"
+          />
+        ) : (
+          <Image
+            src="/images/master-control-logo.png"
+            width="100%"
+            height="100%"
+          />
+        )}
+      </StyledAppIcon>
+      <StyledAppTitle>{appName}</StyledAppTitle>
+    </StyledAppItem>
   )
 }
 
