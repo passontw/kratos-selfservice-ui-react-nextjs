@@ -295,6 +295,7 @@ const Login: NextPage = () => {
 
   if (isEmpty(flow?.ui) || isEmpty(flow?.ui?.action)) return null
 
+  console.log("🚀 ~ file: login.tsx:298 ~ //onSubmit ~ router.query:", router.query)
   return (
     <>
       {/* CUSTOMIZE UI BASED ON CLIENT ID */}
@@ -325,6 +326,7 @@ const Login: NextPage = () => {
           <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
             Welcome back
           </Box>
+          {router.query.error && <p style={{color: 'red'}}>{router.query.error}</p>}
           <Flow onSubmit={onSubmit} flow={flow} router={router} />
           <MenuTag />
         </StyledMenuWrapper>

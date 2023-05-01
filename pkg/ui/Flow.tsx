@@ -200,14 +200,12 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       isLoading: true,
     }))
 
-    console.log("🚀 ~ file: Flow.tsx:209 ~ Flow<T ~ { ...body, ...this.state.values }:", { ...body, ...this.state.values })
     return this.props
       .onSubmit({ ...body, ...this.state.values })
       .finally(() => {
         // We wait for reconciliation and update the state after 50ms
         // Done submitting - update loading status
         this.setState((state) => {
-          console.log("🚀 ~ file: Flow.tsx:213 ~ Flow<T ~ this.setState ~ state:", state)
           return {
             ...state,
             isLoading: false,
@@ -219,7 +217,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   render() {
     const { hideGlobalMessages, flow } = this.props
     const { values, isLoading } = this.state
-    console.log("🚀 ~ file: Flow.tsx:222 ~ Flow<T ~ render ~ values:", values)
 
     // Filter the nodes - only show the ones we want
     let nodes = this.filterNodes()
