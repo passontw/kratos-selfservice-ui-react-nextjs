@@ -70,6 +70,7 @@ const Verification: NextPage = (props) => {
               ory
                 .getVerificationFlow({ id: newFlowID })
                 .then(({ data }) => setFlow(data))
+                .catch(error => false)
               return
           }
 
