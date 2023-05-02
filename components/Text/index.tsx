@@ -7,6 +7,7 @@ interface TextProps {
   font?: string
   weight?: string
   my?: string
+  lineHeight?: string
 }
 
 const Text: React.FC<TextProps> = ({
@@ -16,9 +17,11 @@ const Text: React.FC<TextProps> = ({
   font = "open sans",
   weight = 400,
   my = "0",
+  lineHeight,
 }) => {
   return (
     <Box
+      lineHeight={lineHeight}
       color={color}
       fontSize={size}
       fontFamily={font}
