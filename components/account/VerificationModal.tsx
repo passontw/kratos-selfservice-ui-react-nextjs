@@ -110,7 +110,7 @@ const Verification: NextPage = (props) => {
     // Otherwise we initialize it
     ory
       .createBrowserVerificationFlow({
-        returnTo: returnTo ? String(returnTo) : undefined,
+        returnTo: '/login',
       })
       .then(({ data }) => {
         setFlow(data)
