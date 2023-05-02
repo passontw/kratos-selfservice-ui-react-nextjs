@@ -72,7 +72,6 @@ const Settings: NextPage = () => {
   const { flow: flowId, return_to: returnTo } = router.query
 
   useEffect(() => {
-    console.log("🚀 ~ file: setting.tsx:76 ~ useEffect ~ flowId:", flowId)
     if (flowId) {
       ory
         .getSettingsFlow({ id: String(flowId) })

@@ -28,7 +28,7 @@ const Login: NextPage = () => {
         if (data?.error?.message === "no resumable session found") {
           router.replace("/login?error=email not exists or did not link 3rd party.");
         }
-        console.log("🚀 ~ file: error.tsx:28 ~ .then ~ data:", data)
+
         setError(data)
       })
       .catch((err: AxiosError) => {
