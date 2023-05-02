@@ -29,20 +29,6 @@ interface Props {
   only?: Methods
 }
 
-const refreshSessions = (setSessions) => {
-  axios
-    .get("/api/.ory/sessions", {
-      headers: { withCredentials: true },
-    })
-    .then((resp) => {
-      const { data } = resp
-      setSessions(data)
-    })
-    .catch((error) => {
-      setSessions([])
-    })
-}
-
 function SettingsCard({
   flow,
   only,
@@ -65,7 +51,6 @@ function SettingsCard({
 
 const Account: NextPage = () => {
   const dispatch = useDispatch()
-  const [sessions, setSessions] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [flow, setFlow] = useState<SettingsFlow>()
   const router = useRouter()
@@ -172,7 +157,7 @@ const Account: NextPage = () => {
   }, [])
 
   useEffect(() => {
-    refreshSessions(setSessions)
+    // refreshSessions(setSessions)
     // If the router is not ready yet, or we already have a flow, do nothing.
     if (!router.isReady || flow) {
       return
@@ -187,10 +172,11 @@ const Account: NextPage = () => {
         })
         .catch(handleFlowError(router, "account", setFlow))
       return
-    }
+    } else {
 
     // Otherwise we initialize it
-    ory
+    
+      ory
       .createBrowserSettingsFlow({
         returnTo: "/account",
       })
@@ -199,22 +185,9 @@ const Account: NextPage = () => {
         setFlow(data)
       })
       .catch(handleFlowError(router, "account", setFlow))
+    }
+
   }, [flowId, router, router.isReady, returnTo, flow])
-
-  // useEffect(() => {
-  //   console.log("flow?.ui.messages", flow?.ui.messages)
-  //   if (flow?.ui.messages?.length > 0) {
-  //     flow?.ui.messages.map((item)=>{
-  //       if(item.type === "success" && toastContent!== ''){
-  //         showToast(toastContent)
-  //       }
-  //     })
-  //   }
-  // }, [flow?.ui.messages])
-
-  // const handleToast = (text: string) => {
-  //   setToastContent(text)
-  // }
 
   return (
     <AccountLayout>
