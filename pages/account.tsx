@@ -85,7 +85,7 @@ const Account: NextPage = () => {
         },
       )
       .then(() => {
-        router.replace("/")
+        router.replace("/login")
       })
       .catch((error) => {
         alert(error.message)

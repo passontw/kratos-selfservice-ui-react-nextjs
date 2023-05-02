@@ -120,7 +120,7 @@ const Verification: NextPage = (props) => {
         switch (err.response?.status) {
           case 400:
             // Status code 400 implies the user is already signed in
-            return router.push("/")
+            return router.push("/login")
         }
 
         throw err
@@ -142,7 +142,6 @@ const Verification: NextPage = (props) => {
       })
       .then(({ data }) => {
         props.deleteAccount()
-        router.replace("/login")
         // Form submission was successful, show the message to the user!
       })
       .catch((err: any) => {
