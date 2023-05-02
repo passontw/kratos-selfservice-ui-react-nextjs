@@ -20,9 +20,11 @@ import { Navs } from "../types/enum"
 
 import { StyledMenuWrapper } from "./../styles/share"
 
-const localStorageKey = "!@#$%^&*()data"
-
-const { NEXT_PUBLIC_REDIRECT_URI } = process.env
+const getReturnToUrl = (returnTo, type) => {
+  if (returnTo) return returnTo;
+  if (type === 'registe') return "/login";
+  return undefined;
+}
 
 const Verification: NextPage = () => {
   const dispatch = useDispatch()
@@ -129,10 +131,11 @@ const Verification: NextPage = () => {
       return
     }
 
+    
     // Otherwise we initialize it
     ory
       .createBrowserVerificationFlow({
-        returnTo: returnTo ? String(returnTo) : undefined,
+        returnTo: getReturnToUrl(returnTo, type),
       })
       .then(({ data }) => {
         setFlow(data)
@@ -173,10 +176,6 @@ const Verification: NextPage = () => {
         // Form submission was successful, show the message to the user!
         setVerifySuccess(data.state === "passed_challenge")
         setFlow(data)
-        
-        if (type === 'registe') {
-          router.push("/login");
-        }
 
         if (type === 'login') {
           const values = JSON.parse(localStorage.getItem(localStorageKey))

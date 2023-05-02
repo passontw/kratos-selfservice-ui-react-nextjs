@@ -295,7 +295,6 @@ const Login: NextPage = () => {
 
   if (isEmpty(flow?.ui) || isEmpty(flow?.ui?.action)) return null
 
-  console.log("🚀 ~ file: login.tsx:298 ~ //onSubmit ~ router.query:", router.query)
   return (
     <>
       {/* CUSTOMIZE UI BASED ON CLIENT ID */}
