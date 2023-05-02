@@ -142,6 +142,7 @@ const Verification: NextPage = (props) => {
       })
       .then(({ data }) => {
         props.deleteAccount()
+        router.replace("/login")
         // Form submission was successful, show the message to the user!
       })
       .catch((err: any) => {
