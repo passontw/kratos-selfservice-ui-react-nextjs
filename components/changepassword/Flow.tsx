@@ -90,13 +90,7 @@ export default class Flow<T extends Values> extends Component<
   }
 
   componentDidMount() {
-    console.log(this.props.flow)
     this.initializeValues(this.filterNodes())
-
-    // const oidcGroup = this.props.flow.ui.nodes.filter(
-    //   (item) => item.group === "oidc" && item.attributes.name === "unlink",
-    // )
-    // console.log(oidcGroup)
   }
 
   componentDidUpdate(prevProps: Props<T>) {
@@ -104,13 +98,14 @@ export default class Flow<T extends Values> extends Component<
     //   (item) => item.group === "oidc" && item.attributes.name === "unlink",
     // )
     if (prevProps.flow !== this.props.flow) {
-      if (oidcGroup.length > 0 && this.props.flow?.state === "success") {
-        showToast(`${oidcGroup[0].meta.label?.text}`)
-        return
-      }
-
+      // if (oidcGroup.length > 0 && this.props.flow?.state === "success") {
+      //   showToast(`${oidcGroup[0].meta.label?.text}`)
+      //   return
+      // }
       if (this.props.flow?.state === "success") {
-        showToast("Password changed.")
+        if (!this.props.confirmPasswordError) {
+          showToast("Password changed.")
+        }
       }
     }
   }
