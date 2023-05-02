@@ -9,14 +9,15 @@ import { ReactNode, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import UAParser from "ua-parser-js"
 
-import DeviceCard from "../components/DeviceCard"
 import AccountLayout from "../components/Layout/AccountLayout"
 import LinkNav from "../components/LinkNav"
 import MenuFooter from "../components/MenuFooter"
+import DeviceCard from "../components/devicemanagement/DeviceCard"
+import DeviceLogoutAllConfirm from "../components/devicemanagement/DeviceLogoutAllConfirm"
 import { Methods, ActionCard } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
-import { setActiveNav } from "../state/store/slice/layoutSlice"
+import { setActiveNav, setDialog } from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
 
 const dayjs = require("dayjs")
@@ -92,24 +93,29 @@ function SettingsCard({
 const SessionList = (props) => {
   const { sessions, setSessions } = props
   if (sessions.length === 0) {
-    return <div>{/* <p>無其他裝置登入資訊</p> */}</div>
+    return <Box>{/* <p>無其他裝置登入資訊</p> */}</Box>
   }
 
   return sessions.map((session) => {
     const [device] = session.devices
     const agent = new UAParser(device.user_agent)
     const agentResult = agent.getResult()
-    const deviceName = agentResult.device.type
-      ? agentResult.device.model
-      : agentResult.os.name
+    const deviceType = agentResult.device.type
+    // console.log(agentResult)
+    const deviceName =
+      agentResult.device.type && agentResult.device.vendor
+        ? agentResult.device.model
+        : agentResult.os.name
     return (
       <>
         <Box key={session.id} flex={1}>
           <DeviceCard
             device={deviceName}
+            deviceType={deviceType}
             location={device.location}
             browser={agentResult.browser.name}
             lastLogin={dayjs(session.authenticated_at).format()}
+            onLogout={() => deactiveSession(session.id, setSessions)}
           />
         </Box>
         {/* <div key={session.id}>
@@ -133,15 +139,20 @@ const SessionListItem = (props) => {
   const [device] = session.devices
   const agent = new UAParser(device.user_agent)
   const agentResult = agent.getResult()
-  const deviceName = agentResult.device.type || agentResult.device.model
+  // console.log(agentResult)
+  const deviceType = agentResult.device.type
+  const deviceName =
+    agentResult.device.type || agentResult.device.model || agentResult.os.name
   return (
     <>
       <div key={session.id}>
         <DeviceCard
           device={deviceName}
+          deviceType={deviceType}
           location={device.location}
           browser={agentResult.browser.name}
           lastLogin={dayjs(session.authenticated_at).format()}
+          isCurrent
         />
         {/* <p>Self Session: </p>
         <p>Location: {device.location}</p>
@@ -160,6 +171,23 @@ const DeviceManagement: NextPage = () => {
   const [flow, setFlow] = useState<SettingsFlow>()
   const router = useRouter()
   const { flow: flowId, return_to: returnTo } = router.query
+
+  const handleOpenLogoutAllModal = () => {
+    dispatch(
+      setDialog({
+        title: "Log out on all devices",
+        titleHeight: "56px",
+        width: 480,
+        height: 218,
+        center: true,
+        children: (
+          <DeviceLogoutAllConfirm
+            confirmLogoutAll={() => deacitveAllSession(sessions, setSessions)}
+          />
+        ),
+      }),
+    )
+  }
 
   useEffect(() => {
     dispatch(setActiveNav(Navs.DEVICEMANAGEMENT))
@@ -238,9 +266,21 @@ const DeviceManagement: NextPage = () => {
             <Box color="#717197" fontSize="22px" mb="12px">
               Other Device
             </Box>
-            <Box color="#CA4AE8" fontSize="16px">
-              Log out all
-            </Box>
+            {sessions.length > 1 && (
+              <Box
+                color="#CA4AE8"
+                fontSize="16px"
+                onClick={handleOpenLogoutAllModal}
+                sx={{
+                  cursor: "pointer",
+                  "&:hover": {
+                    filter: "brightness(0.8)",
+                  },
+                }}
+              >
+                Log out all
+              </Box>
+            )}
           </Box>
           <Box display="flex" flexDirection="row" gap="36px" flexWrap="wrap">
             <SessionList sessions={sessions} setSessions={setSessions} />
