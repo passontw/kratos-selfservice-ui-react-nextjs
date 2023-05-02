@@ -1,68 +1,9 @@
-import { SettingsFlow, UpdateSettingsFlowBody } from "@ory/client"
-import { CardTitle, H3, P } from "@ory/themes"
-import axios from "axios"
+import { SettingsFlow } from "@ory/client"
 import type { NextPage } from "next"
-import Head from "next/head"
-import Link from "next/link"
 import { useRouter } from "next/router"
-import { ReactNode, useEffect, useState } from "react"
-import UAParser from "ua-parser-js"
-
-import { Flow, Methods, Messages, ActionCard, CenterLink } from "../pkg"
+import { useEffect, useState } from "react"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
-
-interface Props {
-  flow?: SettingsFlow
-  only?: Methods
-}
-
-function SettingsCard({
-  flow,
-  only,
-  children,
-}: Props & { children: ReactNode }) {
-  if (!flow) {
-    return null
-  }
-
-  const nodes = only
-    ? flow.ui.nodes.filter(({ group }) => group === only)
-    : flow.ui.nodes
-
-  if (nodes.length === 0) {
-    return null
-  }
-
-  return <ActionCard wide>{children}</ActionCard>
-}
-
-const refreshSessions = (setSessions) => {
-  axios
-    .get("/api/.ory/sessions", {
-      headers: { withCredentials: true },
-    })
-    .then((resp) => {
-      const { data } = resp
-      setSessions(data)
-    })
-    .catch((error) => {
-      setSessions([])
-    })
-}
-
-const deactiveSession = (sessionId, setSessions) => {
-  return axios
-    .delete(`/api/.ory/sessions/${sessionId}`, {
-      headers: { withCredentials: true },
-    })
-    .then((resp) => {
-      refreshSessions(setSessions)
-    })
-    .catch((error) => {
-      alert(error.message)
-    })
-}
 
 const Settings: NextPage = () => {
   const [flow, setFlow] = useState<SettingsFlow>()
@@ -72,7 +13,6 @@ const Settings: NextPage = () => {
   const { flow: flowId, return_to: returnTo } = router.query
 
   useEffect(() => {
-    console.log("🚀 ~ file: setting.tsx:76 ~ useEffect ~ flowId:", flowId)
     if (flowId) {
       ory
         .getSettingsFlow({ id: String(flowId) })
@@ -82,7 +22,7 @@ const Settings: NextPage = () => {
         .catch(handleFlowError(router, "account", setFlow))
       return
     }
-  }, [])
+  }, [flowId])
   
   return null;
 }
