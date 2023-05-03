@@ -141,8 +141,11 @@ const Verification: NextPage = (props) => {
         updateVerificationFlowBody: values,
       })
       .then(({ data }) => {
-        props.deleteAccount()
         // Form submission was successful, show the message to the user!
+        setFlow(data)
+        if (data.state === 'passed_challenge') {
+          props.deleteAccount()
+        }
       })
       .catch((err: any) => {
         switch (err.response?.status) {
@@ -167,6 +170,7 @@ const Verification: NextPage = (props) => {
 
         throw err
       })
+      
   }
 
   return (
