@@ -5,8 +5,9 @@ import MuiDialog from "@mui/material/Dialog"
 import IconButton from "@mui/material/IconButton"
 import Slide from "@mui/material/Slide"
 import Zoom from "@mui/material/Zoom"
-import MenuCloseIcon from "../../public/images/Menu/CloseIcon"
+import { useTheme } from "@mui/material/styles"
 import { TransitionProps } from "@mui/material/transitions"
+import useMediaQuery from "@mui/material/useMediaQuery"
 import { useRouter } from "next/router"
 import React, {
   forwardRef,
@@ -16,6 +17,8 @@ import React, {
 } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
+import MenuCloseIcon from "../../public/images/Menu/CloseIcon"
+import Cmid from "../../public/images/app_icons/Cmid"
 import {
   selectActiveNav,
   selectActiveStage,
@@ -28,7 +31,6 @@ import {
 import { Navs, Stage, Icon } from "../../types/enum"
 
 import { StyledDialogContent, StyledDialogTitle } from "./styles"
-import Cmid from '../../public/images/app_icons/Cmid'
 
 export interface DialogProps {
   title?: string
@@ -73,23 +75,33 @@ const Dialog: React.FC<DialogProps> = ({
     dispatch(setDialog(null))
     dispatch(setDialog(null))
   }
-  
-  const handleCloseIcon = ()=>{
-    console.log('icon', icon)
-    if (icon === Icon.MENU)  return <MenuCloseIcon  />
 
-    return <CloseIcon
-      sx={{
-        color: "#78787E",
-      }}
-      fontSize="small"
-    />
+  const handleCloseIcon = () => {
+    console.log("icon", icon)
+    if (icon === Icon.MENU) return <MenuCloseIcon />
+
+    return (
+      <CloseIcon
+        sx={{
+          color: "#78787E",
+        }}
+        fontSize="small"
+      />
+    )
   }
 
-  const mobileHeader = (title:string)=>{
+  const mobileHeader = (title: string) => {
     return (
-      <Box display="flex" gap="6px" justifyContent="center" alignItems="center" fontFamily="Teko" fontSize="20px" textTransform="uppercase">
-        <Box display="flex" width='31px'>
+      <Box
+        display="flex"
+        gap="6px"
+        justifyContent="center"
+        alignItems="center"
+        fontFamily="Teko"
+        fontSize="20px"
+        textTransform="uppercase"
+      >
+        <Box display="flex" width="31px">
           <Cmid />
         </Box>
         <div>{title}</div>
@@ -100,6 +112,8 @@ const Dialog: React.FC<DialogProps> = ({
   const activeNav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
   const mfaState = useSelector(selectMfaState)
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"))
 
   return (
     <MuiDialog
@@ -108,7 +122,7 @@ const Dialog: React.FC<DialogProps> = ({
           right: center ? "none" : 0,
           width,
           height,
-          minWidth: width,
+          minWidth: isSmallScreen ? "90vw" : width,
           minHeight: height,
           maxWidth: height,
           backgroundColor: "#2B2B33",
@@ -126,7 +140,9 @@ const Dialog: React.FC<DialogProps> = ({
           <div>
             {title.includes("2-Step")
               ? `Turn ${mfaState ? "on" : "off"} 2-Step Verification`
-              : title.includes("Cooler Master ID") ? mobileHeader(title) : title}
+              : title.includes("Cooler Master ID")
+              ? mobileHeader(title)
+              : title}
           </div>
           <IconButton
             onClick={(e) => {
@@ -143,7 +159,7 @@ const Dialog: React.FC<DialogProps> = ({
               },
             }}
           >
-          {handleCloseIcon()}
+            {handleCloseIcon()}
           </IconButton>
         </StyledDialogTitle>
       )}
