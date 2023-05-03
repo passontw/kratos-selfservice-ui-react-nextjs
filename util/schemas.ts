@@ -5,14 +5,14 @@ export const passwordSchema = yup
   .min(8, "Need at least 8 characters")
   .matches(/(?=.*\d)/, "Need at least 1 number")
   .matches(/([^a-zA-Z]+)\w*$/, "Need at least 1 alphabet letter")
-  .required("Required")
+  .required("password can not be empty.")
 
 export const updatePasswordSchema = yup.object().shape({
   password: yup
     .string()
     .matches(/([^a-zA-Z]+)\w*$/, "Need at least 1 alphabet letter")
     .matches(/(?=.*\d)/, "Need at least 1 number")
-    .required("Required")
+    .required("password can not be empty.")
     .min(8, "Need at least 8 characters"),
   confirmPassword: yup
     .string()
@@ -20,12 +20,12 @@ export const updatePasswordSchema = yup.object().shape({
     .matches(/(?=.*\d)/, "Need at least 1 number")
     .min(8, "Need at least 8 characters")
     .when("password", (password, field) => {
+      console.log("🚀 ~ file: schemas.ts:23 ~ .when ~ password:", password)
       if (password[0] === undefined) {
-        return field.required("Required")
+        return field.required("password can not be empty.")
       } else {
         return password
           ? field
-              .required("Required")
               .oneOf([yup.ref("password")], "Password doesn't match")
           : field
       }
@@ -35,7 +35,7 @@ export const loginFormSchema = yup.object().shape({
   identifier: yup
     .string()
     .email("Invalid email format")
-    .required("Required"),
+    .required("email can not be empty."),
   password: passwordSchema,
 })
 
@@ -43,9 +43,9 @@ export const registrationFormSchema = yup.object().shape({
   "traits.email": yup
     .string()
     .email("Invalid email format")
-    .required("Required"),
+    .required("email can not be empty."),
   "traits.name": yup
     .string()
-    .required("Required"),
+    .required("name can not be empty."),
   password: passwordSchema,
 })

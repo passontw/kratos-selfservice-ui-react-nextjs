@@ -104,11 +104,14 @@ const Settings: NextPage = () => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   const onSubmit = async (values: UpdateSettingsFlowBody, confirmPassword) => {
+    console.log("🚀 ~ file: settings.tsx:107 ~ onSubmit ~ values:", values)
     try {
       await handleYupSchema(updatePasswordSchema, {
         confirmPassword,
         password: values.password,
       })
+
+      return;
       router
         // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
         // his data when she/he reloads the page.

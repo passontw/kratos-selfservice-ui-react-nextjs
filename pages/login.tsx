@@ -189,7 +189,7 @@ const Login: NextPage = () => {
         await handleYupSchema(loginFormSchema, values)
       }
 
-      const response = await axios.get("/api/hydra/validateIdentity?email=aa@bb.cc")
+      const response = await axios.get(`/api/hydra/validateIdentity?email=${values.identifier}`)
       if (isEmpty(response.data.data)) {
         const nextFlow = {
           ...flow,
