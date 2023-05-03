@@ -1,14 +1,11 @@
 import Box from "@mui/material/Box"
 import { SettingsFlow, UpdateSettingsFlowBody } from "@ory/client"
-import { H3, P } from "@ory/themes"
-import axios from "axios"
 import cloneDeep from "lodash/cloneDeep"
 import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import { ReactNode, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
-import CmidHead from "../components/CmidHead"
 import MenuFooter from "../components/MenuFooter"
 import Cmid from "../public/images/app_icons/Cmid"
 import Flow from "../components/changepassword/Flow"
@@ -73,6 +70,9 @@ const Settings: NextPage = () => {
   useEffect(() => {
     dispatch(setActiveNav(Navs.SETTINGS))
     dispatch(setActiveStage(Stage.NONE))
+    return () => {
+      onLogout();
+    }
   }, [])
 
   useEffect(() => {
