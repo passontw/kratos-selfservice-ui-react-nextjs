@@ -9,20 +9,26 @@ interface MessageProps {
   message: UiText
 }
 
+const getDisplayMessage = (displayMessage = "") => {
+  if (displayMessage.includes("check for spelling mistakes in your password or username, email address, or phone number.")) {
+    return "Your email or password is incorrect. Please check and try again."
+  }
+  if (displayMessage.includes("The provided credentials are invalid")) {
+    return "The provided credentials are invalid. Please try again or sign up."
+  }
+
+  if (displayMessage.includes("An account with the same identifier")) {
+    return "Email account already existed. Please try login or forgot password."
+  }
+
+  return displayMessage;
+}
 export const Message = ({ message }: MessageProps) => {
   const dontShowMsg = "An email containing".includes(
     message.text.substring(0, 10),
   )
 
-  let displayMessage = message.text
-  if (displayMessage.includes("The provided credentials are invalid")) {
-    displayMessage =
-      "The provided credentials are invalid. Please try again or sign up."
-  }
-  if (displayMessage.includes("An account with the same identifier")) {
-    displayMessage =
-      "Email account already existed. Please try login or forgot password."
-  }
+  const displayMessage = getDisplayMessage(message.text)
 
   return dontShowMsg ? null : (
     <Alert severity={message.type === "error" ? "error" : "info"}>

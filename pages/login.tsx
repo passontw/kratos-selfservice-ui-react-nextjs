@@ -1,3 +1,4 @@
+import axios from "axios"
 import Box from "@mui/material/Box"
 import { LoginFlow } from "@ory/client"
 import { AxiosError } from "axios"
@@ -188,6 +189,22 @@ const Login: NextPage = () => {
         await handleYupSchema(loginFormSchema, values)
       }
 
+      const response = await axios.get("/api/hydra/validateIdentity?email=aa@bb.cc")
+      if (isEmpty(response.data.data)) {
+        const nextFlow = {
+          ...flow,
+          ui: {
+            ...flow.ui,
+            messages: [{
+              id: 400001,
+              text: 'Email account doesn’t exist. Please try again or sign up',
+              type: 'error'
+            }]
+          }
+        };
+        setFlow(nextFlow);
+        return;
+      }
       return (
         ory
           .updateLoginFlow({
@@ -297,28 +314,12 @@ const Login: NextPage = () => {
 
   return (
     <>
-      {/* CUSTOMIZE UI BASED ON CLIENT ID */}
-      {/* <Head>
-        <title>Sign in - Ory NextJS Integration Example</title>
-        <meta name="description" content="NextJS + React + Vercel + Ory" />
-      </Head> */}
       <div className="mainWrapper">
         <StyledMenuWrapper>
           <div>
             <title>Sign in - Ory NextJS Integration Example</title>
             <meta name="description" content="NextJS + React + Vercel + Ory" />
           </div>
-          {/* <MarginCard> */}
-          {/* <CardTitle>
-        {(() => {
-          if (flow?.refresh) {
-            return "Confirm Action"
-          } else if (flow?.requested_aal === "aal2") {
-            return "Two-Factor Authentication"
-          }
-          return "Sign In (ID can be Email or Username)"
-        })()}
-        </CardTitle> */}
           <Box display="flex" justifyContent={{xs: 'center', sm: 'left'}}>
             <CmidHead /> 
           </Box>
