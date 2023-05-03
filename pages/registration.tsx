@@ -9,7 +9,7 @@ import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
 import AppItem from "../components/AppItem"
-import { AppItemWrap, StyledAppItemWrap } from "../components/AppItem/styles"
+import { StyledAppItemWrap } from "../components/AppItem/styles"
 import AppItemCopy from "../components/AppItemCopy"
 import AppsList from "../components/AppsList"
 import CmidHead from "../components/CmidHead"
@@ -146,12 +146,42 @@ const Registration: NextPage = () => {
       )
     } catch (error) {
       const errors = handleYupErrors(error)
+      console.log("🚀 ~ file: registration.tsx:149 ~ onSubmit ~ errors:", errors)
       const nextFlow = cloneDeep(flow)
 
       if (errors['["traits.email"]']) {
         const message = {
           id: 4000002,
           text: errors['["traits.email"]'],
+          type: "error",
+        }
+        const identifierIndex = nextFlow.ui.nodes.findIndex(
+          (node) => node.attributes.name === "traits.email",
+        )
+        const errorMessage = nextFlow.ui.nodes[identifierIndex].messages.find(
+          (msg) => msg.id === message.id,
+        )
+        if (!errorMessage) {
+          const preMessages = nextFlow.ui.nodes[identifierIndex].messages
+          nextFlow.ui.nodes[identifierIndex].messages = [
+            ...preMessages,
+            message,
+          ]
+        }
+      } else {
+        const identifierIndex = nextFlow.ui.nodes.findIndex(
+          (node) => node.attributes.name === "traits.email",
+        )
+        const nextMessages = nextFlow.ui.nodes[identifierIndex].messages.filter(
+          (message) => message.type !== "error",
+        )
+        nextFlow.ui.nodes[identifierIndex].messages = nextMessages
+      }
+
+      if (errors['[traits.email]']) {
+        const message = {
+          id: 4000002,
+          text: errors['[traits.email]'],
           type: "error",
         }
         const identifierIndex = nextFlow.ui.nodes.findIndex(
