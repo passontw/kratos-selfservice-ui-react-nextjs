@@ -17,6 +17,10 @@ const Settings: NextPage = () => {
       ory
         .getSettingsFlow({ id: String(flowId) })
         .then(({ data }) => {
+          if (/recovery/.test(data.request_url)) {
+            router.replace("/settings");
+            return;
+          }
           router.replace(`/account?flow=${flowId}`);
         })
         .catch(handleFlowError(router, "account", setFlow))

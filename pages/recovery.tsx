@@ -1,24 +1,14 @@
 import Box from "@mui/material/Box"
 import { LoginFlow } from "@ory/client"
-import axios from "axios"
-import { AxiosError } from "axios"
-import cloneDeep from "lodash/cloneDeep"
-import isEmpty from "lodash/isEmpty"
 import type { NextPage } from "next"
 import { useRouter } from "next/router"
-import queryString from "query-string"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
-
-import { api } from "../axios/api"
 import AppsList from "../components/AppsList"
 import CmidHead from "../components/CmidHead"
 import MenuFooter from "../components/MenuFooter"
 import RecoveryProcess from "../components/changepassword/RecoveryProcess"
-import { LogoutLink, Flow } from "../pkg"
-import { handleGetFlowError, handleFlowError } from "../pkg/errors"
-import ory from "../pkg/sdk"
 import Apple from "../public/images/login_icons/Apple"
 import Google from "../public/images/login_icons/Google"
 import {
@@ -28,21 +18,8 @@ import {
 } from "../state/store/slice/layoutSlice"
 import { StyledMenuWrapper } from "../styles/share"
 import { Navs } from "../types/enum"
-import { loginFormSchema } from "../util/schemas"
-import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
-
-const { NEXT_PUBLIC_REDIRECT_URI } = process.env
-
-const getSessionData = async () => {
-  try {
-    return await ory.toSession()
-  } catch (err) {
-    return {}
-  }
-}
 
 const Recovery: NextPage = () => {
-  const [flow, setFlow] = useState<LoginFlow>()
   const dispatch = useDispatch()
   const currentDialog = useSelector(selectDialog)
   console.log("@modal current dailog:", currentDialog)
