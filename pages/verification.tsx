@@ -177,7 +177,6 @@ const Verification: NextPage = () => {
         setVerifySuccess(data.state === "passed_challenge")
         setFlow(data)
 
-        console.log("🚀 ~ file: verification.tsx:180 ~ .then ~ type:", type)
         if (data.state === "passed_challenge" && type === 'registe') {
           router.replace("/login");
           return;
