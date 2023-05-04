@@ -187,8 +187,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
 
     const nodes = this.filterNodes()
 
-    console.log("nodes", nodes)
-
     if (!flow) {
       return null
     }
