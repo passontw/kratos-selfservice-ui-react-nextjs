@@ -85,6 +85,7 @@ const Account: NextPage = () => {
         },
       )
       .then(() => {
+        alert("delete account success!")
         router.replace("/login")
       })
       .catch((error) => {
