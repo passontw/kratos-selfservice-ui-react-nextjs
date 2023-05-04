@@ -1,26 +1,23 @@
 import Box from "@mui/material/Box"
 import { RecoveryFlow, UpdateRecoveryFlowBody } from "@ory/client"
-import { CardTitle } from "@ory/themes"
-import { AxiosError } from "axios"
 import type { NextPage } from "next"
-import Head from "next/head"
-import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-
-import { Flow, ActionCard, CenterLink, MarginCard } from "../../pkg"
+import axios from "axios"
+import cloneDeep from "lodash/cloneDeep"
+import isEmpty from "lodash/isEmpty"
+import { Flow } from "../../pkg"
 import { handleFlowError } from "../../pkg/errors"
 import ory from "../../pkg/sdk"
 import {
-  selectActiveNav,
-  setDialog,
-  selectDialog,
   setActiveStage,
   selectActiveStage,
   selectSixDigitCode,
 } from "../../state/store/slice/layoutSlice"
 import { Stage } from "../../types/enum"
+import { recoveryFormSchema } from "../../util/schemas"
+import { handleYupErrors, handleYupSchema } from "../../util/yupHelpers"
 
 const RecoveryProcess: NextPage = () => {
   // console.log(props)
@@ -77,7 +74,39 @@ const RecoveryProcess: NextPage = () => {
       })
   }, [flowId, router, router.isReady, returnTo, flow])
 
-  const onSubmit = (values: UpdateRecoveryFlowBody) => {
+  const onSubmit = async (values: UpdateRecoveryFlowBody) => {
+    const nextFlow = cloneDeep(flow);
+    try {
+      await handleYupSchema(recoveryFormSchema, {
+        email: values.email,
+      })
+    } catch(error) {
+      const errors = handleYupErrors(error)
+      
+      if (errors.email) {
+        const message = {
+          id: 4000002,
+          text: errors.email,
+          type: "error",
+        }
+        nextFlow.ui.messages = [message]
+      }else {
+        nextFlow.ui.messages = []
+      }
+      setFlow(nextFlow)
+      return Promise.resolve();
+    }
+    
+    const response = await axios.get(`/api/hydra/validateIdentity?email=${values.email}`)
+      if (isEmpty(response.data.data)) {
+        nextFlow.ui.messages = [{
+          id: 400001,
+          text: 'Email account doesn’t exist',
+          type: 'error'
+        }]
+        setFlow(nextFlow)
+        return Promise.resolve();
+      }
     return (
       router
         // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
@@ -118,10 +147,6 @@ const RecoveryProcess: NextPage = () => {
   return (
     <>
       <Box>
-        {/* <Head>
-          <title>Recover your account - Ory NextJS Integration Example</title>
-          <meta name="description" content="NextJS + React + Vercel + Ory" />
-        </Head> */}
         <Box bgcolor="#272735">
           <Box
             color="#A5A5A9"
@@ -132,7 +157,6 @@ const RecoveryProcess: NextPage = () => {
           >
             {dialogMsg}
           </Box>
-          {/* <CardTitle>Check Email</CardTitle> */}
           {activeStage === Stage.FORGOT_PASSWORD && (
             <Box color="#A5A5A9" fontSize="14px" fontFamily="open sans">
               Email *
@@ -146,11 +170,6 @@ const RecoveryProcess: NextPage = () => {
             hideSocialLogin
           />
         </Box>
-        {/* <ActionCard>
-        <Link href="/" passHref>
-          <CenterLink>Go back</CenterLink>
-        </Link>
-      </ActionCard> */}
       </Box>
     </>
   )

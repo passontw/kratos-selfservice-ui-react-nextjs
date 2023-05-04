@@ -289,7 +289,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 value={
                   getNodeId(node) === "code" ? this.props.code : values[id]
                 }
-                // value={values[id]}
                 dispatchSubmit={this.handleSubmit}
                 setValue={(value) =>
                   new Promise((resolve) => {

@@ -20,6 +20,10 @@ import { Navs } from "../types/enum"
 
 import { StyledMenuWrapper } from "./../styles/share"
 
+const localStorageKey = "!@#$%^&*()data"
+
+const { NEXT_PUBLIC_REDIRECT_URI } = process.env
+
 const getReturnToUrl = (returnTo, type) => {
   if (returnTo) return returnTo;
   if (type === 'registe') return "/login";

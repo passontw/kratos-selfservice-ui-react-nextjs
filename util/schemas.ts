@@ -7,6 +7,10 @@ export const passwordSchema = yup
   .matches(/([^a-zA-Z]+)\w*$/, "Need at least 1 alphabet letter")
   .required("password can not be empty.")
 
+export const recoveryFormSchema = yup.object().shape({
+  email: yup.string().email("Invalid email format").required("email can not be empty."),
+})
+
 export const updatePasswordSchema = yup.object().shape({
   password: yup
     .string()
@@ -20,7 +24,6 @@ export const updatePasswordSchema = yup.object().shape({
     .matches(/(?=.*\d)/, "Need at least 1 number")
     .min(8, "Need at least 8 characters")
     .when("password", (password, field) => {
-      console.log("🚀 ~ file: schemas.ts:23 ~ .when ~ password:", password)
       if (password[0] === undefined) {
         return field.required("password can not be empty.")
       } else {
@@ -31,6 +34,7 @@ export const updatePasswordSchema = yup.object().shape({
       }
     }),
 })
+
 export const loginFormSchema = yup.object().shape({
   identifier: yup
     .string()
