@@ -1,25 +1,18 @@
 import Box from "@mui/material/Box"
 import { VerificationFlow, UpdateVerificationFlowBody } from "@ory/client"
-import { CardTitle } from "@ory/themes"
 import { AxiosError } from "axios"
 import type { NextPage } from "next"
 import Head from "next/head"
-import Link from "next/link"
 import { useRouter } from "next/router"
 import queryString from "query-string"
 import { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
-
-import { ActionCard, CenterLink, MarginCard } from "../../pkg"
+import isEmpty from "lodash/isEmpty"
+import cloneDeep from "lodash/cloneDeep"
 import ory from "../../pkg/sdk"
-import { setActiveStage } from "../../state/store/slice/layoutSlice"
-import { Stage } from "../../types/enum"
 import Text from "../Text"
-
 import Flow from "./VerificationFlow"
 
 const Verification: NextPage = (props) => {
-  const dispatch = useDispatch()
   const { show, close } = props
   console.log("show", show)
   const [initFlow, setInitFlow] = useState(false)
@@ -128,6 +121,19 @@ const Verification: NextPage = (props) => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   const onSubmit = async (values: UpdateVerificationFlowBody) => {
+    const {user} = router.query;
+    const {code = ''} = values;
+    if (code.length !== 6) {
+      const nextFlow = cloneDeep(flow)
+      nextFlow.ui.messages = [{
+        id: 4000002,
+        type: "error",
+        text: "Required",
+      }]
+      setFlow(nextFlow);
+      return;
+    }
+    
     await router
       // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
       // their data when they reload the page.
@@ -135,12 +141,13 @@ const Verification: NextPage = (props) => {
         shallow: true,
       })
 
-    ory
+    return ory
       .updateVerificationFlow({
         flow: String(flow?.id),
-        updateVerificationFlowBody: values,
+        updateVerificationFlowBody: {...values, email: user},
       })
       .then(({ data }) => {
+        console.log("🚀 ~ file: VerificationModal.tsx:146 ~ .then ~ data:", data)
         // Form submission was successful, show the message to the user!
         setFlow(data)
         if (data.state === 'passed_challenge') {
@@ -148,6 +155,7 @@ const Verification: NextPage = (props) => {
         }
       })
       .catch((err: any) => {
+        console.log("🚀 ~ file: VerificationModal.tsx:153 ~ onSubmit ~ err:", err)
         switch (err.response?.status) {
           case 400:
             // Status code 400 implies the form validation had an error
@@ -190,6 +198,7 @@ const Verification: NextPage = (props) => {
           <title>Verify your account - Ory NextJS Integration Example</title>
           <meta name="description" content="NextJS + React + Vercel + Ory" />
         </Head>
+        
         <Box>
           <Box
             display="flex"
@@ -215,7 +224,7 @@ const Verification: NextPage = (props) => {
             Enter the 6-digit code we sent to master123@gmail.com to finish the
             deletion process.
           </Text>
-          <Flow onSubmit={onSubmit} flow={flow} />
+          <Flow onSubmit={onSubmit} flow={flow} hideGlobalMessages={isEmpty(flow?.ui?.messages)}/>
         </Box>
       </Box>
     </Box>

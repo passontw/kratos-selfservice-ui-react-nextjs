@@ -4,23 +4,23 @@ export const passwordSchema = yup
   .string()
   .min(8, "Need at least 8 characters")
   .matches(/(?=.*\d)/, "Need at least 1 number")
-  .matches(/([^a-zA-Z]+)\w*$/, "Need at least 1 alphabet letter")
+  .matches(/([a-zA-Z]+)\w*$/, "Need at least 1 alphabet letter")
   .required("password can not be empty.")
 
 export const recoveryFormSchema = yup.object().shape({
-  email: yup.string().email("Invalid email format").required("email can not be empty."),
+  email: yup.string().email("Invalid email format").required("Required"),
 })
 
 export const updatePasswordSchema = yup.object().shape({
   password: yup
     .string()
-    .matches(/([^a-zA-Z]+)\w*$/, "Need at least 1 alphabet letter")
+    .matches(/([a-zA-Z]+)\w*$/, "Need at least 1 alphabet letter")
     .matches(/(?=.*\d)/, "Need at least 1 number")
     .required("password can not be empty.")
     .min(8, "Need at least 8 characters"),
   confirmPassword: yup
     .string()
-    .matches(/([^a-zA-Z]+)\w*$/, "Need at least 1 alphabet letter")
+    .matches(/([a-zA-Z]+)\w*$/, "Need at least 1 alphabet letter")
     .matches(/(?=.*\d)/, "Need at least 1 number")
     .min(8, "Need at least 8 characters")
     .when("password", (password, field) => {

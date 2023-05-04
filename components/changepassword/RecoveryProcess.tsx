@@ -89,9 +89,17 @@ const RecoveryProcess: NextPage = () => {
           text: errors.email,
           type: "error",
         }
-        nextFlow.ui.messages = [message]
+        const emailNodes = nextFlow.ui.nodes || []
+        const emailIndex = emailNodes.findIndex(
+          (node) => node?.attributes?.name === "email",
+        )
+        nextFlow.ui.nodes[emailIndex].messages = [message]
       }else {
-        nextFlow.ui.messages = []
+        const emailNodes = nextFlow.ui.nodes || []
+        const emailIndex = emailNodes.findIndex(
+          (node) => node?.attributes?.name === "email",
+        )
+        nextFlow.ui.nodes[emailIndex].messages = []
       }
       setFlow(nextFlow)
       return Promise.resolve();
