@@ -92,7 +92,9 @@ const Verification: NextPage = (props) => {
             // Status code 410 means the request has expired - so let's load a fresh flow!
             case 403:
               // Status code 403 implies some other issue (e.g. CSRF) - let's reload!
-              return router.push("/verification")
+              return router.push("/account")
+            default:
+              return router.push("/account")
           }
 
           throw err
