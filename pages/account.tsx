@@ -166,18 +166,29 @@ const Account: NextPage = () => {
 
     // If ?flow=.. was in the URL, we fetch it
     if (flowId) {
-      ory
+      return ory
         .getSettingsFlow({ id: String(flowId) })
         .then(({ data }) => {
           setFlow(data)
         })
         .catch(handleFlowError(router, "account", setFlow))
-      return
+        .catch((err: any) => {
+          // If the previous handler did not catch the error it's most likely a form validation error
+          if (err.response?.status === 400) {
+            // Yup, it is!
+            if (err && err.response) {
+              setFlow(err.response?.data)
+              return
+            }
+          } else {
+            router.replace("/account")
+          }
+        })
     } else {
 
     // Otherwise we initialize it
     
-      ory
+      return ory
       .createBrowserSettingsFlow({
         returnTo: "/account",
       })
@@ -186,6 +197,7 @@ const Account: NextPage = () => {
         setFlow(data)
       })
       .catch(handleFlowError(router, "account", setFlow))
+
     }
 
   }, [flowId, router, router.isReady, returnTo, flow])
