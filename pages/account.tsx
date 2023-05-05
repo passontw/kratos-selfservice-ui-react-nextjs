@@ -169,6 +169,10 @@ const Account: NextPage = () => {
       return ory
         .getSettingsFlow({ id: String(flowId) })
         .then(({ data }) => {
+          if (data.state === "success") {
+            alert("update success");
+          }
+
           setFlow(data)
         })
         .catch(handleFlowError(router, "account", setFlow))

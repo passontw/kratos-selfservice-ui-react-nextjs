@@ -188,22 +188,23 @@ const Login: NextPage = () => {
       if (isEmailSignin) {
         await handleYupSchema(loginFormSchema, values)
       }
-
-      const response = await axios.get(`/api/hydra/validateIdentity?email=${values.identifier}`)
-      if (isEmpty(response.data.data)) {
-        const nextFlow = {
-          ...flow,
-          ui: {
-            ...flow.ui,
-            messages: [{
-              id: 400001,
-              text: 'Email account doesn’t exist. Please try again or sign up',
-              type: 'error'
-            }]
-          }
-        };
-        setFlow(nextFlow);
-        return;
+      if (isEmailSignin) {
+        const response = await axios.get(`/api/hydra/validateIdentity?email=${values.identifier}`)
+        if (isEmpty(response.data.data)) {
+          const nextFlow = {
+            ...flow,
+            ui: {
+              ...flow.ui,
+              messages: [{
+                id: 400001,
+                text: 'Email account doesn’t exist. Please try again or sign up',
+                type: 'error'
+              }]
+            }
+          };
+          setFlow(nextFlow);
+          return;
+        }
       }
       return (
         ory
