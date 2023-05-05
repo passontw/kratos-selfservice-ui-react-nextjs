@@ -12,6 +12,7 @@ import UAParser from "ua-parser-js"
 import AccountLayout from "../components/Layout/AccountLayout"
 import LinkNav from "../components/LinkNav"
 import MenuFooter from "../components/MenuFooter"
+import { showToast } from "../components/Toast"
 import DeviceCard from "../components/devicemanagement/DeviceCard"
 import DeviceLogoutAllConfirm from "../components/devicemanagement/DeviceLogoutAllConfirm"
 import { Methods, ActionCard } from "../pkg"
@@ -61,7 +62,8 @@ const deactiveSession = (sessionId, setSessions) => {
       refreshSessions(setSessions)
     })
     .catch((error) => {
-      alert(error.message)
+      // alert(error.message)
+      showToast(error.message, false)
     })
 }
 
