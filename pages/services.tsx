@@ -7,6 +7,7 @@ import { useRouter } from "next/router"
 import { ReactNode, useEffect, useState } from "react"
 import UAParser from "ua-parser-js"
 
+import { showToast } from "../components/Toast"
 import { Methods, ActionCard } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
