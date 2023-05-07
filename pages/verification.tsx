@@ -27,6 +27,7 @@ const { NEXT_PUBLIC_REDIRECT_URI } = process.env
 const getReturnToUrl = (returnTo, type) => {
   if (returnTo) return returnTo;
   if (type === 'registe') return "/login";
+  if (type === 'continueregiste') return "/profile"
   return undefined;
 }
 
@@ -182,14 +183,14 @@ const Verification: NextPage = () => {
           return;
         }
 
-        if (data.state === "passed_challenge" && type === 'login') {
+        if (data.state === "passed_challenge" && ['login', 'continueregiste'].includes(type)) {
           const values = JSON.parse(localStorage.getItem(localStorageKey))
           return ory.createBrowserLoginFlow({
             refresh: Boolean(refresh),
             aal: aal ? String(aal) : undefined,
             returnTo: Boolean(login_challenge)
               ? NEXT_PUBLIC_REDIRECT_URI
-              : undefined,
+              : '/profile',
           }).then(({ data }) => {
             const csrfNode = data.ui.nodes.find(node => node.attributes.name === "csrf_token")
 

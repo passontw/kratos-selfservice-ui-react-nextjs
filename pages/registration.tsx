@@ -10,7 +10,6 @@ import { useDispatch } from "react-redux"
 
 import AppItem from "../components/AppItem"
 import { StyledAppItemWrap } from "../components/AppItem/styles"
-import AppItemCopy from "../components/AppItemCopy"
 import AppsList from "../components/AppsList"
 import CmidHead from "../components/CmidHead"
 import MenuFooter from "../components/MenuFooter"
@@ -146,7 +145,6 @@ const Registration: NextPage = () => {
       )
     } catch (error) {
       const errors = handleYupErrors(error)
-      console.log("🚀 ~ file: registration.tsx:149 ~ onSubmit ~ errors:", errors)
       const nextFlow = cloneDeep(flow)
 
       if (errors['["traits.email"]']) {
