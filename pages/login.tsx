@@ -31,6 +31,7 @@ import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 import { StyledMenuWrapper } from "./../styles/share"
 
 const localStorageKey = "!@#$%^&*()data"
+const registeLocalStorageKey = "!@#$%^&*()registedata"
 
 const { NEXT_PUBLIC_REDIRECT_URI } = process.env
 
@@ -214,9 +215,36 @@ const Login: NextPage = () => {
           })
 
           // We logged in successfully! Let's bring the user home.
-          .then((result) => {
-            const { session } = result.data
+          .then((loginResult) => {
+            return axios.get("/api/.ory/sessions/whoami", {
+              headers: { withCredentials: true },
+            }).then(result => {
+              return [loginResult, result.data]
+            });
+          }).then(([loginResult, myResult]) => {
+            const { session } = loginResult.data
             const { traits } = session.identity
+            const {verifiable_addresses = []} = myResult.identity
+            console.log("🚀 ~ file: login.tsx:228 ~ .then ~ myResult:", JSON.stringify(myResult))
+
+            const [verifiable_address] = verifiable_addresses
+            if (isEmpty(verifiable_address) || !verifiable_address.verified) {
+              return ory
+                  .createBrowserLogoutFlow()
+                  .then(({ data: logoutFlow }) => {
+                    return ory.updateLogoutFlow({
+                      token: logoutFlow.logout_token,
+                    })
+                  }).then(() => {
+                    // alert("please continue registe flow")
+                    localStorage.setItem(localStorageKey, JSON.stringify(values))
+                    window.location.href = `/verification?${queryString.stringify(
+                      router.query,
+                    )}&user=${values.identifier}&type=continueregiste`
+                    return
+                  })
+            }
+
             if (isEmailSignin && traits.loginVerification) {
               return ory
                 .createBrowserLogoutFlow()

@@ -23,6 +23,7 @@ import {
   setDialog,
 } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
+import { showToast } from '../components/Toast'
 
 interface Props {
   flow?: SettingsFlow
@@ -85,11 +86,13 @@ const Account: NextPage = () => {
         },
       )
       .then(() => {
-        alert("delete account success!")
+        // alert("delete account success!")
+        showToast("Account deleted")
         router.replace("/login")
       })
       .catch((error) => {
-        alert(error.message)
+        showToast(error.message, false)
+        // alert(error.message)
       })
   }
 
