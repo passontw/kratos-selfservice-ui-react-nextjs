@@ -21,12 +21,13 @@ import { Navs } from "../types/enum"
 import { StyledMenuWrapper } from "./../styles/share"
 
 const localStorageKey = "!@#$%^&*()data"
+const registeLocalStorageKey = "!@#$%^&*()registedata"
 
 const { NEXT_PUBLIC_REDIRECT_URI } = process.env
 
 const getReturnToUrl = (returnTo, type) => {
   if (returnTo) return returnTo;
-  if (type === 'registe') return "/login";
+  if (type === 'registe') return "/profile";
   if (type === 'continueregiste') return "/profile"
   return undefined;
 }
@@ -158,7 +159,6 @@ const Verification: NextPage = () => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   const onSubmit = async (values: UpdateVerificationFlowBody) => {
-    console.log("🚀 ~ file: verification.tsx:160 ~ onSubmit ~ values:", values)
     await router
       // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
       // their data when they reload the page.
@@ -178,13 +178,10 @@ const Verification: NextPage = () => {
         setVerifySuccess(data.state === "passed_challenge")
         setFlow(data)
 
-        if (data.state === "passed_challenge" && type === 'registe') {
-          router.replace("/login");
-          return;
-        }
+        if (data.state === "passed_challenge" && ['login', 'continueregiste', 'registe'].includes(type)) {
+          const key = type === 'registe' ? registeLocalStorageKey: localStorageKey
+          const values = JSON.parse(localStorage.getItem(key))
 
-        if (data.state === "passed_challenge" && ['login', 'continueregiste'].includes(type)) {
-          const values = JSON.parse(localStorage.getItem(localStorageKey))
           return ory.createBrowserLoginFlow({
             refresh: Boolean(refresh),
             aal: aal ? String(aal) : undefined,
@@ -193,18 +190,24 @@ const Verification: NextPage = () => {
               : '/profile',
           }).then(({ data }) => {
             const csrfNode = data.ui.nodes.find(node => node.attributes.name === "csrf_token")
-
+            const nextValues = type === 'registe'
+            ? {
+              identifier: values['traits.email'],
+              method: 'password',
+              password: values.password,
+            }
+            : values
             return ory
               .updateLoginFlow({
                 flow: String(data?.id),
-                updateLoginFlowBody: { ...values, csrf_token: csrfNode?.attributes.value },
+                updateLoginFlowBody: { ...nextValues, csrf_token: csrfNode?.attributes.value },
               }).then(() => flow)
           }).then(flow => {
-            if (flow?.return_to) {
-              window.location.href = flow?.return_to
-              return
+            if (type !== 'registe') {
+              router.replace("/profile")
+              return;
             }
-            router.push("/profile")
+
           }).catch(error => {
             console.log(error)
           })
@@ -212,7 +215,6 @@ const Verification: NextPage = () => {
         }
       })
       .catch((err: any) => {
-        console.log("🚀 ~ file: verification.tsx:214 ~ onSubmit ~ err:", err)
         switch (err.response?.status) {
           case 400:
             // Status code 400 implies the form validation had an error
@@ -259,7 +261,7 @@ const Verification: NextPage = () => {
               }}
             >
               {verifySuccess
-                ? "Congratulation, your account is approved. You will be automatically redirected to %service% in 5 seconds. "
+                ? "Congratulation, your account is approved."
                 : `Enter the 6-digit code we sent to ${email} to verify account.`}
             </span>
           </Box>

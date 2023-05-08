@@ -127,7 +127,11 @@ const Verification: NextPage = (props) => {
     const {code = ''} = values;
     if (code.length !== 6) {
       const nextFlow = cloneDeep(flow)
-      nextFlow.ui.messages = [{
+      const codeNodes = nextFlow.ui.nodes || []
+      const codeIndex = codeNodes.findIndex(
+        (node) => node?.attributes?.name === "code",
+      )
+      nextFlow.ui.nodes[codeIndex].messages = [{
         id: 4000002,
         type: "error",
         text: "Required",
@@ -149,7 +153,6 @@ const Verification: NextPage = (props) => {
         updateVerificationFlowBody: {...values, email: user},
       })
       .then(({ data }) => {
-        console.log("🚀 ~ file: VerificationModal.tsx:146 ~ .then ~ data:", data)
         // Form submission was successful, show the message to the user!
         setFlow(data)
         if (data.state === 'passed_challenge') {
@@ -157,7 +160,6 @@ const Verification: NextPage = (props) => {
         }
       })
       .catch((err: any) => {
-        console.log("🚀 ~ file: VerificationModal.tsx:153 ~ onSubmit ~ err:", err)
         switch (err.response?.status) {
           case 400:
             // Status code 400 implies the form validation had an error

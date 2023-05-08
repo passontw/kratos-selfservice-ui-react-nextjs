@@ -104,7 +104,6 @@ const Settings: NextPage = () => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   const onSubmit = async (values: UpdateSettingsFlowBody, confirmPassword) => {
-    console.log("🚀 ~ file: settings.tsx:107 ~ onSubmit ~ values:", values)
     try {
       await handleYupSchema(updatePasswordSchema, {
         confirmPassword,

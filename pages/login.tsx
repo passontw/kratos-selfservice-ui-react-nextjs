@@ -225,7 +225,6 @@ const Login: NextPage = () => {
             const { session } = loginResult.data
             const { traits } = session.identity
             const {verifiable_addresses = []} = myResult.identity
-            console.log("🚀 ~ file: login.tsx:228 ~ .then ~ myResult:", JSON.stringify(myResult))
 
             const [verifiable_address] = verifiable_addresses
             if (isEmpty(verifiable_address) || !verifiable_address.verified) {
