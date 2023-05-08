@@ -17,6 +17,10 @@ const InputsWrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: 16px;
+  @media only screen and (max-width: 599px) {
+    justify-content: space-between;
+    width: 100%;
+  }
   @media only screen and (max-width: 435px) {
     gap: 6px;
   }
