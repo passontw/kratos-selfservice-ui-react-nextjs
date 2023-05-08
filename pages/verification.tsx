@@ -158,7 +158,6 @@ const Verification: NextPage = () => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   const onSubmit = async (values: UpdateVerificationFlowBody) => {
-    console.log("🚀 ~ file: verification.tsx:160 ~ onSubmit ~ values:", values)
     await router
       // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
       // their data when they reload the page.
@@ -212,7 +211,6 @@ const Verification: NextPage = () => {
         }
       })
       .catch((err: any) => {
-        console.log("🚀 ~ file: verification.tsx:214 ~ onSubmit ~ err:", err)
         switch (err.response?.status) {
           case 400:
             // Status code 400 implies the form validation had an error
