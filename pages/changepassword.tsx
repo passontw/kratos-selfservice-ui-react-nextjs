@@ -14,12 +14,12 @@ import { useDispatch } from "react-redux"
 
 import AccountLayout from "../components/Layout/AccountLayout"
 import Flow from "../components/changepassword/Flow"
-import { Methods, Messages, ActionCard } from "../pkg"
+import { Methods, ActionCard } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
-import { updatePasswordSchema } from "../util/schemas"
+import { changePasswordSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 
 interface Props {
@@ -80,7 +80,7 @@ const ChangePassword: NextPage = () => {
 
   const onSubmit = async (values: UpdateSettingsFlowBody, confirmPassword) => {
     try {
-      await handleYupSchema(updatePasswordSchema, {
+      await handleYupSchema(changePasswordSchema, {
         confirmPassword,
         password: values.password,
       })
@@ -113,7 +113,7 @@ const ChangePassword: NextPage = () => {
         )
     } catch (error) {
       const errors = handleYupErrors(error)
-      console.log("🚀 ~ file: changepassword.tsx:116 ~ onSubmit ~ errors:", errors)
+
       const nextFlow = cloneDeep(flow)
 
       if (errors.password) {
