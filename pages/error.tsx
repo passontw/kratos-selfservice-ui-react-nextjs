@@ -26,7 +26,7 @@ const Login: NextPage = () => {
       .getFlowError({ id: String(id) })
       .then(({ data }) => {
         if (data?.error?.message === "no resumable session found") {
-          router.replace("/login?error=email not exists or did not link 3rd party.");
+          window.location.replace("/login?error=email not exists or did not link 3rd party.");
         }
 
         setError(data)
