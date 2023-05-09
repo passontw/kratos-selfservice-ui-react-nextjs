@@ -96,7 +96,7 @@ const AccountMenu: React.FC<AccountMenuProps> = () => {
         <StyledLine />
         <StyledMenuItem onClick={() => {
           onLogout()
-          router.replace("/login");
+          window.location.replace("/login");
           }}>
           <LogOut />
           Log out

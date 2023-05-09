@@ -279,7 +279,19 @@ const Login: NextPage = () => {
             if (err.response?.status === 400) {
               // Yup, it is!
               if (err && err.response) {
-                setFlow(err.response?.data)
+                const nextFlow = err.response?.data;
+                const [message = {text: ""}] = nextFlow.ui.messages;
+                if (message.text.includes("check for spelling mistakes in your password or username, email address, or phone number.")) {
+                  const identifierIndex = nextFlow.ui.nodes.findIndex(
+                    (node) => node.attributes.name === "password",
+                  )
+                  nextFlow.ui.nodes[identifierIndex].messages = [{
+                    id: 400007,
+                    text: "",
+                    type: "error"
+                  }];
+                }
+                setFlow(nextFlow)
               }
               return
             }
