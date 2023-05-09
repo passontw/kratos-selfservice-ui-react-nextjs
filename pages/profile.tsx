@@ -1,3 +1,4 @@
+import axios from "axios"
 import { StyledProfileArea } from "../styles/pages/profile.styles"
 import Box from "@mui/material/Box"
 import {
@@ -5,7 +6,6 @@ import {
   SettingsFlow,
   UpdateSettingsFlowBody,
 } from "@ory/client"
-import { H3 } from "@ory/themes"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { ReactNode, useState, useEffect } from "react"
@@ -14,8 +14,7 @@ import { useDispatch } from "react-redux"
 import AccountLayout from "../components/Layout/AccountLayout"
 import { showToast } from "../components/Toast"
 import Flow from "../components/profile/Flow"
-import { Messages } from "../components/profile/Messages"
-import { ActionCard, Methods } from "../pkg"
+import { Methods } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
@@ -56,6 +55,12 @@ const Profile: NextPage = () => {
   useEffect(() => {
     dispatch(setActiveNav(Navs.PROFILE))
     dispatch(setActiveStage(Stage.NONE))
+    
+    axios.get("/api/.ory/sessions/whoami", {
+      headers: { withCredentials: true },
+    }).catch(() => {
+      window.location.replace("/login");
+    })
   }, [])
 
   useEffect(() => {

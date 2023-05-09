@@ -158,6 +158,12 @@ const Account: NextPage = () => {
   useEffect(() => {
     dispatch(setActiveNav(Navs.ACCOUNT))
     dispatch(setActiveStage(Stage.NONE))
+
+    axios.get("/api/.ory/sessions/whoami", {
+      headers: { withCredentials: true },
+    }).catch(() => {
+      window.location.replace("/login");
+    })
   }, [])
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box"
-import { SettingsFlow, UpdateSettingsFlowBody } from "@ory/client"
+import { SettingsFlow } from "@ory/client"
 import axios from "axios"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
@@ -7,9 +7,6 @@ import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
 import AccountLayout from "../components/Layout/AccountLayout"
-import LinkNav from "../components/LinkNav"
-import MenuFooter from "../components/MenuFooter"
-import { Methods, ActionCard, Messages } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import Cmodx from "../public/images/app_icons/Cmodx"
@@ -17,11 +14,6 @@ import MasterControl from "../public/images/app_icons/MasterControl"
 import Stormplay from "../public/images/app_icons/Stormplay"
 import { setActiveNav } from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
-
-interface Props {
-  flow?: SettingsFlow
-  only?: Methods
-}
 
 const refreshSessions = (setSessions) => {
   axios
@@ -47,6 +39,11 @@ const Export: NextPage = () => {
 
   useEffect(() => {
     dispatch(setActiveNav(Navs.EXPORT))
+    axios.get("/api/.ory/sessions/whoami", {
+      headers: { withCredentials: true },
+    }).catch(() => {
+      window.location.replace("/login");
+    })
   }, [])
 
   useEffect(() => {
