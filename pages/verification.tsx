@@ -7,7 +7,8 @@ import queryString from "query-string"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import AppsList from '../components/AppsList'
-
+import isEmpty from 'lodash/isEmpty'
+import cloneDeep from 'lodash/cloneDeep'
 import CmidHead from "../components/CmidHead"
 import MenuFooter from "../components/MenuFooter"
 import { Flow } from "../components/verification/Flow"
@@ -19,6 +20,13 @@ import {
 import { Navs } from "../types/enum"
 
 import { StyledMenuWrapper } from "./../styles/share"
+
+const dayjs = require("dayjs")
+const utc = require("dayjs/plugin/utc")
+const timezone = require("dayjs/plugin/timezone") // dependent on utc plugin
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const localStorageKey = "!@#$%^&*()data"
 const registeLocalStorageKey = "!@#$%^&*()registedata"
@@ -158,7 +166,43 @@ const Verification: NextPage = () => {
       })
   }, [flowId, router, router.isReady, returnTo, flow])
 
+  const validateDiffMinute = (setFlow, flow, diffMinute) => {
+    if (isEmpty(flow)) return true;
+    if (diffMinute < 5) return true;
+
+    const nextFlow = cloneDeep(flow);
+    const identifierIndex = nextFlow.ui.nodes.findIndex(
+      (node) => node.attributes.name === "code",
+    )
+    if (identifierIndex === -1) return true;
+    nextFlow.ui.nodes[identifierIndex].messages = [{
+      id: 400009,
+      text: 'Verification code is no longer valid',
+      type: 'error'
+    }]
+    setFlow(nextFlow)
+    return false;
+  }
+
   const onSubmit = async (values: UpdateVerificationFlowBody) => {
+    const createdTimeDayObject = dayjs(flow.issued_at)
+    const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
+    
+    const isValidate = validateDiffMinute(setFlow, flow, diffMinute);
+    if (!isValidate) {
+      return;
+    } else {
+      const nextFlow = cloneDeep(flow);
+      const identifierIndex = nextFlow.ui.nodes.findIndex(
+        (node) => node.attributes.name === "code",
+      )
+      if (identifierIndex !== -1) {
+        nextFlow.ui.messages = [];
+        nextFlow.ui.nodes[identifierIndex].messages = []
+        setFlow(nextFlow)
+      }
+    }
+
     await router
       // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
       // their data when they reload the page.
@@ -176,8 +220,24 @@ const Verification: NextPage = () => {
       .then(({ data }) => {
         // Form submission was successful, show the message to the user!
         setVerifySuccess(data.state === "passed_challenge")
-        setFlow(data)
-
+        console.log("🚀 ~ file: verification.tsx:220 ~ .then ~ data:", data)
+        const [message = {text: ''}] = data.ui.messages;
+        const nextFlow = cloneDeep(data);
+        console.log("🚀 ~ file: verification.tsx:225 ~ .then ~ message:", message)
+        console.log('🚀 ~ file: verification.tsx:227 ~ .then ~ message.text.includes("The verification code is invalid or has already been used"):', message.text.includes("The verification code is invalid or has already been used"))
+        if (message.text.includes("The verification code is invalid or has already been used")) {
+          
+          const identifierIndex = nextFlow.ui.nodes.findIndex(
+            (node) => node.attributes.name === "code",
+          )
+          console.log("🚀 ~ file: verification.tsx:234 ~ .then ~ identifierIndex:", identifierIndex)
+          if (identifierIndex !== -1) {
+            nextFlow.ui.nodes[identifierIndex].messages = [message]
+            nextFlow.ui.messages = []
+          }
+        }
+        setFlow(nextFlow)
+        
         if (data.state === "passed_challenge" && ['login', 'continueregiste', 'registe'].includes(type)) {
           const key = type === 'registe' ? registeLocalStorageKey: localStorageKey
           const values = JSON.parse(localStorage.getItem(key))
@@ -215,6 +275,7 @@ const Verification: NextPage = () => {
         }
       })
       .catch((err: any) => {
+        console.log("🚀 ~ file: verification.tsx:261 ~ onSubmit ~ err:", err)
         switch (err.response?.status) {
           case 400:
             // Status code 400 implies the form validation had an error
