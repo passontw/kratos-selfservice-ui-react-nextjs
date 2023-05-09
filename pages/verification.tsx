@@ -220,17 +220,16 @@ const Verification: NextPage = () => {
       .then(({ data }) => {
         // Form submission was successful, show the message to the user!
         setVerifySuccess(data.state === "passed_challenge")
-        console.log("🚀 ~ file: verification.tsx:220 ~ .then ~ data:", data)
+
         const [message = {text: ''}] = data.ui.messages;
         const nextFlow = cloneDeep(data);
-        console.log("🚀 ~ file: verification.tsx:225 ~ .then ~ message:", message)
-        console.log('🚀 ~ file: verification.tsx:227 ~ .then ~ message.text.includes("The verification code is invalid or has already been used"):', message.text.includes("The verification code is invalid or has already been used"))
+
         if (message.text.includes("The verification code is invalid or has already been used")) {
           
           const identifierIndex = nextFlow.ui.nodes.findIndex(
             (node) => node.attributes.name === "code",
           )
-          console.log("🚀 ~ file: verification.tsx:234 ~ .then ~ identifierIndex:", identifierIndex)
+
           if (identifierIndex !== -1) {
             nextFlow.ui.nodes[identifierIndex].messages = [message]
             nextFlow.ui.messages = []
@@ -322,7 +321,7 @@ const Verification: NextPage = () => {
               }}
             >
               {verifySuccess
-                ? "Congratulation, your account is approved."
+                ? "Congratulation, your account is approved. You will be automatically redirected to %service% in 5 seconds."
                 : `Enter the 6-digit code we sent to ${email} to verify account.`}
             </span>
           </Box>
