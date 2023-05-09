@@ -1,3 +1,4 @@
+import axios from "axios"
 import {
   StyledChangePasswordArea,
   StyledSection,
@@ -76,6 +77,12 @@ const ChangePassword: NextPage = () => {
   useEffect(() => {
     dispatch(setActiveNav(Navs.CHANGEPASSWORD))
     dispatch(setActiveStage(Stage.NONE))
+
+    axios.get("/api/.ory/sessions/whoami", {
+      headers: { withCredentials: true },
+    }).catch(() => {
+      window.location.replace("/login");
+    })
   }, [])
 
   const onSubmit = async (values: UpdateSettingsFlowBody, confirmPassword) => {

@@ -1,6 +1,5 @@
 import { Box } from "@mui/material"
 import { SettingsFlow } from "@ory/client"
-import { H3 } from "@ory/themes"
 import axios from "axios"
 import isEmpty from "lodash/isEmpty"
 import { NextPage } from "next"
@@ -228,6 +227,13 @@ const DeviceManagement: NextPage = () => {
       .catch(handleFlowError(router, "settings", setFlow))
   }, [flowId, router, router.isReady, returnTo, flow])
 
+  useEffect(() => {
+    axios.get("/api/.ory/sessions/whoami", {
+      headers: { withCredentials: true },
+    }).catch(() => {
+      window.location.replace("/login");
+    })
+  }, [])
   return (
     <AccountLayout>
       <Box
