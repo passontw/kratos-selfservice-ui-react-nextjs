@@ -28,6 +28,7 @@ const getDisplayMessage = (displayMessage = "") => {
   return displayMessage
 }
 export const Message = ({ message }: MessageProps) => {
+  console.log("@message", message)
   const dontShowMsg = "An email containing".includes(
     message.text.substring(0, 10),
   )
