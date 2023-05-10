@@ -11,7 +11,10 @@ export const passwordSchema = yup
   .required("password can not be empty.")
 
 export const recoveryFormSchema = yup.object().shape({
-  email: yup.string().email("Invalid email format").required("Required"),
+  email: yup
+    .string()
+    .email("Invalid email format, please check and try again.")
+    .required("This field is required, please fill it out."),
 })
 
 export const changePasswordSchema = yup.object().shape({
@@ -19,7 +22,7 @@ export const changePasswordSchema = yup.object().shape({
     .string()
     .matches(/([a-zA-Z]+)\w*$/, "Need at least 1 alphabet letter")
     .matches(/(?=.*\d)/, "Need at least 1 number")
-    .required("Required")
+    .required("This field is required, please fill it out.")
     .min(8, "Need at least 8 characters"),
   confirmPassword: yup
     .string()
@@ -28,7 +31,7 @@ export const changePasswordSchema = yup.object().shape({
     .min(8, "Need at least 8 characters")
     .when("password", (password, field) => {
       if (password[0] === undefined) {
-        return field.required("Required")
+        return field.required("This field is required, please fill it out.")
       } else {
         return password
           ? field.oneOf([yup.ref("password")], "Password doesn't match")
@@ -69,24 +72,24 @@ export const updatePasswordSchema = yup.object().shape({
 export const loginFormSchema = yup.object().shape({
   identifier: yup
     .string()
-    .email("Invalid email format")
-    .required("Required"),
+    .email("Invalid email format, please check and try again.")
+    .required("This field is required, please fill it out."),
   password: yup
-  .string()
-  .min(8, "Need at least 8 characters")
-  .matches(/(?=.*\d)/, "Need at least 1 number")
-  .matches(
-    /^(?=.*[A-Za-z])[A-Za-z\d$@$!%*#?&]/,
-    "Need at least 1 alphabet letter",
-  )
-  .required("Required"),
+    .string()
+    .min(8, "Need at least 8 characters")
+    .matches(/(?=.*\d)/, "Need at least 1 number")
+    .matches(
+      /^(?=.*[A-Za-z])[A-Za-z\d$@$!%*#?&]/,
+      "Need at least 1 alphabet letter",
+    )
+    .required("This field is required, please fill it out."),
 })
 
 export const registrationFormSchema = yup.object().shape({
   "traits.email": yup
     .string()
-    .email("Invalid email format")
-    .required("Required"),
+    .email("Invalid email format, please check and try again.")
+    .required("This field is required, please fill it out."),
   "traits.name": yup.string().required("Required"),
   password: yup
     .string()
@@ -96,5 +99,5 @@ export const registrationFormSchema = yup.object().shape({
       /^(?=.*[A-Za-z])[A-Za-z\d$@$!%*#?&]/,
       "Need at least 1 alphabet letter",
     )
-    .required("Required"),
+    .required("This field is required, please fill it out."),
 })
