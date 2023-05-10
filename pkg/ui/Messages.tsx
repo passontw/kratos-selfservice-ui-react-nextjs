@@ -1,19 +1,15 @@
 import Box from "@mui/material/Box"
 import { UiText } from "@ory/client"
 import { Alert, AlertContent } from "@ory/themes"
-import { useSelector } from "react-redux"
 
-import { showToast } from "../../components/Toast"
 import ErrorIcon from "../../public/images/ErrorIcon"
 import SuccessIcon from "../../public/images/SuccessIcon"
-import { selectActiveNav } from "../../state/store/slice/layoutSlice"
-import { Navs } from "../../types/enum"
 
 interface MessageProps {
   message: UiText
 }
 
-const getDisplayMessage = (displayMessage = "", currentNav: string) => {
+const getDisplayMessage = (displayMessage = "") => {
   if (
     displayMessage.includes(
       "check for spelling mistakes in your password or username, email address, or phone number.",
@@ -26,21 +22,17 @@ const getDisplayMessage = (displayMessage = "", currentNav: string) => {
   }
 
   if (displayMessage.includes("An account with the same identifier")) {
-    if (currentNav === Navs.ACCOUNT) {
-      showToast(`Account already in use. Can't be linked`, false)
-    }
     return "Email account already existed. Please try login or forgot password."
   }
 
   return displayMessage
 }
 export const Message = ({ message }: MessageProps) => {
-  const currentNav = useSelector(selectActiveNav)
   const dontShowMsg = "An email containing".includes(
     message.text.substring(0, 10),
   )
 
-  const displayMessage = getDisplayMessage(message.text, currentNav)
+  const displayMessage = getDisplayMessage(message.text)
 
   return dontShowMsg ? null : (
     <Alert severity={message.type === "error" ? "error" : "info"}>

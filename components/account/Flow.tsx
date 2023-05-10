@@ -154,6 +154,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     return this.props
       .onSubmit({ ...body, ...this.state.values })
       .finally(() => {
+        console.log("#state#", this.state)
         // We wait for reconciliation and update the state after 50ms
         // Done submitting - update loading status
         this.setState((state) => ({
