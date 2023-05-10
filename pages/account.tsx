@@ -92,7 +92,8 @@ const Account: NextPage = () => {
         //   showToast("Account deleted")
         // }, 1500)
         dispatch(setAccountDeleted(true))
-        window.location.replace("/login")
+        router.push("/login")
+        // window.location.replace("/login")
       })
       .catch((error) => {
         showToast(error.message, false)
