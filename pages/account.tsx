@@ -87,8 +87,10 @@ const Account: NextPage = () => {
       )
       .then(() => {
         // alert("delete account success!")
-        showToast("Account deleted")
         window.location.replace("/login")
+        setTimeout(() => {
+          showToast("Account deleted")
+        }, 1000)
       })
       .catch((error) => {
         showToast(error.message, false)
