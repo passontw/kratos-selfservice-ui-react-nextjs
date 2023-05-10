@@ -17,8 +17,15 @@ import {
   selectSixDigitCode,
 } from "../../state/store/slice/layoutSlice"
 import { Stage } from "../../types/enum"
-import { recoveryFormSchema } from "../../util/schemas"
+import { recoveryFormSchema, recoveryCodeFormSchema } from "../../util/schemas"
 import { handleYupErrors, handleYupSchema } from "../../util/yupHelpers"
+
+const dayjs = require("dayjs")
+const utc = require("dayjs/plugin/utc")
+const timezone = require("dayjs/plugin/timezone") // dependent on utc plugin
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const RecoveryProcess: NextPage = () => {
   // console.log(props)
@@ -75,13 +82,84 @@ const RecoveryProcess: NextPage = () => {
       })
   }, [flowId, router, router.isReady, returnTo, flow])
 
+  const validateDiffMinute = (setFlow, flow, diffMinute) => {
+    if (isEmpty(flow)) return true;
+    if (diffMinute < 5) return true;
+
+    const nextFlow = cloneDeep(flow);
+    const identifierIndex = nextFlow.ui.nodes.findIndex(
+      (node) => node.attributes.name === "code",
+    )
+    if (identifierIndex === -1) return true;
+    nextFlow.ui.nodes[identifierIndex].messages = [{
+      id: 400009,
+      text: 'Verification code is no longer valid',
+      type: 'error'
+    }]
+    setFlow(nextFlow)
+    return false;
+  }
+
   const onSubmit = async (values: UpdateRecoveryFlowBody) => {
-    const nextFlow = cloneDeep(flow)
+    const createdTimeDayObject = dayjs(flow.issued_at)
+    const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
+    const isValidate = validateDiffMinute(setFlow, flow, diffMinute);
+
+    if (!isValidate) {
+      const nextFlow = cloneDeep(flow);
+      const identifierIndex = nextFlow.ui.nodes.findIndex(
+        (node) => node.attributes.name === "code",
+      )
+
+      if (identifierIndex !== -1) {
+        nextFlow.ui.messages = [];
+        nextFlow.ui.nodes[identifierIndex].messages = [{
+          id: 400002,
+          text: "Verification code is no longer valid, please try again.",
+          type: "error",
+        }]
+        setFlow(nextFlow)
+        return;
+      }
+    } else {
+      const nextFlow = cloneDeep(flow);
+      const identifierIndex = nextFlow.ui.nodes.findIndex(
+        (node) => node.attributes.name === "code",
+      )
+      if (identifierIndex !== -1) {
+        nextFlow.ui.messages = [];
+        nextFlow.ui.nodes[identifierIndex].messages = []
+        setFlow(nextFlow)
+      }
+    }
+
+    if (flow.state === "sent_email") {
+      const nextFlow = cloneDeep(flow);
+      const identifierIndex = nextFlow.ui.nodes.findIndex(
+        (node) => node.attributes.name === "code",
+      )
+      if (identifierIndex !== -1) {
+        nextFlow.ui.messages = [];
+        nextFlow.ui.nodes[identifierIndex].messages = []
+        setFlow(nextFlow)
+      }
+    }
+
+    const nextFlow = cloneDeep(flow);
     try {
-      await handleYupSchema(recoveryFormSchema, {
-        email: values.email,
-      })
-    } catch (error) {
+      if (flow.state === "choose_method") {
+        await handleYupSchema(recoveryFormSchema, {
+          email: values.email,
+        })
+      }
+
+      if (flow.state === "sent_email") {
+        await handleYupSchema(recoveryCodeFormSchema, {
+          code: values.code,
+        })
+      }
+
+    } catch(error) {
       const errors = handleYupErrors(error)
 
       if (errors.email) {
@@ -102,24 +180,43 @@ const RecoveryProcess: NextPage = () => {
         )
         nextFlow.ui.nodes[emailIndex].messages = []
       }
+
+      if (errors.code) {
+        const message = {
+          id: 4000002,
+          text: errors.code,
+          type: "error",
+        }
+        const codeNodes = nextFlow.ui.nodes || []
+        const codeIndex = codeNodes.findIndex(
+          (node) => node?.attributes?.name === "code",
+        )
+
+        nextFlow.ui.nodes[codeIndex].messages = [message]
+      } else {
+        const codeNodes = nextFlow.ui.nodes || []
+        const codeIndex = codeNodes.findIndex(
+          (node) => node?.attributes?.name === "code",
+        )
+        nextFlow.ui.nodes[codeIndex].messages = []
+      }
       setFlow(nextFlow)
       return Promise.resolve()
     }
 
-    const response = await axios.get(
-      `/api/hydra/validateIdentity?email=${values.email}`,
-    )
-    if (isEmpty(response.data.data)) {
-      nextFlow.ui.messages = [
-        {
+    if (flow.state === "choose_method") {
+    const response = await axios.get(`/api/hydra/validateIdentity?email=${values.email}`)
+      if (isEmpty(response.data.data)) {
+        nextFlow.ui.messages = [{
           id: 400001,
-          text: "Email account doesn’t exist. Please try again or sign up.",
-          type: "error",
-        },
-      ]
-      setFlow(nextFlow)
-      return Promise.resolve()
+          text: 'Email account doesn’t exist',
+          type: 'error'
+        }]
+        setFlow(nextFlow)
+        return Promise.resolve();
+      }
     }
+
     return (
       router
         // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
