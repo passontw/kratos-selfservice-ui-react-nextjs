@@ -23,7 +23,6 @@ const initialState: LayoutSliceStateI = {
   mfaState: undefined,
   lockCodeResend: false,
   accountDeleted: false,
-  errorMsgCode: "",
 }
 
 export const layoutSlice = createSlice({
@@ -47,12 +46,6 @@ export const layoutSlice = createSlice({
       { payload }: PayloadAction<boolean>,
     ) => {
       state.accountDeleted = payload
-    },
-    setErrorMsgCode: (
-      state: LayoutSliceStateI,
-      { payload }: PayloadAction<string>,
-    ) => {
-      state.errorMsgCode = payload
     },
     setSixDigitCode: (
       state: LayoutSliceStateI,
@@ -110,12 +103,6 @@ export const selectAccountDeleted = (state: {
   }
 }) => state.layout.accountDeleted
 
-export const selectErrorMsgCode = (state: {
-  layout: {
-    errorMsgCode: string
-  }
-}) => state.layout.errorMsgCode
-
 export const selectSixDigitCode = (state: {
   layout: {
     sixDigitCode: string
@@ -157,7 +144,6 @@ export const {
   setActiveNav,
   setActiveStage,
   setAccountDeleted,
-  setErrorMsgCode,
   setSixDigitCode,
   setLockCodeResend,
   setMfaModalOpen,

@@ -23,7 +23,6 @@ import {
   setActiveNav,
   setActiveStage,
   setDialog,
-  setErrorMsgCode,
 } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
 
@@ -164,7 +163,7 @@ const Account: NextPage = () => {
   useEffect(() => {
     dispatch(setActiveNav(Navs.ACCOUNT))
     dispatch(setActiveStage(Stage.NONE))
-    dispatch(setErrorMsgCode(""))
+
     axios
       .get("/api/.ory/sessions/whoami", {
         headers: { withCredentials: true },
