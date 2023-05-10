@@ -46,7 +46,7 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
 
   return (
     <Box
-      minWidth="335px"
+      minWidth="287px"
       p="24px"
       bgcolor="#272735"
       borderRadius="12px"
@@ -66,7 +66,11 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
             <Desktop />
           )}
           <Text color="#FFF" size="20px" lineHeight="26px">
-            {device ? device : "Unknown"}
+            {device
+              ? device?.toLowerCase() === "macintosh"
+                ? "Mac OS"
+                : device
+              : "Unknown"}
           </Text>
         </Box>
         {!isCurrent && (
