@@ -21,6 +21,7 @@ import { handleGetFlowError, handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import {
   selectAccountDeleted,
+  setAccountDeleted,
   setActiveNav,
   setActiveStage,
   setDialog,
@@ -86,6 +87,7 @@ const Login: NextPage = () => {
     dispatch(setActiveStage(Stage.NONE))
     dispatch(setDialog(null))
     dispatch(setLockCodeResend(false))
+    dispatch(setAccountDeleted(false))
   }, [])
 
   // Get ?flow=... from the URL
