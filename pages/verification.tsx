@@ -286,7 +286,6 @@ const Verification: NextPage = () => {
         }
       })
       .catch((err: any) => {
-        console.log("🚀 ~ file: verification.tsx:261 ~ onSubmit ~ err:", err)
         switch (err.response?.status) {
           case 400:
             // Status code 400 implies the form validation had an error
