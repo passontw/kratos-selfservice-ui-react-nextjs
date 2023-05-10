@@ -7,6 +7,7 @@ import { ReactNode, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import AccountLayout from "../components/Layout/AccountLayout"
+import { showToast } from "../components/Toast"
 import DeleteAccConfirm from "../components/account/DeleteAccConfirm"
 import { Flow } from "../components/account/Flow"
 import ProfileFlow from "../components/account/ProfileFlow"
@@ -23,7 +24,6 @@ import {
   setDialog,
 } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
-import { showToast } from '../components/Toast'
 
 interface Props {
   flow?: SettingsFlow
@@ -96,18 +96,18 @@ const Account: NextPage = () => {
       })
   }
 
-  const deleteAccountPromt = async () => {
-    dispatch(
-      setDialog({
-        title: "Delete Account",
-        titleHeight: "56px",
-        width: 480,
-        height: 238,
-        center: true,
-        children: <DeleteAccConfirm confirmDelete={handleConfirmDelete} />,
-      }),
-    )
-  }
+  // const deleteAccountPromt = async () => {
+  //   dispatch(
+  //     setDialog({
+  //       title: "Delete Account",
+  //       titleHeight: "56px",
+  //       width: 480,
+  //       height: 238,
+  //       center: true,
+  //       children: <DeleteAccConfirm confirmDelete={handleConfirmDelete} />,
+  //     }),
+  //   )
+  // }
 
   useEffect(() => {
     const activateDeleteProcess = async () => {
@@ -159,11 +159,13 @@ const Account: NextPage = () => {
     dispatch(setActiveNav(Navs.ACCOUNT))
     dispatch(setActiveStage(Stage.NONE))
 
-    axios.get("/api/.ory/sessions/whoami", {
-      headers: { withCredentials: true },
-    }).catch(() => {
-      window.location.replace("/login");
-    })
+    axios
+      .get("/api/.ory/sessions/whoami", {
+        headers: { withCredentials: true },
+      })
+      .catch(() => {
+        window.location.replace("/login")
+      })
   }, [])
 
   useEffect(() => {
@@ -179,7 +181,7 @@ const Account: NextPage = () => {
         .getSettingsFlow({ id: String(flowId) })
         .then(({ data }) => {
           if (data.state === "success") {
-            alert("update success");
+            alert("update success")
           }
 
           setFlow(data)
@@ -198,21 +200,18 @@ const Account: NextPage = () => {
           }
         })
     } else {
+      // Otherwise we initialize it
 
-    // Otherwise we initialize it
-    
       return ory
-      .createBrowserSettingsFlow({
-        returnTo: "/account",
-      })
-      .then(({ data }) => {
-        console.log("_data", data)
-        setFlow(data)
-      })
-      .catch(handleFlowError(router, "account", setFlow))
-
+        .createBrowserSettingsFlow({
+          returnTo: "/account",
+        })
+        .then(({ data }) => {
+          console.log("_data", data)
+          setFlow(data)
+        })
+        .catch(handleFlowError(router, "account", setFlow))
     }
-
   }, [flowId, router, router.isReady, returnTo, flow])
 
   return (
@@ -291,7 +290,11 @@ const Account: NextPage = () => {
               display="flex"
               gap="15px"
               width="fit-content"
-              onClick={deleteAccountPromt}
+              onClick={() => {
+                dispatch(setActiveStage(Stage.DELETE_ACCOUNT))
+                setConfirmDelete(true)
+                setShowModal(true)
+              }}
               sx={{
                 cursor: "pointer",
               }}

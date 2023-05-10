@@ -1,4 +1,5 @@
 import { Box } from "@mui/material"
+import { useRouter } from "next/router"
 import { useDispatch } from "react-redux"
 
 import { setActiveStage } from "../../state/store/slice/layoutSlice"
@@ -15,6 +16,7 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
   confirmDelete,
 }) => {
   const dispatch = useDispatch()
+  // const router = useRouter()
 
   return (
     <Box>
@@ -45,7 +47,6 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
           }}
           onClick={() => {
             confirmDelete()
-            dispatch(setActiveStage(Stage.DELETE_ACCOUNT))
             close?.()
           }}
         >
@@ -74,6 +75,7 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
           }}
           onClick={(e) => {
             close?.()
+            window.location.reload()
           }}
         >
           Cancel
