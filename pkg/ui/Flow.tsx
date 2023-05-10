@@ -230,9 +230,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     }
 
     if (this.props.router?.pathname === "/registration") {
-      // let temp = nodes[3]
-      // nodes[3] = nodes[4]
-      // nodes[4] = temp
 
       const list = ["Name", "E-Mail", "Password", "Sign up"]
       nodes = nodes
@@ -274,12 +271,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           if (excludedFields[pathname]?.includes(node.attributes.name)) return
 
           const id = getNodeId(node) as keyof Values
-          // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
-          // if (node.meta.label?.text === "E-Mail") return
-          console.log("@node.meta", node.meta)
-          console.log("@node.meta222", node.meta.label?.text)
-          // if (node.meta.label?.text === "Resend code") return
-
           return (
             <>
               <Node

@@ -199,7 +199,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           }
           subtitle={
             <>
-              {node.messages.map(({ type, text, id }, k) => {
+              {node.messages.map(({ type, text ="", id }, k) => {
                 let displayText = text
                 if (text.includes("is missing")) {
                   displayText = "This field is required, please fill it out."

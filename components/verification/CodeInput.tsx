@@ -151,18 +151,6 @@ const CodeInput: React.FC<CodeInput> = ({ show, validationMsgs }) => {
           />
         ))}
       </InputsWrapper>
-      {isEmpty && isTouched && (
-        <div
-          style={{
-            fontFamily: "Open Sans",
-            fontWeight: 400,
-            fontSize: "13px",
-            color: "red",
-          }}
-        >
-          Required
-        </div>
-      )}
       {isInValid && (
         <div
           style={{

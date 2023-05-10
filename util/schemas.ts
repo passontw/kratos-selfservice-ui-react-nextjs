@@ -11,7 +11,11 @@ export const passwordSchema = yup
   .required("password can not be empty.")
 
 export const recoveryFormSchema = yup.object().shape({
-  email: yup.string().email("Invalid email format").required("Required"),
+  email: yup.string().email("Invalid email format").required("This field is required, please fill it out."),
+})
+
+export const recoveryCodeFormSchema = yup.object().shape({
+  code: yup.string().min(6, " ").max(6, " ").required("This field is required, please fill it out."),
 })
 
 export const changePasswordSchema = yup.object().shape({
