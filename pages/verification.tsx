@@ -278,6 +278,10 @@ const Verification: NextPage = () => {
               router.replace("/profile")
               return;
             }
+            if (type === 'registe') {
+              setTimeout(() => router.replace("/profile"), 2000)
+              return;
+            }
 
           }).catch(error => {
             console.log(error)
