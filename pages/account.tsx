@@ -161,6 +161,18 @@ const Account: NextPage = () => {
     )
   }
   useEffect(() => {
+    console.log("messages#", flow?.ui.messages)
+    if (flow?.ui.messages) {
+      if (flow?.ui.messages[0]?.id === 4000007) {
+        showToast("Account already in use. Can't be linked.", false)
+      }
+      //  else if (flow?.ui.messages[0]?.id === 1050001) {
+      //   showToast("update success")
+      // }
+    }
+    // alert("hello")
+  }, [flow?.ui.messages])
+  useEffect(() => {
     dispatch(setActiveNav(Navs.ACCOUNT))
     dispatch(setActiveStage(Stage.NONE))
 
@@ -267,7 +279,7 @@ const Account: NextPage = () => {
             Each time you sign in to Cooler Master service, we’ll send you a
             verification code to prevent unauthorized access.
           </Box>
-          <Messages messages={flow?.ui.messages} />
+          {/* <Messages messages={flow?.ui.messages} /> */}
           <ProfileFlow
             hideGlobalMessages
             onSubmit={onSubmit}

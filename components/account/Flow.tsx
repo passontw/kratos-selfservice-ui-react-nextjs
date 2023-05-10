@@ -189,9 +189,9 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
             spacing={{ xs: 2, sm: 4 }}
             flexDirection={{ xs: "column-reverse", sm: "row-reverse" }}
           >
-            {!hideGlobalMessages ? (
+            {/* {!hideGlobalMessages ? (
               <Messages messages={flow.ui.messages} />
-            ) : null}
+            ) : null} */}
             {nodes.map((node, k) => {
               const excludedFields = {
                 account: ["email"],
