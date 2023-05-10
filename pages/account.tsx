@@ -143,6 +143,9 @@ const Account: NextPage = () => {
               updateSettingsFlowBody: values,
             })
             .then(({ data }) => {
+              if (data.state === "success") {
+                alert("update success")
+              }
               // The settings have been saved and the flow was updated. Let's show it to the user!
               setFlow(data)
             })
@@ -161,7 +164,6 @@ const Account: NextPage = () => {
     )
   }
   useEffect(() => {
-    console.log("messages#", flow?.ui.messages)
     if (flow?.ui.messages) {
       if (flow?.ui.messages[0]?.id === 4000007) {
         showToast("Account already in use. Can't be linked.", false)
@@ -197,10 +199,6 @@ const Account: NextPage = () => {
       return ory
         .getSettingsFlow({ id: String(flowId) })
         .then(({ data }) => {
-          if (data.state === "success") {
-            alert("update success")
-          }
-
           setFlow(data)
         })
         .catch(handleFlowError(router, "account", setFlow))
