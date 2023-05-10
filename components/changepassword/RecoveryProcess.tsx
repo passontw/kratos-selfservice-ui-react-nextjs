@@ -1,12 +1,13 @@
 import Box from "@mui/material/Box"
 import { RecoveryFlow, UpdateRecoveryFlowBody } from "@ory/client"
+import axios from "axios"
+import cloneDeep from "lodash/cloneDeep"
+import isEmpty from "lodash/isEmpty"
 import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import axios from "axios"
-import cloneDeep from "lodash/cloneDeep"
-import isEmpty from "lodash/isEmpty"
+
 import { Flow } from "../../pkg"
 import { handleFlowError } from "../../pkg/errors"
 import ory from "../../pkg/sdk"
@@ -75,14 +76,14 @@ const RecoveryProcess: NextPage = () => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   const onSubmit = async (values: UpdateRecoveryFlowBody) => {
-    const nextFlow = cloneDeep(flow);
+    const nextFlow = cloneDeep(flow)
     try {
       await handleYupSchema(recoveryFormSchema, {
         email: values.email,
       })
-    } catch(error) {
+    } catch (error) {
       const errors = handleYupErrors(error)
-      
+
       if (errors.email) {
         const message = {
           id: 4000002,
@@ -94,7 +95,7 @@ const RecoveryProcess: NextPage = () => {
           (node) => node?.attributes?.name === "email",
         )
         nextFlow.ui.nodes[emailIndex].messages = [message]
-      }else {
+      } else {
         const emailNodes = nextFlow.ui.nodes || []
         const emailIndex = emailNodes.findIndex(
           (node) => node?.attributes?.name === "email",
@@ -102,19 +103,23 @@ const RecoveryProcess: NextPage = () => {
         nextFlow.ui.nodes[emailIndex].messages = []
       }
       setFlow(nextFlow)
-      return Promise.resolve();
+      return Promise.resolve()
     }
-    
-    const response = await axios.get(`/api/hydra/validateIdentity?email=${values.email}`)
-      if (isEmpty(response.data.data)) {
-        nextFlow.ui.messages = [{
+
+    const response = await axios.get(
+      `/api/hydra/validateIdentity?email=${values.email}`,
+    )
+    if (isEmpty(response.data.data)) {
+      nextFlow.ui.messages = [
+        {
           id: 400001,
-          text: 'Email account doesn’t exist',
-          type: 'error'
-        }]
-        setFlow(nextFlow)
-        return Promise.resolve();
-      }
+          text: "Email account doesn’t exist. Please try again or sign up.",
+          type: "error",
+        },
+      ]
+      setFlow(nextFlow)
+      return Promise.resolve()
+    }
     return (
       router
         // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing

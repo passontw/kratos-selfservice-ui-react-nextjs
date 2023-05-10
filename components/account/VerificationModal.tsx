@@ -25,6 +25,7 @@ const Verification: NextPage = (props) => {
   // Get ?flow=... from the URL
   const router = useRouter()
   const dispatch = useDispatch()
+  const email = router.query.user as string
   const { flow: flowId, return_to: returnTo, user } = router.query
 
   const deleteAccountPromt = async () => {
@@ -233,20 +234,10 @@ const Verification: NextPage = (props) => {
             <Text size="20px" my="32px" color="#FFF">
               Delete Account
             </Text>
-            {/* <Box
-              color="#FFF"
-              onClick={() => {
-                dispatch(setActiveStage(Stage.NONE))
-                router.push("/account")
-                close()
-              }}
-            >
-              X
-            </Box> */}
           </Box>
 
           <Text>
-            Enter the 6-digit code we sent to master123@gmail.com to finish the
+            Enter the 6-digit code we sent to <span>{email}</span> to finish the
             deletion process.
           </Text>
           <Flow

@@ -90,7 +90,9 @@ export const registrationFormSchema = yup.object().shape({
     .string()
     .email("Invalid email format, please check and try again.")
     .required("This field is required, please fill it out."),
-  "traits.name": yup.string().required("Required"),
+  "traits.name": yup
+    .string()
+    .required("This field is required, please fill it out."),
   password: yup
     .string()
     .min(8, "Need at least 8 characters")
