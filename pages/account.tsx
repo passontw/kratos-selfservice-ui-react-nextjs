@@ -19,6 +19,7 @@ import Bin from "../public/images/Bin"
 import {
   selectMfaModalOpen,
   selectMfaState,
+  setAccountDeleted,
   setActiveNav,
   setActiveStage,
   setDialog,
@@ -87,9 +88,10 @@ const Account: NextPage = () => {
       )
       .then(() => {
         // alert("delete account success!")
-        setTimeout(() => {
-          showToast("Account deleted")
-        }, 1500)
+        // setTimeout(() => {
+        //   showToast("Account deleted")
+        // }, 1500)
+        dispatch(setAccountDeleted(true))
         window.location.replace("/login")
       })
       .catch((error) => {
