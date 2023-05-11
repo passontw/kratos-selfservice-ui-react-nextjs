@@ -101,19 +101,6 @@ const Account: NextPage = () => {
       })
   }
 
-  // const deleteAccountPromt = async () => {
-  //   dispatch(
-  //     setDialog({
-  //       title: "Delete Account",
-  //       titleHeight: "56px",
-  //       width: 480,
-  //       height: 238,
-  //       center: true,
-  //       children: <DeleteAccConfirm confirmDelete={handleConfirmDelete} />,
-  //     }),
-  //   )
-  // }
-
   useEffect(() => {
     const activateDeleteProcess = async () => {
       if (confirmDelete) {
@@ -144,7 +131,7 @@ const Account: NextPage = () => {
             })
             .then(({ data }) => {
               if (data.state === "success") {
-                alert("update success")
+                // alert("update success")
               }
               // The settings have been saved and the flow was updated. Let's show it to the user!
               setFlow(data)

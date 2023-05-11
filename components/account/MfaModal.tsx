@@ -68,6 +68,7 @@ const MfaModal: React.FC<MfaModalProps> = ({ submit, email, handleToast }) => {
           onClick={() => {
             dispatch(setMfaModalOpen(false))
             dispatch(setDialog(null))
+            window.location.reload()
           }}
           sx={{
             cursor: "pointer",

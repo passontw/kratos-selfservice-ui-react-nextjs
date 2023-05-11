@@ -127,8 +127,9 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   console.log("attributes@@@", attributes.name)
   console.log("value@@@", value)
   const accountError =
-    validationMsgs && validationMsgs[0]?.text.includes("Email account")
-  // console.log("errormsg", validationMsgs[0].text)
+    validationMsgs &&
+    (validationMsgs[0]?.text.includes("Email account") ||
+      validationMsgs[0]?.text.includes("The provided credentials are invalid"))
 
   const verifyCodeConditions =
     (activeStage === Stage.VERIFY_CODE &&
@@ -198,7 +199,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           }
           subtitle={
             <>
-              {node.messages.map(({ type, text ="", id }, k) => {
+              {node.messages.map(({ type, text = "", id }, k) => {
                 let displayText = text
                 if (text.includes("is missing")) {
                   displayText = "This field is required, please fill it out."
