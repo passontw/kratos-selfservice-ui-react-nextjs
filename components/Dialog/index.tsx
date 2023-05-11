@@ -68,7 +68,11 @@ const Dialog: React.FC<DialogProps> = ({
 }) => {
   const dispatch = useDispatch()
   const router = useRouter()
+  const currentNav = useSelector(selectActiveNav)
   const handleClose = (event: React.SyntheticEvent, reason: string) => {
+    if (currentNav === Navs.ACCOUNT) {
+      window.location.reload()
+    }
     // TODO: uncomment these 2 lines if you don't want the dialog to close when clicking outside of it or pressing the escape key
     if (reason === "escapeKeyDown") return
     if (reason === "backdropClick") return
@@ -77,7 +81,6 @@ const Dialog: React.FC<DialogProps> = ({
   }
 
   const handleCloseIcon = () => {
-    console.log("icon", icon)
     if (icon === Icon.MENU) return <MenuCloseIcon />
 
     return (
