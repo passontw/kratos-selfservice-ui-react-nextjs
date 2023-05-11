@@ -2,6 +2,7 @@ import { Box } from "@mui/system"
 import React from "react"
 import { toast } from "react-toastify"
 
+import ErrorIcon from "../../public/images/ErrorIcon"
 import SuccessIcon from "../../public/images/SuccessIcon"
 
 import { StyledMessage, StyledStatus, StyleSucess, StyleError } from "./styles"
@@ -19,11 +20,19 @@ export const showToast = (
   hideProgressBar: boolean = true,
   position = toast.POSITION.BOTTOM_LEFT,
   stylesucess = StyleSucess,
-  styleerror = StyleError
+  styleerror = StyleError,
 ) => {
   return success
-    ? toast(<Success message={message} />, { position, hideProgressBar, style: stylesucess })
-    : toast.error(message, { position, style: styleerror })
+    ? toast(<Success message={message} />, {
+        position,
+        hideProgressBar,
+        style: stylesucess,
+      })
+    : toast(<Error message={message} />, {
+        position,
+        hideProgressBar,
+        style: styleerror,
+      })
 }
 
 interface SuccessProps {
@@ -35,6 +44,17 @@ const Success: React.FC<SuccessProps> = ({ message }) => {
     <Box display="flex" alignItems="center">
       <StyledStatus>
         <SuccessIcon />
+      </StyledStatus>
+      <StyledMessage>{message}</StyledMessage>
+    </Box>
+  )
+}
+
+const Error: React.FC<SuccessProps> = ({ message }) => {
+  return (
+    <Box display="flex" alignItems="center">
+      <StyledStatus>
+        <ErrorIcon />
       </StyledStatus>
       <StyledMessage>{message}</StyledMessage>
     </Box>
