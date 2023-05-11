@@ -219,7 +219,10 @@ const Verification: NextPage = () => {
       // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
       // their data when they reload the page.
       .push(
-        `/verification?${queryString.stringify(router.query)}&flow=${flow?.id}`,
+        `/verification?${queryString.stringify({
+          ...router.query,
+          flow: flow?.id,
+        })}`,
         undefined,
         { shallow: true },
       )
@@ -300,7 +303,7 @@ const Verification: NextPage = () => {
             router
               // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
               // their data when they reload the page.
-              .push(`/verification?flow=${newFlowID}`, undefined, {
+              .push(`/verification?${queryString.stringify({flow: newFlowID})}`, undefined, {
                 shallow: true,
               })
 
