@@ -22,6 +22,7 @@ const initialState: LayoutSliceStateI = {
   mfaModalOpen: false,
   mfaState: undefined,
   lockCodeResend: false,
+  accountDeleted: false,
 }
 
 export const layoutSlice = createSlice({
@@ -39,6 +40,12 @@ export const layoutSlice = createSlice({
       { payload }: PayloadAction<Stage>,
     ) => {
       state.activeStage = payload
+    },
+    setAccountDeleted: (
+      state: LayoutSliceStateI,
+      { payload }: PayloadAction<boolean>,
+    ) => {
+      state.accountDeleted = payload
     },
     setSixDigitCode: (
       state: LayoutSliceStateI,
@@ -90,6 +97,12 @@ export const selectActiveStage = (state: {
   }
 }) => state.layout.activeStage
 
+export const selectAccountDeleted = (state: {
+  layout: {
+    accountDeleted: boolean
+  }
+}) => state.layout.accountDeleted
+
 export const selectSixDigitCode = (state: {
   layout: {
     sixDigitCode: string
@@ -130,6 +143,7 @@ export const selectDialog2 = (state: {
 export const {
   setActiveNav,
   setActiveStage,
+  setAccountDeleted,
   setSixDigitCode,
   setLockCodeResend,
   setMfaModalOpen,

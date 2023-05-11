@@ -97,19 +97,36 @@ const SessionList = (props) => {
     return <Box>{/* <p>無其他裝置登入資訊</p> */}</Box>
   }
 
-  return sessions.map((session) => {
+  const cardsPerRow = 2
+  const numberOfRows = Math.ceil(sessions.length / cardsPerRow)
+
+  return sessions.map((session, index) => {
     const [device] = session.devices
     const agent = new UAParser(device.user_agent)
     const agentResult = agent.getResult()
     const deviceType = agentResult.device.type
-    // console.log(agentResult)
     const deviceName =
       agentResult.device.type && agentResult.device.vendor
         ? agentResult.device.model
         : agentResult.os.name
+
+    const currentRow = Math.floor(index / cardsPerRow) + 1
+    const isLastRow = currentRow === numberOfRows
+    const isSingleCardInRow = isLastRow && sessions.length % cardsPerRow === 1
+
     return (
       <>
-        <Box key={session.id} flex={1}>
+        <Box
+          key={session.id}
+          sx={{
+            flex: "1",
+            ...(isSingleCardInRow && {
+              "@media (min-width: 600px)": {
+                flex: "0 0 48%",
+              },
+            }),
+          }}
+        >
           <DeviceCard
             device={deviceName}
             deviceType={deviceType}
@@ -119,15 +136,6 @@ const SessionList = (props) => {
             onLogout={() => deactiveSession(session.id, setSessions)}
           />
         </Box>
-        {/* <div key={session.id}>
-          <p>Location: {device.location}</p>
-          <p>Device: {deviceName}</p>
-          <p>Browser: {agentResult.browser.name}</p>
-          <p>最近登入: {dayjs(session.authenticated_at).format()}</p>
-          <button onClick={() => deactiveSession(session.id, setSessions)}>
-            Sign out
-          </button>
-        </div> */}
       </>
     )
   })
@@ -140,10 +148,12 @@ const SessionListItem = (props) => {
   const [device] = session.devices
   const agent = new UAParser(device.user_agent)
   const agentResult = agent.getResult()
-  // console.log(agentResult)
   const deviceType = agentResult.device.type
   const deviceName =
-    agentResult.device.type || agentResult.device.model || agentResult.os.name
+    agentResult.device.type && agentResult.device.vendor
+      ? agentResult.device.model
+      : agentResult.os.name
+
   return (
     <>
       <div key={session.id}>
@@ -155,11 +165,6 @@ const SessionListItem = (props) => {
           lastLogin={dayjs(session.authenticated_at).format()}
           isCurrent
         />
-        {/* <p>Self Session: </p>
-        <p>Location: {device.location}</p>
-        <p>Device: {deviceName}</p>
-        <p>Browser: {agentResult.browser.name}</p>
-        <p>最近登入: {dayjs(session.authenticated_at).format()}</p> */}
       </div>
     </>
   )
@@ -228,11 +233,13 @@ const DeviceManagement: NextPage = () => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   useEffect(() => {
-    axios.get("/api/.ory/sessions/whoami", {
-      headers: { withCredentials: true },
-    }).catch(() => {
-      window.location.replace("/login");
-    })
+    axios
+      .get("/api/.ory/sessions/whoami", {
+        headers: { withCredentials: true },
+      })
+      .catch(() => {
+        window.location.replace("/login")
+      })
   }, [])
   return (
     <AccountLayout>
@@ -246,13 +253,6 @@ const DeviceManagement: NextPage = () => {
           xs: "24px",
         }}
       >
-        {/* <button
-          onClick={() => {
-            deacitveAllSession(sessions, setSessions)
-          }}
-        >
-          remove all session
-        </button> */}
         <SettingsCard only="profile" flow={flow}>
           <Box fontFamily="open sans">
             <Box color="#717197" fontSize="22px">

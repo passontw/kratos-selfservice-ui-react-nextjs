@@ -10,7 +10,11 @@ interface MessageProps {
 }
 
 const getDisplayMessage = (displayMessage = "") => {
-  if (displayMessage.includes("check for spelling mistakes in your password or username, email address, or phone number.")) {
+  if (
+    displayMessage.includes(
+      "check for spelling mistakes in your password or username, email address, or phone number.",
+    )
+  ) {
     return "Your email or password is incorrect. Please check and try again."
   }
   if (displayMessage.includes("The provided credentials are invalid")) {
@@ -21,9 +25,10 @@ const getDisplayMessage = (displayMessage = "") => {
     return "Email account already existed. Please try login or forgot password."
   }
 
-  return displayMessage;
+  return displayMessage
 }
 export const Message = ({ message }: MessageProps) => {
+  console.log("@message", message)
   const dontShowMsg = "An email containing".includes(
     message.text.substring(0, 10),
   )

@@ -13,11 +13,7 @@ import {
   UpdateVerificationFlowBody,
 } from "@ory/client"
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
-import React, {
-  Component,
-  FormEvent,
-  MouseEvent,
-} from "react"
+import React, { Component, FormEvent, MouseEvent } from "react"
 
 import { Messages } from "./Messages"
 import { Node } from "./Node"
@@ -167,7 +163,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       })
   }
 
-
   render() {
     const { hideGlobalMessages, flow } = this.props
     const { values, isLoading } = this.state
@@ -189,10 +184,14 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         onSubmit={this.handleSubmit}
       >
         <Box>
-          <Grid container spacing={4} flexDirection={{xs: "column-reverse",sm: "row-reverse"}}>
-            {!hideGlobalMessages ? (
+          <Grid
+            container
+            spacing={{ xs: 2, sm: 4 }}
+            flexDirection={{ xs: "column-reverse", sm: "row-reverse" }}
+          >
+            {/* {!hideGlobalMessages ? (
               <Messages messages={flow.ui.messages} />
-            ) : null}
+            ) : null} */}
             {nodes.map((node, k) => {
               const excludedFields = {
                 account: ["email"],

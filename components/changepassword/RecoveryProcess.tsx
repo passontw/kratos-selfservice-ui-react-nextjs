@@ -1,12 +1,13 @@
 import Box from "@mui/material/Box"
 import { RecoveryFlow, UpdateRecoveryFlowBody } from "@ory/client"
+import axios from "axios"
+import cloneDeep from "lodash/cloneDeep"
+import isEmpty from "lodash/isEmpty"
 import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import axios from "axios"
-import cloneDeep from "lodash/cloneDeep"
-import isEmpty from "lodash/isEmpty"
+
 import { Flow } from "../../pkg"
 import { handleFlowError } from "../../pkg/errors"
 import ory from "../../pkg/sdk"
@@ -160,7 +161,7 @@ const RecoveryProcess: NextPage = () => {
 
     } catch(error) {
       const errors = handleYupErrors(error)
-      
+
       if (errors.email) {
         const message = {
           id: 4000002,
@@ -200,7 +201,7 @@ const RecoveryProcess: NextPage = () => {
         nextFlow.ui.nodes[codeIndex].messages = []
       }
       setFlow(nextFlow)
-      return Promise.resolve();
+      return Promise.resolve()
     }
 
     if (flow.state === "choose_method") {

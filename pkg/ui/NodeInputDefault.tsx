@@ -105,15 +105,11 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   const [selectValue, setSelectValue] = useState(undefined)
   const [selectValue2, setSelectValue2] = useState(1)
 
-  console.log("gender", gender)
-
-  // const defaultVal = genderRadios.find((g) => g.value === gender)
   const [defaultSelectValue, setDefaultSelectValue] = useState(
     genderRadios.find((g) => g.value === parseInt(gender)),
   )
 
   useEffect(() => {
-    let genderVal = value
     if (value && attributes.name === "traits.gender") {
       setGender(value ? value : 3)
       setDefaultSelectValue(
@@ -130,6 +126,9 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
 
   console.log("attributes@@@", attributes.name)
   console.log("value@@@", value)
+  const accountError =
+    validationMsgs && validationMsgs[0]?.text.includes("Email account")
+  // console.log("errormsg", validationMsgs[0].text)
 
   const verifyCodeConditions =
     (activeStage === Stage.VERIFY_CODE &&
@@ -158,7 +157,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
               attributes.name === "traits.gender"
                 ? "none"
                 : "unset",
-            border: isError ? "1px solid #F24867" : "none",
+            border: isError || accountError ? "1px solid #F24867" : "none",
             backgroundColor: "#37374F",
             height: "44px",
             color: "#fff",
