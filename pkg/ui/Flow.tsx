@@ -85,10 +85,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   }
 
   componentDidUpdate(prevProps: Props<T>) {
-    if (prevProps.flow !== this.props.flow) {
-      // Flow has changed, reload the values!
-      this.initializeValues(this.filterNodes())
-    }
     if (prevProps.code !== this.props.code) {
       this.setCodeValue(this.props.code)
     }
@@ -234,6 +230,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     }
 
     if (this.props.router?.pathname === "/registration") {
+
       const list = ["Name", "E-Mail", "Password", "Sign up"]
       nodes = nodes
         .map((item) => item)
