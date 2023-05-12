@@ -14,7 +14,6 @@ import {
   selectActiveNav,
   selectActiveStage,
   selectSixDigitCode,
-  setDialog,
 } from "../../state/store/slice/layoutSlice"
 import {
   StyledDefaultInput,
@@ -67,19 +66,6 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
       const run = new Function(attributes.onclick)
       run()
     }
-  }
-
-  const openDialog = () => {
-    dispatch(
-      setDialog({
-        title: "Forgot Password",
-        titleHeight: "58px",
-        width: 480,
-        height: 358,
-        center: true,
-        children: <RecoveryProcess />,
-      }),
-    )
   }
 
   const genderRadios = [
@@ -245,7 +231,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             },
           }}
           onClick={() => {
-            openDialog()
+            router.push("/recovery")
           }}
         >
           Forgot Password?
