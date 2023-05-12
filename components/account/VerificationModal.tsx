@@ -1,33 +1,46 @@
 import Box from "@mui/material/Box"
 import { VerificationFlow, UpdateVerificationFlowBody } from "@ory/client"
-import { CardTitle } from "@ory/themes"
 import { AxiosError } from "axios"
+import cloneDeep from "lodash/cloneDeep"
+import isEmpty from "lodash/isEmpty"
 import type { NextPage } from "next"
 import Head from "next/head"
-import Link from "next/link"
 import { useRouter } from "next/router"
 import queryString from "query-string"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
-import { ActionCard, CenterLink, MarginCard } from "../../pkg"
 import ory from "../../pkg/sdk"
-import { setActiveStage } from "../../state/store/slice/layoutSlice"
-import { Stage } from "../../types/enum"
+import { setDialog } from "../../state/store/slice/layoutSlice"
 import Text from "../Text"
 
+import DeleteAccConfirm from "./DeleteAccConfirm"
 import Flow from "./VerificationFlow"
 
 const Verification: NextPage = (props) => {
-  const dispatch = useDispatch()
   const { show, close } = props
-  console.log("show", show)
   const [initFlow, setInitFlow] = useState(false)
   const [flow, setFlow] = useState<VerificationFlow>()
 
   // Get ?flow=... from the URL
   const router = useRouter()
+  const dispatch = useDispatch()
+  const email = router.query.user as string
   const { flow: flowId, return_to: returnTo, user } = router.query
+
+  const deleteAccountPromt = async () => {
+    close()
+    dispatch(
+      setDialog({
+        title: "Delete Account",
+        titleHeight: "56px",
+        width: 480,
+        height: 238,
+        center: true,
+        children: <DeleteAccConfirm confirmDelete={props.deleteAccount} />,
+      }),
+    )
+  }
 
   // directly initializing verifcation flow by entering user's email carried here from previous step
   useEffect(() => {
@@ -70,6 +83,7 @@ const Verification: NextPage = (props) => {
               ory
                 .getVerificationFlow({ id: newFlowID })
                 .then(({ data }) => setFlow(data))
+                .catch((error) => false)
               return
           }
 
@@ -98,7 +112,9 @@ const Verification: NextPage = (props) => {
             // Status code 410 means the request has expired - so let's load a fresh flow!
             case 403:
               // Status code 403 implies some other issue (e.g. CSRF) - let's reload!
-              return router.push("/verification")
+              return router.push("/account")
+            default:
+              return router.push("/account")
           }
 
           throw err
@@ -109,7 +125,7 @@ const Verification: NextPage = (props) => {
     // Otherwise we initialize it
     ory
       .createBrowserVerificationFlow({
-        returnTo: returnTo ? String(returnTo) : undefined,
+        returnTo: "/login",
       })
       .then(({ data }) => {
         setFlow(data)
@@ -119,7 +135,7 @@ const Verification: NextPage = (props) => {
         switch (err.response?.status) {
           case 400:
             // Status code 400 implies the user is already signed in
-            return router.push("/")
+            return router.push("/login")
         }
 
         throw err
@@ -127,6 +143,25 @@ const Verification: NextPage = (props) => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   const onSubmit = async (values: UpdateVerificationFlowBody) => {
+    const { user } = router.query
+    const { code = "" } = values
+    if (code.length !== 6) {
+      const nextFlow = cloneDeep(flow)
+      const codeNodes = nextFlow.ui.nodes || []
+      const codeIndex = codeNodes.findIndex(
+        (node) => node?.attributes?.name === "code",
+      )
+      nextFlow.ui.nodes[codeIndex].messages = [
+        {
+          id: 4000002,
+          type: "error",
+          text: "Required",
+        },
+      ]
+      setFlow(nextFlow)
+      return
+    }
+
     await router
       // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
       // their data when they reload the page.
@@ -134,14 +169,18 @@ const Verification: NextPage = (props) => {
         shallow: true,
       })
 
-    ory
+    return ory
       .updateVerificationFlow({
         flow: String(flow?.id),
-        updateVerificationFlowBody: values,
+        updateVerificationFlowBody: { ...values, email: user },
       })
       .then(({ data }) => {
-        props.deleteAccount()
         // Form submission was successful, show the message to the user!
+        setFlow(data)
+        if (data.state === "passed_challenge") {
+          deleteAccountPromt()
+          // props.deleteAccount()
+        }
       })
       .catch((err: any) => {
         switch (err.response?.status) {
@@ -185,6 +224,7 @@ const Verification: NextPage = (props) => {
           <title>Verify your account - Ory NextJS Integration Example</title>
           <meta name="description" content="NextJS + React + Vercel + Ory" />
         </Head>
+
         <Box>
           <Box
             display="flex"
@@ -194,23 +234,17 @@ const Verification: NextPage = (props) => {
             <Text size="20px" my="32px" color="#FFF">
               Delete Account
             </Text>
-            {/* <Box
-              color="#FFF"
-              onClick={() => {
-                dispatch(setActiveStage(Stage.NONE))
-                router.push("/account")
-                close()
-              }}
-            >
-              X
-            </Box> */}
           </Box>
 
           <Text>
-            Enter the 6-digit code we sent to master123@gmail.com to finish the
+            Enter the 6-digit code we sent to <span>{email}</span> to finish the
             deletion process.
           </Text>
-          <Flow onSubmit={onSubmit} flow={flow} />
+          <Flow
+            onSubmit={onSubmit}
+            flow={flow}
+            hideGlobalMessages={isEmpty(flow?.ui?.messages)}
+          />
         </Box>
       </Box>
     </Box>

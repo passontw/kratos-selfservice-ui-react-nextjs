@@ -25,6 +25,10 @@ const Login: NextPage = () => {
     ory
       .getFlowError({ id: String(id) })
       .then(({ data }) => {
+        if (data?.error?.message === "no resumable session found") {
+          window.location.replace("/login?error=email not exists or did not link 3rd party.");
+        }
+
         setError(data)
       })
       .catch((err: AxiosError) => {

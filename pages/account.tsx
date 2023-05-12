@@ -7,6 +7,7 @@ import { ReactNode, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import AccountLayout from "../components/Layout/AccountLayout"
+import { showToast } from "../components/Toast"
 import DeleteAccConfirm from "../components/account/DeleteAccConfirm"
 import { Flow } from "../components/account/Flow"
 import ProfileFlow from "../components/account/ProfileFlow"
@@ -18,6 +19,7 @@ import Bin from "../public/images/Bin"
 import {
   selectMfaModalOpen,
   selectMfaState,
+  setAccountDeleted,
   setActiveNav,
   setActiveStage,
   setDialog,
@@ -27,20 +29,6 @@ import { Navs, Stage } from "../types/enum"
 interface Props {
   flow?: SettingsFlow
   only?: Methods
-}
-
-const refreshSessions = (setSessions) => {
-  axios
-    .get("/api/.ory/sessions", {
-      headers: { withCredentials: true },
-    })
-    .then((resp) => {
-      const { data } = resp
-      setSessions(data)
-    })
-    .catch((error) => {
-      setSessions([])
-    })
 }
 
 function SettingsCard({
@@ -65,7 +53,6 @@ function SettingsCard({
 
 const Account: NextPage = () => {
   const dispatch = useDispatch()
-  const [sessions, setSessions] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [flow, setFlow] = useState<SettingsFlow>()
   const router = useRouter()
@@ -100,24 +87,18 @@ const Account: NextPage = () => {
         },
       )
       .then(() => {
-        router.replace("/")
+        // alert("delete account success!")
+        // setTimeout(() => {
+        //   showToast("Account deleted")
+        // }, 1500)
+        dispatch(setAccountDeleted(true))
+        router.push("/login")
+        // window.location.replace("/login")
       })
       .catch((error) => {
-        alert(error.message)
+        showToast(error.message, false)
+        // alert(error.message)
       })
-  }
-
-  const deleteAccountPromt = async () => {
-    dispatch(
-      setDialog({
-        title: "Delete Account",
-        titleHeight: "56px",
-        width: 480,
-        height: 238,
-        center: true,
-        children: <DeleteAccConfirm confirmDelete={handleConfirmDelete} />,
-      }),
-    )
   }
 
   useEffect(() => {
@@ -149,6 +130,9 @@ const Account: NextPage = () => {
               updateSettingsFlowBody: values,
             })
             .then(({ data }) => {
+              if (data.state === "success") {
+                // alert("update success")
+              }
               // The settings have been saved and the flow was updated. Let's show it to the user!
               setFlow(data)
             })
@@ -167,12 +151,31 @@ const Account: NextPage = () => {
     )
   }
   useEffect(() => {
+    if (flow?.ui.messages) {
+      if (flow?.ui.messages[0]?.id === 4000007) {
+        showToast("Account already in use. Can't be linked.", false)
+      }
+      //  else if (flow?.ui.messages[0]?.id === 1050001) {
+      //   showToast("update success")
+      // }
+    }
+    // alert("hello")
+  }, [flow?.ui.messages])
+  useEffect(() => {
     dispatch(setActiveNav(Navs.ACCOUNT))
     dispatch(setActiveStage(Stage.NONE))
+
+    axios
+      .get("/api/.ory/sessions/whoami", {
+        headers: { withCredentials: true },
+      })
+      .catch(() => {
+        window.location.replace("/login")
+      })
   }, [])
 
   useEffect(() => {
-    refreshSessions(setSessions)
+    // refreshSessions(setSessions)
     // If the router is not ready yet, or we already have a flow, do nothing.
     if (!router.isReady || flow) {
       return
@@ -180,41 +183,38 @@ const Account: NextPage = () => {
 
     // If ?flow=.. was in the URL, we fetch it
     if (flowId) {
-      ory
+      return ory
         .getSettingsFlow({ id: String(flowId) })
         .then(({ data }) => {
           setFlow(data)
         })
         .catch(handleFlowError(router, "account", setFlow))
-      return
+        .catch((err: any) => {
+          // If the previous handler did not catch the error it's most likely a form validation error
+          if (err.response?.status === 400) {
+            // Yup, it is!
+            if (err && err.response) {
+              setFlow(err.response?.data)
+              return
+            }
+          } else {
+            router.replace("/account")
+          }
+        })
+    } else {
+      // Otherwise we initialize it
+
+      return ory
+        .createBrowserSettingsFlow({
+          returnTo: "/account",
+        })
+        .then(({ data }) => {
+          console.log("_data", data)
+          setFlow(data)
+        })
+        .catch(handleFlowError(router, "account", setFlow))
     }
-
-    // Otherwise we initialize it
-    ory
-      .createBrowserSettingsFlow({
-        returnTo: "/account",
-      })
-      .then(({ data }) => {
-        console.log("_data", data)
-        setFlow(data)
-      })
-      .catch(handleFlowError(router, "account", setFlow))
   }, [flowId, router, router.isReady, returnTo, flow])
-
-  // useEffect(() => {
-  //   console.log("flow?.ui.messages", flow?.ui.messages)
-  //   if (flow?.ui.messages?.length > 0) {
-  //     flow?.ui.messages.map((item)=>{
-  //       if(item.type === "success" && toastContent!== ''){
-  //         showToast(toastContent)
-  //       }
-  //     })
-  //   }
-  // }, [flow?.ui.messages])
-
-  // const handleToast = (text: string) => {
-  //   setToastContent(text)
-  // }
 
   return (
     <AccountLayout>
@@ -264,7 +264,7 @@ const Account: NextPage = () => {
             Each time you sign in to Cooler Master service, we’ll send you a
             verification code to prevent unauthorized access.
           </Box>
-          <Messages messages={flow?.ui.messages} />
+          {/* <Messages messages={flow?.ui.messages} /> */}
           <ProfileFlow
             hideGlobalMessages
             onSubmit={onSubmit}
@@ -292,7 +292,11 @@ const Account: NextPage = () => {
               display="flex"
               gap="15px"
               width="fit-content"
-              onClick={deleteAccountPromt}
+              onClick={() => {
+                dispatch(setActiveStage(Stage.DELETE_ACCOUNT))
+                setConfirmDelete(true)
+                setShowModal(true)
+              }}
               sx={{
                 cursor: "pointer",
               }}

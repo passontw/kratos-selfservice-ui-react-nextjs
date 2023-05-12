@@ -60,7 +60,7 @@ export const StyledCopyright = styled.span`
 export const StyledMenuWrapper = styled.div`
   padding: 80px 20px 150px 20px;
   @media only screen and (min-width: 600px) {
-    padding: 80px 80px 0px 80px;
+    padding: 80px 80px 40px 80px;
   }
   @media only screen and (max-width: 600px) {
     padding-top: 35px;
@@ -102,8 +102,11 @@ export const StyledLink = styled.a`
   font-family: "Open Sans";
   font-size: 14px;
   line-height: 20px;
-  color: #c0c0c0;
+  color: #c0c0c0 !important;
   cursor: pointer;
+  &:visited {
+    color: #c0c0c0 !important;
+  }
 `
 export const StyledLine = styled.span`
   display: inline-block;

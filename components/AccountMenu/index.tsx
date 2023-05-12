@@ -94,7 +94,10 @@ const AccountMenu: React.FC<AccountMenuProps> = () => {
       
       <StyledMobile>
         <StyledLine />
-        <StyledMenuItem onClick={onLogout}>
+        <StyledMenuItem onClick={() => {
+          onLogout()
+          window.location.replace("/login");
+          }}>
           <LogOut />
           Log out
         </StyledMenuItem>

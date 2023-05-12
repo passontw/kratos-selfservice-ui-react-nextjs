@@ -12,6 +12,7 @@ export interface LayoutSliceStateI {
   mfaModalOpen: boolean
   mfaState?: boolean
   lockCodeResend: boolean
+  accountDeleted: boolean
 }
 
 export interface DialogProps {

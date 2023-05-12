@@ -9,10 +9,9 @@ import {
   UpdateRegistrationFlowBody,
   UpdateSettingsFlowBody,
   UpdateVerificationFlowBody,
-  UiNodeGroupEnum,
-  UiTextTypeEnum,
 } from "@ory/client"
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
+import { getNodeLabel } from "@ory/integrations/ui"
 import { Component, FormEvent, MouseEvent, createRef, RefObject } from "react"
 
 import { Node } from "../../pkg/ui/Node"
@@ -20,7 +19,6 @@ import { setDialog, setMfaModalOpen } from "../../state/store/slice/layoutSlice"
 
 import { Messages } from "./Messages"
 import MfaModal from "./MfaModal"
-import { getNodeLabel } from "@ory/integrations/ui"
 
 export type Values = Partial<
   | UpdateLoginFlowBody
@@ -92,10 +90,6 @@ export default class Flow<T extends Values> extends Component<
   }
 
   componentDidUpdate(prevProps: Props<T>) {
-    if (prevProps.flow !== this.props.flow) {
-      // Flow has changed, reload the values!
-      this.initializeValues(this.filterNodes())
-    }
     if (this.props.modalOpen) {
       this.props.dispatch(
         setDialog({
@@ -235,7 +229,7 @@ export default class Flow<T extends Values> extends Component<
         method={flow.ui.method}
         onSubmit={this.handleSubmit}
       >
-        {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
+        {/* {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null} */}
         {nodes.map((node, k) => {
           const id = getNodeId(node) as keyof Values
           const isShow =

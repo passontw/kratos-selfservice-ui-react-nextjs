@@ -71,9 +71,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   }
 
   componentDidUpdate(prevProps: Props<T>) {
-    if (prevProps.flow !== this.props.flow) {
-      this.initializeValues(this.filterNodes())
-    }
     if (prevProps.code !== this.props.code) {
       this.setCodeValue(this.props.code)
     }
@@ -190,8 +187,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
 
     const nodes = this.filterNodes()
 
-    console.log("nodes", nodes)
-
     if (!flow) {
       return null
     }
@@ -208,6 +203,14 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
             // verification: ["email"],
           }
 
+          const handleSubmit = node.meta?.text === "Resend code"
+            ? this.handleSubmit
+            : (env) => {
+              if (flow.state === "sent_email" && code.length !== 6) {
+                return null;
+              }
+              this.handleSubmit(env);
+            }
           const pathname = window.location.pathname.slice(
             1,
           ) as keyof typeof excludedFields
@@ -222,7 +225,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
               disabled={isLoading}
               node={node}
               value={getNodeId(node) === "code" ? this.props.code : values[id]}
-              dispatchSubmit={this.handleSubmit}
+              dispatchSubmit={handleSubmit}
               setValue={(value) => {
                 return new Promise((resolve) => {
                   this.setState(

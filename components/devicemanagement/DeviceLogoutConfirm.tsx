@@ -1,28 +1,23 @@
 import { Box } from "@mui/material"
-import { useRouter } from "next/router"
 import { useDispatch } from "react-redux"
 
 import { setActiveStage } from "../../state/store/slice/layoutSlice"
 import { Stage } from "../../types/enum"
 import Text from "../Text"
 
-interface DeleteAccConfirmProps {
+interface DeviceLogoutConfirmProps {
   onClick?: () => void
-  confirmDelete: () => void
+  confirmLogout?: () => void
 }
 
-const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
+const DeviceLogoutConfirm: React.FC<DeviceLogoutConfirmProps> = ({
   onClick: close,
-  confirmDelete,
+  confirmLogout,
 }) => {
-  const dispatch = useDispatch()
-  // const router = useRouter()
-
   return (
     <Box>
       <Text my={"5px"}>
-        Your account and associated data will be permanently deleted and cannot
-        be restored.
+        This will remove access to your CMID account from the device.
       </Text>
       <Box>
         <Box
@@ -34,7 +29,7 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
           display="flex"
           justifyContent="center"
           alignItems="center"
-          bgcolor="#F24867"
+          bgcolor="#A62BC3"
           borderRadius="8px"
           position="absolute"
           right="30px"
@@ -46,11 +41,11 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
             },
           }}
           onClick={() => {
-            confirmDelete()
+            confirmLogout?.()
             close?.()
           }}
         >
-          Delete
+          Log out
         </Box>
         <Box
           width="95px"
@@ -75,7 +70,6 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
           }}
           onClick={(e) => {
             close?.()
-            window.location.reload()
           }}
         >
           Cancel
@@ -85,4 +79,4 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
   )
 }
 
-export default DeleteAccConfirm
+export default DeviceLogoutConfirm

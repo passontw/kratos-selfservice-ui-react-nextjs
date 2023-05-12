@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux"
 
 import Switch from "../../components/Switch"
 import Timer from "../../components/Timer"
-import { showToast } from '../../components/Toast'
+import { showToast } from "../../components/Toast"
 import Apple from "../../public/images/login_icons/Apple"
 import Google from "../../public/images/login_icons/Google"
 import {
@@ -87,10 +87,10 @@ export function NodeInputSubmit<T>({
     "Resend code",
     "Sign in",
     "Sign up",
-    // "Link apple",
-    // "Link google",
-    // "Unlink google",
-    // "Unlink apple",
+    "Link apple",
+    "Link google",
+    "Unlink google",
+    "Unlink apple",
   ].includes(getNodeLabel(node))
 
   if (activeNav === Navs.ACCOUNT && getNodeLabel(node) === "Save") {
@@ -204,7 +204,7 @@ export function NodeInputSubmit<T>({
                   origin="ACC_LINK"
                   on={getNodeLabel(node).split(" ")[0] === "Unlink"}
                   change={handleClick}
-                  handleToast={()=>showToast(`${getNodeLabel(node)}`)}
+                  handleToast={() => showToast(`${getNodeLabel(node)}`)}
                 />
               </Box>
             </Box>

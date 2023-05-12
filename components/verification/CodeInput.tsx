@@ -17,6 +17,10 @@ const InputsWrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: 16px;
+  @media only screen and (max-width: 599px) {
+    justify-content: space-between;
+    width: 100%;
+  }
   @media only screen and (max-width: 435px) {
     gap: 6px;
   }
@@ -151,18 +155,6 @@ const CodeInput: React.FC<CodeInput> = ({ show, validationMsgs }) => {
           />
         ))}
       </InputsWrapper>
-      {isEmpty && isTouched && (
-        <div
-          style={{
-            fontFamily: "Open Sans",
-            fontWeight: 400,
-            fontSize: "13px",
-            color: "red",
-          }}
-        >
-          Required
-        </div>
-      )}
       {isInValid && (
         <div
           style={{

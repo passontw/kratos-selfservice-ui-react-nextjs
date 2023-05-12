@@ -1,3 +1,4 @@
+import axios from "axios"
 import {
   StyledChangePasswordArea,
   StyledSection,
@@ -14,12 +15,12 @@ import { useDispatch } from "react-redux"
 
 import AccountLayout from "../components/Layout/AccountLayout"
 import Flow from "../components/changepassword/Flow"
-import { Methods, Messages, ActionCard } from "../pkg"
+import { Methods, ActionCard } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
-import { updatePasswordSchema } from "../util/schemas"
+import { changePasswordSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 
 interface Props {
@@ -76,15 +77,21 @@ const ChangePassword: NextPage = () => {
   useEffect(() => {
     dispatch(setActiveNav(Navs.CHANGEPASSWORD))
     dispatch(setActiveStage(Stage.NONE))
+
+    axios.get("/api/.ory/sessions/whoami", {
+      headers: { withCredentials: true },
+    }).catch(() => {
+      window.location.replace("/login");
+    })
   }, [])
 
   const onSubmit = async (values: UpdateSettingsFlowBody, confirmPassword) => {
     try {
-      await handleYupSchema(updatePasswordSchema, {
+      await handleYupSchema(changePasswordSchema, {
         confirmPassword,
         password: values.password,
       })
-      router
+      return router
         // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
         // his data when she/he reloads the page.
         .push(`/changepassword?flow=${flow?.id}`, undefined, { shallow: true })
@@ -97,6 +104,7 @@ const ChangePassword: NextPage = () => {
             .then(({ data }) => {
               // The settings have been saved and the flow was updated. Let's show it to the user!
               setFlow(data)
+              setConfirmPasswordError("")
             })
             .catch(handleFlowError(router, "changepassword", setFlow))
             .catch(async (err: any) => {
@@ -110,9 +118,9 @@ const ChangePassword: NextPage = () => {
               return Promise.reject(err)
             }),
         )
-      setConfirmPasswordError("")
     } catch (error) {
       const errors = handleYupErrors(error)
+
       const nextFlow = cloneDeep(flow)
 
       if (errors.password) {
@@ -126,6 +134,12 @@ const ChangePassword: NextPage = () => {
           (node) => node?.attributes?.name === "password",
         )
         nextFlow.ui.nodes[passwordIndex].messages = [passwordMessage]
+      } else {
+        const passwordNodes = nextFlow.ui.nodes || []
+        const passwordIndex = passwordNodes.findIndex(
+          (node) => node?.attributes?.name === "password",
+        )
+        nextFlow.ui.nodes[passwordIndex].messages = []
       }
 
       if (errors.confirmPassword) {

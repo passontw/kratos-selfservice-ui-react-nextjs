@@ -1,28 +1,23 @@
 import { Box } from "@mui/material"
-import { useRouter } from "next/router"
 import { useDispatch } from "react-redux"
 
 import { setActiveStage } from "../../state/store/slice/layoutSlice"
 import { Stage } from "../../types/enum"
 import Text from "../Text"
 
-interface DeleteAccConfirmProps {
+interface DeviceLogoutAllConfirmProps {
   onClick?: () => void
-  confirmDelete: () => void
+  confirmLogoutAll?: () => void
 }
 
-const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
+const DeviceLogoutAllConfirm: React.FC<DeviceLogoutAllConfirmProps> = ({
   onClick: close,
-  confirmDelete,
+  confirmLogoutAll,
 }) => {
-  const dispatch = useDispatch()
-  // const router = useRouter()
-
   return (
     <Box>
       <Text my={"5px"}>
-        Your account and associated data will be permanently deleted and cannot
-        be restored.
+        This will remove access to your CMID account from all devices.
       </Text>
       <Box>
         <Box
@@ -34,11 +29,12 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
           display="flex"
           justifyContent="center"
           alignItems="center"
-          bgcolor="#F24867"
+          bgcolor="#A62BC3"
           borderRadius="8px"
           position="absolute"
           right="30px"
           mt="25px"
+          px="10px"
           sx={{
             cursor: "pointer",
             "&:hover": {
@@ -46,11 +42,11 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
             },
           }}
           onClick={() => {
-            confirmDelete()
+            confirmLogoutAll?.()
             close?.()
           }}
         >
-          Delete
+          Log out all
         </Box>
         <Box
           width="95px"
@@ -65,7 +61,7 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
           color="#C0C0C0"
           fontFamily="open sans"
           fontSize="16px"
-          right="140px"
+          right="160px"
           mt="25px"
           sx={{
             cursor: "pointer",
@@ -75,7 +71,6 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
           }}
           onClick={(e) => {
             close?.()
-            window.location.reload()
           }}
         >
           Cancel
@@ -85,4 +80,4 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
   )
 }
 
-export default DeleteAccConfirm
+export default DeviceLogoutAllConfirm

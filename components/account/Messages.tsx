@@ -31,6 +31,10 @@ export const Messages = ({ messages }: MessagesProps) => {
         if (message.text.includes("An email containing")) {
           return
         }
+        if (message.text.includes("The verification code is invalid")) {
+          return "Wrong verification code"
+        }
+        
         return <Message key={message.id} message={message} />
       })}
     </div>

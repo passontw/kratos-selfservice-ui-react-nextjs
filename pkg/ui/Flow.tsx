@@ -85,10 +85,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   }
 
   componentDidUpdate(prevProps: Props<T>) {
-    if (prevProps.flow !== this.props.flow) {
-      // Flow has changed, reload the values!
-      this.initializeValues(this.filterNodes())
-    }
     if (prevProps.code !== this.props.code) {
       this.setCodeValue(this.props.code)
     }
@@ -209,10 +205,12 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       .finally(() => {
         // We wait for reconciliation and update the state after 50ms
         // Done submitting - update loading status
-        this.setState((state) => ({
-          ...state,
-          isLoading: false,
-        }))
+        this.setState((state) => {
+          return {
+            ...state,
+            isLoading: false,
+          }
+        })
       })
   }
 
@@ -232,9 +230,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     }
 
     if (this.props.router?.pathname === "/registration") {
-      // let temp = nodes[3]
-      // nodes[3] = nodes[4]
-      // nodes[4] = temp
 
       const list = ["Name", "E-Mail", "Password", "Sign up"]
       nodes = nodes
@@ -276,12 +271,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           if (excludedFields[pathname]?.includes(node.attributes.name)) return
 
           const id = getNodeId(node) as keyof Values
-          // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
-          // if (node.meta.label?.text === "E-Mail") return
-          console.log("@node.meta", node.meta)
-          console.log("@node.meta222", node.meta.label?.text)
-          // if (node.meta.label?.text === "Resend code") return
-
           return (
             <>
               <Node
@@ -291,7 +280,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 value={
                   getNodeId(node) === "code" ? this.props.code : values[id]
                 }
-                // value={values[id]}
                 dispatchSubmit={this.handleSubmit}
                 setValue={(value) =>
                   new Promise((resolve) => {
@@ -374,7 +362,13 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           </Box>
         )}
         {!this.props.hideSocialLogin && (
-          <Box display="flex" gap="24px" justifyContent="center" my="24px" height="44px">
+          <Box
+            display="flex"
+            gap="24px"
+            justifyContent="center"
+            my="24px"
+            height="44px"
+          >
             <Button
               name="provider"
               value="google"

@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box"
 import { LoginFlow } from "@ory/client"
+import axios from "axios"
 import { AxiosError } from "axios"
 import cloneDeep from "lodash/cloneDeep"
 import isEmpty from "lodash/isEmpty"
@@ -7,17 +8,20 @@ import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import queryString from "query-string"
 import { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 import { api } from "../axios/api"
 import AppsList from "../components/AppsList"
 import CmidHead from "../components/CmidHead"
 import MenuFooter from "../components/MenuFooter"
 import MenuTag from "../components/MenuTag"
+import { showToast } from "../components/Toast"
 import { LogoutLink, Flow } from "../pkg"
 import { handleGetFlowError, handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import {
+  selectAccountDeleted,
+  setAccountDeleted,
   setActiveNav,
   setActiveStage,
   setDialog,
@@ -30,6 +34,7 @@ import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 import { StyledMenuWrapper } from "./../styles/share"
 
 const localStorageKey = "!@#$%^&*()data"
+const registeLocalStorageKey = "!@#$%^&*()registedata"
 
 const { NEXT_PUBLIC_REDIRECT_URI } = process.env
 
@@ -52,7 +57,7 @@ const validateLoginFlow = async (router, options) => {
         aal: aal ? String(aal) : undefined,
         returnTo: Boolean(login_challenge)
           ? NEXT_PUBLIC_REDIRECT_URI
-          : '/profile',
+          : "/profile",
       })
 
       if (router.query.login_challenge) {
@@ -72,12 +77,17 @@ const validateLoginFlow = async (router, options) => {
 const Login: NextPage = () => {
   const [flow, setFlow] = useState<LoginFlow>()
   const dispatch = useDispatch()
+  const accountDeleted = useSelector(selectAccountDeleted)
 
   useEffect(() => {
+    if (accountDeleted) {
+      showToast("Account deleted")
+    }
     dispatch(setActiveNav(Navs.LOGIN))
     dispatch(setActiveStage(Stage.NONE))
     dispatch(setDialog(null))
     dispatch(setLockCodeResend(false))
+    dispatch(setAccountDeleted(false))
   }, [])
 
   // Get ?flow=... from the URL
@@ -187,7 +197,28 @@ const Login: NextPage = () => {
       if (isEmailSignin) {
         await handleYupSchema(loginFormSchema, values)
       }
-
+      if (isEmailSignin) {
+        const response = await axios.get(
+          `/api/hydra/validateIdentity?email=${values.identifier}`,
+        )
+        if (isEmpty(response.data.data)) {
+          const nextFlow = {
+            ...flow,
+            ui: {
+              ...flow.ui,
+              messages: [
+                {
+                  id: 400001,
+                  text: "Email account doesn’t exist. Please try again or sign up",
+                  type: "error",
+                },
+              ],
+            },
+          }
+          setFlow(nextFlow)
+          return
+        }
+      }
       return (
         ory
           .updateLoginFlow({
@@ -196,9 +227,39 @@ const Login: NextPage = () => {
           })
 
           // We logged in successfully! Let's bring the user home.
-          .then((result) => {
-            const { session } = result.data
+          .then((loginResult) => {
+            return axios
+              .get("/api/.ory/sessions/whoami", {
+                headers: { withCredentials: true },
+              })
+              .then((result) => {
+                return [loginResult, result.data]
+              })
+          })
+          .then(([loginResult, myResult]) => {
+            const { session } = loginResult.data
             const { traits } = session.identity
+            const { verifiable_addresses = [] } = myResult.identity
+
+            const [verifiable_address] = verifiable_addresses
+            if (isEmpty(verifiable_address) || !verifiable_address.verified) {
+              return ory
+                .createBrowserLogoutFlow()
+                .then(({ data: logoutFlow }) => {
+                  return ory.updateLogoutFlow({
+                    token: logoutFlow.logout_token,
+                  })
+                })
+                .then(() => {
+                  // alert("please continue registe flow")
+                  localStorage.setItem(localStorageKey, JSON.stringify(values))
+                  window.location.href = `/verification?${queryString.stringify(
+                    router.query,
+                  )}&user=${values.identifier}&type=continueregiste`
+                  return
+                })
+            }
+
             if (isEmailSignin && traits.loginVerification) {
               return ory
                 .createBrowserLogoutFlow()
@@ -221,8 +282,6 @@ const Login: NextPage = () => {
               doConsentProcess(login_challenge as string, subject)
             } else {
               // Original Kratos flow
-              // console.log("data", data)
-              // console.log("flow", flow)
               if (flow?.return_to) {
                 window.location.href = flow?.return_to
                 return
@@ -236,7 +295,25 @@ const Login: NextPage = () => {
             if (err.response?.status === 400) {
               // Yup, it is!
               if (err && err.response) {
-                setFlow(err.response?.data)
+                const nextFlow = err.response?.data
+                const [message = { text: "" }] = nextFlow.ui.messages
+                if (
+                  message.text.includes(
+                    "check for spelling mistakes in your password or username, email address, or phone number.",
+                  )
+                ) {
+                  const identifierIndex = nextFlow.ui.nodes.findIndex(
+                    (node) => node.attributes.name === "password",
+                  )
+                  nextFlow.ui.nodes[identifierIndex].messages = [
+                    {
+                      id: 400007,
+                      text: "",
+                      type: "error",
+                    },
+                  ]
+                }
+                setFlow(nextFlow)
               }
               return
             }
@@ -291,7 +368,6 @@ const Login: NextPage = () => {
         setFlow(nextFlow)
       }
 
-      // setErrors(errors);
       return false
     }
   }
@@ -300,34 +376,21 @@ const Login: NextPage = () => {
 
   return (
     <>
-      {/* CUSTOMIZE UI BASED ON CLIENT ID */}
-      {/* <Head>
-        <title>Sign in - Ory NextJS Integration Example</title>
-        <meta name="description" content="NextJS + React + Vercel + Ory" />
-      </Head> */}
       <div className="mainWrapper">
         <StyledMenuWrapper>
           <div>
             <title>Sign in - Ory NextJS Integration Example</title>
             <meta name="description" content="NextJS + React + Vercel + Ory" />
           </div>
-          {/* <MarginCard> */}
-          {/* <CardTitle>
-        {(() => {
-          if (flow?.refresh) {
-            return "Confirm Action"
-          } else if (flow?.requested_aal === "aal2") {
-            return "Two-Factor Authentication"
-          }
-          return "Sign In (ID can be Email or Username)"
-        })()}
-        </CardTitle> */}
-          <Box display="flex" justifyContent={{xs: 'center', sm: 'left'}}>
-            <CmidHead /> 
+          <Box display="flex" justifyContent={{ xs: "center", sm: "left" }}>
+            <CmidHead />
           </Box>
           <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
             Welcome back
           </Box>
+          {router.query.error && (
+            <p style={{ color: "red" }}>{router.query.error}</p>
+          )}
           <Flow onSubmit={onSubmit} flow={flow} router={router} />
           <MenuTag />
         </StyledMenuWrapper>
