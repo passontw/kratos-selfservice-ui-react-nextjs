@@ -195,22 +195,14 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       <form
         action={flow.ui.action}
         method={flow.ui.method}
-        onSubmit={this.handleSubmit}
+        onSubmit={(...args) => this.handleSubmit(...args)}
       >
         {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
         {nodes.map((node, k) => {
           const excludedFields = {
             // verification: ["email"],
           }
-
-          const handleSubmit = node.meta?.text === "Resend code"
-            ? this.handleSubmit
-            : (env) => {
-              if (flow.state === "sent_email" && code.length !== 6) {
-                return null;
-              }
-              this.handleSubmit(env);
-            }
+          
           const pathname = window.location.pathname.slice(
             1,
           ) as keyof typeof excludedFields
@@ -225,7 +217,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
               disabled={isLoading}
               node={node}
               value={getNodeId(node) === "code" ? this.props.code : values[id]}
-              dispatchSubmit={handleSubmit}
+              dispatchSubmit={this.handleSubmit}
               setValue={(value) => {
                 return new Promise((resolve) => {
                   this.setState(
