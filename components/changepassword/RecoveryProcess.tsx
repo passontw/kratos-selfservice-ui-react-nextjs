@@ -217,6 +217,10 @@ const RecoveryProcess: NextPage = () => {
       }
     }
 
+    const nextValue = flow.state === "choose_method"
+      ? values
+      : {...values, email: undefined};
+
     return (
       router
         // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
@@ -226,7 +230,7 @@ const RecoveryProcess: NextPage = () => {
           ory
             .updateRecoveryFlow({
               flow: String(flow?.id),
-              updateRecoveryFlowBody: values,
+              updateRecoveryFlowBody: nextValue,
             })
             .then(({ data }) => {
               // Form submission was successful, show the message to the user!
