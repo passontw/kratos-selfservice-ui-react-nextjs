@@ -22,40 +22,22 @@ import { Navs } from "../types/enum"
 
 const Recovery: NextPage = () => {
   const dispatch = useDispatch()
-  const currentDialog = useSelector(selectDialog)
-  console.log("@modal current dailog:", currentDialog)
 
   useEffect(() => {
     dispatch(setActiveNav(Navs.RECOVERY))
-
-    // deals with the case that the user refreshes the page at the route /recovery
-    if (!currentDialog) {
-      dispatch(
-        setDialog({
-          title: "Forgot Password",
-          titleHeight: "58px",
-          width: 480,
-          height: 358,
-          center: true,
-          children: <RecoveryProcess />,
-        }),
-      )
-    }
+    dispatch(
+      setDialog({
+        title: "Forgot Password",
+        titleHeight: "58px",
+        width: 480,
+        height: 358,
+        center: true,
+        children: <RecoveryProcess />,
+      }),
+    )
   }, [])
   // Get ?flow=... from the URL
   const router = useRouter()
-
-  const {
-    login_challenge,
-    return_to: returnTo,
-    flow: flowId,
-    // Refresh means we want to refresh the session. This is needed, for example, when we want to update the password
-    // of a user.
-    refresh,
-    // AAL = Authorization Assurance Level. This implies that we want to upgrade the AAL, meaning that we want
-    // to perform two-factor authentication/verification.
-    aal,
-  } = router.query
 
   const StyledLine = styled.div`
     position: relative;
