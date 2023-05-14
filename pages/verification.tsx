@@ -185,6 +185,9 @@ const Verification: NextPage = () => {
   }
 
   const onSubmit = async (values: UpdateVerificationFlowBody) => {
+    if (flow.state === "sent_email" && isEmpty(values.code) && isEmpty(values.email)) {
+      return null;
+    }
     const createdTimeDayObject = dayjs(flow.issued_at)
     const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
     

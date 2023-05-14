@@ -17,6 +17,12 @@ export const recoveryFormSchema = yup.object().shape({
     .required("This field is required, please fill it out."),
 })
 
+export const recoveryCodeFormSchema = yup.object().shape({
+  code: yup.string()
+    .min(6, '6 word')
+    .required('code not to be empty')
+})
+
 export const changePasswordSchema = yup.object().shape({
   password: yup
     .string()
