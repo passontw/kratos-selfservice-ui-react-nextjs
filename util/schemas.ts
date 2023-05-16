@@ -20,7 +20,7 @@ export const recoveryFormSchema = yup.object().shape({
 export const recoveryCodeFormSchema = yup.object().shape({
   code: yup.string()
     .min(6, '6 word')
-    .required('code not to be empty')
+    .required('Required')
 })
 
 export const changePasswordSchema = yup.object().shape({
