@@ -46,6 +46,29 @@ export const changePasswordSchema = yup.object().shape({
     }),
 })
 
+export const updateSettingsPasswordSchema = yup.object().shape({
+  password: yup
+    .string()
+    .matches(/^(?=.*[A-Za-z])[A-Za-z\d]/, "Need at least 8 characters")
+    .matches(/(?=.*\d)/, "Need at least 1 number")
+    .required("Required")
+    .min(8, "Need at least 8 characters"),
+  confirmPassword: yup
+    .string()
+    .matches(/^(?=.*[A-Za-z])[A-Za-z\d]/, "Need at least 8 characters")
+    .matches(/(?=.*\d)/, "Need at least 1 number")
+    .min(8, "Need at least 8 characters")
+    .when("password", (password, field) => {
+      if (password[0] === undefined) {
+        return field.required("Required")
+      } else {
+        return password
+          ? field.oneOf([yup.ref("password")], "Password doesn't match")
+          : field
+      }
+    }),
+})
+
 export const updatePasswordSchema = yup.object().shape({
   password: yup
     .string()

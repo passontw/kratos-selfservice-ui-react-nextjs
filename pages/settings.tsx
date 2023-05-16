@@ -14,7 +14,7 @@ import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
-import { updatePasswordSchema } from "../util/schemas"
+import { updateSettingsPasswordSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 import LinkNav from '../components/LinkNav'
 
@@ -105,7 +105,7 @@ const Settings: NextPage = () => {
 
   const onSubmit = async (values: UpdateSettingsFlowBody, confirmPassword) => {
     try {
-      await handleYupSchema(updatePasswordSchema, {
+      await handleYupSchema(updateSettingsPasswordSchema, {
         confirmPassword,
         password: values.password,
       })
