@@ -154,6 +154,12 @@ const Settings: NextPage = () => {
           (node) => node?.attributes?.name === "password",
         )
         nextFlow.ui.nodes[passwordIndex].messages = [passwordMessage]
+      } else {
+        const passwordNodes = nextFlow.ui.nodes || []
+        const passwordIndex = passwordNodes.findIndex(
+          (node) => node?.attributes?.name === "password",
+        )
+        nextFlow.ui.nodes[passwordIndex].messages = []
       }
 
       if (errors.confirmPassword) {
