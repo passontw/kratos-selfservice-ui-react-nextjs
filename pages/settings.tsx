@@ -110,7 +110,6 @@ const Settings: NextPage = () => {
         password: values.password,
       })
 
-      return;
       router
         // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
         // his data when she/he reloads the page.
