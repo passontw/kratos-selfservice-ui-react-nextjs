@@ -161,6 +161,7 @@ const RecoveryProcess: NextPage = () => {
 
     } catch(error) {
       const errors = handleYupErrors(error)
+      console.log("🚀 ~ file: RecoveryProcess.tsx:164 ~ onSubmit ~ errors:", errors)
 
       if (errors.email) {
         const message = {
@@ -198,7 +199,9 @@ const RecoveryProcess: NextPage = () => {
         const codeIndex = codeNodes.findIndex(
           (node) => node?.attributes?.name === "code",
         )
-        nextFlow.ui.nodes[codeIndex].messages = []
+        if (codeIndex !== -1) {
+          nextFlow.ui.nodes[codeIndex].messages = []
+        }
       }
       setFlow(nextFlow)
       return Promise.resolve()
