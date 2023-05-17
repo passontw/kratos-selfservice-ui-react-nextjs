@@ -149,7 +149,7 @@ const Verification: NextPage = (props) => {
   const onSubmit = async (values: UpdateVerificationFlowBody) => {
     const { user } = router.query
     const { code = "" } = values
-    if (code.length !== 6) {
+    if (isEmpty(values.email) && code.length !== 6) {
       const nextFlow = cloneDeep(flow)
       const codeNodes = nextFlow.ui.nodes || []
       const codeIndex = codeNodes.findIndex(

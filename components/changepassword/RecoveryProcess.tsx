@@ -161,7 +161,6 @@ const RecoveryProcess: NextPage = () => {
 
     } catch(error) {
       const errors = handleYupErrors(error)
-      console.log("🚀 ~ file: RecoveryProcess.tsx:164 ~ onSubmit ~ errors:", errors)
 
       if (errors.email) {
         const message = {
