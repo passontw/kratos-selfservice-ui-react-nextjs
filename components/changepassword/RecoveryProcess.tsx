@@ -161,6 +161,7 @@ const RecoveryProcess: NextPage = () => {
 
     } catch(error) {
       const errors = handleYupErrors(error)
+      console.log("🚀 ~ file: RecoveryProcess.tsx:164 ~ onSubmit ~ errors:", errors)
 
       if (errors.email) {
         const message = {
@@ -198,7 +199,9 @@ const RecoveryProcess: NextPage = () => {
         const codeIndex = codeNodes.findIndex(
           (node) => node?.attributes?.name === "code",
         )
-        nextFlow.ui.nodes[codeIndex].messages = []
+        if (codeIndex !== -1) {
+          nextFlow.ui.nodes[codeIndex].messages = []
+        }
       }
       setFlow(nextFlow)
       return Promise.resolve()
@@ -207,13 +210,24 @@ const RecoveryProcess: NextPage = () => {
     if (flow.state === "choose_method") {
     const response = await axios.get(`/api/hydra/validateIdentity?email=${values.email}`)
       if (isEmpty(response.data.data)) {
-        nextFlow.ui.messages = [{
+        const emailNodes = nextFlow.ui.nodes || []
+        const emailIndex = emailNodes.findIndex(
+          (node) => node?.attributes?.name === "email",
+        )
+        nextFlow.ui.nodes[emailIndex].messages = [{
           id: 400001,
           text: 'Email account doesn’t exist',
           type: 'error'
         }]
         setFlow(nextFlow)
         return Promise.resolve();
+      } else {
+        const emailNodes = nextFlow.ui.nodes || []
+        const emailIndex = emailNodes.findIndex(
+          (node) => node?.attributes?.name === "email",
+        )
+        nextFlow.ui.nodes[emailIndex].messages = []
+        setFlow(nextFlow)
       }
     }
 
