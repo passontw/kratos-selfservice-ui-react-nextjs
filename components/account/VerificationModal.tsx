@@ -8,10 +8,13 @@ import Head from "next/head"
 import { useRouter } from "next/router"
 import queryString from "query-string"
 import { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 import ory from "../../pkg/sdk"
-import { setDialog } from "../../state/store/slice/layoutSlice"
+import {
+  selectSixDigitCode,
+  setDialog,
+} from "../../state/store/slice/layoutSlice"
 import Text from "../Text"
 
 import DeleteAccConfirm from "./DeleteAccConfirm"
@@ -25,6 +28,7 @@ const Verification: NextPage = (props) => {
   // Get ?flow=... from the URL
   const router = useRouter()
   const dispatch = useDispatch()
+  const sixDigitCode = useSelector(selectSixDigitCode)
   const email = router.query.user as string
   const { flow: flowId, return_to: returnTo, user } = router.query
 
@@ -155,7 +159,7 @@ const Verification: NextPage = (props) => {
         {
           id: 4000002,
           type: "error",
-          text: "Required",
+          text: "This field is required, please fill it out.",
         },
       ]
       setFlow(nextFlow)
@@ -244,6 +248,7 @@ const Verification: NextPage = (props) => {
             onSubmit={onSubmit}
             flow={flow}
             hideGlobalMessages={isEmpty(flow?.ui?.messages)}
+            code={sixDigitCode}
           />
         </Box>
       </Box>

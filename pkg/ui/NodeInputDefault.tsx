@@ -9,6 +9,7 @@ import RadioGroup from "../../components/RadioGroup"
 import Select from "../../components/Select"
 import RecoveryProcess from "../../components/changepassword/RecoveryProcess"
 import CodeInput from "../../components/verification/CodeInput"
+import VerificationInput from "../../components/verification/VerificationInput"
 import Eye from "../../public/images/eyes"
 import {
   selectActiveNav,
@@ -123,6 +124,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
       nav !== Navs.LOGIN) ||
     (nav === Navs.VERIFICATION && activeStage === Stage.NONE)
   // || activeStage === Stage.DELETE_ACCOUNT
+  const verifyCodeConditions2 = activeStage === Stage.DELETE_ACCOUNT
 
   // Render a generic text input field.
   return (
@@ -130,6 +132,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
       {verifyCodeConditions && (
         <CodeInput show={attributes.name} validationMsgs={validationMsgs} />
       )}
+      {verifyCodeConditions2 && <VerificationInput />}
       <StyledDefaultInput isInputLabel={isInputLabel}>
         {isInputLabel && (
           <StyledDefaultLabel isError={isError}>{label}</StyledDefaultLabel>
@@ -138,10 +141,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           className="my-text-input"
           style={{
             display:
-              (label === "Verify code" &&
-                // nav !== Navs.RECOVERY &&
-                nav !== Navs.ACCOUNT) ||
-              attributes.name === "traits.gender"
+              label === "Verify code" || attributes.name === "traits.gender"
                 ? "none"
                 : "unset",
             border: isError || accountError ? "1px solid #F24867" : "none",

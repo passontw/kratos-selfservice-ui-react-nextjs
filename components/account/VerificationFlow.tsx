@@ -51,6 +51,7 @@ export type Props<T> = {
   onSubmit: (values: T) => Promise<void>
   // Do not show the global messages. Useful when rendering them elsewhere.
   hideGlobalMessages?: boolean
+  code?: string
 }
 
 function emptyState<T>() {
@@ -76,6 +77,43 @@ export default class Flow<T extends Values> extends Component<
 
   componentDidMount() {
     this.initializeValues(this.filterNodes())
+  }
+
+  componentDidUpdate(prevProps: Props<T>) {
+    if (prevProps.code !== this.props.code) {
+      this.setCodeValue(this.props.code)
+    }
+  }
+
+  setCodeValue = async (code: string | undefined) => {
+    const nodeId = "code"
+    const node = this.getNodeById(nodeId)
+
+    if (node) {
+      await this.handleSetValue(node, code)
+    }
+  }
+
+  getNodeById = (nodeId: keyof Values): UiNode | undefined => {
+    const nodes = this.filterNodes()
+    return nodes.find((node) => getNodeId(node) === nodeId)
+  }
+
+  handleSetValue = async (node: UiNode, value: any) => {
+    const id = getNodeId(node) as keyof Values
+
+    return new Promise((resolve) => {
+      this.setState(
+        (state) => ({
+          ...state,
+          values: {
+            ...state.values,
+            [id]: value,
+          },
+        }),
+        resolve,
+      )
+    })
   }
 
   initializeValues = (nodes: Array<UiNode> = []) => {
@@ -201,7 +239,7 @@ export default class Flow<T extends Values> extends Component<
               key={`${id}-${k}`}
               disabled={isLoading}
               node={node}
-              value={values[id]}
+              value={getNodeId(node) === "code" ? this.props.code : values[id]}
               dispatchSubmit={this.handleSubmit}
               setValue={(value) =>
                 new Promise((resolve) => {
@@ -210,7 +248,9 @@ export default class Flow<T extends Values> extends Component<
                       ...state,
                       values: {
                         ...state.values,
-                        [getNodeId(node)]: value,
+                        [getNodeId(node)]:
+                          getNodeId(node) === "code" ? this.props.code : value,
+                        // [getNodeId(node)]: value,
                       },
                     }),
                     resolve,
