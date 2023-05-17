@@ -188,6 +188,7 @@ const Verification: NextPage = () => {
     if (flow.state === "sent_email" && isEmpty(values.code) && isEmpty(values.email)) {
       return null;
     }
+
     const createdTimeDayObject = dayjs(flow.issued_at)
     const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
     
@@ -205,6 +206,7 @@ const Verification: NextPage = () => {
           type: "error",
         }]
         setFlow(nextFlow)
+        return;
       }
     } else {
       const nextFlow = cloneDeep(flow);
