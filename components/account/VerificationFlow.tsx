@@ -230,9 +230,8 @@ export default class Flow<T extends Values> extends Component<
             ? { display: "none" }
             : {};
           return (
-            <span style={containerStyle}>
+            <span style={containerStyle} key={`${id}-${k}`}>
               <Node
-                key={`${id}-${k}`}
                 disabled={isLoading}
                 node={node}
                 value={values[id]}
