@@ -24,10 +24,6 @@ export type Values = Partial<
   | UpdateVerificationFlowBody
 >
 
-// interface ValuesCustomProps extends Values {
-//   noEmail: boolean
-// }
-
 export type Methods =
   | "oidc"
   | "password"
@@ -229,37 +225,38 @@ export default class Flow<T extends Values> extends Component<
       >
         {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
         {nodes.map((node, k) => {
-          // console.log(node)
           const id = getNodeId(node) as keyof Values
-          // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
-          // if (node.meta.label?.text === "E-Mail") return
-
+          const containerStyle = node.attributes.name === "email"
+            ? { display: "none"}
+            : {};
           return (
-            <Node
-              key={`${id}-${k}`}
-              disabled={isLoading}
-              node={node}
-              value={getNodeId(node) === "code" ? this.props.code : values[id]}
-              dispatchSubmit={this.handleSubmit}
-              setValue={(value) =>
-                new Promise((resolve) => {
-                  this.setState(
-                    (state) => ({
-                      ...state,
-                      values: {
-                        ...state.values,
-                        [getNodeId(node)]:
-                          getNodeId(node) === "code" ? this.props.code : value,
-                        // [getNodeId(node)]: value,
-                      },
-                    }),
-                    resolve,
-                  )
-                })
-              }
-            />
+            <span style={containerStyle}>
+              <Node
+                key={`${id}-${k}`}
+                disabled={isLoading}
+                node={node}
+                value={getNodeId(node) === "code" ? this.props.code : values[id]}
+                dispatchSubmit={this.handleSubmit}
+                setValue={(value) =>
+                  new Promise((resolve) => {
+                    this.setState(
+                      (state) => ({
+                        ...state,
+                        values: {
+                          ...state.values,
+                          [getNodeId(node)]:
+                            getNodeId(node) === "code" ? this.props.code : value,
+                          // [getNodeId(node)]: value,
+                        },
+                      }),
+                      resolve,
+                    )
+                  })
+                }
+              />
+            </span>
           )
-        })}
+        })}       
       </form>
     )
   }

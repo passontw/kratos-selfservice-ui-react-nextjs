@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux"
 
 import AccountLayout from "../components/Layout/AccountLayout"
 import { showToast } from "../components/Toast"
-import DeleteAccConfirm from "../components/account/DeleteAccConfirm"
 import { Flow } from "../components/account/Flow"
 import ProfileFlow from "../components/account/ProfileFlow"
 import VerificationModal from "../components/account/VerificationModal"
