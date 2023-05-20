@@ -67,12 +67,10 @@ const Account: NextPage = () => {
   }
 
   const deleteAccount = async () => {
-    console.log("🚀 ~ file: account.tsx:70 ~ deleteAccount ~ deleteAccount:")
     const { data } = await axios.get("/api/.ory/sessions/whoami", {
       headers: { withCredentials: true },
     })
-    console.log("🚀 ~ file: account.tsx:73 ~ deleteAccount ~ data:", data)
-
+    
     return axios
       .delete(
         `${process.env.ORY_CUSTOM_DOMAIN}/admin/identities/${data.identity.id}`,
