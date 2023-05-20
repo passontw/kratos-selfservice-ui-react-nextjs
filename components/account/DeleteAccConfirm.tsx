@@ -1,9 +1,4 @@
 import { Box } from "@mui/material"
-import { useRouter } from "next/router"
-import { useDispatch } from "react-redux"
-
-import { setActiveStage } from "../../state/store/slice/layoutSlice"
-import { Stage } from "../../types/enum"
 import Text from "../Text"
 
 interface DeleteAccConfirmProps {
@@ -15,8 +10,6 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
   onClick: close,
   confirmDelete,
 }) => {
-  const dispatch = useDispatch()
-  // const router = useRouter()
 
   return (
     <Box>
@@ -45,10 +38,7 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
               filter: "brightness(0.9)",
             },
           }}
-          onClick={() => {
-            confirmDelete()
-            close?.()
-          }}
+          onClick={confirmDelete}
         >
           Delete
         </Box>

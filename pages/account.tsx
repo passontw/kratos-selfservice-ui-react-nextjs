@@ -5,7 +5,7 @@ import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { ReactNode, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-
+import cloneDeep from "lodash/cloneDeep"
 import AccountLayout from "../components/Layout/AccountLayout"
 import { showToast } from "../components/Toast"
 import { Flow } from "../components/account/Flow"
@@ -67,9 +67,11 @@ const Account: NextPage = () => {
   }
 
   const deleteAccount = async () => {
+    console.log("🚀 ~ file: account.tsx:70 ~ deleteAccount ~ deleteAccount:")
     const { data } = await axios.get("/api/.ory/sessions/whoami", {
       headers: { withCredentials: true },
     })
+    console.log("🚀 ~ file: account.tsx:73 ~ deleteAccount ~ data:", data)
 
     return axios
       .delete(
@@ -82,17 +84,13 @@ const Account: NextPage = () => {
         },
       )
       .then(() => {
-        // alert("delete account success!")
-        // setTimeout(() => {
-        //   showToast("Account deleted")
-        // }, 1500)
         dispatch(setAccountDeleted(true))
+        console.log("🚀 ~ file: account.tsx:87 ~ .then ~ setAccountDeleted:")
         router.push("/login")
-        // window.location.replace("/login")
       })
       .catch((error) => {
+        console.log("🚀 ~ file: account.tsx:94 ~ deleteAccount ~ error:", error)
         showToast(error.message, false)
-        // alert(error.message)
       })
   }
 
@@ -124,10 +122,7 @@ const Account: NextPage = () => {
               flow: String(flow?.id),
               updateSettingsFlowBody: values,
             })
-            .then(({ data }) => {
-              if (data.state === "success") {
-                // alert("update success")
-              }
+            .then(({ data }) => {              
               // The settings have been saved and the flow was updated. Let's show it to the user!
               setFlow(data)
             })

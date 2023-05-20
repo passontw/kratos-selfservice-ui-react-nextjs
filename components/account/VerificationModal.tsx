@@ -179,9 +179,35 @@ const Verification: NextPage = (props) => {
         updateVerificationFlowBody: { ...values, email: user },
       })
       .then(({ data }) => {
+        const nextFlow = cloneDeep(data);
+        const [message] = nextFlow.ui.messages;
+        if (message.text.includes("The verification code is invalid")) {
+          nextFlow.ui.messages = [];
+          const codeNodes = nextFlow.ui.nodes || []
+          const codeIndex = codeNodes.findIndex(
+            (node) => node?.attributes?.name === "code",
+          )
+          nextFlow.ui.nodes[codeIndex].messages = [
+            {
+              id: 4000005,
+              type: "error",
+              text: "Verification code is incorrect, please check and try again.",
+            },
+          ]
+          setFlow(nextFlow)
+          return
+        } else {
+          const codeNodes = nextFlow.ui.nodes || []
+          const codeIndex = codeNodes.findIndex(
+            (node) => node?.attributes?.name === "code",
+          )
+          if (codeIndex !== -1) {
+            nextFlow.ui.nodes[codeIndex].messages = []
+          }
+        }
         // Form submission was successful, show the message to the user!
-        setFlow(data)
-        if (data.state === "passed_challenge") {
+        setFlow(nextFlow)
+        if (nextFlow.state === "passed_challenge") {
           deleteAccountPromt()
           // props.deleteAccount()
         }
