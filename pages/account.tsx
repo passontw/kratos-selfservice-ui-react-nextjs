@@ -23,6 +23,8 @@ import {
 } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
 
+const linkAttributesNamesKey = "!@#$%^linkAttributesNamesKey";
+
 interface Props {
   flow?: SettingsFlow
   only?: Methods
@@ -118,7 +120,38 @@ const Account: NextPage = () => {
               flow: String(flow?.id),
               updateSettingsFlowBody: values,
             })
-            .then(({ data }) => {              
+            .then(({ data }) => {
+              const googleNode = data.ui.nodes.find(node => {
+                return node.attributes.value === "google"
+              })
+              const appleNode = data.ui.nodes.find(node => {
+                return node.attributes.value === "apple"
+              })
+              const linkAttributesNames = JSON.parse(localStorage.getItem(linkAttributesNamesKey) || '{}');
+              const googleAttributesName = googleNode?.attributes.name;
+              const appleAttributesName = appleNode?.attributes.name;
+              if (!isEmpty(linkAttributesNames)) {
+                if (linkAttributesNames.googleAttributesName !== googleAttributesName) {
+                  if (googleAttributesName === "unlink") {
+                    alert("google linked");
+                  } else {
+                    alert("google unlinked");
+                  }
+                }
+
+                if (linkAttributesNames.appleAttributesName !== appleAttributesName) {
+                  if (appleAttributesName === "unlink") {
+                    alert("apple linked");
+                  } else {
+                    alert("apple unlinked");
+                  }
+                }
+              }
+
+              localStorage.setItem(linkAttributesNamesKey, JSON.stringify({
+                googleAttributesName: googleNode?.attributes.name,
+                appleAttributesName: appleNode?.attributes.name,
+              }));
               // The settings have been saved and the flow was updated. Let's show it to the user!
               setFlow(data)
             })
@@ -157,7 +190,7 @@ const Account: NextPage = () => {
       })
       .catch(() => {
         window.location.replace("/login")
-      })
+      });
   }, [])
 
   useEffect(() => {
@@ -198,6 +231,7 @@ const Account: NextPage = () => {
           const googleNode = data.ui.nodes.find(node => {
             return node.attributes.value === "google"
           })
+
           if (isEmpty(googleNode)) {
             const csrfTokenNode = data.ui.nodes.find(node => node.attributes.name === "csrf_token");
 
@@ -208,19 +242,51 @@ const Account: NextPage = () => {
             };
 
             return ory
-            .updateSettingsFlow({
-              flow: String(data?.id),
-              updateSettingsFlowBody: updatePasswordValues,
-            }).then((() => {
-              return ory
-              .createBrowserSettingsFlow({
-                returnTo: "/account",
-              })
-            }))
+              .updateSettingsFlow({
+                flow: String(data?.id),
+                updateSettingsFlowBody: updatePasswordValues,
+              }).then((() => {
+                return ory
+                  .createBrowserSettingsFlow({
+                    returnTo: "/account",
+                  })
+              }))
           } else {
-            return Promise.resolve({data});
+            const linkAttributesNames = JSON.parse(localStorage.getItem(linkAttributesNamesKey) || '{}');
+            const googleNode = data.ui.nodes.find(node => {
+              return node.attributes.value === "google"
+            })
+            const appleNode = data.ui.nodes.find(node => {
+              return node.attributes.value === "apple"
+            })
+            const googleAttributesName = googleNode?.attributes.name;
+            const appleAttributesName = appleNode?.attributes.name;
+            if (!isEmpty(linkAttributesNames)) {
+              if (linkAttributesNames.googleAttributesName !== googleAttributesName) {
+                if (googleAttributesName === "unlink") {
+                  alert("google linked");
+                } else {
+                  alert("google unlinked");
+                }
+              }
+
+              if (linkAttributesNames.appleAttributesName !== appleAttributesName) {
+                if (appleAttributesName === "unlink") {
+                  alert("apple linked");
+                } else {
+                  alert("apple unlinked");
+                }
+              }
+            }
+
+            localStorage.setItem(linkAttributesNamesKey, JSON.stringify({
+              googleAttributesName: googleNode?.attributes.name,
+              appleAttributesName: appleNode?.attributes.name,
+            }));
+            return Promise.resolve({ data });
           }
-        }).then(({data}) => {
+        }).then(({ data }) => {
+
           setFlow(data);
         })
         .catch(handleFlowError(router, "account", setFlow))
@@ -258,7 +324,7 @@ const Account: NextPage = () => {
             onSubmit={onSubmit}
             only="oidc"
             flow={flow}
-            // handleToast={handleToast}
+          // handleToast={handleToast}
           />
         </SettingsCard>
         <SettingsCard only="profile" flow={flow}>
