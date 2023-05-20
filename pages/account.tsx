@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux"
 
 import AccountLayout from "../components/Layout/AccountLayout"
 import { showToast } from "../components/Toast"
-import DeleteAccConfirm from "../components/account/DeleteAccConfirm"
 import { Flow } from "../components/account/Flow"
 import ProfileFlow from "../components/account/ProfileFlow"
 import VerificationModal from "../components/account/VerificationModal"
@@ -18,11 +17,9 @@ import ory from "../pkg/sdk"
 import Bin from "../public/images/Bin"
 import {
   selectMfaModalOpen,
-  selectMfaState,
   setAccountDeleted,
   setActiveNav,
   setActiveStage,
-  setDialog,
 } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
 
@@ -57,9 +54,7 @@ const Account: NextPage = () => {
   const [flow, setFlow] = useState<SettingsFlow>()
   const router = useRouter()
   const mfaModalOpen = useSelector(selectMfaModalOpen)
-  const mfaState = useSelector(selectMfaState)
   const [confirmDelete, setConfirmDelete] = useState(false)
-  const [toastContent, setToastContent] = useState("")
 
   const { flow: flowId, return_to: returnTo } = router.query
 
@@ -209,7 +204,6 @@ const Account: NextPage = () => {
           returnTo: "/account",
         })
         .then(({ data }) => {
-          console.log("_data", data)
           setFlow(data)
         })
         .catch(handleFlowError(router, "account", setFlow))

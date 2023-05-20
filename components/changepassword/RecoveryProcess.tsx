@@ -213,9 +213,14 @@ const RecoveryProcess: NextPage = () => {
         const emailIndex = emailNodes.findIndex(
           (node) => node?.attributes?.name === "email",
         )
-        nextFlow.ui.nodes[emailIndex].messages = [{
+        nextFlow.ui.messages = [{
           id: 400001,
           text: 'Email account doesn’t exist',
+          type: 'error'
+        }];
+        nextFlow.ui.nodes[emailIndex].messages = [{
+          id: 400001,
+          text: ' ',
           type: 'error'
         }]
         setFlow(nextFlow)
@@ -225,6 +230,8 @@ const RecoveryProcess: NextPage = () => {
         const emailIndex = emailNodes.findIndex(
           (node) => node?.attributes?.name === "email",
         )
+
+        nextFlow.ui.messages = [];
         nextFlow.ui.nodes[emailIndex].messages = []
         setFlow(nextFlow)
       }

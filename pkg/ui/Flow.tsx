@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box"
+import isEmpty from "lodash/isEmpty"
 import {
   LoginFlow,
   RecoveryFlow,
@@ -240,13 +241,27 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         )
     }
 
+    const getShowGlobalMessages = () => {
+      if (hideGlobalMessages) return false;
+      if (isEmpty(flow) || isEmpty(flow.ui) || isEmpty(flow.ui.messages)) return false;
+      if (window.location.pathname === "/recovery") {
+        const [message] = flow.ui.messages;
+        if (message.text === "Email account doesn’t exist") {
+          return true;
+        }
+        return true;
+      }
+      return false;
+    }
+
+    const showGlobalMessages = getShowGlobalMessages();
     return (
       <form
         action={flow.ui.action}
         method={flow.ui.method}
         onSubmit={this.handleSubmit}
       >
-        {!hideGlobalMessages && window.location.pathname !== "/recovery" ? (
+        {showGlobalMessages ? (
           <Messages messages={flow.ui.messages} />
         ) : null}
         {nodes.map((node, k) => {
