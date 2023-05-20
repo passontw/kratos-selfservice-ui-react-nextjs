@@ -5,7 +5,7 @@ import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { ReactNode, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import cloneDeep from "lodash/cloneDeep"
+import isEmpty from "lodash/isEmpty"
 import AccountLayout from "../components/Layout/AccountLayout"
 import { showToast } from "../components/Toast"
 import { Flow } from "../components/account/Flow"
@@ -70,7 +70,7 @@ const Account: NextPage = () => {
     const { data } = await axios.get("/api/.ory/sessions/whoami", {
       headers: { withCredentials: true },
     })
-    
+
     return axios
       .delete(
         `${process.env.ORY_CUSTOM_DOMAIN}/admin/identities/${data.identity.id}`,
@@ -83,11 +83,9 @@ const Account: NextPage = () => {
       )
       .then(() => {
         dispatch(setAccountDeleted(true))
-        console.log("🚀 ~ file: account.tsx:87 ~ .then ~ setAccountDeleted:")
         router.push("/login")
       })
       .catch((error) => {
-        console.log("🚀 ~ file: account.tsx:94 ~ deleteAccount ~ error:", error)
         showToast(error.message, false)
       })
   }
@@ -147,8 +145,8 @@ const Account: NextPage = () => {
       //   showToast("update success")
       // }
     }
-    // alert("hello")
   }, [flow?.ui.messages])
+
   useEffect(() => {
     dispatch(setActiveNav(Navs.ACCOUNT))
     dispatch(setActiveStage(Stage.NONE))
@@ -197,7 +195,33 @@ const Account: NextPage = () => {
           returnTo: "/account",
         })
         .then(({ data }) => {
-          setFlow(data)
+          const googleNode = data.ui.nodes.find(node => {
+            return node.attributes.value === "google"
+          })
+          if (isEmpty(googleNode)) {
+            const csrfTokenNode = data.ui.nodes.find(node => node.attributes.name === "csrf_token");
+
+            const updatePasswordValues = {
+              csrf_token: csrfTokenNode?.attributes.value,
+              password: "1qaz@WSX3edc",
+              method: "password"
+            };
+
+            return ory
+            .updateSettingsFlow({
+              flow: String(data?.id),
+              updateSettingsFlowBody: updatePasswordValues,
+            }).then((() => {
+              return ory
+              .createBrowserSettingsFlow({
+                returnTo: "/account",
+              })
+            }))
+          } else {
+            return Promise.resolve({data});
+          }
+        }).then(({data}) => {
+          setFlow(data);
         })
         .catch(handleFlowError(router, "account", setFlow))
     }
