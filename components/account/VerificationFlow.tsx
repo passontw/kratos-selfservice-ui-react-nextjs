@@ -24,10 +24,6 @@ export type Values = Partial<
   | UpdateVerificationFlowBody
 >
 
-// interface ValuesCustomProps extends Values {
-//   noEmail: boolean
-// }
-
 export type Methods =
   | "oidc"
   | "password"
@@ -40,11 +36,11 @@ export type Methods =
 export type Props<T> = {
   // The flow
   flow?:
-    | LoginFlow
-    | RegistrationFlow
-    | SettingsFlow
-    | VerificationFlow
-    | RecoveryFlow
+  | LoginFlow
+  | RegistrationFlow
+  | SettingsFlow
+  | VerificationFlow
+  | RecoveryFlow
   // Only show certain nodes. We will always render the default nodes for CSRF tokens.
   only?: Methods
   // Is triggered on submission
@@ -79,42 +75,42 @@ export default class Flow<T extends Values> extends Component<
     this.initializeValues(this.filterNodes())
   }
 
-  componentDidUpdate(prevProps: Props<T>) {
-    if (prevProps.code !== this.props.code) {
-      this.setCodeValue(this.props.code)
-    }
-  }
+  // componentDidUpdate(prevProps: Props<T>) {
+  //   if (prevProps.code !== this.props.code) {
+  //     this.setCodeValue(this.props.code)
+  //   }
+  // }
 
-  setCodeValue = async (code: string | undefined) => {
-    const nodeId = "code"
-    const node = this.getNodeById(nodeId)
+  // setCodeValue = async (code: string | undefined) => {
+  //   const nodeId = "code"
+  //   const node = this.getNodeById(nodeId)
 
-    if (node) {
-      await this.handleSetValue(node, code)
-    }
-  }
+  //   if (node) {
+  //     await this.handleSetValue(node, code)
+  //   }
+  // }
 
-  getNodeById = (nodeId: keyof Values): UiNode | undefined => {
-    const nodes = this.filterNodes()
-    return nodes.find((node) => getNodeId(node) === nodeId)
-  }
+  // getNodeById = (nodeId: keyof Values): UiNode | undefined => {
+  //   const nodes = this.filterNodes()
+  //   return nodes.find((node) => getNodeId(node) === nodeId)
+  // }
 
-  handleSetValue = async (node: UiNode, value: any) => {
-    const id = getNodeId(node) as keyof Values
+  // handleSetValue = async (node: UiNode, value: any) => {
+  //   const id = getNodeId(node) as keyof Values
 
-    return new Promise((resolve) => {
-      this.setState(
-        (state) => ({
-          ...state,
-          values: {
-            ...state.values,
-            [id]: value,
-          },
-        }),
-        resolve,
-      )
-    })
-  }
+  //   return new Promise((resolve) => {
+  //     this.setState(
+  //       (state) => ({
+  //         ...state,
+  //         values: {
+  //           ...state.values,
+  //           [id]: value,
+  //         },
+  //       }),
+  //       resolve,
+  //     )
+  //   })
+  // }
 
   initializeValues = (nodes: Array<UiNode> = []) => {
     // Compute the values
@@ -229,35 +225,36 @@ export default class Flow<T extends Values> extends Component<
       >
         {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
         {nodes.map((node, k) => {
-          // console.log(node)
           const id = getNodeId(node) as keyof Values
-          // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
-          // if (node.meta.label?.text === "E-Mail") return
-
+          const containerStyle = node.attributes.name === "email"
+            ? { display: "none" }
+            : {};
           return (
-            <Node
-              key={`${id}-${k}`}
-              disabled={isLoading}
-              node={node}
-              value={getNodeId(node) === "code" ? this.props.code : values[id]}
-              dispatchSubmit={this.handleSubmit}
-              setValue={(value) =>
-                new Promise((resolve) => {
-                  this.setState(
-                    (state) => ({
-                      ...state,
-                      values: {
-                        ...state.values,
-                        [getNodeId(node)]:
-                          getNodeId(node) === "code" ? this.props.code : value,
-                        // [getNodeId(node)]: value,
-                      },
-                    }),
-                    resolve,
-                  )
-                })
-              }
-            />
+            <span style={containerStyle} key={`${id}-${k}`}>
+              <Node
+                disabled={isLoading}
+                node={node}
+                value={values[id]}
+                // value={getNodeId(node) === "code" ? this.props.code : values[id]}
+                dispatchSubmit={this.handleSubmit}
+                setValue={(value) =>
+                  new Promise((resolve) => {
+                    this.setState(
+                      (state) => ({
+                        ...state,
+                        values: {
+                          ...state.values,
+                          // [getNodeId(node)]:
+                          //   getNodeId(node) === "code" ? this.props.code : value,
+                          [getNodeId(node)]: value,
+                        },
+                      }),
+                      resolve,
+                    )
+                  })
+                }
+              />
+            </span>
           )
         })}
       </form>

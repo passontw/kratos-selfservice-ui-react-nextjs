@@ -4,11 +4,7 @@ import styled from "styled-components"
 
 import { setSixDigitCode } from "../../state/store/slice/layoutSlice"
 
-interface InputProps {
-  error?: boolean
-}
-
-const Input = styled.input<InputProps>`
+const Input = styled.input`
   width: 48px;
   height: 54px;
   margin: 9px;
@@ -16,7 +12,7 @@ const Input = styled.input<InputProps>`
   background-color: #37374f;
   color: #fff;
   text-align: center;
-  border: 1px solid ${(props) => (props.error ? "red" : "#37374f")};
+  border: none;
   font-size: 20px;
   outline: none;
 `
@@ -43,21 +39,13 @@ const Title = styled.h1`
 const VerificationInput = () => {
   const dispatch = useDispatch()
   const [inputValues, setInputValues] = useState(Array(6).fill(""))
-  const [isTouched, setIsTouched] = useState(false)
-  const isEmpty = inputValues.every((item) => item === "")
-  const inputRefs = Array(6)
-    .fill()
-    .map(() => useRef())
+  const inputRefs = [useRef(), useRef(), useRef(), useRef(), useRef(), useRef()]
 
   useEffect(() => {
     inputRefs[0].current.focus()
   }, [])
 
   const handleChange = (index, event) => {
-    // if inputs are yet untouched set them to touched as inputs are being typed in
-    if (!isTouched) {
-      setIsTouched(true)
-    }
     if (event.target.value !== "" && !Number.isInteger(+event.target.value)) {
       return
     }
@@ -102,7 +90,6 @@ const VerificationInput = () => {
             value={value}
             onChange={(event) => handleChange(i, event)}
             onKeyDown={(event) => handleKeyDown(i, event)}
-            error={isEmpty && isTouched}
           />
         ))}
       </InputsContainer>
