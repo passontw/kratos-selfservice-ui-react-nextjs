@@ -20,6 +20,32 @@ import Text from "../Text"
 import DeleteAccConfirm from "./DeleteAccConfirm"
 import Flow from "./VerificationFlow"
 
+const dayjs = require("dayjs")
+const utc = require("dayjs/plugin/utc")
+const timezone = require("dayjs/plugin/timezone") // dependent on utc plugin
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
+
+const validateDiffMinute = (setFlow, flow, diffMinute) => {
+  if (isEmpty(flow)) return false;
+  if (diffMinute < 5) return true;
+
+  const nextFlow = cloneDeep(flow);
+  const identifierIndex = nextFlow.ui.nodes.findIndex(
+    (node) => node.attributes.name === "code",
+  )
+  if (identifierIndex === -1) return true;
+  
+  nextFlow.ui.nodes[identifierIndex].messages = [{
+    id: 400009,
+    text: 'Verification code is no longer valid',
+    type: 'error'
+  }]
+  setFlow(nextFlow)
+  return false;
+}
+
 const Verification: NextPage = (props) => {
   const { show, close } = props
   const [initFlow, setInitFlow] = useState(false)
@@ -149,8 +175,9 @@ const Verification: NextPage = (props) => {
   const onSubmit = async (values: UpdateVerificationFlowBody) => {
     const { user } = router.query
     const { code = "" } = values
+    const nextFlow = cloneDeep(flow)
+
     if (isEmpty(values.email) && code.length !== 6) {
-      const nextFlow = cloneDeep(flow)
       const codeNodes = nextFlow.ui.nodes || []
       const codeIndex = codeNodes.findIndex(
         (node) => node?.attributes?.name === "code",
@@ -164,6 +191,36 @@ const Verification: NextPage = (props) => {
       ]
       setFlow(nextFlow)
       return
+    }
+
+    const createdTimeDayObject = dayjs(nextFlow.issued_at)
+    const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
+    const isValidate = validateDiffMinute(setFlow, nextFlow, diffMinute);
+    if (isValidate) {
+      const nextFlow = cloneDeep(flow);
+      const identifierIndex = nextFlow.ui.nodes.findIndex(
+        (node) => node.attributes.name === "code",
+      )
+      if (identifierIndex !== -1) {
+        nextFlow.ui.messages = [];
+        nextFlow.ui.nodes[identifierIndex].messages = [{
+          id: 400002,
+          text: "Verification code is no longer valid, please try again.",
+          type: "error",
+        }]
+        setFlow(nextFlow)
+        return;
+      }
+    } else {
+      const nextFlow = cloneDeep(flow);
+      const identifierIndex = nextFlow.ui.nodes.findIndex(
+        (node) => node.attributes.name === "code",
+      )
+      if (identifierIndex !== -1) {
+        nextFlow.ui.messages = [];
+        nextFlow.ui.nodes[identifierIndex].messages = []
+        setFlow(nextFlow)
+      }
     }
 
     await router

@@ -167,7 +167,7 @@ const Verification: NextPage = () => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   const validateDiffMinute = (setFlow, flow, diffMinute) => {
-    if (isEmpty(flow)) return true;
+    if (isEmpty(flow)) return false;
     if (diffMinute < 5) return true;
 
     const nextFlow = cloneDeep(flow);
