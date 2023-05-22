@@ -196,7 +196,7 @@ const Verification: NextPage = (props) => {
     const createdTimeDayObject = dayjs(nextFlow.issued_at)
     const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
     const isValidate = validateDiffMinute(setFlow, nextFlow, diffMinute);
-    if (isValidate) {
+    if (!isValidate) {
       const nextFlow = cloneDeep(flow);
       const identifierIndex = nextFlow.ui.nodes.findIndex(
         (node) => node.attributes.name === "code",
