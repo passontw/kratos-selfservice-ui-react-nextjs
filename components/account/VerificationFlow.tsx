@@ -226,8 +226,8 @@ export default class Flow<T extends Values> extends Component<
         {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
         {nodes.map((node, k) => {
           const id = getNodeId(node) as keyof Values
-          const containerStyle = node.attributes.name === "email"
-            ? { display: "none" }
+          const containerStyle = (node.attributes.name === "email" && !/Resend/.test(node.meta?.label?.text))
+          ? { display: "none" }
             : {};
           return (
             <span style={containerStyle} key={`${id}-${k}`}>
