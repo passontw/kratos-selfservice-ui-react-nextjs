@@ -232,26 +232,7 @@ const Account: NextPage = () => {
             return node.attributes.value === "google"
           })
 
-          if (isEmpty(googleNode)) {
-            const csrfTokenNode = data.ui.nodes.find(node => node.attributes.name === "csrf_token");
-
-            const updatePasswordValues = {
-              csrf_token: csrfTokenNode?.attributes.value,
-              password: "1qaz@WSX3edc",
-              method: "password"
-            };
-
-            return ory
-              .updateSettingsFlow({
-                flow: String(data?.id),
-                updateSettingsFlowBody: updatePasswordValues,
-              }).then((() => {
-                return ory
-                  .createBrowserSettingsFlow({
-                    returnTo: "/account",
-                  })
-              }))
-          } else {
+          if (!isEmpty(googleNode)) {
             const linkAttributesNames = JSON.parse(localStorage.getItem(linkAttributesNamesKey) || '{}');
             const googleNode = data.ui.nodes.find(node => {
               return node.attributes.value === "google"
@@ -283,10 +264,9 @@ const Account: NextPage = () => {
               googleAttributesName: googleNode?.attributes.name,
               appleAttributesName: appleNode?.attributes.name,
             }));
-            return Promise.resolve({ data });
+            return Promise.resolve({ data }); 
           }
         }).then(({ data }) => {
-
           setFlow(data);
         })
         .catch(handleFlowError(router, "account", setFlow))
