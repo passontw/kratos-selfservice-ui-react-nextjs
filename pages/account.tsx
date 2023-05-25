@@ -264,8 +264,8 @@ const Account: NextPage = () => {
               googleAttributesName: googleNode?.attributes.name,
               appleAttributesName: appleNode?.attributes.name,
             }));
-            return Promise.resolve({ data }); 
           }
+          return Promise.resolve({ data }); 
         }).then(({ data }) => {
           setFlow(data);
         })
