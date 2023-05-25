@@ -134,17 +134,21 @@ const Registration: NextPage = () => {
                 // If the previous handler did not catch the error it's most likely a form validation error
                 if (err.response?.status === 400) {
                   // Yup, it is!
-                  const nextFlow = err.response?.data;
-                  const [message = {text: ""}] = nextFlow.ui.messages;
-                  if (message.text.includes("An account with the same identifier")) {
+                  const nextFlow = err.response?.data
+                  const [message = { text: "" }] = nextFlow.ui.messages
+                  if (
+                    message.text.includes("An account with the same identifier")
+                  ) {
                     const identifierIndex = nextFlow.ui.nodes.findIndex(
                       (node) => node.attributes.name === "traits.email",
                     )
-                    nextFlow.ui.nodes[identifierIndex].messages = [{
-                      id: 400007,
-                      text: "",
-                      type: "error"
-                    }];
+                    nextFlow.ui.nodes[identifierIndex].messages = [
+                      {
+                        id: 400007,
+                        text: "",
+                        type: "error",
+                      },
+                    ]
                   }
                   setFlow(err.response?.data)
                   return
@@ -158,7 +162,7 @@ const Registration: NextPage = () => {
     } catch (error) {
       const errors = handleYupErrors(error)
       const nextFlow = cloneDeep(flow)
-      nextFlow.ui.messages = [];
+      nextFlow.ui.messages = []
 
       if (errors['["traits.name"]']) {
         const message = {
@@ -193,7 +197,7 @@ const Registration: NextPage = () => {
 
       const emailKey = errors['["traits.email"]']
         ? '["traits.email"]'
-        : '[traits.email]';
+        : "[traits.email]"
       if (errors[emailKey]) {
         const message = {
           id: 4000002,
@@ -208,7 +212,7 @@ const Registration: NextPage = () => {
         const errorMessage = nextFlow.ui.nodes[identifierIndex].messages.find(
           (msg) => msg.id === message.id,
         )
-        
+
         nextFlow.ui.nodes[identifierIndex].messages = [message]
       } else {
         const identifierIndex = nextFlow.ui.nodes.findIndex(
@@ -275,7 +279,7 @@ const Registration: NextPage = () => {
             flexWrap="wrap"
             whiteSpace="nowrap"
           >
-            <Box>By signing up for Cooler Master ID,</Box>
+            <Box>By signing up for Master ID,</Box>
             <Box display="flex" mt="2px" alignItems="center">
               you agree to our{" "}
               <Link className="link" href="/">
@@ -306,7 +310,7 @@ const Registration: NextPage = () => {
             whiteSpace="nowrap"
             display={{ xs: "none", md: "flex" }}
           >
-            <Box>By signing up for Cooler Master ID,</Box>
+            <Box>By signing up for Master ID,</Box>
             <Box display="flex" mt="2px" alignItems="center">
               you agree to our{" "}
               <Link className="link" href="/">

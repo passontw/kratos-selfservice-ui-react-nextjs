@@ -237,7 +237,8 @@ const Login: NextPage = () => {
               })
           })
           .then(([loginResult, myResult]) => {
-            if (myResult.identity.traits.name === "nickpeng") {
+            console.log("ttt", myResult.identity.traits)
+            if (myResult.identity.traits.email === "cmctc.sw@gmail.com") {
               router.push("/launch")
               return
             }

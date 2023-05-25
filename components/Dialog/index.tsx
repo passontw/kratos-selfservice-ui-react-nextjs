@@ -143,7 +143,7 @@ const Dialog: React.FC<DialogProps> = ({
           <div>
             {title.includes("2-Step")
               ? `Turn ${mfaState ? "on" : "off"} 2-Step Verification`
-              : title.includes("Cooler Master ID")
+              : title.includes("Master ID")
               ? mobileHeader(title)
               : title}
           </div>

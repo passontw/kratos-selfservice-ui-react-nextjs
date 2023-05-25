@@ -64,7 +64,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
   const handleModal = () => {
     dispatch(
       setDialog({
-        title: `Cooler Master ID`,
+        title: `Master ID`,
         titleHeight: "MENU",
         width: "100vw",
         height: "100%",
@@ -82,7 +82,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
         <StyledMenuWrapper>
           <StyledHeader>
             <Cmid />
-            <div>Cooler Master ID</div>
+            <div>Master ID</div>
           </StyledHeader>
           <AccountMenu />
         </StyledMenuWrapper>
@@ -91,7 +91,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
           <StyledMobieHeaderWrapper>
             <StyledHeader>
               <Cmid />
-              <div>Cooler Master ID</div>
+              <div>Master ID</div>
             </StyledHeader>
             <Box
               sx={{

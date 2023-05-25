@@ -12,7 +12,7 @@ interface LaunchProps {}
 const Launch: React.FC<LaunchProps> = () => {
   const router = useRouter()
   useEffect(() => {
-    router.push("dana://")
+    router.push("dana://token=login")
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
