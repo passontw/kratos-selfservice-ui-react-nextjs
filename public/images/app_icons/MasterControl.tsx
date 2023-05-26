@@ -14,7 +14,7 @@ const MasterControl: React.FC<MasterControlProps> = ({
   return (
     <svg
       width={width}
-      height={height}
+       height={height}
       viewBox="0 0 80 80"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

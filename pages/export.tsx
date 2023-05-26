@@ -10,7 +10,7 @@ import AccountLayout from "../components/Layout/AccountLayout"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import Cmodx from "../public/images/app_icons/Cmodx"
-import MasterControl from "../public/images/app_icons/MasterControl"
+import MasterControlNew from "../public/images/app_icons/MasterControlNew"
 import Stormplay from "../public/images/app_icons/Stormplay"
 import { setActiveNav } from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
@@ -139,7 +139,7 @@ const Export: NextPage = () => {
           marginBottom="36px"
         >
           <Box display="flex" alignItems="center">
-            <MasterControl />
+            <MasterControlNew />
             <span style={{ paddingLeft: "32px" }}>Master Control</span>
           </Box>
           <Box
