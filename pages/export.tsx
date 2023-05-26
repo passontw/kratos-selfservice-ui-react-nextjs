@@ -140,7 +140,7 @@ const Export: NextPage = () => {
         >
           <Box display="flex" alignItems="center">
             <MasterControlNew />
-            <span style={{ paddingLeft: "32px" }}>Master Control</span>
+            <span style={{ paddingLeft: "32px" }}>MasterControl</span>
           </Box>
           <Box
             backgroundColor="#A62BC3"

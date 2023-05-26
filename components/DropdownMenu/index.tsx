@@ -45,7 +45,12 @@ function DropdownComponent() {
         onClick={() => setIsOpen(!isOpen)}
       >
         <Box>
-          <DefaultAvatar />
+          {/* <DefaultAvatar /> */}
+          <img src={"/images/profile-demo.jpg"} style={{
+                height: "36px",
+                width: "36px",
+                borderRadius: "50%",
+              }}/>
         </Box>
         <Box sx={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}>
           <Dropdown isOpen={isOpen} />

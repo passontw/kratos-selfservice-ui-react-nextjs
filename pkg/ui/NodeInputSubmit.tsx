@@ -87,10 +87,10 @@ export function NodeInputSubmit<T>({
     "Resend code",
     "Sign in",
     "Sign up",
-    "Link apple",
-    "Link google",
-    "Unlink google",
-    "Unlink apple",
+    // "Link apple",
+    // "Link google",
+    // "Unlink google",
+    // "Unlink apple",
   ].includes(getNodeLabel(node))
 
   if (activeNav === Navs.ACCOUNT && getNodeLabel(node) === "Save") {

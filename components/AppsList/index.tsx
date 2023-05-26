@@ -36,7 +36,7 @@ const AppsList: React.FC<AppsListProps> = () => {
               One account is all you need. Start your virtual adventure.
             </Box>
             <StyledTagPcWrapper>
-              <AppItem appIcon="MasterControl" appName="Master Control" />
+              <AppItem appIcon="MasterControl" appName="MasterControl" />
               <AppItem appIcon="Stormplay" appName="Stormplay" />
               <AppItem appIcon="Cmodx" appName="CMODX" />
             </StyledTagPcWrapper>
