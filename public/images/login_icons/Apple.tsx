@@ -1,13 +1,28 @@
+import { useState, useEffect } from 'react';
+
 interface AppleProps {
   color?: string
 }
 
 const Apple: React.FC<AppleProps> = ({ color = "#FFF" }) => {
+
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== 'undefined' ? window.innerWidth : 1200
+  );
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+  
   return (
     <>
       <svg
-        width="44"
-        height="44"
+        width={windowWidth <= 600 ? "24" : "44"}
+        height={windowWidth <= 600 ? "24" : "44"}
         viewBox="0 0 44 44"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

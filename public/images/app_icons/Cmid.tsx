@@ -1,12 +1,27 @@
+import { useState, useEffect } from 'react';
+
 interface CmidProps {
   color?: string
 }
 
 const Cmid: React.FC<CmidProps> = ({ color = "#FFF" }) => {
+
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== 'undefined' ? window.innerWidth : 1200
+  );
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <svg
-      width="61"
-      height="52"
+      width={windowWidth <= 600 ? "30" : "61"}
+      height={windowWidth <= 600 ? "26" : "52"}
       viewBox="0 0 61 52"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
