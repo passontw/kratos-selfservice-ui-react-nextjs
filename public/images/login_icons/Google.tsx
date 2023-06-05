@@ -1,10 +1,15 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { selectActiveNav } from '../../../state/store/slice/layoutSlice';
+import { Navs } from '../../../types/enum';
 
 interface GoogleProps {
   color?: string
 }
 
 const Google: React.FC<GoogleProps> = ({ color = "#FFF" }) => {
+  const currentNav = useSelector(selectActiveNav);
+  const fixedSize = currentNav === Navs.ACCOUNT
 
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== 'undefined' ? window.innerWidth : 1200
@@ -21,8 +26,8 @@ const Google: React.FC<GoogleProps> = ({ color = "#FFF" }) => {
   return (
     <>
       <svg
-        width={windowWidth <= 600 ? "24" : "44"}
-        height={windowWidth <= 600 ? "24" : "44"}
+        width={fixedSize && windowWidth <= 600 ? "24" : "44"}
+        height={fixedSize && windowWidth <= 600 ? "24" : "44"}
         viewBox="0 0 44 44"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

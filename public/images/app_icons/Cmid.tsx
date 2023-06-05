@@ -1,10 +1,16 @@
 import { useState, useEffect } from 'react';
+import { Navs } from '../../../types/enum';
+import { useSelector } from 'react-redux';
+import { selectActiveNav } from '../../../state/store/slice/layoutSlice';
 
 interface CmidProps {
   color?: string
 }
 
 const Cmid: React.FC<CmidProps> = ({ color = "#FFF" }) => {
+  const currentNav = useSelector(selectActiveNav);
+  const fixedSize = currentNav === Navs.LOGIN || currentNav === Navs.REGISTER ||
+    currentNav === Navs.RECOVERY || currentNav === Navs.SETTINGS || currentNav === Navs.VERIFICATION
 
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== 'undefined' ? window.innerWidth : 1200
@@ -20,8 +26,8 @@ const Cmid: React.FC<CmidProps> = ({ color = "#FFF" }) => {
 
   return (
     <svg
-      width={windowWidth <= 600 ? "30" : "61"}
-      height={windowWidth <= 600 ? "26" : "52"}
+      width={!fixedSize && windowWidth <= 600 ? "30" : "61"}
+      height={!fixedSize && windowWidth <= 600 ? "26" : "52"}
       viewBox="0 0 61 52"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
