@@ -283,7 +283,7 @@ const Registration: NextPage = () => {
             <Box display="flex" mt="2px" alignItems="center">
               you agree to our{" "}
               <Link className="link" href="/">
-                Terms of Service
+                Terms of Use
               </Link>{" "}
               &{" "}
               <Link className="link" href="/">
@@ -314,7 +314,7 @@ const Registration: NextPage = () => {
             <Box display="flex" mt="2px" alignItems="center">
               you agree to our{" "}
               <Link className="link" href="/">
-                Terms of Service
+                Terms of Use
               </Link>{" "}
               &{" "}
               <Link className="link" href="/">
