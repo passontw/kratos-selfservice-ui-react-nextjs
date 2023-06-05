@@ -132,7 +132,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
       {verifyCodeConditions && (
         <CodeInput show={attributes.name} validationMsgs={validationMsgs} />
       )}
-      {/* {verifyCodeConditions2 && <VerificationInput />} */}
+      {verifyCodeConditions2 && <VerificationInput />}
       <StyledDefaultInput isInputLabel={isInputLabel}>
         {isInputLabel && (
           <StyledDefaultLabel isError={isError}>{label}</StyledDefaultLabel>
@@ -141,9 +141,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           className="my-text-input"
           style={{
             display:
-              (label === "Verify code" &&
-                // nav !== Navs.RECOVERY &&
-                nav !== Navs.ACCOUNT) ||
+              (label === "Verify code") ||
               attributes.name === "traits.gender"
                 ? "none"
                 : "unset",

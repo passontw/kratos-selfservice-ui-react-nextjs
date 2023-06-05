@@ -75,42 +75,42 @@ export default class Flow<T extends Values> extends Component<
     this.initializeValues(this.filterNodes())
   }
 
-  // componentDidUpdate(prevProps: Props<T>) {
-  //   if (prevProps.code !== this.props.code) {
-  //     this.setCodeValue(this.props.code)
-  //   }
-  // }
+  componentDidUpdate(prevProps: Props<T>) {
+    if (prevProps.code !== this.props.code) {
+      this.setCodeValue(this.props.code)
+    }
+  }
 
-  // setCodeValue = async (code: string | undefined) => {
-  //   const nodeId = "code"
-  //   const node = this.getNodeById(nodeId)
+  setCodeValue = async (code: string | undefined) => {
+    const nodeId = "code"
+    const node = this.getNodeById(nodeId)
 
-  //   if (node) {
-  //     await this.handleSetValue(node, code)
-  //   }
-  // }
+    if (node) {
+      await this.handleSetValue(node, code)
+    }
+  }
 
-  // getNodeById = (nodeId: keyof Values): UiNode | undefined => {
-  //   const nodes = this.filterNodes()
-  //   return nodes.find((node) => getNodeId(node) === nodeId)
-  // }
+  getNodeById = (nodeId: keyof Values): UiNode | undefined => {
+    const nodes = this.filterNodes()
+    return nodes.find((node) => getNodeId(node) === nodeId)
+  }
 
-  // handleSetValue = async (node: UiNode, value: any) => {
-  //   const id = getNodeId(node) as keyof Values
+  handleSetValue = async (node: UiNode, value: any) => {
+    const id = getNodeId(node) as keyof Values
 
-  //   return new Promise((resolve) => {
-  //     this.setState(
-  //       (state) => ({
-  //         ...state,
-  //         values: {
-  //           ...state.values,
-  //           [id]: value,
-  //         },
-  //       }),
-  //       resolve,
-  //     )
-  //   })
-  // }
+    return new Promise((resolve) => {
+      this.setState(
+        (state) => ({
+          ...state,
+          values: {
+            ...state.values,
+            [id]: value,
+          },
+        }),
+        resolve,
+      )
+    })
+  }
 
   initializeValues = (nodes: Array<UiNode> = []) => {
     // Compute the values
@@ -234,8 +234,8 @@ export default class Flow<T extends Values> extends Component<
               <Node
                 disabled={isLoading}
                 node={node}
-                value={values[id]}
-                // value={getNodeId(node) === "code" ? this.props.code : values[id]}
+                // value={values[id]}
+                value={getNodeId(node) === "code" ? this.props.code : values[id]}
                 dispatchSubmit={this.handleSubmit}
                 setValue={(value) =>
                   new Promise((resolve) => {
@@ -244,9 +244,9 @@ export default class Flow<T extends Values> extends Component<
                         ...state,
                         values: {
                           ...state.values,
-                          // [getNodeId(node)]:
-                          //   getNodeId(node) === "code" ? this.props.code : value,
-                          [getNodeId(node)]: value,
+                          [getNodeId(node)]:
+                            getNodeId(node) === "code" ? this.props.code : value,
+                          // [getNodeId(node)]: value,
                         },
                       }),
                       resolve,
