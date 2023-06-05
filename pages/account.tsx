@@ -133,17 +133,21 @@ const Account: NextPage = () => {
               if (!isEmpty(linkAttributesNames)) {
                 if (linkAttributesNames.googleAttributesName !== googleAttributesName) {
                   if (googleAttributesName === "unlink") {
-                    alert("google linked");
+                    // alert("google linked");
+                    showToast("google linked")
                   } else {
-                    alert("google unlinked");
+                    // alert("google unlinked");
+                    showToast("google unlinked")
                   }
                 }
 
                 if (linkAttributesNames.appleAttributesName !== appleAttributesName) {
                   if (appleAttributesName === "unlink") {
-                    alert("apple linked");
+                    // alert("apple linked");
+                    showToast("apple linked")
                   } else {
-                    alert("apple unlinked");
+                    // alert("apple unlinked");
+                    showToast("apple unlinked")
                   }
                 }
               }
