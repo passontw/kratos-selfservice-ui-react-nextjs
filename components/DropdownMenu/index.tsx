@@ -89,6 +89,10 @@ function DropdownComponent() {
             color="#FFF"
             fontFamily="open sans"
             fontWeight="600"
+            onClick={() => {
+              onLogout();
+              window.location.replace("/login");
+            }}
           >
             Log Out
           </Box>
