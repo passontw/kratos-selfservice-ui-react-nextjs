@@ -63,7 +63,8 @@ export function NodeInputSubmit<T>({
         : isDialogForgotPswd
         ? "30px"
         : "unset",
-    marginTop: isDialogForgotPswd ? "30px" : isSignINOUT ? "36px" : "unset",
+    marginTop: isDialogForgotPswd ? "20px" : isSignINOUT ? "36px" : "unset",
+    zIndex: 1,
   }
   const hiddenStyle = {
     display: "none",
@@ -87,10 +88,10 @@ export function NodeInputSubmit<T>({
     "Resend code",
     "Sign in",
     "Sign up",
-    "Link apple",
-    "Link google",
-    "Unlink google",
-    "Unlink apple",
+    // "Link apple",
+    // "Link google",
+    // "Unlink google",
+    // "Unlink apple",
   ].includes(getNodeLabel(node))
 
   if (activeNav === Navs.ACCOUNT && getNodeLabel(node) === "Save") {
@@ -98,7 +99,9 @@ export function NodeInputSubmit<T>({
   }
 
   const buttonText =
-    (activeNav === Navs.VERIFICATION || activeNav === Navs.RECOVERY) &&
+  (activeNav === Navs.RECOVERY) && activeStage === Stage.FORGOT_PASSWORD
+      ? "Submit"
+      : (activeNav === Navs.VERIFICATION || activeNav === Navs.RECOVERY) &&
     getNodeLabel(node) === "Submit"
       ? "Verify"
       : getNodeLabel(node) === "Resend code"
@@ -182,19 +185,28 @@ export function NodeInputSubmit<T>({
               bgcolor="#272735"
               borderRadius="12px"
               display="flex"
-              p="24px"
+              p={{
+                sm: "24px",
+                xs: "12px 20px",
+              }}
               alignItems="center"
               justifyContent="space-between"
             >
-              <Box display="flex" gap="20px" alignItems="center">
-                <Box height="40px">
+              <Box display="flex" gap={{
+                    sm: "20px",
+                    xs: "16px",
+                  }} alignItems="center">
+                <Box height="40px" display="flex" alignItems="center">
                   {getNodeLabel(node).includes("google") ? (
                     <Google />
                   ) : getNodeLabel(node).includes("apple") ? (
                     <Apple />
                   ) : null}
                 </Box>
-                <Box fontFamily="open sans" fontSize="20px" color="#FFF">
+                <Box fontFamily="open sans" fontSize={{
+                    sm: "20px",
+                    xs: "16px",
+                  }} color="#FFF">
                   {getNodeLabel(node).split(" ")[1].charAt(0).toUpperCase() +
                     getNodeLabel(node).split(" ")[1].slice(1)}
                 </Box>

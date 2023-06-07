@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box"
 import { UiText } from "@ory/client"
 import { Alert, AlertContent } from "@ory/themes"
 
@@ -26,17 +27,17 @@ export const Messages = ({ messages }: MessagesProps) => {
   }
 
   return (
-    <div>
+    <Box color="#F24867" fontFamily="open sans" fontSize="13px">
       {messages.map((message) => {
         if (message.text.includes("An email containing")) {
           return
         }
         if (message.text.includes("The verification code is invalid")) {
-          return "Wrong verification code"
+          return "Verification code is incorrect, please check and try again."
         }
-        
+
         return <Message key={message.id} message={message} />
       })}
-    </div>
+    </Box>
   )
 }

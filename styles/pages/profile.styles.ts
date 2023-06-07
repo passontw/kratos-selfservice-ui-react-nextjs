@@ -73,7 +73,7 @@ const StyledProfileImageWrap = styled("div")(({ theme }) => ({
   width: "168px",
   [theme.breakpoints.down("sm")]: {
     margin: "auto",
-    width: "100px",
+    // width: "100px",
   },
 }))
 

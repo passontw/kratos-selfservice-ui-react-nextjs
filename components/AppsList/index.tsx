@@ -30,13 +30,13 @@ const AppsList: React.FC<AppsListProps> = () => {
           </div>
           <StyledTagPc>
             <Box fontSize="30px" color="#fff">
-              Access Anywhere With Cooler Master ID
+              Access Anywhere With Master ID
             </Box>
             <Box fontSize="20px" color="#C0C0C0" mt="6px">
               One account is all you need. Start your virtual adventure.
             </Box>
             <StyledTagPcWrapper>
-              <AppItem appIcon="MasterControl" appName="Master Control" />
+              <AppItem appIcon="MasterControl" appName="MasterControl" />
               <AppItem appIcon="Stormplay" appName="Stormplay" />
               <AppItem appIcon="Cmodx" appName="CMODX" />
             </StyledTagPcWrapper>

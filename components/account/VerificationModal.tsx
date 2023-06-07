@@ -8,14 +8,43 @@ import Head from "next/head"
 import { useRouter } from "next/router"
 import queryString from "query-string"
 import { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 import ory from "../../pkg/sdk"
-import { setDialog } from "../../state/store/slice/layoutSlice"
+import {
+  selectSixDigitCode,
+  setDialog,
+} from "../../state/store/slice/layoutSlice"
 import Text from "../Text"
 
 import DeleteAccConfirm from "./DeleteAccConfirm"
 import Flow from "./VerificationFlow"
+
+const dayjs = require("dayjs")
+const utc = require("dayjs/plugin/utc")
+const timezone = require("dayjs/plugin/timezone") // dependent on utc plugin
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
+
+const validateDiffMinute = (setFlow, flow, diffMinute) => {
+  if (isEmpty(flow)) return false;
+  if (diffMinute < 5) return true;
+
+  const nextFlow = cloneDeep(flow);
+  const identifierIndex = nextFlow.ui.nodes.findIndex(
+    (node) => node.attributes.name === "code",
+  )
+  if (identifierIndex === -1) return true;
+  
+  nextFlow.ui.nodes[identifierIndex].messages = [{
+    id: 400009,
+    text: 'Verification code is no longer valid',
+    type: 'error'
+  }]
+  setFlow(nextFlow)
+  return false;
+}
 
 const Verification: NextPage = (props) => {
   const { show, close } = props
@@ -25,6 +54,7 @@ const Verification: NextPage = (props) => {
   // Get ?flow=... from the URL
   const router = useRouter()
   const dispatch = useDispatch()
+  const sixDigitCode = useSelector(selectSixDigitCode)
   const email = router.query.user as string
   const { flow: flowId, return_to: returnTo, user } = router.query
 
@@ -35,7 +65,7 @@ const Verification: NextPage = (props) => {
         title: "Delete Account",
         titleHeight: "56px",
         width: 480,
-        height: 238,
+        // height: 238,
         center: true,
         children: <DeleteAccConfirm confirmDelete={props.deleteAccount} />,
       }),
@@ -145,8 +175,9 @@ const Verification: NextPage = (props) => {
   const onSubmit = async (values: UpdateVerificationFlowBody) => {
     const { user } = router.query
     const { code = "" } = values
-    if (code.length !== 6) {
-      const nextFlow = cloneDeep(flow)
+    const nextFlow = cloneDeep(flow)
+
+    if (isEmpty(values.email) && code.length !== 6) {
       const codeNodes = nextFlow.ui.nodes || []
       const codeIndex = codeNodes.findIndex(
         (node) => node?.attributes?.name === "code",
@@ -155,11 +186,41 @@ const Verification: NextPage = (props) => {
         {
           id: 4000002,
           type: "error",
-          text: "Required",
+          text: "This field is required, please fill it out.",
         },
       ]
       setFlow(nextFlow)
       return
+    }
+
+    const createdTimeDayObject = dayjs(nextFlow.issued_at)
+    const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
+    const isValidate = validateDiffMinute(setFlow, nextFlow, diffMinute);
+    if (!isValidate) {
+      const nextFlow = cloneDeep(flow);
+      const identifierIndex = nextFlow.ui.nodes.findIndex(
+        (node) => node.attributes.name === "code",
+      )
+      if (identifierIndex !== -1) {
+        nextFlow.ui.messages = [];
+        nextFlow.ui.nodes[identifierIndex].messages = [{
+          id: 400002,
+          text: "Verification code is no longer valid, please try again.",
+          type: "error",
+        }]
+        setFlow(nextFlow)
+        return;
+      }
+    } else {
+      const nextFlow = cloneDeep(flow);
+      const identifierIndex = nextFlow.ui.nodes.findIndex(
+        (node) => node.attributes.name === "code",
+      )
+      if (identifierIndex !== -1) {
+        nextFlow.ui.messages = [];
+        nextFlow.ui.nodes[identifierIndex].messages = []
+        setFlow(nextFlow)
+      }
     }
 
     await router
@@ -175,9 +236,35 @@ const Verification: NextPage = (props) => {
         updateVerificationFlowBody: { ...values, email: user },
       })
       .then(({ data }) => {
+        const nextFlow = cloneDeep(data);
+        const [message] = nextFlow.ui.messages;
+        if (message.text.includes("The verification code is invalid")) {
+          nextFlow.ui.messages = [];
+          const codeNodes = nextFlow.ui.nodes || []
+          const codeIndex = codeNodes.findIndex(
+            (node) => node?.attributes?.name === "code",
+          )
+          nextFlow.ui.nodes[codeIndex].messages = [
+            {
+              id: 4000005,
+              type: "error",
+              text: "Verification code is incorrect, please check and try again.",
+            },
+          ]
+          setFlow(nextFlow)
+          return
+        } else {
+          const codeNodes = nextFlow.ui.nodes || []
+          const codeIndex = codeNodes.findIndex(
+            (node) => node?.attributes?.name === "code",
+          )
+          if (codeIndex !== -1) {
+            nextFlow.ui.nodes[codeIndex].messages = []
+          }
+        }
         // Form submission was successful, show the message to the user!
-        setFlow(data)
-        if (data.state === "passed_challenge") {
+        setFlow(nextFlow)
+        if (nextFlow.state === "passed_challenge") {
           deleteAccountPromt()
           // props.deleteAccount()
         }
@@ -216,9 +303,22 @@ const Verification: NextPage = (props) => {
         p="0 32px 32px 32px"
         borderRadius="12px"
         position="fixed"
-        top="35vh"
+        top="25vh"
         left="50%"
-        marginLeft="-219px"
+        marginLeft="-250px"
+        zIndex={2}
+        sx={{
+          "@media screen and (max-width: 500px)": {
+            left: "0",
+            marginLeft: "0",
+            width: "87%",
+          },
+          "@media screen and (max-width: 375px)": {
+            left: "0",
+            marginLeft: "0",
+            width: "83%",
+          },
+        }}
       >
         <Head>
           <title>Verify your account - Ory NextJS Integration Example</title>
@@ -244,6 +344,7 @@ const Verification: NextPage = (props) => {
             onSubmit={onSubmit}
             flow={flow}
             hideGlobalMessages={isEmpty(flow?.ui?.messages)}
+            code={sixDigitCode}
           />
         </Box>
       </Box>

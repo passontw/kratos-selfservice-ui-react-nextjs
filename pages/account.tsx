@@ -5,10 +5,9 @@ import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { ReactNode, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-
+import isEmpty from "lodash/isEmpty"
 import AccountLayout from "../components/Layout/AccountLayout"
 import { showToast } from "../components/Toast"
-import DeleteAccConfirm from "../components/account/DeleteAccConfirm"
 import { Flow } from "../components/account/Flow"
 import ProfileFlow from "../components/account/ProfileFlow"
 import VerificationModal from "../components/account/VerificationModal"
@@ -18,13 +17,13 @@ import ory from "../pkg/sdk"
 import Bin from "../public/images/Bin"
 import {
   selectMfaModalOpen,
-  selectMfaState,
   setAccountDeleted,
   setActiveNav,
   setActiveStage,
-  setDialog,
 } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
+
+const linkAttributesNamesKey = "!@#$%^linkAttributesNamesKey";
 
 interface Props {
   flow?: SettingsFlow
@@ -57,9 +56,7 @@ const Account: NextPage = () => {
   const [flow, setFlow] = useState<SettingsFlow>()
   const router = useRouter()
   const mfaModalOpen = useSelector(selectMfaModalOpen)
-  const mfaState = useSelector(selectMfaState)
   const [confirmDelete, setConfirmDelete] = useState(false)
-  const [toastContent, setToastContent] = useState("")
 
   const { flow: flowId, return_to: returnTo } = router.query
 
@@ -87,17 +84,11 @@ const Account: NextPage = () => {
         },
       )
       .then(() => {
-        // alert("delete account success!")
-        // setTimeout(() => {
-        //   showToast("Account deleted")
-        // }, 1500)
         dispatch(setAccountDeleted(true))
         router.push("/login")
-        // window.location.replace("/login")
       })
       .catch((error) => {
         showToast(error.message, false)
-        // alert(error.message)
       })
   }
 
@@ -130,9 +121,41 @@ const Account: NextPage = () => {
               updateSettingsFlowBody: values,
             })
             .then(({ data }) => {
-              if (data.state === "success") {
-                // alert("update success")
+              const googleNode = data.ui.nodes.find(node => {
+                return node.attributes.value === "google"
+              })
+              const appleNode = data.ui.nodes.find(node => {
+                return node.attributes.value === "apple"
+              })
+              const linkAttributesNames = JSON.parse(localStorage.getItem(linkAttributesNamesKey) || '{}');
+              const googleAttributesName = googleNode?.attributes.name;
+              const appleAttributesName = appleNode?.attributes.name;
+              if (!isEmpty(linkAttributesNames)) {
+                if (linkAttributesNames.googleAttributesName !== googleAttributesName) {
+                  if (googleAttributesName === "unlink") {
+                    // alert("google linked");
+                    showToast("google linked")
+                  } else {
+                    // alert("google unlinked");
+                    showToast("google unlinked")
+                  }
+                }
+
+                if (linkAttributesNames.appleAttributesName !== appleAttributesName) {
+                  if (appleAttributesName === "unlink") {
+                    // alert("apple linked");
+                    showToast("apple linked")
+                  } else {
+                    // alert("apple unlinked");
+                    showToast("apple unlinked")
+                  }
+                }
               }
+
+              localStorage.setItem(linkAttributesNamesKey, JSON.stringify({
+                googleAttributesName: googleNode?.attributes.name,
+                appleAttributesName: appleNode?.attributes.name,
+              }));
               // The settings have been saved and the flow was updated. Let's show it to the user!
               setFlow(data)
             })
@@ -159,8 +182,8 @@ const Account: NextPage = () => {
       //   showToast("update success")
       // }
     }
-    // alert("hello")
   }, [flow?.ui.messages])
+
   useEffect(() => {
     dispatch(setActiveNav(Navs.ACCOUNT))
     dispatch(setActiveStage(Stage.NONE))
@@ -171,7 +194,7 @@ const Account: NextPage = () => {
       })
       .catch(() => {
         window.location.replace("/login")
-      })
+      });
   }, [])
 
   useEffect(() => {
@@ -209,8 +232,50 @@ const Account: NextPage = () => {
           returnTo: "/account",
         })
         .then(({ data }) => {
-          console.log("_data", data)
-          setFlow(data)
+          const googleNode = data.ui.nodes.find(node => {
+            return node.attributes.value === "google"
+          })
+
+          if (!isEmpty(googleNode)) {
+            const linkAttributesNames = JSON.parse(localStorage.getItem(linkAttributesNamesKey) || '{}');
+            const googleNode = data.ui.nodes.find(node => {
+              return node.attributes.value === "google"
+            })
+            const appleNode = data.ui.nodes.find(node => {
+              return node.attributes.value === "apple"
+            })
+            const googleAttributesName = googleNode?.attributes.name;
+            const appleAttributesName = appleNode?.attributes.name;
+            if (!isEmpty(linkAttributesNames)) {
+              if (linkAttributesNames.googleAttributesName !== googleAttributesName) {
+                if (googleAttributesName === "unlink") {
+                  // alert("google linked");
+                  showToast("google linked")
+                } else {
+                  // alert("google unlinked");
+                  showToast("google unlinked")
+                }
+              }
+
+              if (linkAttributesNames.appleAttributesName !== appleAttributesName) {
+                if (appleAttributesName === "unlink") {
+                  // alert("apple linked");
+                  showToast("apple linked")
+                } else {
+                  // alert("apple unlinked");
+                  showToast("apple unlinked")
+                }
+              }
+            }
+
+            localStorage.setItem(linkAttributesNamesKey, JSON.stringify({
+              googleAttributesName: googleNode?.attributes.name,
+              appleAttributesName: appleNode?.attributes.name,
+            }));
+          }
+          return Promise.resolve({ data }); 
+        }).then(({ data }) => {
+          setFlow(data);
         })
         .catch(handleFlowError(router, "account", setFlow))
     }
@@ -223,7 +288,10 @@ const Account: NextPage = () => {
           <Box
             color="#717197"
             fontFamily="open sans"
-            fontSize="22px"
+            fontSize={{
+              sm: "22px",
+              xs: "18px",
+            }}
             marginTop={{
               sm: "48px",
               xs: "24px",
@@ -247,11 +315,14 @@ const Account: NextPage = () => {
             onSubmit={onSubmit}
             only="oidc"
             flow={flow}
-            // handleToast={handleToast}
+          // handleToast={handleToast}
           />
         </SettingsCard>
         <SettingsCard only="profile" flow={flow}>
-          <Box color="#717197" fontFamily="open sans" fontSize="22px" mt="36px">
+          <Box color="#717197" fontFamily="open sans" fontSize={{
+              sm: "22px",
+              xs: "18px",
+            }} mt="36px">
             2-step Verification
           </Box>
           <Box
@@ -276,12 +347,15 @@ const Account: NextPage = () => {
           />
         </SettingsCard>
         <SettingsCard only="profile" flow={flow}>
-          <Box color="#717197" fontFamily="open sans" fontSize="22px" mt="36px">
+          <Box color="#717197" fontFamily="open sans" fontSize={{
+              sm: "22px",
+              xs: "18px",
+            }} mt="36px">
             Account Management
           </Box>
           <Box
             mt="12px"
-            height="74px"
+            height={{ xs: "64px", md: "74px" }}
             bgcolor="#272735"
             borderRadius="12px"
             display="flex"
@@ -290,6 +364,7 @@ const Account: NextPage = () => {
           >
             <Box
               display="flex"
+              alignItems="center"
               gap="15px"
               width="fit-content"
               onClick={() => {
@@ -304,7 +379,10 @@ const Account: NextPage = () => {
               <Box pt="1.5px">
                 <Bin />
               </Box>
-              <Box color="#F24867" fontSize="20px" fontFamily="open sans">
+              <Box color="#F24867" fontSize={{
+                  sm: "20px",
+                  xs: "16px",
+                }} fontFamily="open sans">
                 Delete my account
               </Box>
             </Box>

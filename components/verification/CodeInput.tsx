@@ -134,9 +134,13 @@ const CodeInput: React.FC<CodeInput> = ({ show, validationMsgs }) => {
 
   const isEmpty = code.every((item) => item === "")
   const isInValid =
-    validationMsgs &&
-    validationMsgs[0]?.text ===
-      "The recovery code is invalid or has already been used. Please try again."
+  validationMsgs &&
+  validationMsgs[0]?.text ===
+    "The recovery code is invalid or has already been used. Please try again."
+
+  const text = isInValid
+    ? "Verification code is incorrect, please check and try again."
+    : ""
 
   return show !== "email" ? (
     <Container>
@@ -164,7 +168,7 @@ const CodeInput: React.FC<CodeInput> = ({ show, validationMsgs }) => {
             color: "red",
           }}
         >
-          {validationMsgs[0].text}
+          {text}
         </div>
       )}
     </Container>

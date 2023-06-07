@@ -96,7 +96,7 @@ export default class Flow<T extends Values> extends Component<
           title: `2-Step Verification`,
           titleHeight: "58px",
           width: 480,
-          height: 268,
+          // height: 268,
           center: true,
           children: (
             <MfaModal

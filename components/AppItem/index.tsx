@@ -26,13 +26,15 @@ const AppItem: React.FC<AppItemProps> = ({ appIcon, appName, mobile }) => {
           />
         ) : appIcon === "MasterControl" ? (
           <Image
-            src={`/images/master-control-logo${mobile ? "-mobile" : ""}.png`}
+            src={`/images/master-control-logo-new${
+              mobile ? "-mobile" : ""
+            }.png`}
             width="100%"
             height="100%"
           />
         ) : (
           <Image
-            src="/images/master-control-logo.png"
+            src="/images/master-control-logo-new.png"
             width="100%"
             height="100%"
           />

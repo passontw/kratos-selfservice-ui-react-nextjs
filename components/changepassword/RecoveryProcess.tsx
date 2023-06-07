@@ -198,7 +198,9 @@ const RecoveryProcess: NextPage = () => {
         const codeIndex = codeNodes.findIndex(
           (node) => node?.attributes?.name === "code",
         )
-        nextFlow.ui.nodes[codeIndex].messages = []
+        if (codeIndex !== -1) {
+          nextFlow.ui.nodes[codeIndex].messages = []
+        }
       }
       setFlow(nextFlow)
       return Promise.resolve()
@@ -207,15 +209,37 @@ const RecoveryProcess: NextPage = () => {
     if (flow.state === "choose_method") {
     const response = await axios.get(`/api/hydra/validateIdentity?email=${values.email}`)
       if (isEmpty(response.data.data)) {
+        const emailNodes = nextFlow.ui.nodes || []
+        const emailIndex = emailNodes.findIndex(
+          (node) => node?.attributes?.name === "email",
+        )
         nextFlow.ui.messages = [{
           id: 400001,
-          text: 'Email account doesn’t exist',
+          text: 'Email account doesn’t exist. Please try again or sign up',
+          type: 'error'
+        }];
+        nextFlow.ui.nodes[emailIndex].messages = [{
+          id: 400001,
+          text: ' ',
           type: 'error'
         }]
         setFlow(nextFlow)
         return Promise.resolve();
+      } else {
+        const emailNodes = nextFlow.ui.nodes || []
+        const emailIndex = emailNodes.findIndex(
+          (node) => node?.attributes?.name === "email",
+        )
+
+        nextFlow.ui.messages = [];
+        nextFlow.ui.nodes[emailIndex].messages = []
+        setFlow(nextFlow)
       }
     }
+
+    const nextValue = flow.state === "choose_method"
+      ? values
+      : {...values, email: undefined};
 
     return (
       router
@@ -226,7 +250,7 @@ const RecoveryProcess: NextPage = () => {
           ory
             .updateRecoveryFlow({
               flow: String(flow?.id),
-              updateRecoveryFlowBody: values,
+              updateRecoveryFlowBody: nextValue,
             })
             .then(({ data }) => {
               // Form submission was successful, show the message to the user!
@@ -268,7 +292,7 @@ const RecoveryProcess: NextPage = () => {
             {dialogMsg}
           </Box>
           {activeStage === Stage.FORGOT_PASSWORD && (
-            <Box color="#A5A5A9" fontSize="14px" fontFamily="open sans">
+            <Box color="#717197" fontSize="14px" fontFamily="open sans">
               Email *
             </Box>
           )}

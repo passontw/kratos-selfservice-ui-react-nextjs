@@ -167,7 +167,7 @@ const Verification: NextPage = () => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   const validateDiffMinute = (setFlow, flow, diffMinute) => {
-    if (isEmpty(flow)) return true;
+    if (isEmpty(flow)) return false;
     if (diffMinute < 5) return true;
 
     const nextFlow = cloneDeep(flow);
@@ -185,6 +185,10 @@ const Verification: NextPage = () => {
   }
 
   const onSubmit = async (values: UpdateVerificationFlowBody) => {
+    if (flow.state === "sent_email" && isEmpty(values.code) && isEmpty(values.email)) {
+      return null;
+    }
+
     const createdTimeDayObject = dayjs(flow.issued_at)
     const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
     
@@ -202,6 +206,7 @@ const Verification: NextPage = () => {
           type: "error",
         }]
         setFlow(nextFlow)
+        return;
       }
     } else {
       const nextFlow = cloneDeep(flow);
@@ -219,7 +224,10 @@ const Verification: NextPage = () => {
       // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
       // their data when they reload the page.
       .push(
-        `/verification?${queryString.stringify(router.query)}&flow=${flow?.id}`,
+        `/verification?${queryString.stringify({
+          ...router.query,
+          flow: flow?.id,
+        })}`,
         undefined,
         { shallow: true },
       )
@@ -300,7 +308,7 @@ const Verification: NextPage = () => {
             router
               // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
               // their data when they reload the page.
-              .push(`/verification?flow=${newFlowID}`, undefined, {
+              .push(`/verification?${queryString.stringify({flow: newFlowID})}`, undefined, {
                 shallow: true,
               })
 

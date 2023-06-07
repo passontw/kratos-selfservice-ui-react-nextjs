@@ -44,7 +44,6 @@ export default async function handler(
     )
 
     const data: any = await response.json()
-    console.log("data", data)
     if (data.access_token && data.refresh_token) {
       return res.status(200).json({
         status: 200,

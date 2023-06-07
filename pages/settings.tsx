@@ -6,17 +6,17 @@ import { useRouter } from "next/router"
 import { ReactNode, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
+import LinkNav from "../components/LinkNav"
 import MenuFooter from "../components/MenuFooter"
-import Cmid from "../public/images/app_icons/Cmid"
 import Flow from "../components/changepassword/Flow"
 import { ActionCard, Messages, Methods, LogoutLink } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
+import Cmid from "../public/images/app_icons/Cmid"
 import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
-import { updatePasswordSchema } from "../util/schemas"
+import { updateSettingsPasswordSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
-import LinkNav from '../components/LinkNav'
 
 interface Props {
   flow?: SettingsFlow
@@ -71,7 +71,7 @@ const Settings: NextPage = () => {
     dispatch(setActiveNav(Navs.SETTINGS))
     dispatch(setActiveStage(Stage.NONE))
     return () => {
-      onLogout();
+      onLogout()
     }
   }, [])
 
@@ -105,12 +105,11 @@ const Settings: NextPage = () => {
 
   const onSubmit = async (values: UpdateSettingsFlowBody, confirmPassword) => {
     try {
-      await handleYupSchema(updatePasswordSchema, {
+      await handleYupSchema(updateSettingsPasswordSchema, {
         confirmPassword,
         password: values.password,
       })
 
-      return;
       router
         // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
         // his data when she/he reloads the page.
@@ -155,6 +154,12 @@ const Settings: NextPage = () => {
           (node) => node?.attributes?.name === "password",
         )
         nextFlow.ui.nodes[passwordIndex].messages = [passwordMessage]
+      } else {
+        const passwordNodes = nextFlow.ui.nodes || []
+        const passwordIndex = passwordNodes.findIndex(
+          (node) => node?.attributes?.name === "password",
+        )
+        nextFlow.ui.nodes[passwordIndex].messages = []
       }
 
       if (errors.confirmPassword) {
@@ -168,16 +173,35 @@ const Settings: NextPage = () => {
 
   return (
     <>
-      <Box position='absolute' display='flex' alignItems='center' justifyContent={{xs:'center', sm: 'left'}} width='100%' gap='16px' padding={{xs:'35px 0px 0px', sm:'48px 0px 0px 48px'}} >
+      <Box
+        position="absolute"
+        display="flex"
+        alignItems="center"
+        justifyContent={{ xs: "center", sm: "left" }}
+        width="100%"
+        gap="16px"
+        padding={{ xs: "35px 0px 0px", sm: "48px 0px 0px 48px" }}
+      >
         <Cmid />
-        <Box fontFamily="Teko" fontSize={{xs:'24px', sm:'32px'}} color="#fff" lineHeight='44px' textTransform="uppercase" >Cooler Master ID</Box>
+        <Box
+          fontFamily="Teko"
+          fontSize={{ xs: "24px", sm: "32px" }}
+          color="#fff"
+          lineHeight="44px"
+          textTransform="uppercase"
+        >
+          Master ID
+        </Box>
       </Box>
-      <div style={{
-        position: 'absolute',
-        background: 'linear-gradient(180deg, rgba(29, 29, 40, 0.2) -23.39%, #1D1D28 50%);',
-        height: '100vh',
-        width: '100vw',
-      }}></div>
+      <div
+        style={{
+          position: "absolute",
+          background:
+            "linear-gradient(180deg, rgba(29, 29, 40, 0.2) -23.39%, #1D1D28 50%);",
+          height: "100vh",
+          width: "100vw",
+        }}
+      ></div>
       <div className="resetWrapper">
         <SettingsCard only="password" flow={flow}>
           <Box>

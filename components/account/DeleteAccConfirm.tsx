@@ -1,9 +1,4 @@
 import { Box } from "@mui/material"
-import { useRouter } from "next/router"
-import { useDispatch } from "react-redux"
-
-import { setActiveStage } from "../../state/store/slice/layoutSlice"
-import { Stage } from "../../types/enum"
 import Text from "../Text"
 
 interface DeleteAccConfirmProps {
@@ -15,8 +10,6 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
   onClick: close,
   confirmDelete,
 }) => {
-  const dispatch = useDispatch()
-  // const router = useRouter()
 
   return (
     <Box>
@@ -24,7 +17,7 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
         Your account and associated data will be permanently deleted and cannot
         be restored.
       </Text>
-      <Box>
+      <Box display="flex" gap="14px" flexDirection="row-reverse">
         <Box
           width="95px"
           height="44px"
@@ -36,7 +29,6 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
           alignItems="center"
           bgcolor="#F24867"
           borderRadius="8px"
-          position="absolute"
           right="30px"
           mt="25px"
           sx={{
@@ -45,17 +37,13 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
               filter: "brightness(0.9)",
             },
           }}
-          onClick={() => {
-            confirmDelete()
-            close?.()
-          }}
+          onClick={confirmDelete}
         >
           Delete
         </Box>
         <Box
           width="95px"
           height="42px"
-          position="absolute"
           bgcolor="transparent"
           border="1px solid #C0C0C0"
           borderRadius="8px"

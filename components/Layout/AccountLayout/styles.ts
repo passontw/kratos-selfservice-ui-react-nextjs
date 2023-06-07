@@ -56,6 +56,7 @@ const StyledHeader = styled("div")(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     padding: "0px",
     gap: "6px",
+    fontSize: "20px",
   },
 }))
 
@@ -84,7 +85,7 @@ const StyledContentWrapper = styled("div")(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     width: "100%",
     minWidth: "100%",
-    padding: "48px 20px 180px",
+    padding: "18px 20px 180px",
   },
 }))
 

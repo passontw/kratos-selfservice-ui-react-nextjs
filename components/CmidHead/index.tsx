@@ -10,7 +10,7 @@ const CmidHead: React.FC<CmidHeadProps> = () => {
   return (
     <CmidHeadWrap>
       <Cmid />
-      Cooler Master ID
+      Master ID
     </CmidHeadWrap>
   )
 }

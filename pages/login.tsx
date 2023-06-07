@@ -237,6 +237,11 @@ const Login: NextPage = () => {
               })
           })
           .then(([loginResult, myResult]) => {
+            console.log("ttt", myResult.identity.traits)
+            if (myResult.identity.traits.email === "cmctc.sw@gmail.com") {
+              router.push("/launch")
+              return
+            }
             const { session } = loginResult.data
             const { traits } = session.identity
             const { verifiable_addresses = [] } = myResult.identity

@@ -9,12 +9,12 @@ import RadioGroup from "../../components/RadioGroup"
 import Select from "../../components/Select"
 import RecoveryProcess from "../../components/changepassword/RecoveryProcess"
 import CodeInput from "../../components/verification/CodeInput"
+import VerificationInput from "../../components/verification/VerificationInput"
 import Eye from "../../public/images/eyes"
 import {
   selectActiveNav,
   selectActiveStage,
   selectSixDigitCode,
-  setDialog,
 } from "../../state/store/slice/layoutSlice"
 import {
   StyledDefaultInput,
@@ -67,19 +67,6 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
       const run = new Function(attributes.onclick)
       run()
     }
-  }
-
-  const openDialog = () => {
-    dispatch(
-      setDialog({
-        title: "Forgot Password",
-        titleHeight: "58px",
-        width: 480,
-        height: 358,
-        center: true,
-        children: <RecoveryProcess />,
-      }),
-    )
   }
 
   const genderRadios = [
@@ -137,6 +124,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
       nav !== Navs.LOGIN) ||
     (nav === Navs.VERIFICATION && activeStage === Stage.NONE)
   // || activeStage === Stage.DELETE_ACCOUNT
+  const verifyCodeConditions2 = activeStage === Stage.DELETE_ACCOUNT
 
   // Render a generic text input field.
   return (
@@ -144,6 +132,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
       {verifyCodeConditions && (
         <CodeInput show={attributes.name} validationMsgs={validationMsgs} />
       )}
+      {verifyCodeConditions2 && <VerificationInput />}
       <StyledDefaultInput isInputLabel={isInputLabel}>
         {isInputLabel && (
           <StyledDefaultLabel isError={isError}>{label}</StyledDefaultLabel>
@@ -152,9 +141,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           className="my-text-input"
           style={{
             display:
-              (label === "Verify code" &&
-                // nav !== Navs.RECOVERY &&
-                nav !== Navs.ACCOUNT) ||
+              (label === "Verify code") ||
               attributes.name === "traits.gender"
                 ? "none"
                 : "unset",
@@ -245,7 +232,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             },
           }}
           onClick={() => {
-            openDialog()
+            router.push("/recovery")
           }}
         >
           Forgot Password?
