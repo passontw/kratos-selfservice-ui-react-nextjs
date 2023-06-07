@@ -26,7 +26,15 @@ const Input = styled.input`
   }
 
   @media (max-width: 375px) {
+    /* max-width: 48px;
+    max-height: 54px;
+    width: 10vw;
+    height: 12vw;
     margin: 1.5vw;
+    font-size: 20px; */
+    width: 40px;
+    height: 44px;
+    margin: 4px;
   }
 `
 
