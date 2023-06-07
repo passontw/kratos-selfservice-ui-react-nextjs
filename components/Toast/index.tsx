@@ -5,10 +5,15 @@ import { toast } from "react-toastify"
 import ErrorIcon from "../../public/images/ErrorIcon"
 import SuccessIcon from "../../public/images/SuccessIcon"
 
-import { StyledMessage, StyledStatus, StyleSucess, StyleError } from "./styles"
+import {
+  StyledWrapper,
+  StyledMessage,
+  StyledStatus,
+  StyleSucess,
+  StyleError,
+} from "./styles"
 
 /**
- *
  * @param message - message to show on toast window
  * @param success - boolean value to show either success or error toast
  * @param position - position of toast, example option: toast.POSITION.TOP_RIGHT,
@@ -41,12 +46,14 @@ interface SuccessProps {
 
 const Success: React.FC<SuccessProps> = ({ message }) => {
   return (
+    // <StyledWrapper>
     <Box display="flex" alignItems="center">
       <StyledStatus>
         <SuccessIcon />
       </StyledStatus>
       <StyledMessage>{message}</StyledMessage>
     </Box>
+    // </StyledWrapper>
   )
 }
 
