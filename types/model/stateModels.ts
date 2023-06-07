@@ -20,8 +20,8 @@ export interface DialogProps {
   titleHeight?: number | string
   children: ReactElement<any, string | JSXElementConstructor<any>> & ReactNode
   center?: boolean
-  width: number | string
-  height: number | string
+  width?: number | string
+  height?: number | string
   padding?: string
   icon?: Icon
   /**

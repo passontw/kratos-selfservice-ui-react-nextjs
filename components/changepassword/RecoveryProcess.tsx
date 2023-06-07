@@ -215,7 +215,7 @@ const RecoveryProcess: NextPage = () => {
         )
         nextFlow.ui.messages = [{
           id: 400001,
-          text: 'Email account doesn’t exist',
+          text: 'Email account doesn’t exist. Please try again or sign up',
           type: 'error'
         }];
         nextFlow.ui.nodes[emailIndex].messages = [{
@@ -292,7 +292,7 @@ const RecoveryProcess: NextPage = () => {
             {dialogMsg}
           </Box>
           {activeStage === Stage.FORGOT_PASSWORD && (
-            <Box color="#A5A5A9" fontSize="14px" fontFamily="open sans">
+            <Box color="#717197" fontSize="14px" fontFamily="open sans">
               Email *
             </Box>
           )}

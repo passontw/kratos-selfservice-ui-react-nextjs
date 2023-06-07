@@ -246,7 +246,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       if (isEmpty(flow) || isEmpty(flow.ui) || isEmpty(flow.ui.messages)) return false;
       if (window.location.pathname === "/recovery") {
         const [message] = flow.ui.messages;
-        if (message.text === "Email account doesn’t exist") {
+        if (message.text?.includes("Email account")) {
           return true;
         }
         return true;

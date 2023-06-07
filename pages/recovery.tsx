@@ -30,7 +30,7 @@ const Recovery: NextPage = () => {
         title: "Forgot Password",
         titleHeight: "58px",
         width: 480,
-        height: 358,
+        // height: 358,
         center: true,
         children: <RecoveryProcess />,
       }),

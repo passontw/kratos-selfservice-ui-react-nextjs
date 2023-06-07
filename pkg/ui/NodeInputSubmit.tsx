@@ -63,7 +63,8 @@ export function NodeInputSubmit<T>({
         : isDialogForgotPswd
         ? "30px"
         : "unset",
-    marginTop: isDialogForgotPswd ? "30px" : isSignINOUT ? "36px" : "unset",
+    marginTop: isDialogForgotPswd ? "20px" : isSignINOUT ? "36px" : "unset",
+    zIndex: 1,
   }
   const hiddenStyle = {
     display: "none",
@@ -98,7 +99,9 @@ export function NodeInputSubmit<T>({
   }
 
   const buttonText =
-    (activeNav === Navs.VERIFICATION || activeNav === Navs.RECOVERY) &&
+  (activeNav === Navs.RECOVERY) && activeStage === Stage.FORGOT_PASSWORD
+      ? "Submit"
+      : (activeNav === Navs.VERIFICATION || activeNav === Navs.RECOVERY) &&
     getNodeLabel(node) === "Submit"
       ? "Verify"
       : getNodeLabel(node) === "Resend code"
