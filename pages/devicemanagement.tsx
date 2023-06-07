@@ -184,7 +184,7 @@ const DeviceManagement: NextPage = () => {
         title: "Log out on all devices",
         titleHeight: "56px",
         width: 480,
-        height: 218,
+        // height: 218,
         center: true,
         children: (
           <DeviceLogoutAllConfirm
