@@ -17,7 +17,7 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
         Your account and associated data will be permanently deleted and cannot
         be restored.
       </Text>
-      <Box>
+      <Box display="flex" gap="14px" flexDirection="row-reverse">
         <Box
           width="95px"
           height="44px"
@@ -29,7 +29,6 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
           alignItems="center"
           bgcolor="#F24867"
           borderRadius="8px"
-          position="absolute"
           right="30px"
           mt="25px"
           sx={{
@@ -45,7 +44,6 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
         <Box
           width="95px"
           height="42px"
-          position="absolute"
           bgcolor="transparent"
           border="1px solid #C0C0C0"
           borderRadius="8px"

@@ -15,7 +15,21 @@ const Input = styled.input`
   border: none;
   font-size: 20px;
   outline: none;
+
+  @media (max-width: 600px) {
+    max-width: 48px;
+    max-height: 54px;
+    width: 10vw;
+    height: 12vw;
+    margin: 1.9vw;
+    font-size: 20px;
+  }
+
+  @media (max-width: 375px) {
+    margin: 1.5vw;
+  }
 `
+
 
 const InputsContainer = styled.div`
   display: flex;

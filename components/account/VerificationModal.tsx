@@ -65,7 +65,7 @@ const Verification: NextPage = (props) => {
         title: "Delete Account",
         titleHeight: "56px",
         width: 480,
-        height: 238,
+        // height: 238,
         center: true,
         children: <DeleteAccConfirm confirmDelete={props.deleteAccount} />,
       }),
@@ -303,9 +303,22 @@ const Verification: NextPage = (props) => {
         p="0 32px 32px 32px"
         borderRadius="12px"
         position="fixed"
-        top="35vh"
+        top="25vh"
         left="50%"
-        marginLeft="-219px"
+        marginLeft="-250px"
+        zIndex={2}
+        sx={{
+          "@media screen and (max-width: 500px)": {
+            left: "0",
+            marginLeft: "0",
+            width: "87%",
+          },
+          "@media screen and (max-width: 375px)": {
+            left: "0",
+            marginLeft: "0",
+            width: "83%",
+          },
+        }}
       >
         <Head>
           <title>Verify your account - Ory NextJS Integration Example</title>

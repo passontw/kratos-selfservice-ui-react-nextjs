@@ -17,7 +17,7 @@ const DeviceLogoutAllConfirm: React.FC<DeviceLogoutAllConfirmProps> = ({
   return (
     <Box>
       <Text my={"5px"}>
-        This will remove access to your CMID account from all devices.
+        This will remove access to your Master ID account from all devices.
       </Text>
       <Box>
         <Box
