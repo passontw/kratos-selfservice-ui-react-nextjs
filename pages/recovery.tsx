@@ -27,7 +27,7 @@ const Recovery: NextPage = () => {
     dispatch(setActiveNav(Navs.RECOVERY))
     dispatch(
       setDialog({
-        title: "Forgot Password",
+        title: " ",
         titleHeight: "58px",
         width: 480,
         // height: 358,

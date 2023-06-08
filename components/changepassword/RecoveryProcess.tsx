@@ -257,7 +257,7 @@ const RecoveryProcess: NextPage = () => {
               setFlow(data)
               dispatch(setActiveStage(Stage.VERIFY_CODE))
               setDialogMsg(
-                "An email containing a recovery code has been sent to the email address you provided.",
+                `Enter the 6-digit code we sent to ${values.email} to verify account.`,
               )
             })
             .catch(handleFlowError(router, "recovery", setFlow))
@@ -281,6 +281,9 @@ const RecoveryProcess: NextPage = () => {
   return (
     <>
       <Box>
+        <Box position='absolute' top="35px" fontFamily="open sans" fontSize="20px" color="#FFF">
+          {activeStage === Stage.FORGOT_PASSWORD ? 'Forgot Password' : 'Verify Account'}
+        </Box>
         <Box bgcolor="#272735">
           <Box
             color="#A5A5A9"
