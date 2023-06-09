@@ -346,7 +346,7 @@ const Verification: NextPage = (props) => {
             hideGlobalMessages={isEmpty(flow?.ui?.messages)}
             code={sixDigitCode}
           />
-            <Box position="relative" display="flex" justifyContent="end" width="72%">
+            <Box position="relative" display="flex" justifyContent="end" marginRight="120px">
               <Box
                 width="95px"
                 height="42px"
