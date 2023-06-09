@@ -1,6 +1,6 @@
 import { styled } from "@mui/material/styles"
 
-export const Input = styled("input")<{ windowWidth: number }>(({ windowWidth, theme }) => ({
+export const Input = styled("input")(({ theme }) => ({
   width: "100%",
   height: "100%",
   borderRadius: "8px",
@@ -10,17 +10,6 @@ export const Input = styled("input")<{ windowWidth: number }>(({ windowWidth, th
   border: "none",
   fontSize: "20px",
   outline: "none",
-  // [theme.breakpoints.down("sm")]: {
-  //   maxWidth: "48px",
-  //   maxHeight: "54px",
-  //   width: "10vw",
-  //   height: "12vw",
-  //   margin: "1.9vw",
-  //   fontSize: "20px",
-  // },
-  // [theme.breakpoints.down(375)]: {
-  //   margin: "1.5vw",
-  // },
 }))
 
 export const Title = styled("h1")(({ theme }) => ({

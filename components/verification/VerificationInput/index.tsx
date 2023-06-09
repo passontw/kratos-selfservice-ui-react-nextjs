@@ -13,16 +13,6 @@ const VerificationInput = () => {
   const dispatch = useDispatch()
   const [inputValues, setInputValues] = useState(Array(6).fill(""))
   const inputRefs = [useRef(), useRef(), useRef(), useRef(), useRef(), useRef()]
-  const [windowWidth, setWindowWidth] = useState(null);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setWindowWidth(window.innerWidth);
-      const handleResize = () => setWindowWidth(window.innerWidth);
-      window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
-    }
-  }, []);
 
   useEffect(() => {
     inputRefs[0].current.focus()
@@ -66,7 +56,6 @@ const VerificationInput = () => {
       <InputsContainer>
         {inputValues.map((value, i) => (
           <Input
-            windowWidth={windowWidth}
             key={i}
             ref={inputRefs[i]}
             type="tel"
