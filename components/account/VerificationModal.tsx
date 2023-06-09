@@ -346,6 +346,35 @@ const Verification: NextPage = (props) => {
             hideGlobalMessages={isEmpty(flow?.ui?.messages)}
             code={sixDigitCode}
           />
+            <Box position="relative" display="flex" justifyContent="end" marginRight="120px">
+              <Box
+                width="95px"
+                height="42px"
+                bgcolor="transparent"
+                border="1px solid #C0C0C0"
+                borderRadius="8px"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                color="#C0C0C0"
+                fontFamily="open sans"
+                fontSize="16px"
+                right="140px"
+                mt="50px"
+                sx={{
+                  cursor: "pointer",
+                  "&:hover": {
+                    filter: "brightness(0.9)",
+                  },
+                }}
+                onClick={(e) => {
+                  close()
+                  window.location.reload()
+                }}
+              >
+              Cancel
+              </Box>
+            </Box>
         </Box>
       </Box>
     </Box>

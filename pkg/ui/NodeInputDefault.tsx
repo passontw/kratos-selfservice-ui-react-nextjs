@@ -123,16 +123,16 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
       // nav !== Navs.RECOVERY &&
       nav !== Navs.LOGIN) ||
     (nav === Navs.VERIFICATION && activeStage === Stage.NONE)
-  // || activeStage === Stage.DELETE_ACCOUNT
-  const verifyCodeConditions2 = activeStage === Stage.DELETE_ACCOUNT
+    || activeStage === Stage.DELETE_ACCOUNT
+  // const verifyCodeConditions2 = activeStage === Stage.DELETE_ACCOUNT
 
   // Render a generic text input field.
   return (
     <>
       {verifyCodeConditions && (
-        <CodeInput show={attributes.name} validationMsgs={validationMsgs} />
+        <VerificationInput />
       )}
-      {verifyCodeConditions2 && <VerificationInput />}
+      {/* {verifyCodeConditions2 && <VerificationInput />} */}
       <StyledDefaultInput isInputLabel={isInputLabel}>
         {isInputLabel && (
           <StyledDefaultLabel isError={isError}>{label}</StyledDefaultLabel>

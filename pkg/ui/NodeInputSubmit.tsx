@@ -27,10 +27,6 @@ export function NodeInputSubmit<T>({
   node,
   attributes,
   disabled,
-  dispatchSubmit,
-  // handleToast,
-  ref,
-  test,
 }: NodeInputProps) {
   const dispatch = useDispatch()
   const codeLocked = useSelector(selectLockCodeResend)
@@ -43,27 +39,30 @@ export function NodeInputSubmit<T>({
   const resendLink = ["Resend code"].includes(getNodeLabel(node))
   const linkRelated =
     getNodeLabel(node).includes("Link") || getNodeLabel(node).includes("Unlink")
+  const deleteAccount = activeNav === Navs.ACCOUNT && activeStage === Stage.DELETE_ACCOUNT && !resendLink
+  const deleteAccountResend = activeNav === Navs.ACCOUNT && activeStage === Stage.DELETE_ACCOUNT
 
   const defaultStyle = {
     backgroundColor: "#A62BC3",
     borderRadius: "8px",
     height: "44px",
-    margin: "36px 0px 0px",
+    margin: deleteAccount ? "36px 0px 0px" : 0,
     fontSize: "16px",
     fontFamily: "Open Sans",
     color: "#FFF",
     width:
+      deleteAccount ? "111px" :
       isDialogForgotPswd || activeNav === Navs.SETTINGS || linkRelated
         ? "95px"
         : "100%",
-    position: isDialogForgotPswd ? "absolute" : "unset",
+    position: isDialogForgotPswd || deleteAccount ? "absolute" : "unset",
     right:
       activeNav === Navs.SETTINGS
         ? "0px"
-        : isDialogForgotPswd
+        : isDialogForgotPswd || deleteAccount
         ? "30px"
         : "unset",
-    marginTop: isDialogForgotPswd ? "20px" : isSignINOUT ? "36px" : "unset",
+    marginTop: deleteAccount ? "50px" : isDialogForgotPswd ? "20px" : isSignINOUT ? "36px" : "unset",
     zIndex: 1,
   }
   const hiddenStyle = {
@@ -80,6 +79,15 @@ export function NodeInputSubmit<T>({
     width: "50px",
     fontSize: "14px",
     marginTop: "11px",
+  }
+  const resendStyle = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "4px",
+    position: deleteAccountResend ? "absolute" : "unset",
+    marginTop: deleteAccountResend ? "20px" : "unset",
+    zIndex: 1,
   }
 
   let showButton = [
@@ -99,7 +107,9 @@ export function NodeInputSubmit<T>({
   }
 
   const buttonText =
-  (activeNav === Navs.RECOVERY) && activeStage === Stage.FORGOT_PASSWORD
+      deleteAccount
+      ? "Continue"
+      : (activeNav === Navs.RECOVERY) && activeStage === Stage.FORGOT_PASSWORD
       ? "Submit"
       : (activeNav === Navs.VERIFICATION || activeNav === Navs.RECOVERY) &&
     getNodeLabel(node) === "Submit"
@@ -123,36 +133,33 @@ export function NodeInputSubmit<T>({
   return (
     <>
       {getNodeLabel(node) === "Resend code" ? (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          gap="4px"
-        >
-          <Box fontFamily="open sans" color="#A5A5A9" fontSize="14px">
-            Didn't receive?
-          </Box>
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Box style={resendStyle}>
+            <Box fontFamily="open sans" color="#A5A5A9" fontSize="14px">
+              Didn't receive?
+            </Box>
 
-          <Button
-            style={
-              showButton ? (resendLink ? linkStyle : defaultStyle) : hiddenStyle
-            }
-            name={attributes.name}
-            value={attributes.value || ""}
-            disabled={attributes.disabled || disabled}
-            onClick={(e) => {
-              if (!codeLocked) {
-                dispatch(setLockCodeResend(true))
-              } else {
-                e.preventDefault()
-                e.stopPropagation()
+            <Button
+              style={
+                showButton ? (resendLink ? linkStyle : defaultStyle) : hiddenStyle
               }
-            }}
-          >
-            {buttonText}
-          </Button>
+              name={attributes.name}
+              value={attributes.value || ""}
+              disabled={attributes.disabled || disabled}
+              onClick={(e) => {
+                if (!codeLocked) {
+                  dispatch(setLockCodeResend(true))
+                } else {
+                  e.preventDefault()
+                  e.stopPropagation()
+                }
+              }}
+            >
+              {buttonText}
+            </Button>
 
-          <Box>{codeLocked && <Timer />}</Box>
+            <Box>{codeLocked && <Timer />}</Box>
+          </Box>
         </Box>
       ) : (
         <>
