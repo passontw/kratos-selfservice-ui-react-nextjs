@@ -1,9 +1,8 @@
 import { styled } from "@mui/material/styles"
 
 export const Input = styled("input")<{ windowWidth: number }>(({ windowWidth, theme }) => ({
-  width: windowWidth > 500 ? "48px" : "10vw",
-  height: windowWidth > 500 ? "54px" : "12vw",
-  margin: windowWidth > 500 ? "9px" : windowWidth > 375 ? "1.9vw": "1.5vw",
+  width: "100%",
+  height: "100%",
   borderRadius: "8px",
   backgroundColor: "#37374f",
   color: "#fff",
@@ -28,13 +27,16 @@ export const Title = styled("h1")(({ theme }) => ({
   color: "#717197",
   fontSize: "13px",
   fontFamily: "open sans",
-  margin: "8px 9px 0 9px",
+  margin: "8px 9px 0 0",
 }))
 
 export const InputsContainer = styled("div")(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+  marginTop: "8px",
+  height: "56px",
+  gap: "15px",
 }))
 
 export const Container = styled("div")(({ theme }) => ({
