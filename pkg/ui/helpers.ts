@@ -19,4 +19,5 @@ export interface NodeInputProps {
   ref?: HTMLButtonElement | null | undefined
   handleToast?: any
   validationMsgs?: any
+  className?: string
 }
