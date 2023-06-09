@@ -16,7 +16,7 @@ export const Title = styled("h1")(({ theme }) => ({
   color: "#717197",
   fontSize: "13px",
   fontFamily: "open sans",
-  margin: "8px 9px 0 0",
+  margin: "24px 9px 0 0",
 }))
 
 export const InputsContainer = styled("div")(({ theme }) => ({
