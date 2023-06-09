@@ -137,6 +137,9 @@ const Dialog: React.FC<DialogProps> = ({
       open
       onClose={handleClose}
       TransitionComponent={Transition}
+      sx={{
+        '.MuiDialog-container' : { padding: "0 20px"}
+      }}
     >
       {title && (
         <StyledDialogTitle titleHeight={titleHeight}>

@@ -308,15 +308,20 @@ const Verification: NextPage = (props) => {
         marginLeft="-250px"
         zIndex={2}
         sx={{
-          "@media screen and (max-width: 500px)": {
-            left: "0",
+          "@media screen and (max-width: 530px)": {
+            left: "20px",
             marginLeft: "0",
-            width: "87%",
+            width: "78%",
           },
-          "@media screen and (max-width: 375px)": {
-            left: "0",
+          "@media screen and (max-width: 460px)": {
+            left: "20px",
             marginLeft: "0",
-            width: "83%",
+            width: "76%",
+          },
+          "@media screen and (max-width: 390px)": {
+            left: "20px",
+            marginLeft: "0",
+            width: "73%",
           },
         }}
       >
