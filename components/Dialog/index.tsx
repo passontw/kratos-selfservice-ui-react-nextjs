@@ -69,6 +69,7 @@ const Dialog: React.FC<DialogProps> = ({
   const dispatch = useDispatch()
   const router = useRouter()
   const currentNav = useSelector(selectActiveNav)
+  const dialogTitle = useSelector(selectDialog).title
   const handleClose = (event: React.SyntheticEvent, reason: string) => {
     if (currentNav === Navs.ACCOUNT) {
       window.location.reload()
@@ -138,7 +139,9 @@ const Dialog: React.FC<DialogProps> = ({
       onClose={handleClose}
       TransitionComponent={Transition}
       sx={{
-        '.MuiDialog-container' : { padding: "0 20px"}
+        '.MuiDialog-container' : { 
+          padding: dialogTitle === 'Master ID' ? "unset" : "0 20px"
+        }
       }}
     >
       {title && (
