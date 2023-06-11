@@ -18,9 +18,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     // The challenge is used to fetch information about the login request from ORY Hydra.
     const challenge = String(query.login_challenge)
     const subject = req.body.subject
-    console.log("[@GET login.ts req.body]", req.body)
-    console.log("[@GET login.ts challenge]", challenge)
-    console.log("[@GET login.ts subject]", subject)
+    // console.log("[@GET login.ts req.body]", req.body)
+    // console.log("[@GET login.ts challenge]", challenge)
+    // console.log("[@GET login.ts subject]", subject)
     try {
       // Parses the URL query
       // The challenge is used to fetch information about the login request from ORY Hydra.
@@ -28,11 +28,13 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         console.log("There was no challenge present.")
         throw new Error("Expected a login challenge to be set but received none.")
       }
+      console.log("🚀 ~ file: login.ts:28 ~ handler ~ challenge:", challenge)
       // need to handle two types of requests
       // 1) check hydra login info / status
       return hydraAdmin
         .getOAuth2LoginRequest({ loginChallenge: challenge })
         .then(async ({ data: body }) => {
+          console.log("🚀 ~ file: login.ts:36 ~ .then ~ body:", body)
           // If hydra was already able to authenticate the user, skip will be true and we do not need to re-authenticate
           // the user.
           if (body.skip) {
@@ -53,7 +55,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
           res.status(200).send(body)
         })
         .catch((err) => {
-          console.log(err)
+          console.log("🚀 ~ file: login.ts:58 ~ handler ~ err.message:", err.message)
           return res.status(err.status).json({ message: "error1 " + err.message })
         })
     } catch (error) {

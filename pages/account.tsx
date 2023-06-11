@@ -245,9 +245,9 @@ const Account: NextPage = () => {
             if (!isEmpty(linkAttributesNames)) {
               if (linkAttributesNames.googleAttributesName !== googleAttributesName) {
                 if (googleAttributesName === "unlink") {
-                  alert("google linked");
+                  showToast("google linked")
                 } else {
-                  alert("google unlinked");
+                  showToast("google unlinked")
                 }
               }
 

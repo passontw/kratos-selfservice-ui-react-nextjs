@@ -48,27 +48,29 @@ const getSessionData = async () => {
 
 const validateLoginFlow = async (router, options) => {
   const { login_challenge, refresh, aal, setFlow } = options
+  console.log("🚀 ~ file: login.tsx:51 ~ validateLoginFlow ~ login_challenge:", login_challenge)
 
   try {
     const sessionData = await getSessionData()
-    if (isEmpty(sessionData)) {
-      const { data } = await ory.createBrowserLoginFlow({
-        refresh: Boolean(refresh),
-        aal: aal ? String(aal) : undefined,
-        returnTo: Boolean(login_challenge)
-          ? NEXT_PUBLIC_REDIRECT_URI
-          : "/profile",
-      })
+    console.log("🚀 ~ file: login.tsx:54 ~ validateLoginFlow ~ sessionData:", sessionData)
+    // if (isEmpty(sessionData) ) {
+    //   const { data } = await ory.createBrowserLoginFlow({
+    //     refresh: Boolean(refresh),
+    //     aal: aal ? String(aal) : undefined,
+    //     returnTo: Boolean(login_challenge)
+    //       ? NEXT_PUBLIC_REDIRECT_URI
+    //       : "/profile",
+    //   })
 
-      if (router.query.login_challenge) {
-        data.oauth2_login_challenge = router.query.login_challenge as string
-      }
-      setFlow(data)
-    } else {
-      const nextUri = "/profile"
-      router.push(nextUri)
-      return
-    }
+    //   if (router.query.login_challenge) {
+    //     data.oauth2_login_challenge = router.query.login_challenge as string
+    //   }
+    //   setFlow(data)
+    // } else {
+    //   const nextUri = "/profile"
+    //   router.push(nextUri)
+    //   return
+    // }
   } catch (error) {
     handleFlowError(router, "login", setFlow)
   }
@@ -149,19 +151,20 @@ const Login: NextPage = () => {
     validateLoginFlow(router, options)
 
     // Otherwise we initialize it
-    // ory
-    //   .createBrowserLoginFlow({
-    //     refresh: Boolean(refresh),
-    //     aal: aal ? String(aal) : undefined,
-    //     returnTo: returnTo ? String(returnTo) : undefined,
-    //   })
-    //   .then(({ data }) => {
-    //     if (router.query.login_challenge) {
-    //       data.oauth2_login_challenge = router.query.login_challenge as string
-    //     }
-    //     setFlow(data)
-    //   })
-    //   .catch(handleFlowError(router, "login", setFlow))
+    ory
+      .createBrowserLoginFlow({
+        refresh: Boolean(refresh),
+        aal: aal ? String(aal) : undefined,
+        returnTo: returnTo ? String(returnTo) : undefined,
+      })
+      .then(({ data }) => {
+        console.log("🚀 ~ file: login.tsx:163 ~ .then ~ data:", data)
+        if (router.query.login_challenge) {
+          data.oauth2_login_challenge = router.query.login_challenge as string
+        }
+        setFlow(data)
+      })
+      .catch(handleFlowError(router, "login", setFlow))
   }, [flowId, router, router.isReady, aal, refresh, returnTo, flow])
 
   const doConsentProcess = async (login_challenge: string, subject: string) => {
