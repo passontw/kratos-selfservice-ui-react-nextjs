@@ -7,15 +7,11 @@ const StyledDialogTitle = styled(DialogTitle, {
   shouldForwardProp: (prop) => prop !== "titleHeight",
 })<{ titleHeight?: number | string }>(({ titleHeight }) => ({
   color: "#FFF",
-  // letterSpacing: '1px',
   backgroundColor: titleHeight === "MENU" ? "#1F1F2A" : "#272735",
   fontSize: "20px",
   fontFamily: "open sans",
   padding: titleHeight === "MENU" ? "8px 32px" : "20px 32px",
-  // fontWeight: 600,MENU
-  // lineHeight: '24px',
   height: titleHeight || "58px",
-  // borderBottom: `1px solid #000`,
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
@@ -25,10 +21,8 @@ const StyledDialogContent = styled(DialogContent, {
   shouldForwardProp: (prop) => prop !== "center",
 })<{ center?: boolean; sub?: boolean; padding?: string }>(
   ({ center, sub, padding }) => ({
-    // padding: sub ? 0 : '40px',
     padding: padding || 32,
     backgroundColor: "#272735",
-    // maxHeight: center ? '472px' : '570px',
     "&::-webkit-scrollbar": {
       width: 5,
       height: 0,

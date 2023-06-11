@@ -40,6 +40,37 @@ const RecoveryProcess: NextPage = () => {
   const router = useRouter()
   const { flow: flowId, return_to: returnTo } = router.query
 
+  // relocate the validation to fit design
+  useEffect(() => {
+    console.log("@validationRelocation ran again")
+    const targetDestination = document.querySelector(".targetDestination")
+    const targetErrorMsg = document.querySelector("h3")
+    console.log("@validationRelocation targetErrorMsg:", targetErrorMsg)
+
+    const submitBtn = document.querySelector(".targetDestination button")
+    // move only when error msg appeared, submit button is visible,
+    // and there is no query string which indicates that the flow is still on step 1
+    if (
+      targetErrorMsg &&
+      targetDestination?.parentNode &&
+      submitBtn &&
+      !window.location.search
+    ) {
+      targetDestination.parentNode.insertBefore(
+        targetErrorMsg,
+        targetDestination,
+      )
+      // style the button to fit new ui
+      submitBtn.style.margin = "33px 0px 0px"
+    } else {
+      console.log("@validationRelocation ran with NEW TARGET BUTTON")
+      // else if error msg is not present style message to fit original ui
+      if (targetErrorMsg) {
+        targetErrorMsg.style.display = "none"
+      }
+    }
+  }, [flow])
+
   useEffect(() => {
     dispatch(setActiveStage(Stage.FORGOT_PASSWORD))
   }, [])
@@ -83,69 +114,73 @@ const RecoveryProcess: NextPage = () => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   const validateDiffMinute = (setFlow, flow, diffMinute) => {
-    if (isEmpty(flow)) return true;
-    if (diffMinute < 5) return true;
+    if (isEmpty(flow)) return true
+    if (diffMinute < 5) return true
 
-    const nextFlow = cloneDeep(flow);
+    const nextFlow = cloneDeep(flow)
     const identifierIndex = nextFlow.ui.nodes.findIndex(
       (node) => node.attributes.name === "code",
     )
-    if (identifierIndex === -1) return true;
-    nextFlow.ui.nodes[identifierIndex].messages = [{
-      id: 400009,
-      text: 'Verification code is no longer valid',
-      type: 'error'
-    }]
+    if (identifierIndex === -1) return true
+    nextFlow.ui.nodes[identifierIndex].messages = [
+      {
+        id: 400009,
+        text: "Verification code is no longer valid",
+        type: "error",
+      },
+    ]
     setFlow(nextFlow)
-    return false;
+    return false
   }
 
   const onSubmit = async (values: UpdateRecoveryFlowBody) => {
     const createdTimeDayObject = dayjs(flow.issued_at)
     const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
-    const isValidate = validateDiffMinute(setFlow, flow, diffMinute);
+    const isValidate = validateDiffMinute(setFlow, flow, diffMinute)
 
     if (!isValidate) {
-      const nextFlow = cloneDeep(flow);
+      const nextFlow = cloneDeep(flow)
       const identifierIndex = nextFlow.ui.nodes.findIndex(
         (node) => node.attributes.name === "code",
       )
 
       if (identifierIndex !== -1) {
-        nextFlow.ui.messages = [];
-        nextFlow.ui.nodes[identifierIndex].messages = [{
-          id: 400002,
-          text: "Verification code is no longer valid, please try again.",
-          type: "error",
-        }]
+        nextFlow.ui.messages = []
+        nextFlow.ui.nodes[identifierIndex].messages = [
+          {
+            id: 400002,
+            text: "Verification code is no longer valid, please try again.",
+            type: "error",
+          },
+        ]
         setFlow(nextFlow)
-        return;
+        return
       }
     } else {
-      const nextFlow = cloneDeep(flow);
+      const nextFlow = cloneDeep(flow)
       const identifierIndex = nextFlow.ui.nodes.findIndex(
         (node) => node.attributes.name === "code",
       )
       if (identifierIndex !== -1) {
-        nextFlow.ui.messages = [];
+        nextFlow.ui.messages = []
         nextFlow.ui.nodes[identifierIndex].messages = []
         setFlow(nextFlow)
       }
     }
 
     if (flow.state === "sent_email") {
-      const nextFlow = cloneDeep(flow);
+      const nextFlow = cloneDeep(flow)
       const identifierIndex = nextFlow.ui.nodes.findIndex(
         (node) => node.attributes.name === "code",
       )
       if (identifierIndex !== -1) {
-        nextFlow.ui.messages = [];
+        nextFlow.ui.messages = []
         nextFlow.ui.nodes[identifierIndex].messages = []
         setFlow(nextFlow)
       }
     }
 
-    const nextFlow = cloneDeep(flow);
+    const nextFlow = cloneDeep(flow)
     try {
       if (flow.state === "choose_method") {
         await handleYupSchema(recoveryFormSchema, {
@@ -158,8 +193,7 @@ const RecoveryProcess: NextPage = () => {
           code: values.code,
         })
       }
-
-    } catch(error) {
+    } catch (error) {
       const errors = handleYupErrors(error)
 
       if (errors.email) {
@@ -207,39 +241,44 @@ const RecoveryProcess: NextPage = () => {
     }
 
     if (flow.state === "choose_method") {
-    const response = await axios.get(`/api/hydra/validateIdentity?email=${values.email}`)
+      const response = await axios.get(
+        `/api/hydra/validateIdentity?email=${values.email}`,
+      )
       if (isEmpty(response.data.data)) {
         const emailNodes = nextFlow.ui.nodes || []
         const emailIndex = emailNodes.findIndex(
           (node) => node?.attributes?.name === "email",
         )
-        nextFlow.ui.messages = [{
-          id: 400001,
-          text: 'Email account doesn’t exist',
-          type: 'error'
-        }];
-        nextFlow.ui.nodes[emailIndex].messages = [{
-          id: 400001,
-          text: ' ',
-          type: 'error'
-        }]
+        nextFlow.ui.messages = [
+          {
+            id: 400001,
+            text: "Email account doesn’t exist. Please try again or sign up",
+            type: "error",
+          },
+        ]
+        nextFlow.ui.nodes[emailIndex].messages = [
+          {
+            id: 400001,
+            text: " ",
+            type: "error",
+          },
+        ]
         setFlow(nextFlow)
-        return Promise.resolve();
+        return Promise.resolve()
       } else {
         const emailNodes = nextFlow.ui.nodes || []
         const emailIndex = emailNodes.findIndex(
           (node) => node?.attributes?.name === "email",
         )
 
-        nextFlow.ui.messages = [];
+        nextFlow.ui.messages = []
         nextFlow.ui.nodes[emailIndex].messages = []
         setFlow(nextFlow)
       }
     }
 
-    const nextValue = flow.state === "choose_method"
-      ? values
-      : {...values, email: undefined};
+    const nextValue =
+      flow.state === "choose_method" ? values : { ...values, email: undefined }
 
     return (
       router
@@ -257,7 +296,7 @@ const RecoveryProcess: NextPage = () => {
               setFlow(data)
               dispatch(setActiveStage(Stage.VERIFY_CODE))
               setDialogMsg(
-                "An email containing a recovery code has been sent to the email address you provided.",
+                `Enter the 6-digit code we sent to ${values.email} to verify account.`,
               )
             })
             .catch(handleFlowError(router, "recovery", setFlow))
@@ -280,7 +319,18 @@ const RecoveryProcess: NextPage = () => {
 
   return (
     <>
-      <Box>
+      <Box className="targetParent">
+        <Box
+          position="absolute"
+          top="35px"
+          fontFamily="open sans"
+          fontSize="20px"
+          color="#FFF"
+        >
+          {activeStage === Stage.FORGOT_PASSWORD
+            ? "Forgot Password"
+            : "Verify Account"}
+        </Box>
         <Box bgcolor="#272735">
           <Box
             color="#A5A5A9"
@@ -292,7 +342,7 @@ const RecoveryProcess: NextPage = () => {
             {dialogMsg}
           </Box>
           {activeStage === Stage.FORGOT_PASSWORD && (
-            <Box color="#A5A5A9" fontSize="14px" fontFamily="open sans">
+            <Box color="#717197" fontSize="14px" fontFamily="open sans">
               Email *
             </Box>
           )}

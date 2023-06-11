@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box"
-import isEmpty from "lodash/isEmpty"
 import {
   LoginFlow,
   RecoveryFlow,
@@ -14,6 +13,7 @@ import {
 } from "@ory/client"
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
 import { Button } from "@ory/themes"
+import isEmpty from "lodash/isEmpty"
 import { Component, FormEvent, MouseEvent } from "react"
 
 import Apple from "../../public/images/login_icons/Apple"
@@ -218,7 +218,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
 
   render() {
     const { hideGlobalMessages, flow, router } = this.props
-    console.log("🚀 ~ file: Flow.tsx:220 ~ Flow<T ~ render ~ flow:", flow)
     const { values, isLoading } = this.state
 
     // Filter the nodes - only show the ones we want
@@ -244,16 +243,17 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     }
 
     const getShowGlobalMessages = () => {
-      if (hideGlobalMessages) return false;
-      if (isEmpty(flow) || isEmpty(flow.ui) || isEmpty(flow.ui.messages)) return false;
+      if (hideGlobalMessages) return false
+      if (isEmpty(flow) || isEmpty(flow.ui) || isEmpty(flow.ui.messages))
+        return false
       if (window.location.pathname === "/recovery") {
-        const [message] = flow.ui.messages;
-        if (message.text === "Email account doesn’t exist") {
-          return true;
+        const [message] = flow.ui.messages
+        if (message.text?.includes("Email account")) {
+          return true
         }
-        return true;
+        return true
       }
-      return false;
+      return false
     }
 
     const showGlobalMessages = getShowGlobalMessages();
@@ -264,9 +264,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         method={flow.ui.method}
         onSubmit={this.handleSubmit}
       >
-        {showGlobalMessages ? (
-          <Messages messages={flow.ui.messages} />
-        ) : null}
+        {showGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
         {nodes.map((node, k) => {
           console.log("@filterNodes node:", node)
 
@@ -290,9 +288,18 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
 
           const id = getNodeId(node) as keyof Values
           return (
-            <>
+            <span
+              key={`${id}-${k}`}
+              className={
+                node?.meta?.label?.text === "Submit" ? "targetDestination" : ""
+              }
+            >
               <Node
-                key={`${id}-${k}`}
+                className={
+                  node?.meta?.label?.text === "Submit"
+                    ? "targetDestination"
+                    : ""
+                }
                 disabled={isLoading}
                 node={node}
                 value={
@@ -319,7 +326,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 }
                 validationMsgs={flow.ui.messages}
               />
-            </>
+            </span>
           )
         })}
         {!this.props.hideSocialLogin && (

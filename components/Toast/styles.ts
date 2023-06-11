@@ -1,7 +1,14 @@
 import { Box, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
-// sucess
+// responsive wrapper
+export const StyledWrapper = styled("div")(({ theme }) => ({
+  [theme.breakpoints.down("sm")]: {
+    padding: "20px",
+  },
+}))
+
+// success
 export const StyleSucess = {
   background: "#1B2B30",
   border: "1px solid #4AE8AF",

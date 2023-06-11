@@ -69,6 +69,7 @@ const Dialog: React.FC<DialogProps> = ({
   const dispatch = useDispatch()
   const router = useRouter()
   const currentNav = useSelector(selectActiveNav)
+  const dialogTitle = useSelector(selectDialog).title
   const handleClose = (event: React.SyntheticEvent, reason: string) => {
     if (currentNav === Navs.ACCOUNT) {
       window.location.reload()
@@ -130,13 +131,18 @@ const Dialog: React.FC<DialogProps> = ({
           maxWidth: height,
           backgroundColor: "#2B2B33",
           margin: "0",
-          position: "absolute",
+          position: "relative",
           borderRadius: "8px",
         },
       }}
       open
       onClose={handleClose}
       TransitionComponent={Transition}
+      sx={{
+        '.MuiDialog-container' : { 
+          padding: dialogTitle === 'Master ID' ? "unset" : "0 20px"
+        }
+      }}
     >
       {title && (
         <StyledDialogTitle titleHeight={titleHeight}>
@@ -169,34 +175,35 @@ const Dialog: React.FC<DialogProps> = ({
       <StyledDialogContent center={center} padding={padding}>
         {React.cloneElement(children, { onClick: handleClose })}
         {activeStage === Stage.FORGOT_PASSWORD && (
-          <Box
-            width="95px"
-            height="44px"
-            position="absolute"
-            bgcolor="transparent"
-            border="1px solid #C0C0C0"
-            borderRadius="8px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            color="#C0C0C0"
-            fontFamily="open sans"
-            fontSize="16px"
-            right="140px"
-            mt="30px"
-            sx={{
-              cursor: "pointer",
-            }}
-            onClick={(e) => {
-              if (activeStage === Stage.FORGOT_PASSWORD) {
-                router.push("/login")
-              }
-              handleClose(e, "")
-              dispatch(setActiveStage(Stage.NONE))
-            }}
-          >
-            Cancel
+          <Box position="relative" width="108%" height="44px" mt="33px">
+            <Box
+              width="95px"
+              height="44px"
+              position="absolute"
+              bgcolor="transparent"
+              border="1px solid #C0C0C0"
+              borderRadius="8px"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              color="#C0C0C0"
+              fontFamily="open sans"
+              fontSize="16px"
+              right="140px"
+              sx={{
+                cursor: "pointer",
+              }}
+              onClick={(e) => {
+                if (activeStage === Stage.FORGOT_PASSWORD) {
+                  router.push("/login")
+                }
+                handleClose(e, "")
+                dispatch(setActiveStage(Stage.NONE))
+              }}
+            >
+              Cancel
           </Box>
+        </Box>
         )}
       </StyledDialogContent>
     </MuiDialog>

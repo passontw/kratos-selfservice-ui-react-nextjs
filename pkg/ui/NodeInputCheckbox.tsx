@@ -19,12 +19,15 @@ export function NodeInputCheckbox<T>({
     <Box
       display="flex"
       width={{ sx: "100%", md: "48%" }}
-      height={attributes.name === "traits.loginVerification" ? "74px" : "88px"}
+      height={attributes.name === "traits.loginVerification" ? { xs: "64px", md: "74px" } : "88px"}
       bgcolor="#272735"
       borderRadius="12px"
       justifyContent="space-between"
       alignItems="center"
-      px="26px"
+      px={{
+        sm: "26px",
+        xs: "20px",
+      }}
       boxSizing="border-box"
     >
       <Box
@@ -35,7 +38,11 @@ export function NodeInputCheckbox<T>({
         <Box mt="4px">
           {attributes.name === "traits.loginVerification" ? <Mail /> : "???"}
         </Box>
-        <Box fontFamily="open sans" color="#FFF" fontSize="20px">
+        <Box fontFamily="open sans" color="#FFF"
+            fontSize={{
+                sm: "20px",
+                xs: "16px",
+              }}>
           {attributes.name === "traits.loginVerification" ? "Email" : "???"}
         </Box>
       </Box>

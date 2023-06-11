@@ -1,40 +1,13 @@
 import React, { useState, useRef, useEffect } from "react"
 import { useDispatch } from "react-redux"
-import styled from "styled-components"
+import {
+  Title,
+  InputsContainer,
+  Container,
+  Input,
+} from "./styles"
 
-import { setSixDigitCode } from "../../state/store/slice/layoutSlice"
-
-const Input = styled.input`
-  width: 48px;
-  height: 54px;
-  margin: 9px;
-  border-radius: 8px;
-  background-color: #37374f;
-  color: #fff;
-  text-align: center;
-  border: none;
-  font-size: 20px;
-  outline: none;
-`
-
-const InputsContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-`
-
-const Title = styled.h1`
-  color: #717197;
-  font-size: 13px;
-  font-family: "open sans";
-  margin: 8px 9px 0 9px;
-`
+import { setSixDigitCode } from "../../../state/store/slice/layoutSlice"
 
 const VerificationInput = () => {
   const dispatch = useDispatch()

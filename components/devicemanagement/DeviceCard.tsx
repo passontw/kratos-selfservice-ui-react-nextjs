@@ -37,7 +37,7 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
         title: "Log out on this device",
         titleHeight: "56px",
         width: 480,
-        height: 218,
+        // height: 218,
         center: true,
         children: <DeviceLogoutConfirm confirmLogout={onLogout} />,
       }),

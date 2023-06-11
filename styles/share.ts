@@ -67,7 +67,7 @@ export const StyledMenuWrapper = styled.div`
   }
 `
 
-// [right] login main Terms of ServicePrivacy Policy
+// [right] login main Terms of Use Privacy Policy
 export const StyledWrapper = styled.div`
   display: none;
   @media only screen and (min-width: 600px) {
@@ -174,13 +174,10 @@ export const StyledDefaultInput = styled.div`
     -webkit-box-shadow: 0 0 0 1000px #37374F inset !important;
     -webkit-text-fill-color: white !important;
   }
-
-  
   input {
     padding: ${(props) =>
       props.isInputLabel ? "12px 16px 12px 82px" : "12px 16px"};
-  } 
-}
+  }
 `
 export const StyledDefaultLabel = styled.label`
   font-family: "Open Sans";

@@ -65,7 +65,7 @@ const Verification: NextPage = (props) => {
         title: "Delete Account",
         titleHeight: "56px",
         width: 480,
-        height: 238,
+        // height: 238,
         center: true,
         children: <DeleteAccConfirm confirmDelete={props.deleteAccount} />,
       }),
@@ -303,9 +303,27 @@ const Verification: NextPage = (props) => {
         p="0 32px 32px 32px"
         borderRadius="12px"
         position="fixed"
-        top="35vh"
+        top="25vh"
         left="50%"
-        marginLeft="-219px"
+        marginLeft="-250px"
+        zIndex={2}
+        sx={{
+          "@media screen and (max-width: 530px)": {
+            left: "20px",
+            marginLeft: "0",
+            width: "78%",
+          },
+          "@media screen and (max-width: 460px)": {
+            left: "20px",
+            marginLeft: "0",
+            width: "76%",
+          },
+          "@media screen and (max-width: 390px)": {
+            left: "20px",
+            marginLeft: "0",
+            width: "73%",
+          },
+        }}
       >
         <Head>
           <title>Verify your account - Ory NextJS Integration Example</title>
@@ -333,6 +351,35 @@ const Verification: NextPage = (props) => {
             hideGlobalMessages={isEmpty(flow?.ui?.messages)}
             code={sixDigitCode}
           />
+            <Box position="relative" display="flex" justifyContent="end" marginRight="120px">
+              <Box
+                width="95px"
+                height="42px"
+                bgcolor="transparent"
+                border="1px solid #C0C0C0"
+                borderRadius="8px"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                color="#C0C0C0"
+                fontFamily="open sans"
+                fontSize="16px"
+                right="140px"
+                mt="50px"
+                sx={{
+                  cursor: "pointer",
+                  "&:hover": {
+                    filter: "brightness(0.9)",
+                  },
+                }}
+                onClick={(e) => {
+                  close()
+                  window.location.reload()
+                }}
+              >
+              Cancel
+              </Box>
+            </Box>
         </Box>
       </Box>
     </Box>

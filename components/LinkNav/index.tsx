@@ -11,7 +11,7 @@ import {
 const LinkNav = () => {
     return (
       <StyledNav>
-        <StyledLink target="_blank" href='./termsofuseagreement'>Terms of Service</StyledLink>
+        <StyledLink target="_blank" href='./termsofuseagreement'>Terms of Use</StyledLink>
         <StyledLine />
         <StyledLink target="_blank" href='./privacypolicy'>Privacy Policy</StyledLink>
       </StyledNav>

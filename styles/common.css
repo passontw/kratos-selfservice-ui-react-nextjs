@@ -109,6 +109,16 @@ input:-internal-autofill-selected {
     min-width: 560px;
   }
 }
+@media only screen and (max-width: 450px) {
+  .Toastify__toast-container {
+    padding: 20px !important;
+  }
+  .Toastify__toast {
+    border-radius: 8px !important;
+  }
+}
+
+/* Mn567890 */
 
 .my-text-input {
   margin-top: 8px;

@@ -31,7 +31,7 @@ const StyledForm = styled("div")(({ theme }) => ({
     flexFlow: "wrap",
     width: "100%",
     justifyContent: "center",
-    height: "683px",
+    height: "760px",
   },
 }))
 
@@ -73,7 +73,7 @@ const StyledProfileImageWrap = styled("div")(({ theme }) => ({
   width: "168px",
   [theme.breakpoints.down("sm")]: {
     margin: "auto",
-    width: "100px",
+    // width: "100px",
   },
 }))
 

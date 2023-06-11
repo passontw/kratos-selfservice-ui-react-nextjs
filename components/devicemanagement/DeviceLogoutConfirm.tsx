@@ -17,40 +17,38 @@ const DeviceLogoutConfirm: React.FC<DeviceLogoutConfirmProps> = ({
   return (
     <Box>
       <Text my={"5px"}>
-        This will remove access to your CMID account from the device.
+        This will remove access to your Master ID account from the device.
       </Text>
-      <Box>
+      <Box display="flex" gap="14px" flexDirection="row-reverse"> 
         <Box
-          width="95px"
-          height="44px"
-          color="#FFF"
-          fontSize="16px"
-          fontFamily="open sans"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          bgcolor="#A62BC3"
-          borderRadius="8px"
-          position="absolute"
-          right="30px"
-          mt="25px"
-          sx={{
-            cursor: "pointer",
-            "&:hover": {
-              filter: "brightness(0.9)",
-            },
-          }}
-          onClick={() => {
-            confirmLogout?.()
-            close?.()
-          }}
-        >
-          Log out
-        </Box>
+            width="95px"
+            height="44px"
+            color="#FFF"
+            fontSize="16px"
+            fontFamily="open sans"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            bgcolor="#A62BC3"
+            borderRadius="8px"
+            right="30px"
+            mt="25px"
+            sx={{
+              cursor: "pointer",
+              "&:hover": {
+                filter: "brightness(0.9)",
+              },
+            }}
+            onClick={() => {
+              confirmLogout?.()
+              close?.()
+            }}
+          >
+            Log out
+        </Box> 
         <Box
           width="95px"
           height="42px"
-          position="absolute"
           bgcolor="transparent"
           border="1px solid #C0C0C0"
           borderRadius="8px"

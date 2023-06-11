@@ -25,6 +25,7 @@ const Launch: React.FC<LaunchProps> = () => {
         justifyContent={{ xs: "center", sm: "left" }}
         width="100%"
         gap="16px"
+        zIndex={1}
         padding={{ xs: "35px 0px 0px", sm: "48px 0px 0px 48px" }}
       >
         <Cmid />
@@ -42,7 +43,7 @@ const Launch: React.FC<LaunchProps> = () => {
         style={{
           position: "absolute",
           background:
-            "linear-gradient(180deg, rgba(29, 29, 40, 0.2) -23.39%, #1D1D28 50%);",
+            "linear-gradient(180deg, rgba(29, 29, 40, 0.2) -23.39%, #1D1D28 50%)",
           height: "100vh",
           width: "100vw",
         }}
@@ -57,16 +58,6 @@ const Launch: React.FC<LaunchProps> = () => {
           <Box display="flex" gap="26px">
             <Box display="flex" alignItems="center">
               <Dana />
-            </Box>
-            <Box
-              color="#FFF"
-              fontSize="48px"
-              fontFamily="Teko"
-              textAlign="center"
-              fontWeight="600"
-              pt="5px"
-            >
-              D.A.N.A
             </Box>
           </Box>
           <Box
@@ -86,8 +77,10 @@ const Launch: React.FC<LaunchProps> = () => {
             width="450px"
             textAlign="center"
           >
-            Click “Open” on browser alert to continue using. If your application
-            didn’t response, please click below button.{" "}
+            <Box>Click “Open” on browser alert to continue using.</Box>
+            <Box>
+              If your application didn’t response, please click below button.
+            </Box>
           </Box>
           <Box
             mt="48px"
@@ -101,11 +94,17 @@ const Launch: React.FC<LaunchProps> = () => {
             color="#FFFFFF"
             fontFamily="open sans"
             fontSize="16px"
+            onClick={() => {
+              router.push("dana://token=login")
+            }}
             sx={{
               cursor: "pointer",
+              "&:hover": {
+                filter: "brightness(0.9)",
+              },
             }}
           >
-            Open D.A.N.A
+            Open MasterControl
           </Box>
         </Box>
       </div>

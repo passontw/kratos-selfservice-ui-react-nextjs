@@ -133,17 +133,21 @@ const Account: NextPage = () => {
               if (!isEmpty(linkAttributesNames)) {
                 if (linkAttributesNames.googleAttributesName !== googleAttributesName) {
                   if (googleAttributesName === "unlink") {
-                    alert("google linked");
+                    // alert("google linked");
+                    showToast("google linked")
                   } else {
-                    alert("google unlinked");
+                    // alert("google unlinked");
+                    showToast("google unlinked")
                   }
                 }
 
                 if (linkAttributesNames.appleAttributesName !== appleAttributesName) {
                   if (appleAttributesName === "unlink") {
-                    alert("apple linked");
+                    // alert("apple linked");
+                    showToast("apple linked")
                   } else {
-                    alert("apple unlinked");
+                    // alert("apple unlinked");
+                    showToast("apple unlinked")
                   }
                 }
               }
@@ -253,9 +257,11 @@ const Account: NextPage = () => {
 
               if (linkAttributesNames.appleAttributesName !== appleAttributesName) {
                 if (appleAttributesName === "unlink") {
-                  alert("apple linked");
+                  // alert("apple linked");
+                  showToast("apple linked")
                 } else {
-                  alert("apple unlinked");
+                  // alert("apple unlinked");
+                  showToast("apple unlinked")
                 }
               }
             }
@@ -280,7 +286,10 @@ const Account: NextPage = () => {
           <Box
             color="#717197"
             fontFamily="open sans"
-            fontSize="22px"
+            fontSize={{
+              sm: "22px",
+              xs: "18px",
+            }}
             marginTop={{
               sm: "48px",
               xs: "24px",
@@ -308,7 +317,10 @@ const Account: NextPage = () => {
           />
         </SettingsCard>
         <SettingsCard only="profile" flow={flow}>
-          <Box color="#717197" fontFamily="open sans" fontSize="22px" mt="36px">
+          <Box color="#717197" fontFamily="open sans" fontSize={{
+              sm: "22px",
+              xs: "18px",
+            }} mt="36px">
             2-step Verification
           </Box>
           <Box
@@ -333,12 +345,15 @@ const Account: NextPage = () => {
           />
         </SettingsCard>
         <SettingsCard only="profile" flow={flow}>
-          <Box color="#717197" fontFamily="open sans" fontSize="22px" mt="36px">
+          <Box color="#717197" fontFamily="open sans" fontSize={{
+              sm: "22px",
+              xs: "18px",
+            }} mt="36px">
             Account Management
           </Box>
           <Box
             mt="12px"
-            height="74px"
+            height={{ xs: "64px", md: "74px" }}
             bgcolor="#272735"
             borderRadius="12px"
             display="flex"
@@ -347,6 +362,7 @@ const Account: NextPage = () => {
           >
             <Box
               display="flex"
+              alignItems="center"
               gap="15px"
               width="fit-content"
               onClick={() => {
@@ -361,7 +377,10 @@ const Account: NextPage = () => {
               <Box pt="1.5px">
                 <Bin />
               </Box>
-              <Box color="#F24867" fontSize="20px" fontFamily="open sans">
+              <Box color="#F24867" fontSize={{
+                  sm: "20px",
+                  xs: "16px",
+                }} fontFamily="open sans">
                 Delete my account
               </Box>
             </Box>
