@@ -122,10 +122,14 @@ const Registration: NextPage = () => {
                   })
               })
               .then(({ data }) => {
-                localStorage.setItem(localStorageKey, JSON.stringify(values))
+                localStorage.setItem(localStorageKey, JSON.stringify(values));
                 window.location.href = `/verification?${queryString.stringify(
-                  router.query,
-                )}&user=${values["traits.email"]}&type=registe`
+                  {
+                    ...router.query,
+                    user: values["traits.email"],
+                    type: "registe",
+                  }
+                )}`
                 return
               })
               .catch(handleFlowError(router, "registration", setFlow))

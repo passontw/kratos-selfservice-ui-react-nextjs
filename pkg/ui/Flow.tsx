@@ -22,6 +22,7 @@ import { StyledMenuLine } from "../../styles/share"
 
 import { Messages } from "./Messages"
 import { Node } from "./Node"
+import queryString from "query-string"
 
 export type Values = Partial<
   | UpdateLoginFlowBody
@@ -216,7 +217,8 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   }
 
   render() {
-    const { hideGlobalMessages, flow } = this.props
+    const { hideGlobalMessages, flow, router } = this.props
+    console.log("🚀 ~ file: Flow.tsx:220 ~ Flow<T ~ render ~ flow:", flow)
     const { values, isLoading } = this.state
 
     // Filter the nodes - only show the ones we want
@@ -230,7 +232,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       return null
     }
 
-    if (this.props.router?.pathname === "/registration") {
+    if (router?.pathname === "/registration") {
 
       const list = ["Name", "E-Mail", "Password", "Sign up"]
       nodes = nodes
@@ -255,6 +257,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     }
 
     const showGlobalMessages = getShowGlobalMessages();
+    const isLoginPath = router?.pathname === "/login";
     return (
       <form
         action={flow.ui.action}
@@ -347,14 +350,20 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 },
               }}
               onClick={() => {
-                const redirrectPath =
-                  this.props.router?.pathname === "/login"
-                    ? "/registration"
-                    : "/login"
-                this.props.router.push(redirrectPath)
+                const {router, flow} = this.props;
+                console.log("🚀 ~ file: Flow.tsx:351 ~ Flow<T ~ render ~ flow:", flow)
+                if (isLoginPath) {
+                  if(isEmpty(flow?.oauth2_login_request)) {
+                    return router.push("/registration");
+                  }
+                  const queryStr = flow?.oauth2_login_request.request_url.split('?')[1]
+                  const oauth2Query = queryString.parse(queryStr)
+                  return router.push(`/registration?return_to=${oauth2Query.return_to}`);
+                }
+                return router.push('/login');
               }}
             >
-              {this.props.router?.pathname === "/login" ? " Sign up" : " Login"}
+              {isLoginPath ? " Sign up" : " Login"}
             </Box>
           </Box>
         )}

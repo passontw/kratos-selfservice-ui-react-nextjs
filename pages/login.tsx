@@ -34,9 +34,6 @@ import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 import { StyledMenuWrapper } from "./../styles/share"
 
 const localStorageKey = "!@#$%^&*()data"
-const registeLocalStorageKey = "!@#$%^&*()registedata"
-
-const { NEXT_PUBLIC_REDIRECT_URI } = process.env
 
 const getSessionData = async () => {
   try {
@@ -47,30 +44,26 @@ const getSessionData = async () => {
 }
 
 const validateLoginFlow = async (router, options) => {
-  const { login_challenge, refresh, aal, setFlow } = options
-  console.log("🚀 ~ file: login.tsx:51 ~ validateLoginFlow ~ login_challenge:", login_challenge)
+  const { login_challenge, refresh, aal, returnTo, setFlow } = options
 
   try {
     const sessionData = await getSessionData()
-    console.log("🚀 ~ file: login.tsx:54 ~ validateLoginFlow ~ sessionData:", sessionData)
-    // if (isEmpty(sessionData) ) {
-    //   const { data } = await ory.createBrowserLoginFlow({
-    //     refresh: Boolean(refresh),
-    //     aal: aal ? String(aal) : undefined,
-    //     returnTo: Boolean(login_challenge)
-    //       ? NEXT_PUBLIC_REDIRECT_URI
-    //       : "/profile",
-    //   })
+    if (isEmpty(sessionData) ) {
+      const { data } = await ory.createBrowserLoginFlow({
+        refresh: Boolean(refresh),
+        aal: aal ? String(aal) : undefined,
+        returnTo: returnTo || "/profile",
+      })
 
-    //   if (router.query.login_challenge) {
-    //     data.oauth2_login_challenge = router.query.login_challenge as string
-    //   }
-    //   setFlow(data)
-    // } else {
-    //   const nextUri = "/profile"
-    //   router.push(nextUri)
-    //   return
-    // }
+      if (router.query.login_challenge) {
+        data.oauth2_login_challenge = router.query.login_challenge as string
+      }
+      setFlow(data)
+    } else {
+      const nextUri = "/profile"
+      router.push(nextUri)
+      return
+    }
   } catch (error) {
     handleFlowError(router, "login", setFlow)
   }
@@ -158,7 +151,6 @@ const Login: NextPage = () => {
         returnTo: returnTo ? String(returnTo) : undefined,
       })
       .then(({ data }) => {
-        console.log("🚀 ~ file: login.tsx:163 ~ .then ~ data:", data)
         if (router.query.login_challenge) {
           data.oauth2_login_challenge = router.query.login_challenge as string
         }
