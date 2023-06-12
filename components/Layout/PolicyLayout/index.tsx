@@ -19,7 +19,10 @@ const PrivacyPolicyLayout: React.FC<PrivacyPolicyLayoutProps> = ({
 }) => {
   return (
     <StyledWrapper>
-      <Box display="flex" flexDirection="column" width="800px">
+      <Box display="flex" flexDirection="column" width={{
+          xs: "80%",
+          md: "800px",
+        }}>
         <Box
           display="flex"
           alignItems="center"
