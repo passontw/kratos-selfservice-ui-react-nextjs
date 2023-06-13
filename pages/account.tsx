@@ -307,7 +307,7 @@ const Account: NextPage = () => {
             Connect your account with one of these third parties to sign in
             quickly and easily.
           </Box>
-          <Messages messages={flow?.ui.messages} />
+          {/* <Messages messages={flow?.ui.messages} /> */}
           <Flow
             hideGlobalMessages
             onSubmit={onSubmit}
