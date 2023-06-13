@@ -6,11 +6,8 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
-import { showToast } from "../components/Toast"
-import RecoveryProcess from "../components/changepassword/RecoveryProcess"
 import { DocsButton, MarginCard, LogoutLink } from "../pkg"
 import ory from "../pkg/sdk"
-import { setDialog } from "../state/store/slice/layoutSlice"
 
 const Home: NextPage = () => {
   const [session, setSession] = useState<string>(
@@ -48,18 +45,13 @@ const Home: NextPage = () => {
       })
   }, [router])
 
-  const openDialog = () => {
-    dispatch(
-      setDialog({
-        title: "Modal Name",
-        titleHeight: "30px",
-        width: 480,
-        height: 358,
-        center: true,
-        children: <RecoveryProcess />,
-      }),
-    )
-  }
+  useEffect(() => {
+    if (hasSession) {
+      router.push("/profile")
+    } else {
+      router.push("/login")
+    }
+  }, []);
 
   return (
     <div className={"container-fluid"}>
@@ -68,7 +60,7 @@ const Home: NextPage = () => {
         <meta name="description" content="NextJS + React + Vercel + Ory" />
       </Head>
 
-      <MarginCard wide>
+      {/* <MarginCard wide>
         <CardTitle>Welcome to Ory! - Cooler Master</CardTitle>
         <div className="row">
           <div className="col-md-8 col-xs-12">
@@ -86,10 +78,6 @@ const Home: NextPage = () => {
 
       <Card wide>
         <div className={"row"}>
-          <button onClick={() => openDialog()}>open modal</button>
-          <button onClick={() => showToast("Password changed")}>
-            show toast
-          </button>
           <DocsButton
             unresponsive
             testid="login"
@@ -132,7 +120,7 @@ const Home: NextPage = () => {
             title={"Logout"}
           />
         </div>
-      </Card>
+      </Card> */}
     </div>
   )
 }
