@@ -9,6 +9,7 @@ import { useRouter } from "next/router"
 import queryString from "query-string"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { Ring } from '@uiball/loaders'
 
 import ory from "../../pkg/sdk"
 import {
@@ -340,17 +341,33 @@ const Verification: NextPage = (props) => {
               Delete Account
             </Text>
           </Box>
-
-          <Text>
-            Enter the 6-digit code we sent to <span>{email}</span> to finish the
-            deletion process.
-          </Text>
-          <Flow
-            onSubmit={onSubmit}
-            flow={flow}
-            hideGlobalMessages={isEmpty(flow?.ui?.messages)}
-            code={sixDigitCode}
-          />
+          { console.log('flow', flow?.state) }
+          {flow?.state === 'sent_email' ? 
+            <Box>
+              <Text>
+                Enter the 6-digit code we sent to <span>{email}</span> to finish the
+                deletion process.
+              </Text>
+              <Flow
+                onSubmit={onSubmit}
+                flow={flow}
+                hideGlobalMessages={isEmpty(flow?.ui?.messages)}
+                code={sixDigitCode}
+              />
+            </Box> : 
+            <Box 
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="90px">
+              <Ring 
+                size={40}
+                lineWeight={5}
+                speed={2} 
+                color="#A62BC3" 
+              />
+            </Box>}
+            {flow?.state === 'sent_email' && 
             <Box position="relative" display="flex" justifyContent="end" marginRight="120px">
               <Box
                 width="95px"
@@ -379,7 +396,7 @@ const Verification: NextPage = (props) => {
               >
               Cancel
               </Box>
-            </Box>
+            </Box>}
         </Box>
       </Box>
     </Box>
