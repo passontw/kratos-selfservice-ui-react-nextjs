@@ -417,7 +417,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
             >
               <Google />
             </Button>
-            <Button
+            {/* <Button
               name="provider"
               value="apple"
               disabled={false}
@@ -433,7 +433,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
               }}
             >
               <Apple />
-            </Button>
+            </Button> */}
           </Box>
         )}
       </form>
