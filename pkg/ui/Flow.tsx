@@ -190,7 +190,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       // when multiple submit buttons are present, the clicked one's value is used.
       if (hasSubmitter(event.nativeEvent)) {
         const method = event.nativeEvent.submitter
-        alert(method.value)
+        // alert(method.value)
         body = {
           ...body,
           ...{ [method.name]: method.value },
