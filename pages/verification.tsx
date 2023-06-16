@@ -64,7 +64,7 @@ const Verification: NextPage = () => {
   } = router.query
 
   const email = router.query.user as string
-
+  const returnToUrl = getReturnToUrl(returnTo, type);
   useEffect(() => {
     dispatch(setActiveNav(Navs.VERIFICATION))
   }, [])
@@ -149,7 +149,7 @@ const Verification: NextPage = () => {
     // Otherwise we initialize it
     ory
       .createBrowserVerificationFlow({
-        returnTo: getReturnToUrl(returnTo, type),
+        returnTo: returnToUrl,
       })
       .then(({ data }) => {
         setFlow(data)
@@ -266,7 +266,7 @@ const Verification: NextPage = () => {
             aal: aal ? String(aal) : undefined,
             returnTo: Boolean(login_challenge)
               ? NEXT_PUBLIC_REDIRECT_URI
-              : '/profile',
+              : returnToUrl,
           }).then(({ data }) => {
             const csrfNode = data.ui.nodes.find(node => node.attributes.name === "csrf_token")
             const nextValues = type === 'registe'
@@ -283,11 +283,11 @@ const Verification: NextPage = () => {
               }).then(() => flow)
           }).then(flow => {
             if (type !== 'registe') {
-              router.replace("/profile")
+              router.replace(returnToUrl)
               return;
             }
             if (type === 'registe') {
-              setTimeout(() => router.replace("/profile"), 2000)
+              setTimeout(() => router.replace(returnToUrl), 2000)
               return;
             }
 

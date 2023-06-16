@@ -72,7 +72,6 @@ function DropdownComponent() {
           zIndex={1}
           onClick={() => {
             onLogout();
-            window.location.replace("/login");
           }}
           sx={{
             cursor: "pointer",
@@ -91,7 +90,6 @@ function DropdownComponent() {
             fontWeight="600"
             onClick={() => {
               onLogout();
-              window.location.replace("/login");
             }}
           >
             Log Out

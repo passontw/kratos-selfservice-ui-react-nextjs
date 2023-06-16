@@ -31,7 +31,7 @@ const StyledForm = styled("div")(({ theme }) => ({
     flexFlow: "wrap",
     width: "100%",
     justifyContent: "center",
-    height: "683px",
+    height: "760px",
   },
 }))
 

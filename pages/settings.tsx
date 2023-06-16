@@ -181,6 +181,7 @@ const Settings: NextPage = () => {
         width="100%"
         gap="16px"
         padding={{ xs: "35px 0px 0px", sm: "48px 0px 0px 48px" }}
+        zIndex={1}
       >
         <Cmid />
         <Box
@@ -221,6 +222,9 @@ const Settings: NextPage = () => {
       </div>
       <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
       <LinkNav />
+      <div className="background-wrapper">
+        <div className="overlay-image"></div>
+      </div>
     </>
   )
 }

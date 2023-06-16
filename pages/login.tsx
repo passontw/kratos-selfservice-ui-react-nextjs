@@ -34,9 +34,6 @@ import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 import { StyledMenuWrapper } from "./../styles/share"
 
 const localStorageKey = "!@#$%^&*()data"
-const registeLocalStorageKey = "!@#$%^&*()registedata"
-
-const { NEXT_PUBLIC_REDIRECT_URI } = process.env
 
 const getSessionData = async () => {
   try {
@@ -47,17 +44,15 @@ const getSessionData = async () => {
 }
 
 const validateLoginFlow = async (router, options) => {
-  const { login_challenge, refresh, aal, setFlow } = options
+  const { login_challenge, refresh, aal, returnTo, setFlow } = options
 
   try {
     const sessionData = await getSessionData()
-    if (isEmpty(sessionData)) {
+    if (isEmpty(sessionData) ) {
       const { data } = await ory.createBrowserLoginFlow({
         refresh: Boolean(refresh),
         aal: aal ? String(aal) : undefined,
-        returnTo: Boolean(login_challenge)
-          ? NEXT_PUBLIC_REDIRECT_URI
-          : "/profile",
+        returnTo: returnTo || "/profile",
       })
 
       if (router.query.login_challenge) {
@@ -149,19 +144,19 @@ const Login: NextPage = () => {
     validateLoginFlow(router, options)
 
     // Otherwise we initialize it
-    // ory
-    //   .createBrowserLoginFlow({
-    //     refresh: Boolean(refresh),
-    //     aal: aal ? String(aal) : undefined,
-    //     returnTo: returnTo ? String(returnTo) : undefined,
-    //   })
-    //   .then(({ data }) => {
-    //     if (router.query.login_challenge) {
-    //       data.oauth2_login_challenge = router.query.login_challenge as string
-    //     }
-    //     setFlow(data)
-    //   })
-    //   .catch(handleFlowError(router, "login", setFlow))
+    ory
+      .createBrowserLoginFlow({
+        refresh: Boolean(refresh),
+        aal: aal ? String(aal) : undefined,
+        returnTo: returnTo ? String(returnTo) : undefined,
+      })
+      .then(({ data }) => {
+        if (router.query.login_challenge) {
+          data.oauth2_login_challenge = router.query.login_challenge as string
+        }
+        setFlow(data)
+      })
+      .catch(handleFlowError(router, "login", setFlow))
   }, [flowId, router, router.isReady, aal, refresh, returnTo, flow])
 
   const doConsentProcess = async (login_challenge: string, subject: string) => {

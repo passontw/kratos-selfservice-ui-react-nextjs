@@ -18,8 +18,11 @@ const StyledBold = styled("span")(() => ({
   fontWeight: "700",
 }))
 
-const StyledContent = styled("div")(() => ({
+const StyledContent = styled("div")(({ theme }) => ({
   paddingLeft: "50px",
+  [theme.breakpoints.down("sm")]: {
+    paddingLeft: "20px",
+  },
 }))
 
 const StyledUpperCase = styled("div")(() => ({
