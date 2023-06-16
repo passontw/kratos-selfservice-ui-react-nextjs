@@ -25,6 +25,8 @@ import { StyledMenuWrapper } from "../styles/share"
 import { Navs } from "../types/enum"
 import { registrationFormSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
+import { useTranslation } from "next-i18next"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 const localStorageKey = "!@#$%^&*()registedata"
 
@@ -51,6 +53,10 @@ const getNextFlow = (flow) => {
 const Registration: NextPage = () => {
   const router = useRouter()
   const dispatch = useDispatch()
+  const { t } = useTranslation('common')
+  const lang = {
+    password: t('password'),
+  }
 
   useEffect(() => {
     localStorage.removeItem(localStorageKey)
@@ -271,7 +277,7 @@ const Registration: NextPage = () => {
           <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
             Join us
           </Box>
-          <Flow onSubmit={onSubmit} flow={nextFlow} router={router} />
+          <Flow onSubmit={onSubmit} flow={nextFlow} router={router} lang={lang} />
           {/* Moblie Terms Start */}
           <Box
             mt="30px"
@@ -337,3 +343,9 @@ const Registration: NextPage = () => {
 }
 
 export default Registration
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {...(await serverSideTranslations(locale, ['common']))},
+  }
+}

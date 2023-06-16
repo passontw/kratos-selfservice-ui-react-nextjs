@@ -62,6 +62,7 @@ export type Props<T> = {
   // hide social login options
   hideSocialLogin?: boolean
   code?: string
+  lang?: any
 }
 
 function emptyState<T>() {
@@ -218,7 +219,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   }
 
   render() {
-    const { hideGlobalMessages, flow, router } = this.props
+    const { hideGlobalMessages, flow, router, lang } = this.props
     const { values, isLoading } = this.state
 
     // Filter the nodes - only show the ones we want
@@ -280,9 +281,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           }
 
           // grab the pathname remove the slash and type it to be a key of excludedFields
-          const pathname = window.location.pathname.slice(
-            1,
-          ) as keyof typeof excludedFields
+          const pathname = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1) as keyof typeof excludedFields
 
           // filter all nodes that are in the excludedFields belonging to this path route
           if (excludedFields[pathname]?.includes(node.attributes.name)) return
@@ -306,6 +305,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 value={
                   getNodeId(node) === "code" ? this.props.code : values[id]
                 }
+                lang={lang}
                 dispatchSubmit={this.handleSubmit}
                 setValue={(value) =>
                   new Promise((resolve) => {
@@ -334,7 +334,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           <Box
             mt="8px"
             mb="38px"
-            // textAlign="center"
             color="#A5A5A9"
             fontSize="14px"
             fontFamily="open sans"
@@ -343,9 +342,8 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
             gap="4px"
           >
             <Box>
-              {" "}
               {this.props.router?.pathname === "/login"
-                ? "Don’t have an account?"
+                ? `${lang?.noAccount}?`
                 : "Already have an account?"}
             </Box>
 
@@ -371,7 +369,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 return router.push('/login');
               }}
             >
-              {isLoginPath ? " Sign up" : " Login"}
+              {isLoginPath ? ` ${lang?.signUp}` : " Login"}
             </Box>
           </Box>
         )}
@@ -385,9 +383,8 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           >
             <StyledMenuLine>
               <span className="text">
-                {" "}
                 {this.props.router?.pathname === "/login"
-                  ? "Or login with other accounts"
+                  ? lang?.loginDiffAccount
                   : "Or sign up with other accounts"}
               </span>
             </StyledMenuLine>

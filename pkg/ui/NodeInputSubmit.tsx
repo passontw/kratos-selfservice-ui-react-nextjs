@@ -27,6 +27,7 @@ export function NodeInputSubmit<T>({
   node,
   attributes,
   disabled,
+  lang
 }: NodeInputProps) {
   const dispatch = useDispatch()
   const codeLocked = useSelector(selectLockCodeResend)
@@ -117,7 +118,7 @@ export function NodeInputSubmit<T>({
       : getNodeLabel(node) === "Resend code"
       ? "Resend"
       : getNodeLabel(node) === "Sign in"
-      ? "Login"
+      ? lang.login
       : getNodeLabel(node)
 
   const handleClick = () => {

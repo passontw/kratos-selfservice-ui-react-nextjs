@@ -10,6 +10,7 @@ import { Provider } from "react-redux"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { createGlobalStyle } from "styled-components"
+import { appWithTranslation } from "next-i18next"
 
 import PopupLayout from "../components/Layout/PopupLayout"
 import store from "../state/store"
@@ -53,4 +54,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   )
 }
 
-export default MyApp
+export default appWithTranslation(MyApp)

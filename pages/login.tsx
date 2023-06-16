@@ -32,6 +32,8 @@ import { loginFormSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 
 import { StyledMenuWrapper } from "./../styles/share"
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { useTranslation } from "next-i18next"
 
 const localStorageKey = "!@#$%^&*()data"
 
@@ -73,6 +75,19 @@ const Login: NextPage = () => {
   const [flow, setFlow] = useState<LoginFlow>()
   const dispatch = useDispatch()
   const accountDeleted = useSelector(selectAccountDeleted)
+  const { t } = useTranslation('common')
+  const lang = {
+    login: t('login'),
+    email: t('email'),
+    password: t('password'),
+    noAccount: t('dont_have_acct'),
+    welcomeBack: t('welcomeback'),
+    forgotPw: t('forgot_pw'),
+    signUp: t('signup'),
+    loginDiffAccount: t('login_diff_acct'),
+    termsOfUse: t('terms_of_use'),
+    privacyPolicy: t('privacy_policy'),
+  }
 
   useEffect(() => {
     if (accountDeleted) {
@@ -386,15 +401,15 @@ const Login: NextPage = () => {
             <CmidHead />
           </Box>
           <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
-            Welcome back
+            {lang.welcomeBack}
           </Box>
           {router.query.error && (
             <p style={{ color: "red" }}>{router.query.error}</p>
           )}
-          <Flow onSubmit={onSubmit} flow={flow} router={router} />
+          <Flow onSubmit={onSubmit} flow={flow} router={router} lang={lang}/>
           <MenuTag />
         </StyledMenuWrapper>
-        <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
+        <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." lang={lang} />
       </div>
       <AppsList />
     </>
@@ -402,3 +417,9 @@ const Login: NextPage = () => {
 }
 
 export default Login
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {...(await serverSideTranslations(locale, ['common']))},
+  }
+}

@@ -32,14 +32,17 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   const dispatch = useDispatch()
   const nav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
-  const { node, attributes, value, setValue, disabled, validationMsgs } = props
+  const { node, attributes, value, setValue, disabled, validationMsgs, lang } = props
+  console.log(lang)
   const label =
     node.meta.label?.text === "ID"
-      ? "Email"
+      ? lang?.email
       : node.meta.label?.text === "Name"
       ? "Username"
       : node.meta.label?.text === "E-Mail"
       ? "Email"
+      : node.meta.label?.text === "Password"
+      ? lang?.password
       : node.meta.label?.text
   const [isError, setIsError] = useState(node.messages.length > 0)
   const [inputType, setInputType] = useState(attributes.type)
@@ -235,7 +238,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             router.push("/recovery")
           }}
         >
-          Forgot Password?
+          {`${lang?.forgotPw}`}
         </Box>
       )}
       {attributes.name === "password" && nav === "REGISTER" && !isError && (
