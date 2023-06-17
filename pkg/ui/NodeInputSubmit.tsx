@@ -22,6 +22,7 @@ import {
 import { Navs, Stage } from "../../types/enum"
 
 import { NodeInputProps } from "./helpers"
+import { useTranslation } from "next-i18next"
 
 export function NodeInputSubmit<T>({
   node,
@@ -30,6 +31,7 @@ export function NodeInputSubmit<T>({
   lang
 }: NodeInputProps) {
   const dispatch = useDispatch()
+  const { t } = useTranslation()
   const codeLocked = useSelector(selectLockCodeResend)
   const activeNav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
@@ -108,7 +110,6 @@ export function NodeInputSubmit<T>({
   }
 
   console.log(getNodeLabel(node))
-  console.log(lang?.save)
   const buttonText =
       deleteAccount
       ? "Continue"
@@ -124,7 +125,7 @@ export function NodeInputSubmit<T>({
       : getNodeLabel(node) === "Sign up"
       ? lang?.signUp
       : getNodeLabel(node) === "Save"
-      ? lang?.save || "Save"
+      ? lang?.save || t('save') || "Save"
       : getNodeLabel(node)
 
   const handleClick = () => {

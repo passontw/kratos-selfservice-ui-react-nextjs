@@ -26,6 +26,7 @@ import { SelectOption } from "../../types/general"
 import { CenterLink } from "../styled"
 
 import { NodeInputProps } from "./helpers"
+import { useTranslation } from "next-i18next"
 
 export function NodeInputDefault<T>(props: NodeInputProps) {
   const router = useRouter()
@@ -33,7 +34,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   const nav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
   const { node, attributes, value, setValue, disabled, validationMsgs, lang } = props
-  console.log(lang)
+  const { t } = useTranslation()
   const label =
   node.meta.label?.text === "ID"
   ? lang?.email
@@ -72,18 +73,17 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     }
   }
 
-  console.log(lang)
   const genderRadios = [
     {
-      label: "Male",
+      label: t('gender-male') || "Male",
       value: 1,
     },
     {
-      label: "Female",
+      label: t('gender-female') || "Female",
       value: 2,
     },
     {
-      label: "Undisclosed",
+      label: t('gender-undisclosed') || "Undisclosed",
       value: 3,
     },
   ]
@@ -262,7 +262,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           >
             <RadioGroup
               value={gender}
-              label="Gender"
+              label={t('gender') || "Gender"}
               onChange={(e) => {
                 setGender(e.target.value)
                 setValue(e.target.value)

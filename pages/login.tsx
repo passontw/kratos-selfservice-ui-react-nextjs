@@ -70,7 +70,7 @@ const validateLoginFlow = async (router, options) => {
   }
 }
 
-const Login: NextPage = (props) => {
+const Login: NextPage = (props : any) => {
   const { lang } = props
   const [flow, setFlow] = useState<LoginFlow>()
   const dispatch = useDispatch()
