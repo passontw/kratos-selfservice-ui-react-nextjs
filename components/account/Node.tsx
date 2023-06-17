@@ -29,6 +29,7 @@ export const Node = ({
   setValue,
   disabled,
   dispatchSubmit,
+  lang,
   // handleToast,
 }: Props) => {
   if (isUiNodeImageAttributes(node.attributes)) {
@@ -57,6 +58,7 @@ export const Node = ({
         node={node}
         disabled={disabled}
         attributes={node.attributes}
+        lang={lang}
       />
     )
   }

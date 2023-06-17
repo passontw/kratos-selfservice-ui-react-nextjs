@@ -72,6 +72,7 @@ export type Props<T> = {
   onSubmit: (values: T) => Promise<void>
   // Do not show the global messages. Useful when rendering them elsewhere.
   hideGlobalMessages?: boolean
+  lang?: any
 }
 
 function emptyState<T>() {
@@ -206,7 +207,7 @@ export default class Flow<T extends Values> extends Component<
   }
 
   render() {
-    const { hideGlobalMessages, flow } = this.props
+    const { hideGlobalMessages, flow, lang } = this.props
     const { values, isLoading } = this.state
 
     // Filter the nodes - only show the ones we want
@@ -298,7 +299,6 @@ export default class Flow<T extends Values> extends Component<
 
             {/* Temporary placeholder, need to merge with the input above
             when there is actual image upload */}
-            {console.log("@profile flow:", flow)}
 
             <StyledProfileImageWrap>
               <StyledProfileImage src={"/images/profile-demo.jpg"} style={{
@@ -312,7 +312,7 @@ export default class Flow<T extends Values> extends Component<
 
             <StyledImageTitle>{flow?.identity.traits.email}</StyledImageTitle>
             <StyledImageText>
-              Joined since{" "}
+              {`${lang?.joinedSince} `}
               {convertDateString(flow?.identity.created_at.split("T")[0])}
             </StyledImageText>
           </StyledImageUpload>
@@ -332,18 +332,18 @@ export default class Flow<T extends Values> extends Component<
                       topSpacing={node.attributes.name === "traits.phone"}
                     >
                       {node.attributes.name === "traits.name"
-                        ? "Username"
+                        ? lang?.username
                         : node.attributes.name === "traits.phone"
-                        ? "Phone"
+                        ? lang?.phone
                         : ""}
                     </StyledFieldTitle>
-
                     <Node
                       key={`${id}-${k}`}
                       disabled={isLoading}
                       node={node}
                       value={values[id]}
                       dispatchSubmit={this.handleSubmit}
+                      lang={lang}
                       setValue={(value) =>
                         new Promise((resolve) => {
                           this.setState(
@@ -392,7 +392,7 @@ export default class Flow<T extends Values> extends Component<
 
               <StyledFieldSpacer>
                 {/* Birthday Section */}
-                <StyledFieldTitle>Date of Birth</StyledFieldTitle>
+                <StyledFieldTitle>{lang?.birthday}</StyledFieldTitle>
                 <StyledBirthdayWrap>
                   {/* birthdayYear node */}
                   <StyledBirthdayYear>

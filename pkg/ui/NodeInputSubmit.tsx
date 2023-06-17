@@ -108,6 +108,7 @@ export function NodeInputSubmit<T>({
   }
 
   console.log(getNodeLabel(node))
+  console.log(lang?.save)
   const buttonText =
       deleteAccount
       ? "Continue"
@@ -117,13 +118,13 @@ export function NodeInputSubmit<T>({
       getNodeLabel(node) === "Submit"
       ? lang?.verify
       : getNodeLabel(node) === "Resend code"
-      ? lang?.resend
+      ? lang?.resend || 'Resend'
       : getNodeLabel(node) === "Sign in"
       ? lang?.login
       : getNodeLabel(node) === "Sign up"
       ? lang?.signUp
       : getNodeLabel(node) === "Save"
-      ? lang?.save
+      ? lang?.save || "Save"
       : getNodeLabel(node)
 
   const handleClick = () => {
@@ -142,7 +143,7 @@ export function NodeInputSubmit<T>({
         <Box display="flex" justifyContent="center" alignItems="center">
           <Box style={resendStyle}>
             <Box fontFamily="open sans" color="#A5A5A9" fontSize="14px">
-              {`${lang?.didntReceive} ?`}
+              {`${lang?.didntReceive || "Didn't receive"} ?`}
             </Box>
 
             <Button

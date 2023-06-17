@@ -22,6 +22,8 @@ import {
   setActiveStage,
 } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { useTranslation } from "next-i18next"
 
 const linkAttributesNamesKey = "!@#$%^linkAttributesNamesKey";
 
@@ -52,6 +54,11 @@ function SettingsCard({
 
 const Account: NextPage = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslation('common')
+  const lang = {
+    resend: t('resend'),
+    didntReceive: t('didnt_receive'),
+  }
   const [showModal, setShowModal] = useState(false)
   const [flow, setFlow] = useState<SettingsFlow>()
   const router = useRouter()
@@ -313,6 +320,7 @@ const Account: NextPage = () => {
             onSubmit={onSubmit}
             only="oidc"
             flow={flow}
+            lang={lang}
           // handleToast={handleToast}
           />
         </SettingsCard>
@@ -411,3 +419,9 @@ const Account: NextPage = () => {
 }
 
 export default Account
+
+export async function getStaticProps({ locale } : any) {
+  return {
+    props: {...(await serverSideTranslations(locale, ['common']))},
+  }
+}

@@ -30,9 +30,10 @@ import {
 
 interface AccountLayoutProps {
   children: ReactNode
+  lang?: any
 }
 
-const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
+const AccountLayout: React.FC<AccountLayoutProps> = ({ children, lang }) => {
   const activeNav = useSelector(selectActiveNav)
   const dispatch = useDispatch()
 
@@ -40,7 +41,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
     let title = ""
     switch (activeNav) {
       case Navs.PROFILE:
-        title = "Personal Info"
+        title = lang?.personalInfo
         break
       case Navs.ACCOUNT:
         title = "Account Settings"

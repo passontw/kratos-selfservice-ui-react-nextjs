@@ -34,17 +34,16 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   const activeStage = useSelector(selectActiveStage)
   const { node, attributes, value, setValue, disabled, validationMsgs, lang } = props
   console.log(lang)
-  console.log(node.meta.label?.text)
   const label =
-    node.meta.label?.text === "ID"
-      ? lang?.email
-      : node.meta.label?.text === "Name" || node.meta.label?.text === "Username"
-      ? lang?.username
-      : node.meta.label?.text === "E-Mail" || node.meta.label?.text === "Email"
-      ? lang?.email
-      : node.meta.label?.text === "Password"
-      ? lang?.password
-      : node.meta.label?.text
+  node.meta.label?.text === "ID"
+  ? lang?.email
+  : node.meta.label?.text === "Name" || node.meta.label?.text === "Username"
+  ? lang?.username
+  : node.meta.label?.text === "E-Mail" || node.meta.label?.text === "Email"
+  ? lang?.email
+  : node.meta.label?.text === "Password"
+  ? lang?.password
+  : node.meta.label?.text
   const [isError, setIsError] = useState(node.messages.length > 0)
   const [inputType, setInputType] = useState(attributes.type)
 
@@ -73,6 +72,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     }
   }
 
+  console.log(lang)
   const genderRadios = [
     {
       label: "Male",
@@ -127,7 +127,6 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     (nav === Navs.VERIFICATION && activeStage === Stage.NONE)
     || activeStage === Stage.DELETE_ACCOUNT
   // const verifyCodeConditions2 = activeStage === Stage.DELETE_ACCOUNT
-
   // Render a generic text input field.
   return (
     <>
@@ -163,6 +162,8 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
               : (nav === Navs.SETTINGS || nav === Navs.CHANGEPASSWORD) &&
                 attributes.name === "password"
               ? lang?.enterNewPw
+              : attributes.name === "traits.phone"
+              ? lang?.phone
               : label
           }
           // title={node.meta.label?.text}

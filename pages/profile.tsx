@@ -19,6 +19,8 @@ import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { useTranslation } from "next-i18next"
 
 interface Props {
   flow?: SettingsFlow
@@ -47,6 +49,16 @@ function SettingsCard({
 
 const Profile: NextPage = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslation('common')
+  const lang = {
+    personalInfo: t('personal_info'),
+    username: t('username'),
+    phone: t('phone'),
+    gender: t('gender'),
+    birthday: t('birthday'),
+    joinedSince: t('join_since'),
+    save: t('save'),
+  }
   const [flow, setFlow] = useState<RegistrationFlow>()
   const router = useRouter()
 
@@ -124,7 +136,7 @@ const Profile: NextPage = () => {
       )
 
   return (
-    <AccountLayout>
+    <AccountLayout lang={lang}>
       <StyledProfileArea paddingRight="0">
         <SettingsCard only="profile" flow={flow}>
           {/* <H3>Profile Settings</H3> */}
@@ -134,6 +146,7 @@ const Profile: NextPage = () => {
             onSubmit={onSubmit}
             only="profile"
             flow={flow}
+            lang={lang}
           />
         </SettingsCard>
       </StyledProfileArea>
@@ -142,3 +155,9 @@ const Profile: NextPage = () => {
 }
 
 export default Profile
+
+export async function getStaticProps({ locale } : any) {
+  return {
+    props: {...(await serverSideTranslations(locale, ['common']))},
+  }
+}
