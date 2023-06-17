@@ -22,6 +22,8 @@ import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
 import { changePasswordSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { useTranslation } from "next-i18next"
 
 interface Props {
   flow?: SettingsFlow
@@ -52,6 +54,15 @@ const ChangePassword: NextPage = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("")
   const [flow, setFlow] = useState<SettingsFlow>()
   const dispatch = useDispatch()
+  const { t } = useTranslation('common')
+  const lang = {
+    personalInfo: t('personal_info'),
+    acctSettings: t('acct_settings'),
+    changePw: t('change_pw'),
+    deviceMgmt: t('device_mgmt'),
+    exportUserData: t('export_user_data'),
+    logout: t('log_out'),
+  }
   const email = flow?.identity.traits?.email
 
   // Get ?flow=... from the URL
@@ -152,7 +163,7 @@ const ChangePassword: NextPage = () => {
   }
 
   return (
-    <AccountLayout>
+    <AccountLayout lang={lang}>
       <StyledChangePasswordArea marginTop="48px">
         <StyledChangePasswordDeco src={"/images/change-password-deco.png"} />
         <StyledSection>
@@ -177,3 +188,9 @@ const ChangePassword: NextPage = () => {
 }
 
 export default ChangePassword
+
+export async function getStaticProps({ locale } : any) {
+  return {
+    props: {...(await serverSideTranslations(locale, ['common']))},
+  }
+}

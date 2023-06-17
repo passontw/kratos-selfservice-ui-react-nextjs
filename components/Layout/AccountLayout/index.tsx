@@ -41,19 +41,19 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children, lang }) => {
     let title = ""
     switch (activeNav) {
       case Navs.PROFILE:
-        title = lang?.personalInfo
+        title = lang?.personalInfo || "Personal Info"
         break
       case Navs.ACCOUNT:
-        title = "Account Settings"
+        title = lang?.acctSettings || "Account Settings"
         break
       case Navs.EXPORT:
-        title = "Export User Data"
+        title = lang?.exportUserData || "Export User Data"
         break
       case Navs.DEVICEMANAGEMENT:
-        title = "Device Management"
+        title = lang?.deviceMgmt || "Device Management"
         break
       case Navs.CHANGEPASSWORD:
-        title = "Change Password"
+        title = lang?.changePw || "Change Password"
         break
       default:
         break
@@ -72,7 +72,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children, lang }) => {
         center: true,
         padding: "0px",
         icon: Icon.MENU,
-        children: <AccountMenu />,
+        children: <AccountMenu lang={lang} />,
       }),
     )
   }
@@ -85,7 +85,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children, lang }) => {
             <Cmid />
             <div>Master ID</div>
           </StyledHeader>
-          <AccountMenu />
+          <AccountMenu lang={lang} />
         </StyledMenuWrapper>
 
         <StyledContentWrapper>

@@ -213,7 +213,7 @@ export default class Flow<T extends Values> extends Component<
           attributes={csrfTokenNode.attributes}
         />
         <Box color="#717197" fontSize="14px" fontFamily="open sans">
-          {`${lang?.newPw} *`}
+          {`${lang?.newPw || "New Password"} *`}
         </Box>
         <NodeInputDefault
           value={values[getNodeId(passwordNode)]}
@@ -242,7 +242,7 @@ export default class Flow<T extends Values> extends Component<
           </Box>
         )}
         <Box color="#717197" fontSize="14px" fontFamily="open sans" mt="24px">
-          {`${lang?.confirmNewPw} *`}
+          {`${lang?.confirmNewPw || "Confirm Password"} *`}
         </Box>
         <StyledDefaultInput>
           <TextInput

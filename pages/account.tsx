@@ -56,8 +56,14 @@ const Account: NextPage = () => {
   const dispatch = useDispatch()
   const { t } = useTranslation('common')
   const lang = {
+    personalInfo: t('personal_info'),
+    acctSettings: t('acct_settings'),
+    changePw: t('change_pw'),
+    deviceMgmt: t('device_mgmt'),
+    exportUserData: t('export_user_data'),
     resend: t('resend'),
     didntReceive: t('didnt_receive'),
+    logout: t('log_out'),
   }
   const [showModal, setShowModal] = useState(false)
   const [flow, setFlow] = useState<SettingsFlow>()
@@ -287,7 +293,7 @@ const Account: NextPage = () => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   return (
-    <AccountLayout>
+    <AccountLayout lang={lang}>
       <Box display="flex" flexDirection="column">
         <SettingsCard only="oidc" flow={flow}>
           <Box

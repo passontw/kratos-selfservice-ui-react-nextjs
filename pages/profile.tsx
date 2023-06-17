@@ -52,12 +52,17 @@ const Profile: NextPage = () => {
   const { t } = useTranslation('common')
   const lang = {
     personalInfo: t('personal_info'),
+    acctSettings: t('acct_settings'),
+    changePw: t('change_pw'),
+    deviceMgmt: t('device_mgmt'),
+    exportUserData: t('export_user_data'),
     username: t('username'),
     phone: t('phone'),
     gender: t('gender'),
     birthday: t('birthday'),
     joinedSince: t('join_since'),
     save: t('save'),
+    logout: t('log_out'),
   }
   const [flow, setFlow] = useState<RegistrationFlow>()
   const router = useRouter()

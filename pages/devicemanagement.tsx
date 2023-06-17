@@ -19,6 +19,8 @@ import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import { setActiveNav, setDialog } from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { useTranslation } from "next-i18next"
 
 const dayjs = require("dayjs")
 var utc = require("dayjs/plugin/utc")
@@ -172,6 +174,15 @@ const SessionListItem = (props) => {
 
 const DeviceManagement: NextPage = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslation('common')
+  const lang = {
+    personalInfo: t('personal_info'),
+    acctSettings: t('acct_settings'),
+    changePw: t('change_pw'),
+    deviceMgmt: t('device_mgmt'),
+    exportUserData: t('export_user_data'),
+    logout: t('log_out'),
+  }
   const [sessions, setSessions] = useState([])
   const [selfSession, setSelfSession] = useState({})
   const [flow, setFlow] = useState<SettingsFlow>()
@@ -242,7 +253,7 @@ const DeviceManagement: NextPage = () => {
       })
   }, [])
   return (
-    <AccountLayout>
+    <AccountLayout lang={lang}>
       <Box
         display="flex"
         flexDirection="column"
@@ -302,3 +313,9 @@ const DeviceManagement: NextPage = () => {
 }
 
 export default DeviceManagement
+
+export async function getStaticProps({ locale } : any) {
+  return {
+    props: {...(await serverSideTranslations(locale, ['common']))},
+  }
+}
