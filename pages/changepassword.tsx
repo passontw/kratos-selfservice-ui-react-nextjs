@@ -23,7 +23,6 @@ import { Navs, Stage } from "../types/enum"
 import { changePasswordSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
-import { useTranslation } from "next-i18next"
 
 interface Props {
   flow?: SettingsFlow
@@ -50,19 +49,11 @@ function SettingsCard({
   return <ActionCard wide>{children}</ActionCard>
 }
 
-const ChangePassword: NextPage = () => {
+const ChangePassword: NextPage = (props) => {
+  const { lang } = props
   const [confirmPasswordError, setConfirmPasswordError] = useState("")
   const [flow, setFlow] = useState<SettingsFlow>()
   const dispatch = useDispatch()
-  const { t } = useTranslation('common')
-  const lang = {
-    personalInfo: t('personal_info'),
-    acctSettings: t('acct_settings'),
-    changePw: t('change_pw'),
-    deviceMgmt: t('device_mgmt'),
-    exportUserData: t('export_user_data'),
-    logout: t('log_out'),
-  }
   const email = flow?.identity.traits?.email
 
   // Get ?flow=... from the URL

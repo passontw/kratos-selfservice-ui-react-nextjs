@@ -20,7 +20,6 @@ import ory from "../pkg/sdk"
 import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
-import { useTranslation } from "next-i18next"
 
 interface Props {
   flow?: SettingsFlow
@@ -47,23 +46,9 @@ function SettingsCard({
   return <Box bgcolor="transparent">{children}</Box>
 }
 
-const Profile: NextPage = () => {
+const Profile: NextPage = (props) => {
+  const { lang } = props
   const dispatch = useDispatch()
-  const { t } = useTranslation('common')
-  const lang = {
-    personalInfo: t('personal_info'),
-    acctSettings: t('acct_settings'),
-    changePw: t('change_pw'),
-    deviceMgmt: t('device_mgmt'),
-    exportUserData: t('export_user_data'),
-    username: t('username'),
-    phone: t('phone'),
-    gender: t('gender'),
-    birthday: t('birthday'),
-    joinedSince: t('join_since'),
-    save: t('save'),
-    logout: t('log_out'),
-  }
   const [flow, setFlow] = useState<RegistrationFlow>()
   const router = useRouter()
 

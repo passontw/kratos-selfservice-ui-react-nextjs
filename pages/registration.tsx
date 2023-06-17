@@ -25,9 +25,7 @@ import { StyledMenuWrapper } from "../styles/share"
 import { Navs } from "../types/enum"
 import { registrationFormSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
-import { useTranslation } from "next-i18next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
-import { Trans } from 'react-i18next';
 
 const localStorageKey = "!@#$%^&*()registedata"
 
@@ -51,22 +49,10 @@ const getNextFlow = (flow) => {
 }
 
 // Renders the registration page
-const Registration: NextPage = () => {
+const Registration: NextPage = (props) => {
+  const { lang } = props
   const router = useRouter()
   const dispatch = useDispatch()
-  const { t } = useTranslation('common')
-  const lang = {
-    password: t('password'),
-    joinUs: t('join_us'),
-    username: t('username'),
-    email: t('email'),
-    signUpPwHint: t('signup_pw_hint'),
-    signUp: t('signup'),
-    alreadyHaveAcct: t('already_have_acct'),
-    login: t('login'),
-    signupOtherAcct: t('signup_with_other_acct'),
-    agreePolicyHint: t('agree_tos_n_privacy_hint'),
-  }
 
   useEffect(() => {
     localStorage.removeItem(localStorageKey)

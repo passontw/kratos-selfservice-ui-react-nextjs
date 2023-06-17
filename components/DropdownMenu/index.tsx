@@ -7,7 +7,7 @@ import DefaultAvatar from "../../public/images/DefaultAvatar"
 import Dropdown from "../../public/images/Dropdown"
 import Logout from "../../public/images/Logout"
 
-function DropdownComponent() {
+function DropdownComponent({ lang }) {
   const [isOpen, setIsOpen] = useState(false)
   const ref = useRef(null)
   const onLogout = LogoutLink()
@@ -92,7 +92,7 @@ function DropdownComponent() {
               onLogout();
             }}
           >
-            Log Out
+            {lang?.logout}
           </Box>
         </Box>
       )}

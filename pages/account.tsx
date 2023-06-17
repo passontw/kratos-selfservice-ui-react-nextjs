@@ -23,7 +23,6 @@ import {
 } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
-import { useTranslation } from "next-i18next"
 
 const linkAttributesNamesKey = "!@#$%^linkAttributesNamesKey";
 
@@ -52,19 +51,9 @@ function SettingsCard({
   return <Box>{children}</Box>
 }
 
-const Account: NextPage = () => {
+const Account: NextPage = (props) => {
+  const { lang } = props
   const dispatch = useDispatch()
-  const { t } = useTranslation('common')
-  const lang = {
-    personalInfo: t('personal_info'),
-    acctSettings: t('acct_settings'),
-    changePw: t('change_pw'),
-    deviceMgmt: t('device_mgmt'),
-    exportUserData: t('export_user_data'),
-    resend: t('resend'),
-    didntReceive: t('didnt_receive'),
-    logout: t('log_out'),
-  }
   const [showModal, setShowModal] = useState(false)
   const [flow, setFlow] = useState<SettingsFlow>()
   const router = useRouter()

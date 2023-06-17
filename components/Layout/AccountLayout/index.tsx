@@ -122,7 +122,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children, lang }) => {
               {renderTitle(activeNav)}
             </Box>
             <StyledDropdownMenu>
-              <DropdownMenu />
+              <DropdownMenu lang={lang} />
             </StyledDropdownMenu>
           </Box>
           <StyledContent>{children}</StyledContent>

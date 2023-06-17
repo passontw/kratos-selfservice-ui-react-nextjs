@@ -20,29 +20,10 @@ import {
 import { StyledMenuWrapper } from "../styles/share"
 import { Navs } from "../types/enum"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
-import { useTranslation } from "next-i18next"
 
-const Recovery: NextPage = () => {
+const Recovery: NextPage = (props) => {
+  const { lang } = props
   const dispatch = useDispatch()
-  const { t } = useTranslation('common')
-  const lang = {
-    login: t('login'),
-    email: t('email'),
-    password: t('password'),
-    noAccount: t('dont_have_acct'),
-    welcomeBack: t('welcomeback'),
-    forgotPw: t('forgot_pw'),
-    verifyAccount: t('verify_account'),
-    signUp: t('signup'),
-    loginDiffAccount: t('login_diff_acct'),
-    forgotPwDesc: t('forgot_pw_desc'),
-    submit: t('submit'),
-    verify: t('verify'),
-    resend: t('resend'),
-    didntReceive: t('didnt_receive'),
-    verifyCode: t('verif_code'),
-    verifyAcctDesc: t('verif_acct_desc'),
-  }
 
   useEffect(() => {
     dispatch(setActiveNav(Navs.RECOVERY))

@@ -18,7 +18,6 @@ import { Navs, Stage } from "../types/enum"
 import { updateSettingsPasswordSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
-import { useTranslation } from "next-i18next"
 
 interface Props {
   flow?: SettingsFlow
@@ -58,17 +57,9 @@ function SettingsCard({
   )
 }
 
-const Settings: NextPage = () => {
+const Settings: NextPage = (props) => {
+  const { lang } = props
   const dispatch = useDispatch()
-  const { t } = useTranslation('common')
-  const lang = {
-    changePw: t('change_pw'),
-    newPw: t('new_pw'),
-    confirmNewPw: t('confirm_new_pw'),
-    signUpPwHint: t('signup_pw_hint'),
-    enterNewPw: t('enter_new_pw'),
-    save: t('save'),
-  }
   const [confirmPasswordError, setConfirmPasswordError] = useState("")
   const [flow, setFlow] = useState<SettingsFlow>()
 

@@ -14,7 +14,6 @@ import MasterControlNew from "../public/images/app_icons/MasterControlNew"
 import Stormplay from "../public/images/app_icons/Stormplay"
 import { setActiveNav } from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
-import { useTranslation } from "next-i18next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 const refreshSessions = (setSessions) => {
@@ -31,17 +30,9 @@ const refreshSessions = (setSessions) => {
     })
 }
 
-const Export: NextPage = () => {
+const Export: NextPage = (props) => {
+  const { lang } = props
   const dispatch = useDispatch()
-  const { t } = useTranslation('common')
-  const lang = {
-    personalInfo: t('personal_info'),
-    acctSettings: t('acct_settings'),
-    changePw: t('change_pw'),
-    deviceMgmt: t('device_mgmt'),
-    exportUserData: t('export_user_data'),
-    logout: t('log_out'),
-  }
   const [sessions, setSessions] = useState([])
   const [flow, setFlow] = useState<SettingsFlow>()
   const router = useRouter()

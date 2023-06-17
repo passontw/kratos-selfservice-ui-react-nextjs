@@ -1,8 +1,6 @@
 import "../styles/globals.css"
-// import "../styles/react-toastify.min.css"
 import "@fontsource/open-sans"
 import "@fontsource/teko"
-import Box from "@mui/material/Box"
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles"
 import { globalStyles, ThemeProps } from "@ory/themes"
 import type { AppProps } from "next/app"
@@ -10,11 +8,12 @@ import { Provider } from "react-redux"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { createGlobalStyle } from "styled-components"
-import { appWithTranslation, useTranslation } from "next-i18next"
+import { appWithTranslation } from "next-i18next"
 
 import PopupLayout from "../components/Layout/PopupLayout"
 import store from "../state/store"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { useI18nConfig } from "../util/i18n-config"
 
 const GlobalStyle = createGlobalStyle((props: ThemeProps) =>
   globalStyles(props),
@@ -36,10 +35,8 @@ const theme = createTheme({
 })
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const { t } = useTranslation('common')
-  const lang = {
-    cancel: t('cancel'),
-  }
+  const lang = useI18nConfig();
+  const PagePropsWithI18n = { ...pageProps, lang };
   return (
     <div data-testid="app-react">
       <Provider store={store}>
@@ -49,7 +46,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               {/* <div className="background-wrapper">
                 <div className="overlay-image"></div>
               </div> */}
-              <Component {...pageProps} />
+              <Component {...PagePropsWithI18n} />
             </div>
             <ToastContainer />
           </PopupLayout>

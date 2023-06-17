@@ -33,7 +33,6 @@ import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 
 import { StyledMenuWrapper } from "./../styles/share"
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { useTranslation } from "next-i18next"
 
 const localStorageKey = "!@#$%^&*()data"
 
@@ -71,23 +70,11 @@ const validateLoginFlow = async (router, options) => {
   }
 }
 
-const Login: NextPage = () => {
+const Login: NextPage = (props) => {
+  const { lang } = props
   const [flow, setFlow] = useState<LoginFlow>()
   const dispatch = useDispatch()
   const accountDeleted = useSelector(selectAccountDeleted)
-  const { t } = useTranslation('common')
-  const lang = {
-    login: t('login'),
-    email: t('email'),
-    password: t('password'),
-    noAccount: t('dont_have_acct'),
-    welcomeBack: t('welcomeback'),
-    forgotPw: t('forgot_pw'),
-    signUp: t('signup'),
-    loginDiffAccount: t('login_diff_acct'),
-    termsOfUse: t('terms_of_use'),
-    privacyPolicy: t('privacy_policy'),
-  }
 
   useEffect(() => {
     if (accountDeleted) {
