@@ -62,6 +62,7 @@ export type Props<T> = {
   onSubmit: (values: T) => Promise<void>
   // Do not show the global messages. Useful when rendering them elsewhere.
   hideGlobalMessages?: boolean
+  lang?: any
 }
 
 function emptyState<T>() {
@@ -182,7 +183,7 @@ export default class Flow<T extends Values> extends Component<
   }
 
   render() {
-    const { hideGlobalMessages, flow, confirmPasswordError } = this.props
+    const { hideGlobalMessages, flow, lang, confirmPasswordError } = this.props
     const { values, isLoading } = this.state
 
     // Filter the nodes - only show the ones we want
@@ -212,7 +213,7 @@ export default class Flow<T extends Values> extends Component<
           attributes={csrfTokenNode.attributes}
         />
         <Box color="#717197" fontSize="14px" fontFamily="open sans">
-          New Password *
+          {`${lang?.newPw} *`}
         </Box>
         <NodeInputDefault
           value={values[getNodeId(passwordNode)]}
@@ -233,14 +234,15 @@ export default class Flow<T extends Values> extends Component<
             })
           }
           attributes={passwordNode.attributes}
+          lang={lang}
         />
         {!confirmPasswordError && (
           <Box color="#7E7E89" fontSize="13px" fontFamily="open sans">
-            A number and combination of characters. (min 8 characters)
+            {lang?.signUpPwHint}
           </Box>
         )}
         <Box color="#717197" fontSize="14px" fontFamily="open sans" mt="24px">
-          Confirm New Password *
+          {`${lang?.confirmNewPw} *`}
         </Box>
         <StyledDefaultInput>
           <TextInput
@@ -253,7 +255,7 @@ export default class Flow<T extends Values> extends Component<
               }))
             }}
             className="my-text-input"
-            placeholder="Confirm new password"
+            placeholder={lang?.confirmNewPw}
             name="confirmPassword"
             value={this.state.confirmPassword}
             state={isEmpty(confirmPasswordError) ? undefined : "error"}
@@ -306,6 +308,7 @@ export default class Flow<T extends Values> extends Component<
             }
             attributes={submitNode.attributes}
             dispatchSubmit={this.handleSubmit}
+            lang={lang}
           />
         </Box>
       </form>

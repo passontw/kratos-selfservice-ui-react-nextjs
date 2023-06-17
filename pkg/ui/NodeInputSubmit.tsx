@@ -122,6 +122,8 @@ export function NodeInputSubmit<T>({
       ? lang?.login
       : getNodeLabel(node) === "Sign up"
       ? lang?.signUp
+      : getNodeLabel(node) === "Save"
+      ? lang?.save
       : getNodeLabel(node)
 
   const handleClick = () => {

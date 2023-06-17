@@ -162,7 +162,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
               ? ""
               : (nav === Navs.SETTINGS || nav === Navs.CHANGEPASSWORD) &&
                 attributes.name === "password"
-              ? "Enter new password"
+              ? lang?.enterNewPw
               : label
           }
           // title={node.meta.label?.text}

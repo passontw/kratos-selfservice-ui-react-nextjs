@@ -17,6 +17,8 @@ import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
 import { updateSettingsPasswordSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { useTranslation } from "next-i18next"
 
 interface Props {
   flow?: SettingsFlow
@@ -58,6 +60,15 @@ function SettingsCard({
 
 const Settings: NextPage = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslation('common')
+  const lang = {
+    changePw: t('change_pw'),
+    newPw: t('new_pw'),
+    confirmNewPw: t('confirm_new_pw'),
+    signUpPwHint: t('signup_pw_hint'),
+    enterNewPw: t('enter_new_pw'),
+    save: t('save'),
+  }
   const [confirmPasswordError, setConfirmPasswordError] = useState("")
   const [flow, setFlow] = useState<SettingsFlow>()
 
@@ -207,7 +218,7 @@ const Settings: NextPage = () => {
         <SettingsCard only="password" flow={flow}>
           <Box>
             <Box fontSize="20px" fontFamily="open sans" color="#FFF" mb="24px">
-              Change Password
+              {lang?.changePw}
             </Box>
             {/* <Messages messages={flow?.ui.messages} /> */}
             <Flow
@@ -216,6 +227,7 @@ const Settings: NextPage = () => {
               onSubmit={onSubmit}
               only="password"
               flow={flow}
+              lang={lang}
             />
           </Box>
         </SettingsCard>
@@ -230,3 +242,9 @@ const Settings: NextPage = () => {
 }
 
 export default Settings
+
+export async function getStaticProps({ locale } : any) {
+  return {
+    props: {...(await serverSideTranslations(locale, ['common']))},
+  }
+}
