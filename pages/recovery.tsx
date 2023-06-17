@@ -19,9 +19,30 @@ import {
 } from "../state/store/slice/layoutSlice"
 import { StyledMenuWrapper } from "../styles/share"
 import { Navs } from "../types/enum"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { useTranslation } from "next-i18next"
 
 const Recovery: NextPage = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslation('common')
+  const lang = {
+    login: t('login'),
+    email: t('email'),
+    password: t('password'),
+    noAccount: t('dont_have_acct'),
+    welcomeBack: t('welcomeback'),
+    forgotPw: t('forgot_pw'),
+    verifyAccount: t('verify_account'),
+    signUp: t('signup'),
+    loginDiffAccount: t('login_diff_acct'),
+    forgotPwDesc: t('forgot_pw_desc'),
+    submit: t('submit'),
+    verify: t('verify'),
+    resend: t('resend'),
+    didntReceive: t('didnt_receive'),
+    verifyCode: t('verif_code'),
+    verifyAcctDesc: t('verif_acct_desc'),
+  }
 
   useEffect(() => {
     dispatch(setActiveNav(Navs.RECOVERY))
@@ -30,9 +51,8 @@ const Recovery: NextPage = () => {
         title: " ",
         titleHeight: "58px",
         width: 480,
-        // height: 358,
         center: true,
-        children: <RecoveryProcess />,
+        children: <RecoveryProcess lang={lang} />,
       }),
     )
   }, [])
@@ -91,7 +111,7 @@ const Recovery: NextPage = () => {
             mt="62px"
             mb="8px"
           >
-            Welcome back
+            {lang?.welcomeBack}
           </Box>
           <Box
             display="flex"
@@ -108,7 +128,7 @@ const Recovery: NextPage = () => {
               position="relative"
             >
               <Box width="fit-content" mt="13px" ml="16px">
-                Email
+                {lang?.email}
               </Box>
             </Box>
             <Box
@@ -118,12 +138,12 @@ const Recovery: NextPage = () => {
               position="relative"
             >
               <Box width="fit-content" mt="13px" ml="16px">
-                Password
+                {lang?.password}
               </Box>
             </Box>
           </Box>
           <Box mt="14px" color="#CA4AE8" fontFamily="open sans">
-            Forgot Password?
+            {lang?.forgotPw}
           </Box>
           <Box
             height="44px"
@@ -136,13 +156,12 @@ const Recovery: NextPage = () => {
             justifyContent="center"
           >
             <Box color="#FFF" fontFamily="open sans">
-              Login
+              {lang?.login}
             </Box>
           </Box>
           <Box
             mt="8px"
             mb="38px"
-            // textAlign="center"
             color="#A5A5A9"
             fontSize="14px"
             display="flex"
@@ -151,7 +170,7 @@ const Recovery: NextPage = () => {
             alignItems="center"
             justifyContent="center"
           >
-            <Box>Don’t have an account?</Box>
+            <Box>{lang?.noAccount}</Box>
             <Box
               color="#CA4AE8"
               sx={{
@@ -159,7 +178,7 @@ const Recovery: NextPage = () => {
               }}
               onClick={() => router.push("/registration")}
             >
-              Sign up
+              {lang?.signUp}
             </Box>
           </Box>
           <Box
@@ -170,7 +189,7 @@ const Recovery: NextPage = () => {
             justifyContent="center"
           >
             <StyledLine>
-              <span className="text">Or login with other accounts</span>
+              <span className="text">{lang?.loginDiffAccount}</span>
             </StyledLine>
           </Box>
           <Box display="flex" gap="24px" justifyContent="center" mt="24px">
@@ -186,3 +205,9 @@ const Recovery: NextPage = () => {
 }
 
 export default Recovery
+
+export async function getStaticProps({ locale } : any) {
+  return {
+    props: {...(await serverSideTranslations(locale, ['common']))},
+  }
+}

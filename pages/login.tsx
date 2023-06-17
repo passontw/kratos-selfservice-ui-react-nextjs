@@ -418,7 +418,7 @@ const Login: NextPage = () => {
 
 export default Login
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale } : any) {
   return {
     props: {...(await serverSideTranslations(locale, ['common']))},
   }

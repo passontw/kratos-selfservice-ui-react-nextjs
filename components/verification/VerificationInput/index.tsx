@@ -9,7 +9,8 @@ import {
 
 import { setSixDigitCode } from "../../../state/store/slice/layoutSlice"
 
-const VerificationInput = () => {
+const VerificationInput = (props) => {
+  const { lang } = props
   const dispatch = useDispatch()
   const [inputValues, setInputValues] = useState(Array(6).fill(""))
   const inputRefs = [useRef(), useRef(), useRef(), useRef(), useRef(), useRef()]
@@ -52,7 +53,7 @@ const VerificationInput = () => {
 
   return (
     <Container>
-      <Title>Verification Code</Title>
+      <Title>{lang?.verifyCode}</Title>
       <InputsContainer>
         {inputValues.map((value, i) => (
           <Input

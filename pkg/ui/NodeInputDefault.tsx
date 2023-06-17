@@ -115,8 +115,6 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     }
   }, [value])
 
-  console.log("attributes@@@", attributes.name)
-  console.log("value@@@", value)
   const accountError =
     validationMsgs &&
     (validationMsgs[0]?.text.includes("Email account") ||
@@ -134,7 +132,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   return (
     <>
       {verifyCodeConditions && (
-        <VerificationInput />
+        <VerificationInput lang={lang}/>
       )}
       {/* {verifyCodeConditions2 && <VerificationInput />} */}
       <StyledDefaultInput isInputLabel={isInputLabel}>

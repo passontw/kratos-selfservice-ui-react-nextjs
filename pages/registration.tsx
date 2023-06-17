@@ -360,7 +360,7 @@ const Registration: NextPage = () => {
 
 export default Registration
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale } : any) {
   return {
     props: {...(await serverSideTranslations(locale, ['common']))},
   }

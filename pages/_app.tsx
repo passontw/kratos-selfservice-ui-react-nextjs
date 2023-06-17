@@ -10,10 +10,11 @@ import { Provider } from "react-redux"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { createGlobalStyle } from "styled-components"
-import { appWithTranslation } from "next-i18next"
+import { appWithTranslation, useTranslation } from "next-i18next"
 
 import PopupLayout from "../components/Layout/PopupLayout"
 import store from "../state/store"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 const GlobalStyle = createGlobalStyle((props: ThemeProps) =>
   globalStyles(props),
@@ -35,11 +36,15 @@ const theme = createTheme({
 })
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const { t } = useTranslation('common')
+  const lang = {
+    cancel: t('cancel'),
+  }
   return (
     <div data-testid="app-react">
       <Provider store={store}>
         <ThemeProvider theme={theme}>
-          <PopupLayout>
+          <PopupLayout lang={lang}>
             <div className="main-container">
               {/* <div className="background-wrapper">
                 <div className="overlay-image"></div>
@@ -55,3 +60,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 
 export default appWithTranslation(MyApp)
+
+export async function getStaticProps({ locale } : any) {
+  return {
+    props: {...(await serverSideTranslations(locale, ['common']))},
+  }
+}

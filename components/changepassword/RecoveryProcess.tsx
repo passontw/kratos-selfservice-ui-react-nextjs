@@ -27,12 +27,10 @@ const timezone = require("dayjs/plugin/timezone") // dependent on utc plugin
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-const RecoveryProcess: NextPage = () => {
-  // console.log(props)
+const RecoveryProcess: NextPage = (props) => {
+  const { lang } = props
   const [flow, setFlow] = useState<RecoveryFlow>()
-  const [dialogMsg, setDialogMsg] = useState<string>(
-    "Enter your registered email below and we’ll send you a reset link.",
-  )
+  const [dialogMsg, setDialogMsg] = useState<string>(lang?.forgotPwDesc)
   const dispatch = useDispatch()
   const activeStage = useSelector(selectActiveStage)
   const sixDigitCode = useSelector(selectSixDigitCode)
@@ -42,11 +40,8 @@ const RecoveryProcess: NextPage = () => {
 
   // relocate the validation to fit design
   useEffect(() => {
-    console.log("@validationRelocation ran again")
     const targetDestination = document.querySelector(".targetDestination")
     const targetErrorMsg = document.querySelector("h3")
-    console.log("@validationRelocation targetErrorMsg:", targetErrorMsg)
-
     const submitBtn = document.querySelector(".targetDestination button")
     // move only when error msg appeared, submit button is visible,
     // and there is no query string which indicates that the flow is still on step 1
@@ -63,7 +58,6 @@ const RecoveryProcess: NextPage = () => {
       // style the button to fit new ui
       submitBtn.style.margin = "33px 0px 0px"
     } else {
-      console.log("@validationRelocation ran with NEW TARGET BUTTON")
       // else if error msg is not present style message to fit original ui
       if (targetErrorMsg) {
         targetErrorMsg.style.display = "none"
@@ -295,9 +289,10 @@ const RecoveryProcess: NextPage = () => {
               // Form submission was successful, show the message to the user!
               setFlow(data)
               dispatch(setActiveStage(Stage.VERIFY_CODE))
-              setDialogMsg(
-                `Enter the 6-digit code we sent to ${values.email} to verify account.`,
-              )
+              // setDialogMsg(
+              //   `Enter the 6-digit code we sent to ${values.email} to verify account.`,
+              // )
+              setDialogMsg(lang?.verifyAcctDesc.replace("master123@gmail.com", `${values.email}`))
             })
             .catch(handleFlowError(router, "recovery", setFlow))
             .catch((err: any) => {
@@ -328,8 +323,8 @@ const RecoveryProcess: NextPage = () => {
           color="#FFF"
         >
           {activeStage === Stage.FORGOT_PASSWORD
-            ? "Forgot Password"
-            : "Verify Account"}
+            ? lang?.forgotPw
+            : lang?.verifyAccount}
         </Box>
         <Box bgcolor="#272735">
           <Box
@@ -343,7 +338,7 @@ const RecoveryProcess: NextPage = () => {
           </Box>
           {activeStage === Stage.FORGOT_PASSWORD && (
             <Box color="#717197" fontSize="14px" fontFamily="open sans">
-              Email *
+              {`${lang?.email} *`}
             </Box>
           )}
 
@@ -352,6 +347,7 @@ const RecoveryProcess: NextPage = () => {
             flow={flow}
             code={sixDigitCode}
             hideSocialLogin
+            lang={lang}
           />
         </Box>
       </Box>

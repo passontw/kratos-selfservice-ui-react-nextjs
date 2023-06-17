@@ -10,9 +10,10 @@ import SubDialog from "../Dialog/SubDialog"
 
 interface PopupLayoutProps {
   children: ReactNode
+  lang?: any
 }
 
-const PopupLayout: React.FC<PopupLayoutProps> = ({ children }) => {
+const PopupLayout: React.FC<PopupLayoutProps> = ({ children, lang }) => {
   const dialog = useSelector(selectDialog)
   const dialog2 = useSelector(selectDialog2)
   return (
@@ -27,6 +28,7 @@ const PopupLayout: React.FC<PopupLayoutProps> = ({ children }) => {
           titleHeight={dialog.titleHeight}
           padding={dialog.padding}
           icon={dialog.icon}
+          lang={lang}
         >
           {dialog.children}
         </Dialog>
