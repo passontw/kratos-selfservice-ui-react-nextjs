@@ -27,6 +27,7 @@ import { registrationFormSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 import { useTranslation } from "next-i18next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { Trans } from 'react-i18next';
 
 const localStorageKey = "!@#$%^&*()registedata"
 
@@ -56,6 +57,15 @@ const Registration: NextPage = () => {
   const { t } = useTranslation('common')
   const lang = {
     password: t('password'),
+    joinUs: t('join_us'),
+    username: t('username'),
+    email: t('email'),
+    signUpPwHint: t('signup_pw_hint'),
+    signUp: t('signup'),
+    alreadyHaveAcct: t('already_have_acct'),
+    login: t('login'),
+    signupOtherAcct: t('signup_with_other_acct'),
+    agreePolicyHint: t('agree_tos_n_privacy_hint'),
   }
 
   useEffect(() => {
@@ -275,7 +285,7 @@ const Registration: NextPage = () => {
           {/* <CardTitle>Create account</CardTitle> */}
           <CmidHead />
           <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
-            Join us
+            {lang?.joinUs}
           </Box>
           <Flow onSubmit={onSubmit} flow={nextFlow} router={router} lang={lang} />
           {/* Moblie Terms Start */}
@@ -289,7 +299,10 @@ const Registration: NextPage = () => {
             flexWrap="wrap"
             whiteSpace="nowrap"
           >
-            <Box>By signing up for Master ID,</Box>
+            <Box
+              textAlign="center" 
+              dangerouslySetInnerHTML={{ __html: lang?.agreePolicyHint.replace(/\n/g, '<br/>') }} />
+            {/* <Box>{lang?.agreePolicyHint}</Box>
             <Box display="flex" mt="2px" alignItems="center">
               you agree to our{" "}
               <Link className="link" href="/">
@@ -300,7 +313,7 @@ const Registration: NextPage = () => {
                 Privacy Policy
               </Link>
               .
-            </Box>
+            </Box> */}
           </Box>
           {/* Mobile Terms End */}
           <StyledAppItemWrap>
@@ -320,8 +333,11 @@ const Registration: NextPage = () => {
             whiteSpace="nowrap"
             display={{ xs: "none", md: "flex" }}
           >
-            <Box>By signing up for Master ID,</Box>
-            <Box display="flex" mt="2px" alignItems="center">
+            <Box
+              textAlign="center" 
+              dangerouslySetInnerHTML={{ __html: lang?.agreePolicyHint.replace(/\n/g, '<br/>') }} />
+            {/* <Box>{lang?.agreePolicyHint}</Box> */}
+            {/* <Box display="flex" mt="2px" alignItems="center">
               you agree to our{" "}
               <Link className="link" href="/">
                 Terms of Use
@@ -331,7 +347,7 @@ const Registration: NextPage = () => {
                 Privacy Policy
               </Link>
               .
-            </Box>
+            </Box> */}
           </Box>
           {/* Desktop Terms End */}
         </StyledMenuWrapper>

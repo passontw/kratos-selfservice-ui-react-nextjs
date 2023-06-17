@@ -34,13 +34,14 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   const activeStage = useSelector(selectActiveStage)
   const { node, attributes, value, setValue, disabled, validationMsgs, lang } = props
   console.log(lang)
+  console.log(node.meta.label?.text)
   const label =
     node.meta.label?.text === "ID"
       ? lang?.email
-      : node.meta.label?.text === "Name"
-      ? "Username"
-      : node.meta.label?.text === "E-Mail"
-      ? "Email"
+      : node.meta.label?.text === "Name" || node.meta.label?.text === "Username"
+      ? lang?.username
+      : node.meta.label?.text === "E-Mail" || node.meta.label?.text === "Email"
+      ? lang?.email
       : node.meta.label?.text === "Password"
       ? lang?.password
       : node.meta.label?.text
@@ -249,7 +250,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             fontFamily: "Open Sans",
           }}
         >
-          A combination of numbers and characters. (min 8 characters)
+          {lang?.signUpPwHint}
         </span>
       )}
       {nav === Navs.PROFILE && attributes.name === "traits.gender" && (

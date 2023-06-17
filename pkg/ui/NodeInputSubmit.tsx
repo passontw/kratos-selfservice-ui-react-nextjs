@@ -107,18 +107,21 @@ export function NodeInputSubmit<T>({
     showButton = false
   }
 
+  console.log(getNodeLabel(node))
   const buttonText =
       deleteAccount
       ? "Continue"
       : (activeNav === Navs.RECOVERY) && activeStage === Stage.FORGOT_PASSWORD
       ? "Submit"
       : (activeNav === Navs.VERIFICATION || activeNav === Navs.RECOVERY) &&
-    getNodeLabel(node) === "Submit"
+      getNodeLabel(node) === "Submit"
       ? "Verify"
       : getNodeLabel(node) === "Resend code"
       ? "Resend"
       : getNodeLabel(node) === "Sign in"
-      ? lang.login
+      ? lang?.login
+      : getNodeLabel(node) === "Sign up"
+      ? lang?.signUp
       : getNodeLabel(node)
 
   const handleClick = () => {

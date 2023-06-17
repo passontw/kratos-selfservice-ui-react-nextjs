@@ -344,7 +344,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
             <Box>
               {this.props.router?.pathname === "/login"
                 ? `${lang?.noAccount}?`
-                : "Already have an account?"}
+                : `${lang?.alreadyHaveAcct}`}
             </Box>
 
             <Box
@@ -369,7 +369,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 return router.push('/login');
               }}
             >
-              {isLoginPath ? ` ${lang?.signUp}` : " Login"}
+              {isLoginPath ? ` ${lang?.signUp}` : ` ${lang?.login}`}
             </Box>
           </Box>
         )}
@@ -385,7 +385,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
               <span className="text">
                 {this.props.router?.pathname === "/login"
                   ? lang?.loginDiffAccount
-                  : "Or sign up with other accounts"}
+                  : lang?.signupOtherAcct}
               </span>
             </StyledMenuLine>
           </Box>

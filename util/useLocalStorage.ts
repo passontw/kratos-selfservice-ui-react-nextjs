@@ -21,7 +21,7 @@ export const useLocalStorage = (keyName: string, defaultValue?: unknown) => {
         return defaultValue;
       }
     } catch (err) {
-      console.log('error of "' + keyName + '" was: ' + err);
+      // console.log('error of "' + keyName + '" was: ' + err);
       return value; // return unparsed string
     }
   });
