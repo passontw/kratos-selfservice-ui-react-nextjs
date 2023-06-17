@@ -20,6 +20,8 @@ import {
 import { Navs } from "../types/enum"
 
 import { StyledMenuWrapper } from "./../styles/share"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { useTranslation } from "next-i18next"
 
 const dayjs = require("dayjs")
 const utc = require("dayjs/plugin/utc")
@@ -42,6 +44,13 @@ const getReturnToUrl = (returnTo, type) => {
 
 const Verification: NextPage = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslation('common')
+  const lang = {
+    verifyAccount: t('verify_account'),
+    verify: t('verify'),
+    resend: t('resend'),
+    didntReceive: t('didnt_receive'),
+  }
   const sixDigitCode = useSelector(selectSixDigitCode)
   const [initFlow, setInitFlow] = useState(false)
   const [flow, setFlow] = useState<VerificationFlow>()
@@ -352,6 +361,7 @@ const Verification: NextPage = () => {
             onSubmit={onSubmit}
             flow={flow}
             code={sixDigitCode}
+            lang={lang}
             // hideGlobalMessages
           />
           <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
@@ -363,3 +373,9 @@ const Verification: NextPage = () => {
 }
 
 export default Verification
+
+export async function getStaticProps({ locale } : any) {
+  return {
+    props: {...(await serverSideTranslations(locale, ['common']))},
+  }
+}

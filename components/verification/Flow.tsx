@@ -46,6 +46,7 @@ export type Props<T> = {
   onSubmit: (values: T) => Promise<void>
   hideGlobalMessages?: boolean
   code?: string
+  lang?: any
 }
 
 function emptyState<T>() {
@@ -182,7 +183,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   }
 
   render() {
-    const { hideGlobalMessages, flow } = this.props
+    const { hideGlobalMessages, flow, lang } = this.props
     const { values, isLoading } = this.state
 
     const nodes = this.filterNodes()
@@ -218,6 +219,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
               node={node}
               value={getNodeId(node) === "code" ? this.props.code : values[id]}
               dispatchSubmit={this.handleSubmit}
+              lang={lang}
               setValue={(value) => {
                 return new Promise((resolve) => {
                   this.setState(
