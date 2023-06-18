@@ -173,9 +173,15 @@ const Verification: NextPage = (props) => {
       })
   }, [flowId, router, router.isReady, returnTo, flow])
 
-  const onSubmit = async (values: UpdateVerificationFlowBody) => {
+  const onSubmit = async (values: UpdateVerificationFlowBody, isResendCode) => {
     const { user } = router.query
-    const { code = "" } = values
+    const {
+      code = "",
+      email,
+      csrf_token,
+      method,
+    } = values;
+
     const nextFlow = cloneDeep(flow)
 
     if (isEmpty(values.email) && code.length !== 6) {
@@ -224,6 +230,15 @@ const Verification: NextPage = (props) => {
       }
     }
 
+    const nextValues = isResendCode ? {
+      email: user,
+      csrf_token,
+      method,
+    } : {
+      code,
+      csrf_token,
+      method,
+    };
     await router
       // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
       // their data when they reload the page.
@@ -234,7 +249,7 @@ const Verification: NextPage = (props) => {
     return ory
       .updateVerificationFlow({
         flow: String(flow?.id),
-        updateVerificationFlowBody: { ...values, email: user },
+        updateVerificationFlowBody: nextValues,
       })
       .then(({ data }) => {
         const nextFlow = cloneDeep(data);

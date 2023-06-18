@@ -155,6 +155,7 @@ export default class Flow<T extends Values> extends Component<
     // Prevent all native handlers
     event.stopPropagation()
     event.preventDefault()
+    const isResendCode = event.nativeEvent.submitter.id === "resendcode";
 
     // Prevent double submission!
     if (this.state.isLoading) {
@@ -191,7 +192,7 @@ export default class Flow<T extends Values> extends Component<
     }))
 
     return this.props
-      .onSubmit({ ...body, ...this.state.values })
+      .onSubmit({ ...body, ...this.state.values }, isResendCode)
       .finally(() => {
         // We wait for reconciliation and update the state after 50ms
         // Done submitting - update loading status
