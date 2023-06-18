@@ -255,10 +255,8 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       }
       return false
     }
-      console.log("🚀 ~ file: Flow.tsx:259 ~ Flow<T ~ getShowGlobalMessages ~ flow.ui.messages:", flow?.ui?.messages)
 
     const showGlobalMessages = getShowGlobalMessages();
-    console.log("🚀 ~ file: Flow.tsx:261 ~ Flow<T ~ render ~ showGlobalMessages:", showGlobalMessages)
     const isLoginPath = router?.pathname === "/login";
     return (
       <form

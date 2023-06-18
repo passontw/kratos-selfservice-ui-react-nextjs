@@ -27,6 +27,26 @@ const timezone = require("dayjs/plugin/timezone") // dependent on utc plugin
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
+const getNextValues = (flow, values) => {
+  if (flow.state !== "sent_email") return values;
+  const  {
+    isResendCode,
+    code,
+    csrf_token,
+    email,
+    method,
+  } = values;
+  return isResendCode ? {
+    email,
+    csrf_token,
+    method,
+  } : {
+    code,
+    csrf_token,
+    method,
+  };
+};
+
 const RecoveryProcess: NextPage = (props) => {
   const { lang } = props
   const [flow, setFlow] = useState<RecoveryFlow>()
@@ -128,8 +148,10 @@ const RecoveryProcess: NextPage = (props) => {
   }
 
   const onSubmit = async (values: UpdateRecoveryFlowBody) => {
-    console.log("🚀 ~ file: RecoveryProcess.tsx:131 ~ onSubmit ~ values:", values)
-    const  {isResendCode, ...nextValues} = values;
+    const  {
+      isResendCode,
+    } = values;
+
     const createdTimeDayObject = dayjs(flow.issued_at)
     const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
     const isValidate = validateDiffMinute(setFlow, flow, diffMinute)
@@ -272,23 +294,9 @@ const RecoveryProcess: NextPage = (props) => {
         setFlow(nextFlow)
       }
     }
-
-    let nextValue = null;
-    if (flow.state === "choose_method") {
-      nextValue = nextValues;
-    } else if (!isResendCode && flow.state === "sent_email") {
-      nextValue = {
-        code: nextValues.code,
-        method: nextValues.method,
-        csrf_token: nextValues.csrf_token,
-        email: nextValues.email,
-      }
-    } else {
-      nextValue = nextValues;
-    }
-
-    console.log("🚀 ~ file: RecoveryProcess.tsx:278 ~ onSubmit ~ flow.state:", flow.state)
-    console.log("🚀 ~ file: RecoveryProcess.tsx:277 ~ onSubmit ~ nextValue:", nextValue)
+    
+    
+    const nextValues = getNextValues(flow, values);
 
     return (
       router
@@ -299,7 +307,7 @@ const RecoveryProcess: NextPage = (props) => {
           ory
             .updateRecoveryFlow({
               flow: String(flow?.id),
-              updateRecoveryFlowBody: nextValue,
+              updateRecoveryFlowBody: nextValues,
             })
             .then(({ data }) => {
               // Form submission was successful, show the message to the user!
@@ -312,7 +320,6 @@ const RecoveryProcess: NextPage = (props) => {
             })
             .catch(handleFlowError(router, "recovery", setFlow))
             .catch((err: any) => {
-              console.log("🚀 ~ file: RecoveryProcess.tsx:301 ~ onSubmit ~ err:", err)
               // console.log("@Q@", err.response)
               if (err && err.response) {
                 switch (err.response?.status) {

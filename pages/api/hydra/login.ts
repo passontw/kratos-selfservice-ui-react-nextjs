@@ -28,13 +28,12 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         console.log("There was no challenge present.")
         throw new Error("Expected a login challenge to be set but received none.")
       }
-      console.log("🚀 ~ file: login.ts:28 ~ handler ~ challenge:", challenge)
+
       // need to handle two types of requests
       // 1) check hydra login info / status
       return hydraAdmin
         .getOAuth2LoginRequest({ loginChallenge: challenge })
         .then(async ({ data: body }) => {
-          console.log("🚀 ~ file: login.ts:36 ~ .then ~ body:", body)
           // If hydra was already able to authenticate the user, skip will be true and we do not need to re-authenticate
           // the user.
           if (body.skip) {
@@ -55,7 +54,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
           res.status(200).send(body)
         })
         .catch((err) => {
-          console.log("🚀 ~ file: login.ts:58 ~ handler ~ err.message:", err.message)
           return res.status(err.status).json({ message: "error1 " + err.message })
         })
     } catch (error) {

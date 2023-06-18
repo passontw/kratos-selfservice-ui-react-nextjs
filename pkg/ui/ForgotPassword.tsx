@@ -220,8 +220,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         })
       })
     } else {
-      console.log("🚀 ~ file: ForgotPassword.tsx:226 ~ Flow<T ~ body:", body)
-      console.log("🚀 ~ file: ForgotPassword.tsx:227 ~ Flow<T ~ this.state.values:", this.state.values)
       return this.props
       .onSubmit({ ...body, ...this.state.values })
       .finally(() => {
