@@ -169,6 +169,9 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     // Prevent all native handlers
     event.stopPropagation()
     event.preventDefault()
+    const isResendCode = event.nativeEvent.submitter.id === "resendcode";
+    console.log("🚀 ~ file: ForgotPassword.tsx:211 ~ Flow<T ~ this.state.values:", this.state.values)
+
     // Prevent double submission!
     if (this.state.isLoading) {
       return Promise.resolve()
@@ -202,8 +205,25 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       ...state,
       isLoading: true,
     }))
-
-    return this.props
+    
+    if (isResendCode) {
+      const {code, ...nextBody} = body;
+      return this.props
+      .onSubmit({ ...nextBody, ...this.state.values, isResendCode })
+      .finally(() => {
+        // We wait for reconciliation and update the state after 50ms
+        // Done submitting - update loading status
+        this.setState((state) => {
+          return {
+            ...state,
+            isLoading: false,
+          }
+        })
+      })
+    } else {
+      console.log("🚀 ~ file: ForgotPassword.tsx:226 ~ Flow<T ~ body:", body)
+      console.log("🚀 ~ file: ForgotPassword.tsx:227 ~ Flow<T ~ this.state.values:", this.state.values)
+      return this.props
       .onSubmit({ ...body, ...this.state.values })
       .finally(() => {
         // We wait for reconciliation and update the state after 50ms
@@ -215,6 +235,8 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           }
         })
       })
+    }
+    
   }
 
   render() {

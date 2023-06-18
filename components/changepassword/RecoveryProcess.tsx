@@ -8,7 +8,7 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
-import { Flow } from "../../pkg"
+import { Flow } from "../../pkg/ui/ForgotPassword"
 import { handleFlowError } from "../../pkg/errors"
 import ory from "../../pkg/sdk"
 import {
@@ -128,6 +128,8 @@ const RecoveryProcess: NextPage = (props) => {
   }
 
   const onSubmit = async (values: UpdateRecoveryFlowBody) => {
+    console.log("🚀 ~ file: RecoveryProcess.tsx:131 ~ onSubmit ~ values:", values)
+    const  {isResendCode, ...nextValues} = values;
     const createdTimeDayObject = dayjs(flow.issued_at)
     const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
     const isValidate = validateDiffMinute(setFlow, flow, diffMinute)
@@ -162,7 +164,7 @@ const RecoveryProcess: NextPage = (props) => {
       }
     }
 
-    if (flow.state === "sent_email") {
+    if (!isResendCode && flow.state === "sent_email") {
       const nextFlow = cloneDeep(flow)
       const identifierIndex = nextFlow.ui.nodes.findIndex(
         (node) => node.attributes.name === "code",
@@ -182,7 +184,7 @@ const RecoveryProcess: NextPage = (props) => {
         })
       }
 
-      if (flow.state === "sent_email") {
+      if (!isResendCode && flow.state === "sent_email") {
         await handleYupSchema(recoveryCodeFormSchema, {
           code: values.code,
         })
@@ -271,8 +273,22 @@ const RecoveryProcess: NextPage = (props) => {
       }
     }
 
-    const nextValue =
-      flow.state === "choose_method" ? values : { ...values, email: undefined }
+    let nextValue = null;
+    if (flow.state === "choose_method") {
+      nextValue = nextValues;
+    } else if (!isResendCode && flow.state === "sent_email") {
+      nextValue = {
+        code: nextValues.code,
+        method: nextValues.method,
+        csrf_token: nextValues.csrf_token,
+        email: nextValues.email,
+      }
+    } else {
+      nextValue = nextValues;
+    }
+
+    console.log("🚀 ~ file: RecoveryProcess.tsx:278 ~ onSubmit ~ flow.state:", flow.state)
+    console.log("🚀 ~ file: RecoveryProcess.tsx:277 ~ onSubmit ~ nextValue:", nextValue)
 
     return (
       router
@@ -296,6 +312,7 @@ const RecoveryProcess: NextPage = (props) => {
             })
             .catch(handleFlowError(router, "recovery", setFlow))
             .catch((err: any) => {
+              console.log("🚀 ~ file: RecoveryProcess.tsx:301 ~ onSubmit ~ err:", err)
               // console.log("@Q@", err.response)
               if (err && err.response) {
                 switch (err.response?.status) {

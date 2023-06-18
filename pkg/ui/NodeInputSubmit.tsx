@@ -151,6 +151,7 @@ export function NodeInputSubmit<T>({
               style={
                 showButton ? (resendLink ? linkStyle : defaultStyle) : hiddenStyle
               }
+              id="resendcode"
               name={attributes.name}
               value={attributes.value || ""}
               disabled={attributes.disabled || disabled}
