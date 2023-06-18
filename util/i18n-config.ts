@@ -59,6 +59,13 @@ export function useI18nConfig() {
     turnOff: t('turn_off'),
     deleteAccount: t('acct_setting-delete_acct-verfi_code'),
     verifyDeleteAccDesc: t('verif_delete_acct_desc'),
+    // change password
+    account: t('account'),
+    // device management 
+    currentDevice: t('current_device'),
+    currentDeviceDesc: t('current_device-desc'),
+    otherDevice: t('other_device'),
+    logOutAll: t('log_out_all'),
     // dialog
     cancel: t('cancel'),
     // menu

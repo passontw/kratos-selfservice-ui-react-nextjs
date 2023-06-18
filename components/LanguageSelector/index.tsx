@@ -7,6 +7,8 @@ import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 import { useRouter } from 'next/router';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useLocalStorage } from '../../util/useLocalStorage';
+import Box from '@mui/material/Box';
+import Dropdown from '../../public/images/Dropdown';
 
 const theme = createTheme({
     components: {
@@ -33,6 +35,14 @@ export default function MenuPopupState() {
     const [value, setValue] = useLocalStorage('lang', '');
     const menuItems = [
         { label: 'English', locale: 'en' },
+        { label: 'Deutsch', locale: 'de' },
+        { label: 'Español', locale: 'es' },
+        { label: 'Italian', locale: 'it' },
+        { label: '日本語', locale: 'ja' },
+        { label: 'Nederlands', locale: 'nl' },
+        { label: 'Polski', locale: 'pl' },
+        { label: 'Português (BR)', locale: 'pt_BR' },
+        { label: 'Русский', locale: 'ru' },
         { label: '繁體中文', locale: 'zh-Hant' },
         // ...add more languages here
     ];
@@ -62,10 +72,14 @@ export default function MenuPopupState() {
                             color: '#C0C0C0',
                             border: '1px solid #C0C0C0',
                             backgroundColor: '#32323D',
-                            fontSize: '14px',
+                            fontSize: '13px',
                         }}
                     >
-                        {buttonText}
+                        <Box display="flex" width="100%" position="relative">
+                          <Box>{buttonText}</Box>
+                          <Box position="absolute" right="0px">
+                            <Dropdown color="#C0C0C0" /></Box>
+                        </Box>
                     </Button>
                     <Menu
                         {...bindMenu(popupState)}
@@ -74,12 +88,28 @@ export default function MenuPopupState() {
                         MenuListProps={{ style: { backgroundColor: '#37374F' } }}
                         sx={{ 
                             "& .MuiPaper-root": { borderRadius: '12px', marginTop: '-10px' },
-                            "& .MuiPopover-paper": { borderRadius: '12px' }
+                            "& .MuiPopover-paper": { borderRadius: '12px' },
+                            "& .MuiMenu-list": { 
+                              maxHeight: '200px',
+                              overflow: 'auto',
+                              '&::-webkit-scrollbar': {
+                                width: '5px',
+                                height: '5px',
+                              },
+                              '&::-webkit-scrollbar-track': {
+                                borderRadius: '4px',
+                                backgroundColor: '#37374F',
+                              },
+                              '&::-webkit-scrollbar-thumb': {
+                                background: '#272735',
+                                borderRadius: '4px',
+                              },
+                             },
                         }}>
                         {menuItems.map((item) => (
                             <MenuItem
                                 key={item.locale}
-                                style={{ minWidth: '166px' }}
+                                style={{ minWidth: '166px', fontSize: '14px' }}
                                 onClick={() => {
                                     setButtonText(item.label);
                                     setValue(item.locale);

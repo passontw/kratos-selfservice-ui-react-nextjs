@@ -396,7 +396,7 @@ const Login: NextPage = (props : any) => {
           <Flow onSubmit={onSubmit} flow={flow} router={router} lang={lang}/>
           <MenuTag />
         </StyledMenuWrapper>
-        <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." lang={lang} />
+        <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
       </div>
       <AppsList />
     </>

@@ -9,6 +9,7 @@ import { formatDate } from "../../util/formatter"
 import Text from "../Text"
 
 import DeviceLogoutConfirm from "./DeviceLogoutConfirm"
+import { useTranslation } from "next-i18next"
 
 interface DeviceCardProps {
   device?: string
@@ -30,11 +31,12 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
   onLogout,
 }) => {
   const dispatch = useDispatch()
+  const { t } = useTranslation()
 
   const handleOpenLogoutModal = () => {
     dispatch(
       setDialog({
-        title: "Log out on this device",
+        title: t('device_mgmt-log_out_device') || "Log out on this device",
         titleHeight: "56px",
         width: 480,
         // height: 218,
@@ -84,7 +86,7 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
               },
             }}
           >
-            Log out
+            {t('log_out') || 'Log out'} 
           </Box>
         )}
       </Box>
