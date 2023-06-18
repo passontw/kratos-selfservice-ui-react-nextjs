@@ -110,6 +110,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   handleSubmit = (event: FormEvent<HTMLFormElement> | MouseEvent) => {
     event.stopPropagation()
     event.preventDefault()
+    const isResendCode = event.nativeEvent.submitter.id === "resendcode";
 
     if (this.state.isLoading) {
       return Promise.resolve()
@@ -142,7 +143,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     }))
 
     return this.props
-      .onSubmit({ ...body, ...this.state.values })
+      .onSubmit({ ...body, ...this.state.values }, isResendCode)
       .finally(() => {
         this.setState((state) => ({
           ...state,

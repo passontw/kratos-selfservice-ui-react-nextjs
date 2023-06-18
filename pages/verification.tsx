@@ -193,11 +193,27 @@ const Verification: NextPage = () => {
     return false;
   }
 
-  const onSubmit = async (values: UpdateVerificationFlowBody) => {
+  const onSubmit = async (values: UpdateVerificationFlowBody, isResendCode) => {
+    const {
+      code,
+      email,
+      csrf_token,
+      method,
+    } = values;
+    
     if (flow.state === "sent_email" && isEmpty(values.code) && isEmpty(values.email)) {
       return null;
     }
 
+    const nextValues = isResendCode ? {
+      email,
+      csrf_token,
+      method,
+    } : {
+      code,
+      csrf_token,
+      method,
+    };
     const createdTimeDayObject = dayjs(flow.issued_at)
     const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
     
@@ -244,7 +260,7 @@ const Verification: NextPage = () => {
     return  await ory
       .updateVerificationFlow({
         flow: String(flow?.id),
-        updateVerificationFlowBody: values,
+        updateVerificationFlowBody: nextValues,
       })
       .then(({ data }) => {
         // Form submission was successful, show the message to the user!

@@ -170,7 +170,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     event.stopPropagation()
     event.preventDefault()
     const isResendCode = event.nativeEvent.submitter.id === "resendcode";
-    console.log("🚀 ~ file: ForgotPassword.tsx:211 ~ Flow<T ~ this.state.values:", this.state.values)
 
     // Prevent double submission!
     if (this.state.isLoading) {
