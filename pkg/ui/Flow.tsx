@@ -245,8 +245,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
 
     const getShowGlobalMessages = () => {
       if (hideGlobalMessages) return false
-      if (isEmpty(flow) || isEmpty(flow.ui) || isEmpty(flow.ui.messages))
-        return false
+      if (!isEmpty(flow?.ui?.messages)) return true;
       if (window.location.pathname === "/recovery") {
         const [message] = flow.ui.messages
         if (message.text?.includes("Email account")) {
@@ -256,8 +255,10 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       }
       return false
     }
+      console.log("🚀 ~ file: Flow.tsx:259 ~ Flow<T ~ getShowGlobalMessages ~ flow.ui.messages:", flow?.ui?.messages)
 
     const showGlobalMessages = getShowGlobalMessages();
+    console.log("🚀 ~ file: Flow.tsx:261 ~ Flow<T ~ render ~ showGlobalMessages:", showGlobalMessages)
     const isLoginPath = router?.pathname === "/login";
     return (
       <form
@@ -265,7 +266,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         method={flow.ui.method}
         onSubmit={this.handleSubmit}
       >
-        {showGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
         {nodes.map((node, k) => {
           console.log("@filterNodes node:", node)
 
@@ -329,6 +329,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
             </span>
           )
         })}
+        {showGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
         {!this.props.hideSocialLogin && (
           <Box
             mt="8px"

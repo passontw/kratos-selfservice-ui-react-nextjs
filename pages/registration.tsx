@@ -155,6 +155,19 @@ const Registration: NextPage = (props) => {
                         type: "error",
                       },
                     ]
+                    
+                    nextFlow.ui.messages = [{
+                      id: 400007,
+                      text: "Email account already existed.Please try login or forgot password.",
+                      type: "error",
+                    }];
+                  } else {
+                    const identifierIndex = nextFlow.ui.nodes.findIndex(
+                      (node) => node.attributes.name === "traits.email",
+                    )
+                    nextFlow.ui.nodes[identifierIndex].messages = []
+                    
+                    nextFlow.ui.messages = [];
                   }
                   setFlow(err.response?.data)
                   return
