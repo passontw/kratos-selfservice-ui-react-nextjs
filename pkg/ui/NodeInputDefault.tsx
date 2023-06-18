@@ -131,7 +131,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   return (
     <>
       {verifyCodeConditions && (
-        <VerificationInput lang={lang}/>
+        <VerificationInput />
       )}
       {/* {verifyCodeConditions2 && <VerificationInput />} */}
       <StyledDefaultInput isInputLabel={isInputLabel}>

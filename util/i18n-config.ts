@@ -43,6 +43,22 @@ export function useI18nConfig() {
     gender: t('gender'),
     birthday: t('birthday'),
     joinedSince: t('join_since'),
+    // account
+    accountLinking: t('account_linking'),
+    accountLinkingDesc: t('acct_setting-acct_link_desc'),
+    twoStepVerify: t('2_step_verification'),
+    twoStepVerifyDesc: t('acct_setting-2step_verif'),
+    accountManagement: t('acct_mgmt'),
+    deleteMyAccount: t('acct_setting-delete_acct'),
+    turnOnTwoStepVerify: t('turn_on_2step_verif'),
+    turnOnTwoStepVerifyDesc: t('turn_on_2step_verif_desc'),
+    turnOffTwoStepVerify: t('turn_off_2step_verif'),
+    turnOffTwoStepVerifyDesc: t('turn_off_2step_verif_desc'),
+    currentAcct: t('current_acct'),
+    turnOn: t('turn_on'),
+    turnOff: t('turn_off'),
+    deleteAccount: t('acct_setting-delete_acct-verfi_code'),
+    verifyDeleteAccDesc: t('verif_delete_acct_desc'),
     // dialog
     cancel: t('cancel'),
     // menu

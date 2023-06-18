@@ -12,16 +12,16 @@ interface MfaModalProps {
   email: string
   submit: (event: any) => void
   handleToast?: (value?: string) => void
+  lang? :any
 }
 
-const MfaModal: React.FC<MfaModalProps> = ({ submit, email, handleToast }) => {
+const MfaModal: React.FC<MfaModalProps> = ({ submit, email, handleToast, lang }) => {
   const dispatch = useDispatch()
   const mfaState = useSelector(selectMfaState)
-  console.log("mfaState", mfaState)
   const modalContent = mfaState
-    ? "If 2-step verification is turned on, you’ll need to complete the email verification process every time you log in."
-    : "You will no longer receive a code if we notice an attempted login from an unrecognized device or browser. Are you sure to proceed?"
-  const btnText = mfaState ? "Turn on" : "Turn off"
+    ? lang?.turnOnTwoStepVerifyDesc
+    : lang?.turnOffTwoStepVerifyDesc
+  const btnText = mfaState ? lang?.turnOn :  lang?.turnOff
 
   const handleSubmit = () => {
     submit(new Event("submit", { bubbles: true }))
@@ -36,7 +36,7 @@ const MfaModal: React.FC<MfaModalProps> = ({ submit, email, handleToast }) => {
       <Box>
         {mfaState && (
           <Box fontSize="14px" color="#A5A5A9" fontFamily="open sans" mb="10px">
-            Current account : <span style={{ color: "#CA4AE8" }}>{email}</span>
+            {`${lang?.currentAcct} : `} <span style={{ color: "#CA4AE8" }}>{email}</span>
           </Box>
         )}
         <Box fontSize="14px" color="#A5A5A9" fontFamily="open sans">
@@ -74,7 +74,7 @@ const MfaModal: React.FC<MfaModalProps> = ({ submit, email, handleToast }) => {
             cursor: "pointer",
           }}
         >
-          Cancel
+          {lang?.cancel || "Cancel"}
         </Box>
       </Box>
     </>
