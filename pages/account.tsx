@@ -62,10 +62,6 @@ const Account: NextPage = (props) => {
 
   const { flow: flowId, return_to: returnTo } = router.query
 
-  const handleConfirmDelete = () => {
-    setConfirmDelete(true)
-  }
-
   const handleCloseDelete = () => {
     setShowModal(false)
   }
@@ -160,6 +156,7 @@ const Account: NextPage = (props) => {
               }));
               // The settings have been saved and the flow was updated. Let's show it to the user!
               setFlow(data)
+              if (data.state === "success") window.location.replace("/account")
             })
             .catch(handleFlowError(router, "account", setFlow))
             .catch(async (err: any) => {
