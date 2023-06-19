@@ -61,6 +61,11 @@ export function useI18nConfig() {
     verifyDeleteAccDesc: t('verif_delete_acct_desc'),
     // change password
     account: t('account'),
+    required: t('error-field_required'),
+    atLeastChars: t('pw_at_least_8_characters'),
+    atLeastNum : t('pw_need_at_least_1_number'),
+    atLeastAlpha: t('pw_at_least_1_alphabet'),
+    notMatch: t('pw_no_match'),
     // device management 
     currentDevice: t('current_device'),
     currentDeviceDesc: t('current_device-desc'),

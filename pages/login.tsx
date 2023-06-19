@@ -192,7 +192,9 @@ const Login: NextPage = (props : any) => {
     try {
       const isEmailSignin = isEmpty(values.provider)
       if (isEmailSignin) {
-        await handleYupSchema(loginFormSchema, values)
+        console.log(';;;;;')
+        const aaa = await handleYupSchema(loginFormSchema, values)
+        console.log(aaa)
       }
       if (isEmailSignin) {
         const response = await axios.get(

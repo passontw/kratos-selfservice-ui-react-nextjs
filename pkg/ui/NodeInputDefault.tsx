@@ -73,6 +73,24 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     }
   }
 
+  const translateDisplayText = (text: string) => {
+    if (text.includes("field is required")) {
+      return t('error-field_required')
+    } else if (text.includes("Invalid email format")) {
+      return t('error-field_invalid_email_format')
+    } else if (text.includes("at least 8 characters")) {
+      return t('error-less8chars')
+    } else if (text.includes("at least 1 alphabet")) {
+      return t('error-at_least_1alpha')
+    } else if (text.includes("at least 1 number")) {
+      return t('error-at_least_1num')
+    } else if (text.includes("account already exists")) {
+      return t('error-email_existed')
+    } else {
+      return text
+    }
+  }
+
   const genderRadios = [
     {
       label: t('gender-male') || "Male",
@@ -208,7 +226,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
                       fontFamily: "Open Sans",
                     }}
                   >
-                    {displayText}
+                    {translateDisplayText(displayText)}
                   </span>
                 )
               })}
