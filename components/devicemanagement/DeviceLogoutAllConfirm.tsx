@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux"
 import { setActiveStage } from "../../state/store/slice/layoutSlice"
 import { Stage } from "../../types/enum"
 import Text from "../Text"
+import { useTranslation } from "next-i18next"
 
 interface DeviceLogoutAllConfirmProps {
   onClick?: () => void
@@ -14,6 +15,7 @@ const DeviceLogoutAllConfirm: React.FC<DeviceLogoutAllConfirmProps> = ({
   onClick: close,
   confirmLogoutAll,
 }) => {
+  const { t } = useTranslation()
   return (
     <Box>
       <Text my={"5px"}>
@@ -45,7 +47,7 @@ const DeviceLogoutAllConfirm: React.FC<DeviceLogoutAllConfirmProps> = ({
             close?.()
           }}
         >
-          Log out all
+          {t('log_out_all') || 'Log out all'}
         </Box>
         <Box
           width="95px"
@@ -71,7 +73,7 @@ const DeviceLogoutAllConfirm: React.FC<DeviceLogoutAllConfirmProps> = ({
             close?.()
           }}
         >
-          Cancel
+          {t('cancel') || 'Cancel'}
         </Box>
       </Box>
     </Box>

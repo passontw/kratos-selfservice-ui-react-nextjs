@@ -182,6 +182,22 @@ export default class Flow<T extends Values> extends Component<
     this.setState((state) => ({ ...state, type: type }))
   }
 
+  translateErr = (text : string, lang: any) => {
+    if (text.includes("field is required")) {
+      return lang?.required
+    } else if (text.includes("at least 8 characters")) {
+      return lang?.atLeastChars
+    } else if (text.includes("at least 1 alphabet")) {
+      return lang?.atLeastAlpha
+    } else if (text.includes("at least 1 number")) {
+      return lang?.atLeastNum
+    } else if (text.includes("match")) {
+      return lang?.notMatch
+    } else {
+      return text
+    }
+  }
+
   render() {
     const { hideGlobalMessages, flow, lang, confirmPasswordError } = this.props
     const { values, isLoading } = this.state
@@ -267,7 +283,7 @@ export default class Flow<T extends Values> extends Component<
                   fontSize: "13px",
                 }}
               >
-                {confirmPasswordError}
+                {this.translateErr(confirmPasswordError, lang)}
               </span>
             }
             style={{

@@ -11,9 +11,11 @@ import {
 import { Navs } from "../../types/enum"
 import AppItem from "../AppItem"
 import LinkNav from "../LinkNav"
+import { useTranslation } from "next-i18next"
 
 interface AppsListProps {}
 const AppsList: React.FC<AppsListProps> = () => {
+  const { t } = useTranslation()
   const activeNav = useSelector(selectActiveNav)
 
   return (
@@ -30,10 +32,10 @@ const AppsList: React.FC<AppsListProps> = () => {
           </div>
           <StyledTagPc>
             <Box fontSize="30px" color="#fff">
-              Access Anywhere With Master ID
+              {t('masterid_slogan') || 'Access Anywhere With Master ID'}
             </Box>
             <Box fontSize="20px" color="#C0C0C0" mt="6px">
-              One account is all you need. Start your virtual adventure.
+            {t('masterid-desc') || 'One account is all you need. Start your virtual adventure.'}
             </Box>
             <StyledTagPcWrapper>
               <AppItem appIcon="MasterControl" appName="MasterControl" />

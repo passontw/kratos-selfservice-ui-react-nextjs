@@ -17,6 +17,7 @@ import ory from "../pkg/sdk"
 import Bin from "../public/images/Bin"
 import {
   selectMfaModalOpen,
+  selectMfaState,
   setAccountDeleted,
   setActiveNav,
   setActiveStage,
@@ -59,6 +60,7 @@ const Account: NextPage = (props) => {
   const router = useRouter()
   const mfaModalOpen = useSelector(selectMfaModalOpen)
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const mfaState = useSelector(selectMfaState)
 
   const { flow: flowId, return_to: returnTo } = router.query
 
@@ -294,7 +296,7 @@ const Account: NextPage = (props) => {
               xs: "24px",
             }}
           >
-            Account Linking
+            {lang?.accountLinking}
           </Box>
           <Box
             color="#A5A5A9"
@@ -303,8 +305,7 @@ const Account: NextPage = (props) => {
             mt="4px"
             mb="12px"
           >
-            Connect your account with one of these third parties to sign in
-            quickly and easily.
+             {lang?.accountLinkingDesc}
           </Box>
           {/* <Messages messages={flow?.ui.messages} /> */}
           <Flow
@@ -321,7 +322,7 @@ const Account: NextPage = (props) => {
               sm: "22px",
               xs: "18px",
             }} mt="36px">
-            2-step Verification
+            {lang?.twoStepVerify}
           </Box>
           <Box
             color="#A5A5A9"
@@ -330,8 +331,7 @@ const Account: NextPage = (props) => {
             mt="4px"
             mb="12px"
           >
-            Each time you sign in to Cooler Master service, we’ll send you a
-            verification code to prevent unauthorized access.
+            {lang?.twoStepVerifyDesc}
           </Box>
           {/* <Messages messages={flow?.ui.messages} /> */}
           <ProfileFlow
@@ -340,8 +340,9 @@ const Account: NextPage = (props) => {
             only="profile"
             flow={flow}
             modalOpen={mfaModalOpen}
-            // mfaState={mfaState}
+            mfaState={mfaState}
             dispatch={dispatch}
+            lang={lang}
           />
         </SettingsCard>
         <SettingsCard only="profile" flow={flow}>
@@ -349,7 +350,7 @@ const Account: NextPage = (props) => {
               sm: "22px",
               xs: "18px",
             }} mt="36px">
-            Account Management
+            {lang?.accountManagement}
           </Box>
           <Box
             mt="12px"
@@ -381,7 +382,7 @@ const Account: NextPage = (props) => {
                   sm: "20px",
                   xs: "16px",
                 }} fontFamily="open sans">
-                Delete my account
+                {lang?.deleteMyAccount}
               </Box>
             </Box>
           </Box>
@@ -403,6 +404,7 @@ const Account: NextPage = (props) => {
             deleteAccount={deleteAccount}
             show={showModal}
             close={handleCloseDelete}
+            lang={lang}
           />
         </SettingsCard>
       </Box>

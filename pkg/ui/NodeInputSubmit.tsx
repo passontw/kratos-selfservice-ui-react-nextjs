@@ -111,14 +111,14 @@ export function NodeInputSubmit<T>({
   console.log(getNodeLabel(node))
   const buttonText =
       deleteAccount
-      ? "Continue"
+      ? t('continue') || "Continue"
       : (activeNav === Navs.RECOVERY) && activeStage === Stage.FORGOT_PASSWORD
       ? lang?.submit
       : (activeNav === Navs.VERIFICATION || activeNav === Navs.RECOVERY) &&
       getNodeLabel(node) === "Submit"
       ? lang?.verify
       : getNodeLabel(node) === "Resend code"
-      ? lang?.resend || 'Resend'
+      ? lang?.resend || t('resend') || 'Resend'
       : getNodeLabel(node) === "Sign in"
       ? lang?.login
       : getNodeLabel(node) === "Sign up"
@@ -143,7 +143,7 @@ export function NodeInputSubmit<T>({
         <Box display="flex" justifyContent="center" alignItems="center">
           <Box style={resendStyle}>
             <Box fontFamily="open sans" color="#A5A5A9" fontSize="14px">
-              {`${lang?.didntReceive || "Didn't receive"} ?`}
+              {`${lang?.didntReceive || t('didnt_receive') || "Didn't receive"} ?`}
             </Box>
 
             <Button

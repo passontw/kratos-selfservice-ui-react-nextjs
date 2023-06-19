@@ -20,6 +20,7 @@ import Text from "../Text"
 
 import DeleteAccConfirm from "./DeleteAccConfirm"
 import Flow from "./VerificationFlow"
+import { useTranslation } from "next-i18next"
 
 const dayjs = require("dayjs")
 const utc = require("dayjs/plugin/utc")
@@ -48,22 +49,24 @@ const validateDiffMinute = (setFlow, flow, diffMinute) => {
 }
 
 const Verification: NextPage = (props) => {
-  const { show, close } = props
+  const { show, close, lang } = props
   const [initFlow, setInitFlow] = useState(false)
   const [flow, setFlow] = useState<VerificationFlow>()
 
   // Get ?flow=... from the URL
   const router = useRouter()
   const dispatch = useDispatch()
+  const { t } = useTranslation()
   const sixDigitCode = useSelector(selectSixDigitCode)
   const email = router.query.user as string
   const { flow: flowId, return_to: returnTo, user } = router.query
 
   const deleteAccountPromt = async () => {
+    console.log(lang)
     close()
     dispatch(
       setDialog({
-        title: "Delete Account",
+        title: lang?.deleteAccount || 'Delete Account',
         titleHeight: "56px",
         width: 480,
         // height: 238,
@@ -353,15 +356,13 @@ const Verification: NextPage = (props) => {
             alignItems="center"
           >
             <Text size="20px" my="32px" color="#FFF">
-              Delete Account
+              {lang?.deleteAccount || 'Delete Account'}
             </Text>
           </Box>
-          { console.log('flow', flow?.state) }
           {flow?.state === 'sent_email' ? 
             <Box>
               <Text>
-                Enter the 6-digit code we sent to <span>{email}</span> to finish the
-                deletion process.
+                {lang?.verifyDeleteAccDesc.replace("master123@gmail.com", `${email}`)}
               </Text>
               <Flow
                 onSubmit={onSubmit}
@@ -409,7 +410,7 @@ const Verification: NextPage = (props) => {
                   window.location.reload()
                 }}
               >
-              Cancel
+                {lang?.cancel || 'Cancel'}
               </Box>
             </Box>}
         </Box>

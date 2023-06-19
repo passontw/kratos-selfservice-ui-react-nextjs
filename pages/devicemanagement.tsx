@@ -258,11 +258,10 @@ const DeviceManagement: NextPage = (props) => {
         <SettingsCard only="profile" flow={flow}>
           <Box fontFamily="open sans">
             <Box color="#717197" fontSize="22px">
-              Current Device
+              {lang?.currentDevice || 'Current Device'}
             </Box>
             <Box color="#A5A5A9" fontSize="14px" mt="4px" mb="12px">
-              You’re signed in on these devices. There might be multiple
-              activity sessions from the same device.
+              {lang?.currentDeviceDesc}
             </Box>
           </Box>
           <SessionListItem session={selfSession} />
@@ -274,7 +273,7 @@ const DeviceManagement: NextPage = (props) => {
             justifyContent="space-between"
           >
             <Box color="#717197" fontSize="22px" mb="12px">
-              Other Device
+              {lang?.otherDevice || 'Other Devices'}
             </Box>
             {sessions.length > 1 && (
               <Box
@@ -288,7 +287,7 @@ const DeviceManagement: NextPage = (props) => {
                   },
                 }}
               >
-                Log out all
+                {lang?.logOutAll || 'Log out all'}
               </Box>
             )}
           </Box>

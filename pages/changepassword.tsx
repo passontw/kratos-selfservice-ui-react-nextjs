@@ -158,7 +158,7 @@ const ChangePassword: NextPage = (props) => {
       <StyledChangePasswordArea marginTop="48px">
         <StyledChangePasswordDeco src={"/images/change-password-deco.png"} />
         <StyledSection>
-          <StyledAccount>Account</StyledAccount>
+          <StyledAccount>{lang?.account || 'Account'}</StyledAccount>
           <StyledEmail>{email}</StyledEmail>
         </StyledSection>
       </StyledChangePasswordArea>
@@ -171,6 +171,7 @@ const ChangePassword: NextPage = (props) => {
             onSubmit={onSubmit}
             only="password"
             flow={flow}
+            lang={lang}
           />
         </SettingsCard>
       </StyledChangePasswordArea>

@@ -192,7 +192,9 @@ const Login: NextPage = (props : any) => {
     try {
       const isEmailSignin = isEmpty(values.provider)
       if (isEmailSignin) {
-        await handleYupSchema(loginFormSchema, values)
+        console.log(';;;;;')
+        const aaa = await handleYupSchema(loginFormSchema, values)
+        console.log(aaa)
       }
       if (isEmailSignin) {
         const response = await axios.get(
@@ -396,7 +398,7 @@ const Login: NextPage = (props : any) => {
           <Flow onSubmit={onSubmit} flow={flow} router={router} lang={lang}/>
           <MenuTag />
         </StyledMenuWrapper>
-        <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." lang={lang} />
+        <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
       </div>
       <AppsList />
     </>

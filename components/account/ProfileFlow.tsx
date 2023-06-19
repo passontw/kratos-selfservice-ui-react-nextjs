@@ -58,10 +58,11 @@ export type Props<T> = {
   // modal is open or not
   modalOpen?: boolean
   // state of mfa
-  // mfaState: boolean
+  mfaState: boolean
   // dispatch function
   dispatch?: any
   // handleToast?: any
+  lang?: any
 }
 
 function emptyState<T>() {
@@ -93,16 +94,16 @@ export default class Flow<T extends Values> extends Component<
     if (this.props.modalOpen) {
       this.props.dispatch(
         setDialog({
-          title: `2-Step Verification`,
+          title: this.props.mfaState ? 
+            this.props.lang?.turnOnTwoStepVerify : this.props.lang?.turnOffTwoStepVerify,
           titleHeight: "58px",
           width: 480,
-          // height: 268,
           center: true,
           children: (
             <MfaModal
               email={this.props.flow.identity.traits.email}
               submit={(e) => this.handleSubmit(e, true)}
-              // handleToast={this.props.handleToast}
+              lang={this.props.lang}
             />
           ),
         }),

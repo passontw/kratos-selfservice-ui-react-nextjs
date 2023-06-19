@@ -8,10 +8,11 @@ import {
 } from "./styles"
 
 import { setSixDigitCode } from "../../../state/store/slice/layoutSlice"
+import { useTranslation } from "next-i18next"
 
-const VerificationInput = (props) => {
-  const { lang } = props
+const VerificationInput = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslation()
   const [inputValues, setInputValues] = useState(Array(6).fill(""))
   const inputRefs = [useRef(), useRef(), useRef(), useRef(), useRef(), useRef()]
 
@@ -53,7 +54,7 @@ const VerificationInput = (props) => {
 
   return (
     <Container>
-      <Title>{lang?.verifyCode}</Title>
+      <Title>{t('verif_code')}</Title>
       <InputsContainer>
         {inputValues.map((value, i) => (
           <Input

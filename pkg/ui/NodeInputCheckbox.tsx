@@ -6,6 +6,7 @@ import Switch from "../../components/Switch"
 import Mail from "../../public/images/Mail"
 
 import { NodeInputProps } from "./helpers"
+import { useTranslation } from "next-i18next"
 
 export function NodeInputCheckbox<T>({
   node,
@@ -13,7 +14,7 @@ export function NodeInputCheckbox<T>({
   setValue,
   disabled,
 }: NodeInputProps) {
-  console.log("@checklabel", attributes.name)
+  const { t } = useTranslation()
   // Render a checkbox.s
   return (
     <Box
@@ -43,7 +44,7 @@ export function NodeInputCheckbox<T>({
                 sm: "20px",
                 xs: "16px",
               }}>
-          {attributes.name === "traits.loginVerification" ? "Email" : "???"}
+          {attributes.name === "traits.loginVerification" ? t('email') ||"Email" : "???"}
         </Box>
       </Box>
       <Box mt="12px">

@@ -301,12 +301,12 @@ export default class Flow<T extends Values> extends Component<
             when there is actual image upload */}
 
             <StyledProfileImageWrap>
-              <StyledProfileImage src={"/images/profile-demo.jpg"} style={{
+              {/* <StyledProfileImage src={"/images/profile-demo.jpg"} style={{
                 height: "168px",
                 width: "168px",
                 borderRadius: "50%",
-              }}/>
-              {/* <StyledProfileImage src={"/images/profile-pic.png"} /> */}
+              }}/> */}
+              <StyledProfileImage src={"/images/profile-pic.png"} />
               <StyledEditButton src={"/images/edit-icon.png"} />
             </StyledProfileImageWrap>
 
