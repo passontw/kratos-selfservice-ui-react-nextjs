@@ -102,5 +102,13 @@
     "pw_no_match": "Passwort stimmt nicht überein",
     "verif_delete_acct_desc": "Geben Sie den 6-stelligen Code ein, den wir an master123@gmail.com gesendet haben, um den Löschvorgang abzuschließen.",
     "delete_acct_desc": "Ihr Konto und die damit verbundenen Daten werden dauerhaft gelöscht und können nicht wiederhergestellt werden.",
-    "acct_use_cannot_link": "Konto wird bereits verwendet. Kann nicht verknüpft werden."
+    "acct_use_cannot_link": "Konto wird bereits verwendet. Kann nicht verknüpft werden.",
+    "profile_updated_succ": "Profil erfolgreich aktualisiert",
+    "linked": "verbunden",
+    "unlinked": "nicht verbunden",
+    "log_out_all_devices": "Auf allen Geräten abmelden",
+    "ory_errormsg_security_violation": "Es wurde ein Sicherheitsverstoß festgestellt, bitte füllen Sie das Formular erneut aus.",
+    "ory_errormsg_interaction_expired": "Ihre Interaktion ist abgelaufen, bitte füllen Sie das Formular erneut aus.",
+    "ory_errormsg_route_address_no_allowed": "Die Adresse %page_route% ist nicht zulässig.",
+    "log_out_all_device_desc": "Dadurch wird der Zugriff auf Ihr Master-ID-Konto von allen Geräten entfernt."
 }

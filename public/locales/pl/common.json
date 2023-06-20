@@ -3,7 +3,7 @@
     "welcomeback": "Witaj ponownie",
     "login_diff_acct": "Zaloguj się innym kontem",
     "username": "Nazwa użytkownika",
-    "email": "Adres email",
+    "email": "Adres e-mail",
     "password": "Hasło",
     "signup_pw_hint": "Kombinacja liczb i znaków (min. 8 znaków)",
     "launching": "Uruchamianie",
@@ -21,7 +21,7 @@
     "verification_succeeded": "Weryfikacja udana",
     "verif_success_sentence": "Gratulacje, Twoje konto zostało zatwierdzone. Za kilka sekund zostaniesz automatycznie przekierowany\/przekierowana do %service%.",
     "redirect_now": "Przekieruj teraz",
-    "error-field_required": "To pole jest wymagane, należy je wypełnić.",
+    "error-field_required": "To pole jest wymagane, prosimy je wypełnić.",
     "error-field_invalid_email_format": "Nieprawidłowy format wiadomości e-mail, sprawdź i spróbuj ponownie.",
     "error-email_existed": "Konto e-mail już istnieje. Spróbuj się zalogować lub kliknij \"zapomnij hasło\".",
     "error-less8chars": "Twoje hasło musi zawierać przynajmniej 8 znaków",
@@ -102,5 +102,13 @@
     "pw_no_match": "Hasła nie są identyczne",
     "verif_delete_acct_desc": "Aby zakończyć proces usuwania, wprowadź 6-cyfrowy kod, który wysłaliśmy na adres master123@gmail.com.",
     "delete_acct_desc": "Twoje konto i powiązane z nim dane zostaną trwale usunięte i nie będzie można ich przywrócić.",
-    "acct_use_cannot_link": "Konto jest używane. Nie można połączyć."
+    "acct_use_cannot_link": "Konto jest używane. Nie można połączyć.",
+    "profile_updated_succ": "Profil zaktualizowany pomyślnie",
+    "linked": "powiązany z",
+    "unlinked": "niepowiązany",
+    "log_out_all_devices": "Wyloguj się ze wszystkich urządzeń",
+    "ory_errormsg_security_violation": "Wykryto naruszenie bezpieczeństwa, wypełnij formularz ponownie.",
+    "ory_errormsg_interaction_expired": "Twoja interakcja wygasła, wypełnij formularz ponownie.",
+    "ory_errormsg_route_address_no_allowed": "Adres %page_route% jest niedozwolony.",
+    "log_out_all_device_desc": "Spowoduje to usunięcie dostępu do Twojego konta Master ID ze wszystkich urządzeń."
 }

@@ -183,7 +183,7 @@ const DeviceManagement: NextPage = (props) => {
   const handleOpenLogoutAllModal = () => {
     dispatch(
       setDialog({
-        title: "Log out on all devices",
+        title: lang?.logOutAllDevices || "Log out on all devices",
         titleHeight: "56px",
         width: 480,
         // height: 218,

@@ -379,11 +379,13 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
             justifyContent="center"
           >
             <StyledMenuLine>
-              <span className="text">
+              <Box className="text">
+                <Box height="19px" width="fit-content" zIndex={1} bgcolor="#272735" padding="0 10px">
                 {this.props.router?.pathname === "/login"
                   ? lang?.loginDiffAccount
                   : lang?.signupOtherAcct}
-              </span>
+                </Box>
+              </Box>
             </StyledMenuLine>
           </Box>
         )}

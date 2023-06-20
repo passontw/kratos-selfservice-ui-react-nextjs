@@ -105,7 +105,7 @@ export default class Flow<T extends Values> extends Component<
       // }
       if (this.props.flow?.state === "success") {
         if (!this.props.confirmPasswordError) {
-          showToast("Password changed.")
+          showToast(this.props.lang?.passwordChanged || "Password changed.")
         }
       }
     }

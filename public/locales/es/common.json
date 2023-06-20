@@ -102,5 +102,13 @@
     "pw_no_match": "La contraseña no coincide",
     "verif_delete_acct_desc": "Introduce el código de 6 dígitos que te enviamos a master123@gmail.com para finalizar el proceso de eliminación.",
     "delete_acct_desc": "Su cuenta y los datos asociados se eliminarán de forma permanente y no se podrán restaurar.",
-    "acct_use_cannot_link": "Cuenta ya en uso. No se puede vincular."
+    "acct_use_cannot_link": "Cuenta ya en uso. No se puede vincular.",
+    "profile_updated_succ": "Perfil actualizado correctamente",
+    "linked": "vinculado",
+    "unlinked": "desvinculado",
+    "log_out_all_devices": "Cerrar sesión en todos los dispositivos",
+    "ory_errormsg_security_violation": "Se ha detectado una violación de seguridad, por favor, rellene de nuevo el formulario.",
+    "ory_errormsg_interaction_expired": "Su interacción ha caducado, por favor rellene el formulario de nuevo.",
+    "ory_errormsg_route_address_no_allowed": "La dirección %page_route% no está permitida.",
+    "log_out_all_device_desc": "Esto eliminará el acceso a su cuenta de Master ID desde todos los dispositivos."
 }

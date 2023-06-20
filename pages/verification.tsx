@@ -352,8 +352,8 @@ const Verification: NextPage = () => {
       <div className="mainWrapper">
         <StyledMenuWrapper>
           <div>
-            <title>Verify your account - Ory NextJS Integration Example</title>
-            <meta name="description" content="NextJS + React + Vercel + Ory" />
+            <title>Verify your account - Master ID</title>
+            <meta name="description" content="Master ID" />
           </div>
           <CmidHead />
           <Box mt="62px" display="flex" flexDirection="column">

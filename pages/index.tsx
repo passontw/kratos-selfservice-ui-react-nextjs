@@ -56,8 +56,8 @@ const Home: NextPage = () => {
   return (
     <div className={"container-fluid"}>
       <Head>
-        <title>Ory NextJS Integration Example</title>
-        <meta name="description" content="NextJS + React + Vercel + Ory" />
+        <title>Master ID</title>
+        <meta name="description" content="Master ID" />
       </Head>
 
       {/* <MarginCard wide>

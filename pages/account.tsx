@@ -134,20 +134,20 @@ const Account: NextPage = (props) => {
                 if (linkAttributesNames.googleAttributesName !== googleAttributesName) {
                   if (googleAttributesName === "unlink") {
                     // alert("google linked");
-                    showToast("google linked")
+                    showToast(`Google ${lang?.linked}`)
                   } else {
                     // alert("google unlinked");
-                    showToast("google unlinked")
+                    showToast(`Google ${lang?.uninked}`)
                   }
                 }
 
                 if (linkAttributesNames.appleAttributesName !== appleAttributesName) {
                   if (appleAttributesName === "unlink") {
                     // alert("apple linked");
-                    showToast("apple linked")
+                    showToast(`Apple ${lang?.linked}`)
                   } else {
                     // alert("apple unlinked");
-                    showToast("apple unlinked")
+                    showToast(`Apple ${lang?.uninked}`)
                   }
                 }
               }
@@ -177,7 +177,7 @@ const Account: NextPage = (props) => {
   useEffect(() => {
     if (flow?.ui.messages) {
       if (flow?.ui.messages[0]?.id === 4000007) {
-        showToast("Account already in use. Can't be linked.", false)
+        showToast(lang?.cannotLinkAcc || "Account already in use. Can't be linked.", false)
       }
       //  else if (flow?.ui.messages[0]?.id === 1050001) {
       //   showToast("update success")
@@ -250,19 +250,19 @@ const Account: NextPage = (props) => {
             if (!isEmpty(linkAttributesNames)) {
               if (linkAttributesNames.googleAttributesName !== googleAttributesName) {
                 if (googleAttributesName === "unlink") {
-                  showToast("google linked")
+                  showToast(`Google ${lang?.linked}`)
                 } else {
-                  showToast("google unlinked")
+                  showToast(`Google ${lang?.unlinked}`)
                 }
               }
 
               if (linkAttributesNames.appleAttributesName !== appleAttributesName) {
                 if (appleAttributesName === "unlink") {
                   // alert("apple linked");
-                  showToast("apple linked")
+                  showToast(`Apple ${lang?.linked}`)
                 } else {
                   // alert("apple unlinked");
-                  showToast("apple unlinked")
+                  showToast(`Apple ${lang?.unlinked}`)
                 }
               }
             }

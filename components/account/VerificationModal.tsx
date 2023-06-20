@@ -345,8 +345,8 @@ const Verification: NextPage = (props) => {
         }}
       >
         <Head>
-          <title>Verify your account - Ory NextJS Integration Example</title>
-          <meta name="description" content="NextJS + React + Vercel + Ory" />
+          <title>Verify your account - Master ID</title>
+          <meta name="description" content="Master ID" />
         </Head>
 
         <Box>

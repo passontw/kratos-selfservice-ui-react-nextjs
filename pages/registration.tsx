@@ -160,7 +160,7 @@ const Registration: NextPage = (props) => {
                     
                     nextFlow.ui.messages = [{
                       id: 400007,
-                      text: "Email account already existed.Please try login or forgot password.",
+                      text: lang?.emailAlreadyExists || "Email account already exists. Please try to log in or click forget password.",
                       type: "error",
                     }];
                   } else {
@@ -274,13 +274,9 @@ const Registration: NextPage = (props) => {
     <>
       <div className="mainWrapper">
         <StyledMenuWrapper>
-          {/* <Head>
-            <title>Create account - Ory NextJS Integration Example</title>
-            <meta name="description" content="NextJS + React + Vercel + Ory" />
-          </Head> */}
           <div>
-            <title>Create account - Ory NextJS Integration Example</title>
-            <meta name="description" content="NextJS + React + Vercel + Ory" />
+            <title>Create account - Master ID</title>
+            <meta name="description" content="Master ID" />
           </div>
           {/* <MarginCard> */}
           {/* <CardTitle>Create account</CardTitle> */}

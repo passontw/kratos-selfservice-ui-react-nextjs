@@ -19,7 +19,7 @@ const DeviceLogoutAllConfirm: React.FC<DeviceLogoutAllConfirmProps> = ({
   return (
     <Box>
       <Text my={"5px"}>
-        This will remove access to your Master ID account from all devices.
+        {t('log_out_all_device_desc') || "This will remove access to your Master ID account from all devices."}
       </Text>
       <Box display="flex" gap="14px" flexDirection="row-reverse">
         <Box

@@ -102,5 +102,13 @@
     "pw_no_match": "Wachtwoord komt niet overeen",
     "verif_delete_acct_desc": "Voer de 6-cijferige code in die we naar master123@gmail.com hebben gestuurd om het verwijderingsproces te voltooien.",
     "delete_acct_desc": "Je account en bijbehorende gegevens worden permanent verwijderd en kunnen niet worden hersteld.",
-    "acct_use_cannot_link": "Account is al in gebruik. Kan niet gekoppeld worden."
+    "acct_use_cannot_link": "Account is al in gebruik. Kan niet gekoppeld worden.",
+    "profile_updated_succ": "Profiel succesvol bijgewerkt",
+    "linked": "gekoppeld",
+    "unlinked": "ontkoppeld",
+    "log_out_all_devices": "Log uit op alle apparaten",
+    "ory_errormsg_security_violation": "Er is een beveiligingsschending gedetecteerd, vul het formulier opnieuw in.",
+    "ory_errormsg_interaction_expired": "Je interactie is verlopen, vul het formulier opnieuw in.",
+    "ory_errormsg_route_address_no_allowed": "Het adres %page_route% is niet toegestaan.",
+    "log_out_all_device_desc": "Hiermee wordt de toegang tot je Master ID-account van alle apparaten verwijderd."
 }

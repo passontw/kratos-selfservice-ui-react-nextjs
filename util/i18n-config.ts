@@ -17,6 +17,8 @@ export function useI18nConfig() {
     changePw: t('change_pw'),
     username: t('username'),
     save: t('save'),
+    emailDoesNotExist: t('error-email-unexisted'),
+    emailAlreadyExists: t('error-email_existed'),
     // login
     welcomeBack: t('welcomeback'),
     forgotPw: t('forgot_pw'),
@@ -24,6 +26,9 @@ export function useI18nConfig() {
     loginDiffAccount: t('login_diff_acct'),
     termsOfUse: t('terms_of_use'),
     privacyPolicy: t('privacy_policy'),
+    orySecurityViolation: t('A security violation was detected, please fill out the form again.'),
+    oryInteractionExpired: t('Your interaction expired, please fill out the form again.'),
+    oryAddressNoAllowed: t('The %page_route% address is not allowed.'),
     // signup
     joinUs: t('join_us'),
     alreadyHaveAcct: t('already_have_acct'),
@@ -43,6 +48,7 @@ export function useI18nConfig() {
     gender: t('gender'),
     birthday: t('birthday'),
     joinedSince: t('join_since'),
+    profileUpdated: t('profile_updated_succ'),
     // account
     accountLinking: t('account_linking'),
     accountLinkingDesc: t('acct_setting-acct_link_desc'),
@@ -59,6 +65,9 @@ export function useI18nConfig() {
     turnOff: t('turn_off'),
     deleteAccount: t('acct_setting-delete_acct-verfi_code'),
     verifyDeleteAccDesc: t('verif_delete_acct_desc'),
+    linked: t('linked'),
+    unlinked: t('unlinked'),
+    cannotLinkAcc: t('acct_use_cannot_link'),
     // change password
     account: t('account'),
     required: t('error-field_required'),
@@ -66,9 +75,12 @@ export function useI18nConfig() {
     atLeastNum : t('pw_need_at_least_1_number'),
     atLeastAlpha: t('pw_at_least_1_alphabet'),
     notMatch: t('pw_no_match'),
+    passwordChanged: t('pw_changed_succ'),
     // device management 
     currentDevice: t('current_device'),
     currentDeviceDesc: t('current_device-desc'),
+    logOutAllDevices: t('log_out_all_devices'),
+    logOutAllDevicesDesc: t('log_out_all_device_desc'),
     otherDevice: t('other_device'),
     logOutAll: t('log_out_all'),
     // dialog
