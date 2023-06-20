@@ -1,20 +1,16 @@
-import { Box, Link } from "@mui/material"
+import { Box } from "@mui/material"
 import { TextInput } from "@ory/themes"
 import { useRouter } from "next/router"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import styled from "styled-components"
+import { useEffect, useMemo, useState } from "react"
+import { useSelector } from "react-redux"
 
 import RadioGroup from "../../components/RadioGroup"
 import Select from "../../components/Select"
-import RecoveryProcess from "../../components/changepassword/RecoveryProcess"
-import CodeInput from "../../components/verification/CodeInput"
 import VerificationInput from "../../components/verification/VerificationInput"
 import Eye from "../../public/images/eyes"
 import {
   selectActiveNav,
   selectActiveStage,
-  selectSixDigitCode,
 } from "../../state/store/slice/layoutSlice"
 import {
   StyledDefaultInput,
@@ -23,14 +19,12 @@ import {
 } from "../../styles/share"
 import { Navs, Stage } from "../../types/enum"
 import { SelectOption } from "../../types/general"
-import { CenterLink } from "../styled"
 
 import { NodeInputProps } from "./helpers"
 import { useTranslation } from "next-i18next"
 
 export function NodeInputDefault<T>(props: NodeInputProps) {
   const router = useRouter()
-  const dispatch = useDispatch()
   const nav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
   const { node, attributes, value, setValue, disabled, validationMsgs, lang } = props
@@ -164,7 +158,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
               attributes.name === "traits.gender"
                 ? "none"
                 : "unset",
-            border: isError || accountError ? "1px solid #F24867" : "8px solid #37374F",
+            border: isError ? "1px solid #F24867" : "8px solid #37374F",
             backgroundColor: "#37374F",
             height: "44px",
             color: "#fff",

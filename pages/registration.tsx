@@ -2,9 +2,7 @@ import Box from "@mui/material/Box"
 import { RegistrationFlow } from "@ory/client"
 import cloneDeep from "lodash/cloneDeep"
 import type { NextPage } from "next"
-import Link from "next/link"
 import { useRouter } from "next/router"
-import queryString from "query-string"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
@@ -123,16 +121,20 @@ const Registration: NextPage = (props) => {
                     })
                   })
               })
-              .then(({ data }) => {
+              .then( async ({ data }) => {
                 localStorage.setItem(localStorageKey, JSON.stringify(values));
-                window.location.href = `/verification?${queryString.stringify(
-                  {
-                    ...router.query,
-                    user: values["traits.email"],
-                    type: "registe",
+                if (data.continue_with) {
+                  for (const item of data.continue_with) {
+                    switch (item.action) {
+                      case "show_verification_ui":
+                        await router.push("/verification?flow=" + item.flow.id)
+                        return
+                    }
                   }
-                )}`
-                return
+                }
+        
+                // If continue_with did not contain anything, we can just return to the home page.
+                await router.push(returnTo || "/")
               })
               .catch(handleFlowError(router, "registration", setFlow))
               .catch((err: any) => {
@@ -180,6 +182,7 @@ const Registration: NextPage = (props) => {
       )
     } catch (error) {
       const errors = handleYupErrors(error)
+      console.log("🚀 ~ file: registration.tsx:187 ~ onSubmit ~ errors:", errors)
       const nextFlow = cloneDeep(flow)
       nextFlow.ui.messages = []
 
