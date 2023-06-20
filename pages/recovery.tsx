@@ -81,8 +81,8 @@ const Recovery: NextPage = (props) => {
       <div className="mainWrapper">
         <StyledMenuWrapper>
           <div>
-            <title>Sign in - Ory NextJS Integration Example</title>
-            <meta name="description" content="NextJS + React + Vercel + Ory" />
+            <title>Sign in - Master ID</title>
+            <meta name="description" content="Master ID" />
           </div>
           <CmidHead />
           <Box

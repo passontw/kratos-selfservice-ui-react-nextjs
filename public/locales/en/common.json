@@ -102,5 +102,13 @@
     "pw_no_match": "Password doesn’t match",
     "verif_delete_acct_desc": "Enter the 6-digit code we sent to master123@gmail.com to finish the deletion process.",
     "delete_acct_desc": "Your account and associated data will be permanently deleted and cannot be restored.",
-    "acct_use_cannot_link": "Account already in use. Can’t be linked."
+    "acct_use_cannot_link": "Account already in use. Can’t be linked.",
+    "profile_updated_succ": "Profile updated successfully",
+    "linked": "linked",
+    "unlinked": "unlinked",
+    "log_out_all_devices": "Log out on all devices",
+    "ory_errormsg_security_violation": "A security violation was detected, please fill out the form again.",
+    "ory_errormsg_interaction_expired": "Your interaction expired, please fill out the form again.",
+    "ory_errormsg_route_address_no_allowed": "The %page_route% address is not allowed.",
+    "log_out_all_device_desc": "This will remove access to your Master ID account from all devices."
 }

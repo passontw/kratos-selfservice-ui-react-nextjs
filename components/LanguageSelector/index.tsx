@@ -37,6 +37,7 @@ export default function MenuPopupState() {
         { label: 'English', locale: 'en' },
         { label: 'Deutsch', locale: 'de' },
         { label: 'Español', locale: 'es' },
+        { label: 'Français', locale: 'fr' },
         { label: 'Italian', locale: 'it' },
         { label: '日本語', locale: 'ja' },
         { label: 'Nederlands', locale: 'nl' },

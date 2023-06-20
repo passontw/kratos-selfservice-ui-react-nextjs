@@ -33,6 +33,7 @@ import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 
 import { StyledMenuWrapper } from "./../styles/share"
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { useTranslation } from 'next-i18next'
 
 const localStorageKey = "!@#$%^&*()data"
 
@@ -192,11 +193,6 @@ const Login: NextPage = (props : any) => {
     try {
       const isEmailSignin = isEmpty(values.provider)
       if (isEmailSignin) {
-        console.log(';;;;;')
-        const aaa = await handleYupSchema(loginFormSchema, values)
-        console.log(aaa)
-      }
-      if (isEmailSignin) {
         const response = await axios.get(
           `/api/hydra/validateIdentity?email=${values.identifier}`,
         )
@@ -208,7 +204,7 @@ const Login: NextPage = (props : any) => {
               messages: [
                 {
                   id: 400001,
-                  text: "Email account doesn’t exist. Please try again or sign up",
+                  text: lang?.emailDoesNotExist || "Email account doesn’t exist. Please try again or sign up",
                   type: "error",
                 },
               ],
@@ -236,11 +232,10 @@ const Login: NextPage = (props : any) => {
               })
           })
           .then(([loginResult, myResult]) => {
-            console.log("ttt", myResult.identity.traits)
-            if (myResult.identity.traits.email === "cmctc.sw@gmail.com") {
-              router.push("/launch")
-              return
-            }
+            // if (myResult.identity.traits.email === "cmctc.sw@gmail.com") {
+            //   router.push("/launch")
+            //   return
+            // }
             const { session } = loginResult.data
             const { traits } = session.identity
             const { verifiable_addresses = [] } = myResult.identity
@@ -383,8 +378,8 @@ const Login: NextPage = (props : any) => {
       <div className="mainWrapper">
         <StyledMenuWrapper>
           <div>
-            <title>Sign in - Ory NextJS Integration Example</title>
-            <meta name="description" content="NextJS + React + Vercel + Ory" />
+            <title>Sign in - Master ID</title>
+            <meta name="description" content="Master ID" />
           </div>
           <Box display="flex" justifyContent={{ xs: "center", sm: "left" }}>
             <CmidHead />

@@ -102,5 +102,13 @@
     "pw_no_match": "與新密碼不一致",
     "verif_delete_acct_desc": "輸入我們發送到 master123@gmail.com 的 6 位數驗證碼，以完成刪除程序",
     "delete_acct_desc": "您的帳戶和相關資料將永久刪除，無法復原",
-    "acct_use_cannot_link": "帳戶已使用，無法進行綁定"
+    "acct_use_cannot_link": "帳戶已使用，無法進行綁定",
+    "profile_updated_succ": "個人資料更新成功",
+    "linked": "已綁定",
+    "unlinked": "解除綁定",
+    "log_out_all_devices": "登出所有裝置",
+    "ory_errormsg_security_violation": "偵測到安全違規，請重新填寫表單",
+    "ory_errormsg_interaction_expired": "您的操作已過期，請重新填寫表單",
+    "ory_errormsg_route_address_no_allowed": "不允許使用 %page_route% 網址",
+    "log_out_all_device_desc": "您在所有裝置上的 MasterID 帳號權限將被移除"
 }

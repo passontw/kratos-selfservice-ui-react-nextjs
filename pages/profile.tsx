@@ -108,7 +108,7 @@ const Profile: NextPage = (props) => {
             // The settings have been saved and the flow was updated. Let's show it to the user!
             if (data.state === "success") {
               console.log("settings have been updated", data)
-              showToast("Profile updated successfully")
+              showToast(lang?.profileUpdated || "Profile updated successfully")
             }
             setFlow(data)
           })
