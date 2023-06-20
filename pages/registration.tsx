@@ -112,14 +112,14 @@ const Registration: NextPage = (props) => {
                 flow: String(flow?.id),
                 updateRegistrationFlowBody: values,
               })
-              .then(() => {
+              .then(({data}) => {
                 return ory
                   .createBrowserLogoutFlow()
                   .then(({ data: logoutFlow }) => {
                     return ory.updateLogoutFlow({
                       token: logoutFlow.logout_token,
                     })
-                  })
+                  }).then(() => ({data}));
               })
               .then( async ({ data }) => {
                 localStorage.setItem(localStorageKey, JSON.stringify(values));
@@ -182,7 +182,6 @@ const Registration: NextPage = (props) => {
       )
     } catch (error) {
       const errors = handleYupErrors(error)
-      console.log("🚀 ~ file: registration.tsx:187 ~ onSubmit ~ errors:", errors)
       const nextFlow = cloneDeep(flow)
       nextFlow.ui.messages = []
 
