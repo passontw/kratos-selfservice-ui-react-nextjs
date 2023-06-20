@@ -26,6 +26,9 @@ export function useI18nConfig() {
     loginDiffAccount: t('login_diff_acct'),
     termsOfUse: t('terms_of_use'),
     privacyPolicy: t('privacy_policy'),
+    orySecurityViolation: t('A security violation was detected, please fill out the form again.'),
+    oryInteractionExpired: t('Your interaction expired, please fill out the form again.'),
+    oryAddressNoAllowed: t('The %page_route% address is not allowed.'),
     // signup
     joinUs: t('join_us'),
     alreadyHaveAcct: t('already_have_acct'),
@@ -76,6 +79,8 @@ export function useI18nConfig() {
     // device management 
     currentDevice: t('current_device'),
     currentDeviceDesc: t('current_device-desc'),
+    logOutAllDevices: t('log_out_all_devices'),
+    logOutAllDevicesDesc: t('log_out_all_device_desc'),
     otherDevice: t('other_device'),
     logOutAll: t('log_out_all'),
     // dialog

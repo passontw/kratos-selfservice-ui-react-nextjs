@@ -133,7 +133,7 @@ const Login: NextPage = (props : any) => {
         .then(({ data }) => {
           setFlow(data)
         })
-        .catch(handleGetFlowError(router, "login", setFlow))
+        .catch(handleGetFlowError(router, "login", setFlow, lang))
       return
     }
     const options = {

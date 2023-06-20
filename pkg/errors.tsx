@@ -2,12 +2,14 @@ import { AxiosError } from "axios"
 import { NextRouter } from "next/router"
 import { Dispatch, SetStateAction } from "react"
 import { toast } from "react-toastify"
+import { showToast } from '../components/Toast'
 
 // A small function to help us deal with errors coming from fetching a flow.
 export function handleGetFlowError<S>(
   router: NextRouter,
   flowType: "login" | "registration" | "settings" | "recovery" | "verification",
   resetFlow: Dispatch<SetStateAction<S | undefined>>,
+  lang?: any
 ) {
   console.log("error handler init")
   return async (err: any) => {
@@ -31,23 +33,26 @@ export function handleGetFlowError<S>(
       case "self_service_flow_return_to_forbidden":
         console.log("reached 4")
         // The flow expired, let's request a new one.
-        toast.error("The return_to address is not allowed.")
+        // toast.error("The return_to address is not allowed.")
+        showToast(lang?.oryAddressNoAllowed || "The return_to address is not allowed." , false)
         resetFlow(undefined)
         await router.push("/" + flowType)
         return
       case "self_service_flow_expired":
         console.log("reached 5")
         // The flow expired, let's request a new one.
-        toast.error("Your interaction expired, please fill out the form again.")
+        // toast.error("Your interaction expired, please fill out the form again.")
+        showToast(lang?.oryInteractionExpired || "Your interaction expired, please fill out the form again." , false)
         resetFlow(undefined)
         await router.push("/" + flowType)
         return
       case "security_csrf_violation":
         console.log("reached 6")
         // A CSRF violation occurred. Best to just refresh the flow!
-        toast.error(
-          "A security violation was detected, please fill out the form again.",
-        )
+        // toast.error(
+        //   "A security violation was detected, please fill out the form again.",
+        // )
+        showToast(lang?.orySecurityViolation || "A security violation was detected, please fill out the form again." , false)
         resetFlow(undefined)
         await router.push("/" + flowType)
         return
