@@ -108,10 +108,14 @@ const Verification: NextPage = () => {
               return
             case 410:
               const newFlowID = err.response.data.use_flow_id
+              const nextQuery = {
+                flow: newFlowID,
+                return_to: returnTo,
+              };
               router
                 // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
                 // their data when they reload the page.
-                .push(`/verification?flow=${newFlowID}`, undefined, {
+                .push(`/verification?${queryString.stringify(nextQuery)}`, undefined, {
                   shallow: true,
                 })
 
@@ -141,12 +145,16 @@ const Verification: NextPage = () => {
           setInitFlow(true)
         })
         .catch((err: AxiosError) => {
+          console.log("🚀 ~ file: verification.tsx:148 ~ useEffect ~ err:", err)
           switch (err.response?.status) {
             case 410:
             // Status code 410 means the request has expired - so let's load a fresh flow!
             case 403:
               // Status code 403 implies some other issue (e.g. CSRF) - let's reload!
-              return router.push("/verification")
+              const nextQuery = {
+                return_to: returnTo,
+              };
+              return router.push(`/verification?${queryString.stringify(nextQuery)}`)
           }
 
           throw err
@@ -282,7 +290,7 @@ const Verification: NextPage = () => {
         }
         setFlow(nextFlow)
         
-        if (data.state === "passed_challenge" && ['login', 'continueregiste', 'registe'].includes(type)) {
+        if (data.state === "passed_challenge" && ['login', 'registe'].includes(type)) {
           const key = type === 'registe' ? registeLocalStorageKey: localStorageKey
           const values = JSON.parse(localStorage.getItem(key))
 

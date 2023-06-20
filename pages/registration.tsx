@@ -24,6 +24,7 @@ import { Navs } from "../types/enum"
 import { registrationFormSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import queryString from "query-string"
 
 const localStorageKey = "!@#$%^&*()registedata"
 
@@ -112,22 +113,26 @@ const Registration: NextPage = (props) => {
                 flow: String(flow?.id),
                 updateRegistrationFlowBody: values,
               })
-              .then(({data}) => {
-                return ory
-                  .createBrowserLogoutFlow()
-                  .then(({ data: logoutFlow }) => {
-                    return ory.updateLogoutFlow({
-                      token: logoutFlow.logout_token,
-                    })
-                  }).then(() => ({data}));
-              })
+              // .then(({data}) => {
+              //   return ory
+              //     .createBrowserLogoutFlow()
+              //     .then(({ data: logoutFlow }) => {
+              //       return ory.updateLogoutFlow({
+              //         token: logoutFlow.logout_token,
+              //       })
+              //     }).then(() => ({data}));
+              // })
               .then( async ({ data }) => {
                 localStorage.setItem(localStorageKey, JSON.stringify(values));
                 if (data.continue_with) {
                   for (const item of data.continue_with) {
                     switch (item.action) {
                       case "show_verification_ui":
-                        await router.push("/verification?flow=" + item.flow.id)
+                        const nextQuery = {
+                          flow: item.flow.id,
+                          return_to: returnTo,
+                        };
+                        await router.push(`/verification?${queryString.stringify(nextQuery)}`)
                         return
                     }
                   }

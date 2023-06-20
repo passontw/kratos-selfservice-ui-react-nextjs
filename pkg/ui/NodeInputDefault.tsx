@@ -3,6 +3,7 @@ import { TextInput } from "@ory/themes"
 import { useRouter } from "next/router"
 import { useEffect, useMemo, useState } from "react"
 import { useSelector } from "react-redux"
+import { getNodeId } from "@ory/integrations/ui"
 
 import RadioGroup from "../../components/RadioGroup"
 import Select from "../../components/Select"
@@ -132,12 +133,15 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     (validationMsgs[0]?.text.includes("Email account") ||
       validationMsgs[0]?.text.includes("The provided credentials are invalid"))
 
-  const verifyCodeConditions =
-    (activeStage === Stage.VERIFY_CODE &&
-      // nav !== Navs.RECOVERY &&
-      nav !== Navs.LOGIN) ||
-    (nav === Navs.VERIFICATION && activeStage === Stage.NONE)
-    || activeStage === Stage.DELETE_ACCOUNT
+  const getVerifyCodeConditions = () => {
+    if (nav === Navs.VERIFICATION && activeStage === Stage.NONE && getNodeId(node) === "code") return true;
+    if (activeStage === Stage.DELETE_ACCOUNT) return true;
+    if (activeStage === Stage.VERIFY_CODE &&
+      nav !== Navs.LOGIN) return true;
+    
+    return false;
+  }
+  const verifyCodeConditions = getVerifyCodeConditions();
   // const verifyCodeConditions2 = activeStage === Stage.DELETE_ACCOUNT
   // Render a generic text input field.
   return (
