@@ -108,7 +108,6 @@ export function NodeInputSubmit<T>({
     showButton = false
   }
 
-  console.log(getNodeLabel(node))
   const buttonText =
       deleteAccount
       ? t('continue') || "Continue"

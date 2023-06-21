@@ -28,12 +28,10 @@ import {
   setLockCodeResend,
 } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
-import { loginFormSchema } from "../util/schemas"
-import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
+import { handleYupErrors } from "../util/yupHelpers"
 
 import { StyledMenuWrapper } from "./../styles/share"
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { useTranslation } from 'next-i18next'
 
 const localStorageKey = "!@#$%^&*()data"
 
@@ -137,6 +135,15 @@ const Login: NextPage = (props : any) => {
       ory
         .getLoginFlow({ id: String(flowId) })
         .then(({ data }) => {
+          const requestUrl = data?.oauth2_login_request?.request_url;
+          if (requestUrl) {
+            const queryStr = requestUrl.split('?')[1];
+            const queryObj = queryString.parse(queryStr);
+            router.replace(`/login?${queryString.stringify({
+              flow: flowId,
+              return_to: queryObj.return_to,
+            })}`)
+          }
           setFlow(data)
         })
         .catch(handleGetFlowError(router, "login", setFlow, lang))
@@ -263,12 +270,11 @@ const Login: NextPage = (props : any) => {
                   if (locale && locale !== 'en') {
                     path = `/${locale}${path}`
                   }
-                  window.location.href = `${path}?${queryString.stringify(
-                    router.query
-                  )}&user=${values.identifier}&type=continueregiste`;
-                  // window.location.href = `/verification?${queryString.stringify(
-                  //   router.query,
-                  // )}&user=${values.identifier}&type=continueregiste`
+                  window.location.href = `${path}?${queryString.stringify({
+                    return_to: returnTo,
+                    user: values.identifier,
+                    type: 'continueregiste',
+                  })}`
                   return
                 })
             }

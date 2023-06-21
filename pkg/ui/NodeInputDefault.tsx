@@ -1,20 +1,17 @@
-import { Box, Link } from "@mui/material"
+import { Box } from "@mui/material"
 import { TextInput } from "@ory/themes"
 import { useRouter } from "next/router"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import styled from "styled-components"
+import { useEffect, useMemo, useState } from "react"
+import { useSelector } from "react-redux"
+import { getNodeId } from "@ory/integrations/ui"
 
 import RadioGroup from "../../components/RadioGroup"
 import Select from "../../components/Select"
-import RecoveryProcess from "../../components/changepassword/RecoveryProcess"
-import CodeInput from "../../components/verification/CodeInput"
 import VerificationInput from "../../components/verification/VerificationInput"
 import Eye from "../../public/images/eyes"
 import {
   selectActiveNav,
   selectActiveStage,
-  selectSixDigitCode,
 } from "../../state/store/slice/layoutSlice"
 import {
   StyledDefaultInput,
@@ -23,14 +20,12 @@ import {
 } from "../../styles/share"
 import { Navs, Stage } from "../../types/enum"
 import { SelectOption } from "../../types/general"
-import { CenterLink } from "../styled"
 
 import { NodeInputProps } from "./helpers"
 import { useTranslation } from "next-i18next"
 
 export function NodeInputDefault<T>(props: NodeInputProps) {
   const router = useRouter()
-  const dispatch = useDispatch()
   const nav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
   const { node, attributes, value, setValue, disabled, validationMsgs, lang } = props
@@ -138,12 +133,15 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     (validationMsgs[0]?.text.includes("Email account") ||
       validationMsgs[0]?.text.includes("The provided credentials are invalid"))
 
-  const verifyCodeConditions =
-    (activeStage === Stage.VERIFY_CODE &&
-      // nav !== Navs.RECOVERY &&
-      nav !== Navs.LOGIN) ||
-    (nav === Navs.VERIFICATION && activeStage === Stage.NONE)
-    || activeStage === Stage.DELETE_ACCOUNT
+  const getVerifyCodeConditions = () => {
+    if (nav === Navs.VERIFICATION && activeStage === Stage.NONE && getNodeId(node) === "code") return true;
+    if (activeStage === Stage.DELETE_ACCOUNT) return true;
+    if (activeStage === Stage.VERIFY_CODE &&
+      nav !== Navs.LOGIN) return true;
+    
+    return false;
+  }
+  const verifyCodeConditions = getVerifyCodeConditions();
   // const verifyCodeConditions2 = activeStage === Stage.DELETE_ACCOUNT
   // Render a generic text input field.
   return (
@@ -164,7 +162,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
               attributes.name === "traits.gender"
                 ? "none"
                 : "unset",
-            border: isError || accountError ? "1px solid #F24867" : "8px solid #37374F",
+            border: isError ? "1px solid #F24867" : "8px solid #37374F",
             backgroundColor: "#37374F",
             height: "44px",
             color: "#fff",

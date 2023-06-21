@@ -2,9 +2,7 @@ import Box from "@mui/material/Box"
 import { RegistrationFlow } from "@ory/client"
 import cloneDeep from "lodash/cloneDeep"
 import type { NextPage } from "next"
-import Link from "next/link"
 import { useRouter } from "next/router"
-import queryString from "query-string"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
@@ -26,6 +24,7 @@ import { Navs } from "../types/enum"
 import { registrationFormSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import queryString from "query-string"
 
 const localStorageKey = "!@#$%^&*()registedata"
 
@@ -114,25 +113,33 @@ const Registration: NextPage = (props) => {
                 flow: String(flow?.id),
                 updateRegistrationFlowBody: values,
               })
-              .then(() => {
-                return ory
-                  .createBrowserLogoutFlow()
-                  .then(({ data: logoutFlow }) => {
-                    return ory.updateLogoutFlow({
-                      token: logoutFlow.logout_token,
-                    })
-                  })
-              })
-              .then(({ data }) => {
+              // .then(({data}) => {
+              //   return ory
+              //     .createBrowserLogoutFlow()
+              //     .then(({ data: logoutFlow }) => {
+              //       return ory.updateLogoutFlow({
+              //         token: logoutFlow.logout_token,
+              //       })
+              //     }).then(() => ({data}));
+              // })
+              .then( async ({ data }) => {
                 localStorage.setItem(localStorageKey, JSON.stringify(values));
-                window.location.href = `/verification?${queryString.stringify(
-                  {
-                    ...router.query,
-                    user: values["traits.email"],
-                    type: "registe",
+                if (data.continue_with) {
+                  for (const item of data.continue_with) {
+                    switch (item.action) {
+                      case "show_verification_ui":
+                        const nextQuery = {
+                          flow: item.flow.id,
+                          return_to: returnTo,
+                        };
+                        await router.push(`/verification?${queryString.stringify(nextQuery)}`)
+                        return
+                    }
                   }
-                )}`
-                return
+                }
+        
+                // If continue_with did not contain anything, we can just return to the home page.
+                await router.push(returnTo || "/")
               })
               .catch(handleFlowError(router, "registration", setFlow))
               .catch((err: any) => {
