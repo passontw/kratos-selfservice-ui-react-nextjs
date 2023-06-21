@@ -85,7 +85,13 @@ const Account: NextPage = (props) => {
       )
       .then(() => {
         dispatch(setAccountDeleted(true))
-        router.push("/login")
+        const locale = router.locale
+        let path = '/login'
+        if (locale && locale !== 'en') {
+          path = `/${locale}${path}`
+        }
+        // router.push("/login")
+        router.push(path)
       })
       .catch((error) => {
         showToast(error.message, false)
@@ -100,8 +106,16 @@ const Account: NextPage = (props) => {
         })
         const { traits } = data.identity
         setShowModal(true)
+        // return router.push(
+        //   `/account?flow=${flowId || flow?.id}&user=${traits.email}`,
+        // )
+        const locale = router.locale
+        let path = '/account'
+        if (locale && locale !== 'en') {
+          path = `/${locale}${path}`
+        }
         return router.push(
-          `/account?flow=${flowId || flow?.id}&user=${traits.email}`,
+          `${path}?flow=${flowId || flow?.id}&user=${traits.email}`,
         )
       }
     }
@@ -109,11 +123,17 @@ const Account: NextPage = (props) => {
   }, [confirmDelete])
 
   const onSubmit = (values: UpdateSettingsFlowBody) => {
+    const locale = router.locale
+    let path = '/account'
+    if (locale && locale !== 'en') {
+      path = `/${locale}${path}`
+    }
     return (
       router
         // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
         // his data when she/he reloads the page.
-        .push(`/account?flow=${flow?.id}`, undefined, { shallow: true })
+        // .push(`/account?flow=${flow?.id}`, undefined, { shallow: true })
+        .push(`${path}?flow=${flow?.id}`, undefined, { shallow: true })
         .then(() =>
           ory
             .updateSettingsFlow({
@@ -137,7 +157,7 @@ const Account: NextPage = (props) => {
                     showToast(`Google ${lang?.linked}`)
                   } else {
                     // alert("google unlinked");
-                    showToast(`Google ${lang?.uninked}`)
+                    showToast(`Google ${lang?.unlinked}`)
                   }
                 }
 
@@ -147,7 +167,7 @@ const Account: NextPage = (props) => {
                     showToast(`Apple ${lang?.linked}`)
                   } else {
                     // alert("apple unlinked");
-                    showToast(`Apple ${lang?.uninked}`)
+                    showToast(`Apple ${lang?.unlinked}`)
                   }
                 }
               }
@@ -158,7 +178,8 @@ const Account: NextPage = (props) => {
               }));
               // The settings have been saved and the flow was updated. Let's show it to the user!
               setFlow(data)
-              if (data.state === "success") window.location.replace("/account")
+              // if (data.state === "success") window.location.replace("/account")
+              if (data.state === "success") window.location.replace(path)
             })
             .catch(handleFlowError(router, "account", setFlow))
             .catch(async (err: any) => {
@@ -194,7 +215,13 @@ const Account: NextPage = (props) => {
         headers: { withCredentials: true },
       })
       .catch(() => {
-        window.location.replace("/login")
+        const locale = router.locale
+        let path = '/login'
+        if (locale && locale !== 'en') {
+          path = `/${locale}${path}`
+        }
+        // window.location.replace("/login")
+        window.location.replace(path)
       });
   }, [])
 
@@ -222,7 +249,13 @@ const Account: NextPage = (props) => {
               return
             }
           } else {
-            router.replace("/account")
+            const locale = router.locale
+            let path = '/login'
+            if (locale && locale !== 'en') {
+              path = `/${locale}${path}`
+            }
+            // router.replace("/account")
+            router.replace(path)
           }
         })
     } else {

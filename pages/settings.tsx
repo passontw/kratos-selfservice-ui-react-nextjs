@@ -112,10 +112,20 @@ const Settings: NextPage = (props) => {
         password: values.password,
       })
 
+      const locale = router.locale
+      let settingsPath = '/settings'
+      let loginPath = '/login'
+
+      if (locale && locale !== 'en') {
+        settingsPath = `/${locale}${settingsPath}`
+        loginPath = `/${locale}${loginPath}`
+      }
+
       router
         // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
         // his data when she/he reloads the page.
-        .push(`/settings?flow=${flow?.id}`, undefined, { shallow: true })
+        // .push(`/settings?flow=${flow?.id}`, undefined, { shallow: true })
+        .push(`${settingsPath}?flow=${flow?.id}`, undefined, { shallow: true })
         .then(() =>
           ory
             .updateSettingsFlow({
@@ -126,7 +136,8 @@ const Settings: NextPage = (props) => {
               // The settings have been saved and the flow was updated. Let's show it to the user!
               setFlow(data)
               onLogout()
-              router.push("/login")
+              // router.push("/login")
+              router.push(loginPath)
             })
             .catch(handleFlowError(router, "login", setFlow))
             .catch(async (err: any) => {

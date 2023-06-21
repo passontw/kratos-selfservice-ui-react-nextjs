@@ -11,6 +11,8 @@ export function useI18nConfig() {
     login: t('login'),
     signUpPwHint: t('signup_pw_hint'),
     verifyAccount: t('verify_account'),
+    verifySucess: t('verification_succeeded'),
+    verifySucessDesc: t('verif_success_sentence'),
     verify: t('verify'),
     resend: t('resend'),
     didntReceive: t('didnt_receive'),
@@ -26,9 +28,9 @@ export function useI18nConfig() {
     loginDiffAccount: t('login_diff_acct'),
     termsOfUse: t('terms_of_use'),
     privacyPolicy: t('privacy_policy'),
-    orySecurityViolation: t('A security violation was detected, please fill out the form again.'),
-    oryInteractionExpired: t('Your interaction expired, please fill out the form again.'),
-    oryAddressNoAllowed: t('The %page_route% address is not allowed.'),
+    orySecurityViolation: t('ory_errormsg_security_violation'),
+    oryInteractionExpired: t('ory_errormsg_interaction_expired'),
+    oryAddressNoAllowed: t('ory_errormsg_route_address_no_allowed'),
     // signup
     joinUs: t('join_us'),
     alreadyHaveAcct: t('already_have_acct'),
@@ -39,6 +41,7 @@ export function useI18nConfig() {
     submit: t('submit'),
     verifyCode: t('verif_code'),
     verifyAcctDesc: t('verif_acct_desc'),
+    verifyCodeInvalid: t('error-verif_code_valid'),
     // settings
     newPw: t('new_pw'),
     confirmNewPw: t('confirm_new_pw'),
@@ -75,7 +78,7 @@ export function useI18nConfig() {
     atLeastNum : t('pw_need_at_least_1_number'),
     atLeastAlpha: t('pw_at_least_1_alphabet'),
     notMatch: t('pw_no_match'),
-    passwordChanged: t('pw_changed_succ'),
+    passwordChanged: t('password_changed'),
     // device management 
     currentDevice: t('current_device'),
     currentDeviceDesc: t('current_device-desc'),

@@ -48,10 +48,16 @@ export default function MenuPopupState() {
         // ...add more languages here
     ];
 
-    // useEffect(() => {
-    //     setValue(value);
-    //     router.push(router.pathname, router.pathname, { locale: value });
-    // }, []);
+    useEffect(() => {
+        // console.log(router.asPath)
+        console.log(router.locale)
+        const conditions = ["/profile", "/account"];
+        // console.log(router.pathname)
+        if (conditions.includes(router.pathname)) {
+          setValue(value);
+          router.push(router.pathname, router.pathname, { locale: value });
+        }  
+    }, []);
 
     // Find the language label that matches the language code stored in local storage
     const initialLangLabel = menuItems.find((item) => item.locale === value)?.label || menuItems[0].label;

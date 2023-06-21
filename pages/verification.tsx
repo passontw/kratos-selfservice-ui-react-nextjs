@@ -42,15 +42,9 @@ const getReturnToUrl = (returnTo, type) => {
   return undefined;
 }
 
-const Verification: NextPage = () => {
+const Verification: NextPage = (props: any) => {
+  const { lang } = props
   const dispatch = useDispatch()
-  const { t } = useTranslation('common')
-  const lang = {
-    verifyAccount: t('verify_account'),
-    verify: t('verify'),
-    resend: t('resend'),
-    didntReceive: t('didnt_receive'),
-  }
   const sixDigitCode = useSelector(selectSixDigitCode)
   const [initFlow, setInitFlow] = useState(false)
   const [flow, setFlow] = useState<VerificationFlow>()
@@ -186,7 +180,7 @@ const Verification: NextPage = () => {
     if (identifierIndex === -1) return true;
     nextFlow.ui.nodes[identifierIndex].messages = [{
       id: 400009,
-      text: 'Verification code is no longer valid',
+      text: lang?.verifyCodeInvalid || 'Verification code is no longer valid, please try again.',
       type: 'error'
     }]
     setFlow(nextFlow)
@@ -227,7 +221,7 @@ const Verification: NextPage = () => {
         nextFlow.ui.messages = [];
         nextFlow.ui.nodes[identifierIndex].messages = [{
           id: 400002,
-          text: "Verification code is no longer valid, please try again.",
+          text: lang?.verifyCodeInvalid || "Verification code is no longer valid, please try again.",
           type: "error",
         }]
         setFlow(nextFlow)
@@ -358,7 +352,8 @@ const Verification: NextPage = () => {
           <CmidHead />
           <Box mt="62px" display="flex" flexDirection="column">
             <span style={{ color: "#FFF", fontSize: "36px", fontFamily: "Teko" }}>
-              {verifySuccess ? "Verified Success" : "Verify Account"}
+              {verifySuccess ? lang?.verifySucess || "Verified Success" : 
+                lang?.verifyAccount || "Verify Account"}
             </span>
             <span
               style={{
@@ -369,8 +364,8 @@ const Verification: NextPage = () => {
               }}
             >
               {verifySuccess
-                ? "Congratulation, your account is approved. You will be automatically redirected to %service% in 5 seconds."
-                : `Enter the 6-digit code we sent to ${email} to verify account.`}
+                ? lang?.verifySucessDesc || "Congratulation, your account is approved. You will be automatically redirected to %service% in 5 seconds."
+                : lang?.verifyAcctDesc.replace("master123@gmail.com", `${email}`) || `Enter the 6-digit code we sent to ${email} to verify account.`}
             </span>
           </Box>
           <Flow
