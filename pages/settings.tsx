@@ -109,7 +109,7 @@ const Settings: NextPage = (props) => {
     try {
       await handleYupSchema(updateSettingsPasswordSchema, {
         confirmPassword,
-        password: values.password,
+        password: values.password === "" ? undefined: values.password,
       })
 
       const locale = router.locale
