@@ -107,12 +107,22 @@ const Verification: NextPage = (props) => {
             case 410:
               const newFlowID = err.response.data.use_flow_id
               const { redirect_to } = router.query
+              const locale = router.locale
+              let path ='/account'
+
+              if (locale && locale !== 'en') {
+                path =`/${locale}${path}`
+              }
+              // router
+              //   // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
+              //   // their data when they reload the page.
+              //   .push(`/account?flow=${newFlowID}`, undefined, {
+              //     shallow: true,
+              //   })
               router
-                // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
-                // their data when they reload the page.
-                .push(`/account?flow=${newFlowID}`, undefined, {
-                  shallow: true,
-                })
+                .push(`${path}?flow=${newFlowID}`, undefined, {
+                shallow: true,
+              })
 
               ory
                 .getVerificationFlow({ id: newFlowID })
@@ -141,14 +151,20 @@ const Verification: NextPage = (props) => {
           setInitFlow(true)
         })
         .catch((err: AxiosError) => {
+          const locale = router.locale
+          let path = '/account'
+
+          if (locale && locale !== 'en') {
+            path = `/${locale}${path}`
+          }
           switch (err.response?.status) {
             case 410:
             // Status code 410 means the request has expired - so let's load a fresh flow!
             case 403:
               // Status code 403 implies some other issue (e.g. CSRF) - let's reload!
-              return router.push("/account")
+              return router.push(path)
             default:
-              return router.push("/account")
+              return router.push(path)
           }
 
           throw err
@@ -242,10 +258,18 @@ const Verification: NextPage = (props) => {
       csrf_token,
       method,
     };
+    const locale = router.locale
+    let path = '/account'
+    if (locale && locale !== 'en') {
+      path = `/${locale}${path}`
+    }
     await router
       // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
       // their data when they reload the page.
-      .push(`/account?${queryString.stringify(router.query)}`, undefined, {
+      // .push(`/account?${queryString.stringify(router.query)}`, undefined, {
+      //   shallow: true,
+      // })
+      .push(`${path}?${queryString.stringify(router.query)}`, undefined, {
         shallow: true,
       })
 
@@ -296,12 +320,20 @@ const Verification: NextPage = (props) => {
             return
           case 410:
             const newFlowID = err.response.data.use_flow_id
+            const locale = router.locale
+            let path = locale ? `/${locale}/verification` : `/verification`
+            if (locale && locale !== "en") {
+              path = `/${locale}${path}`
+            }
             router
               // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
               // their data when they reload the page.
-              .push(`/verification?flow=${newFlowID}`, undefined, {
+              .push(`${path}?flow=${newFlowID}`, undefined, {
                 shallow: true,
               })
+              // .push(`/verification?flow=${newFlowID}`, undefined, {
+              //   shallow: true,
+              // })
 
             ory
               .getVerificationFlow({ id: newFlowID })

@@ -45,14 +45,19 @@ const getSessionData = async () => {
 
 const validateLoginFlow = async (router, options) => {
   const { login_challenge, refresh, aal, returnTo, setFlow } = options
-
+  const locale = router.locale
+  let path = '/profile'
+  if (locale && locale !== 'en') {
+    path = `/${locale}${path}`
+  }
   try {
     const sessionData = await getSessionData()
     if (isEmpty(sessionData) ) {
       const { data } = await ory.createBrowserLoginFlow({
         refresh: Boolean(refresh),
         aal: aal ? String(aal) : undefined,
-        returnTo: returnTo || "/profile",
+        // returnTo: returnTo || "/profile",
+        returnTo: returnTo || path,
       })
 
       if (router.query.login_challenge) {
@@ -60,7 +65,8 @@ const validateLoginFlow = async (router, options) => {
       }
       setFlow(data)
     } else {
-      const nextUri = "/profile"
+      // const nextUri = "/profile"
+      const nextUri = path
       router.push(nextUri)
       return
     }
@@ -259,7 +265,12 @@ const Login: NextPage = (props : any) => {
                 .then(() => {
                   // alert("please continue registe flow")
                   localStorage.setItem(localStorageKey, JSON.stringify(values))
-                  window.location.href = `/verification?${queryString.stringify({
+                  const locale = router.locale
+                  let path = '/verification'
+                  if (locale && locale !== 'en') {
+                    path = `/${locale}${path}`
+                  }
+                  window.location.href = `${path}?${queryString.stringify({
                     return_to: returnTo,
                     user: values.identifier,
                     type: 'continueregiste',
@@ -278,9 +289,18 @@ const Login: NextPage = (props : any) => {
                 })
                 .then(() => {
                   localStorage.setItem(localStorageKey, JSON.stringify(values))
-                  window.location.href = `/verification?${queryString.stringify(
-                    router.query,
-                  )}&user=${traits.email}&csrf=${values.csrf_token}&type=login`
+                  const locale = router.locale
+                  let path = '/verification'
+
+                  if (locale && locale !== 'en') {
+                    path = `/${locale}${path}`
+                  }
+                  // window.location.href = `/verification?${queryString.stringify(
+                  //   router.query,
+                  // )}&user=${traits.email}&csrf=${values.csrf_token}&type=login`
+                  window.location.href = `${path}?${queryString.stringify(
+                    router.query
+                  )}&user=${traits.email}&csrf=${values.csrf_token}&type=login`;
                   return
                 })
             }
@@ -294,7 +314,13 @@ const Login: NextPage = (props : any) => {
                 window.location.href = flow?.return_to
                 return
               }
-              router.push("/profile")
+              const locale = router.locale
+              let path = '/profile'
+              if (locale && locale !== 'en') {
+                path = `/${locale}${path}`
+              }
+              router.push(path)
+              // router.push("/profile")
             }
           })
           .catch(handleFlowError(router, "login", setFlow))

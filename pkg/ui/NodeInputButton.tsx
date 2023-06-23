@@ -2,6 +2,7 @@ import { getNodeLabel } from "@ory/integrations/ui"
 import { Button } from "@ory/themes"
 
 import { NodeInputProps } from "./helpers"
+import { useTranslation } from 'next-i18next'
 
 export function NodeInputButton<T>({
   node,
@@ -10,6 +11,7 @@ export function NodeInputButton<T>({
   disabled,
   dispatchSubmit,
 }: NodeInputProps) {
+  const { t } = useTranslation()
   // Some attributes have dynamic JavaScript - this is for example required for WebAuthn.
   const onClick = (e: React.MouseEvent | React.FormEvent<HTMLFormElement>) => {
     // This section is only used for WebAuthn. The script is loaded via a <script> node
@@ -40,8 +42,8 @@ export function NodeInputButton<T>({
         value={attributes.value || ""}
         disabled={attributes.disabled || disabled}
       >
-        {getNodeLabel(node) === "Continue"
-          ? "Redirect now"
+        {getNodeLabel(node) === t('continue') || "Continue"
+          ? t('redirect_now') || "Redirect now"
           : getNodeLabel(node)}
       </Button>
     </>

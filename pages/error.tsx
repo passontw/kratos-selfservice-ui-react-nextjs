@@ -8,9 +8,11 @@ import { useEffect, useState } from "react"
 
 import { ActionCard, CenterLink, MarginCard } from "../pkg"
 import ory from "../pkg/sdk"
+import { useTranslation } from 'next-i18next'
 
 const Login: NextPage = () => {
   const [error, setError] = useState<FlowError | string>()
+  const { t } = useTranslation()
 
   // Get ?id=... from the URL
   const router = useRouter()
@@ -26,7 +28,14 @@ const Login: NextPage = () => {
       .getFlowError({ id: String(id) })
       .then(({ data }) => {
         if (data?.error?.message === "no resumable session found") {
-          window.location.replace("/login?error=email not exists or did not link 3rd party.");
+          const locale = router.locale
+          let path = '/login'
+          if (locale && locale !== 'en') {
+            path = `/${locale}${path}`
+          }
+          const errorMsg = t('error-email-unexisted')
+          window.location.replace(`${path}?error=${errorMsg}`);
+          // window.location.replace("/login?error=email not exists or did not link 3rd party.");
         }
 
         setError(data)

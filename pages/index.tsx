@@ -46,12 +46,21 @@ const Home: NextPage = () => {
   }, [router])
 
   useEffect(() => {
-    if (hasSession) {
-      router.push("/profile")
-    } else {
-      router.push("/login")
+    const locale = router.locale
+    let profilePath = '/profile'
+    let loginPath = '/login'
+
+    if (locale && locale !== 'en') {
+      profilePath = `/${locale}${profilePath}`
+      loginPath = `/${locale}${loginPath}`
     }
-  }, []);
+
+    if (hasSession) {
+      router.push(profilePath)
+    } else {
+      router.push(loginPath)
+    }
+  }, []) 
 
   return (
     <div className={"container-fluid"}>
