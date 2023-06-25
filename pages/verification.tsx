@@ -21,7 +21,6 @@ import { Navs } from "../types/enum"
 
 import { StyledMenuWrapper } from "./../styles/share"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
-import { useTranslation } from "next-i18next"
 
 const dayjs = require("dayjs")
 const utc = require("dayjs/plugin/utc")
@@ -39,7 +38,7 @@ const getReturnToUrl = (returnTo, type) => {
   if (returnTo) return returnTo;
   if (type === 'registe') return "/profile";
   if (type === 'continueregiste') return "/profile"
-  return undefined;
+  return "/profile";
 }
 
 const Verification: NextPage = (props: any) => {
@@ -65,9 +64,11 @@ const Verification: NextPage = (props: any) => {
     user,
     type,
   } = router.query
+    console.log("🚀 ~ file: verification.tsx:68 ~ type:", type)
 
   const email = router.query.user as string
   const returnToUrl = getReturnToUrl(returnTo, type);
+  console.log("🚀 ~ file: verification.tsx:72 ~ returnToUrl:", returnToUrl)
   useEffect(() => {
     dispatch(setActiveNav(Navs.VERIFICATION))
   }, [])
@@ -195,6 +196,7 @@ const Verification: NextPage = (props: any) => {
   }
 
   const onSubmit = async (values: UpdateVerificationFlowBody, isResendCode) => {
+    console.log("🚀 ~ file: verification.tsx:199 ~ onSubmit ~ values:", values)
     const {
       code,
       email,
@@ -380,6 +382,8 @@ const Verification: NextPage = (props: any) => {
             flow={flow}
             code={sixDigitCode}
             lang={lang}
+            returnTo={returnTo}
+            type={type}
             // hideGlobalMessages
           />
           <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />

@@ -10,7 +10,6 @@ import {
   UpdateSettingsFlowBody,
   UpdateVerificationFlowBody,
 } from "@ory/client"
-import queryString from "query-string"
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
 import { Component, FormEvent, MouseEvent } from "react"
 
@@ -183,7 +182,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   }
 
   render() {
-    const { hideGlobalMessages, flow, lang } = this.props
+    const { hideGlobalMessages, flow, lang, type, returnTo } = this.props
     const { values, isLoading } = this.state
 
     const nodes = this.filterNodes()
