@@ -33,8 +33,6 @@ import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
 import { Component, FormEvent, MouseEvent } from "react"
 
 import { convertDateString } from "../../util/formatter"
-
-import { Messages } from "./Messages"
 import { Node } from "./Node"
 
 export type Values = Partial<
@@ -129,10 +127,12 @@ export default class Flow<T extends Values> extends Component<
     if (!flow) {
       return []
     }
-    return flow.ui.nodes.filter(({ group }) => {
+    return flow.ui.nodes.filter((node) => {
+      const { group, attributes } = node;
       if (!only) {
         return true
       }
+      if (attributes.name === "traits.location") return false;
       return group === "default" || group === only
     })
   }

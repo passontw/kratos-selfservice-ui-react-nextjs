@@ -90,6 +90,12 @@ const Login: NextPage = (props : any) => {
     dispatch(setDialog(null))
     dispatch(setLockCodeResend(false))
     dispatch(setAccountDeleted(false))
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        console.log(position)        
+        return 
+      })
+    }
   }, [])
 
   // Get ?flow=... from the URL
@@ -254,6 +260,7 @@ const Login: NextPage = (props : any) => {
             const { verifiable_addresses = [] } = myResult.identity
 
             const [verifiable_address] = verifiable_addresses
+
             if (isEmpty(verifiable_address) || !verifiable_address.verified) {
               return ory
                 .createBrowserLogoutFlow()

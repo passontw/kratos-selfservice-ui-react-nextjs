@@ -154,14 +154,14 @@ const SessionListItem = (props) => {
     agentResult.device.type && agentResult.device.vendor
       ? agentResult.device.model
       : agentResult.os.name
-
+  const {traits} = session.identity;
   return (
     <>
       <div key={session.id}>
         <DeviceCard
           device={deviceName}
           deviceType={deviceType}
-          location={device.location}
+          location={device.location === "Tokyo, JP" ? traits.location: device.location}
           browser={agentResult.browser.name}
           lastLogin={dayjs(session.authenticated_at).format()}
           isCurrent

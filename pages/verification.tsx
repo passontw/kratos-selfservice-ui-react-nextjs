@@ -139,7 +139,6 @@ const Verification: NextPage = (props: any) => {
           setInitFlow(true)
         })
         .catch((err: AxiosError) => {
-          console.log("🚀 ~ file: verification.tsx:148 ~ useEffect ~ err:", err)
           switch (err.response?.status) {
             case 410:
             // Status code 410 means the request has expired - so let's load a fresh flow!
