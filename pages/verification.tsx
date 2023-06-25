@@ -64,11 +64,10 @@ const Verification: NextPage = (props: any) => {
     user,
     type,
   } = router.query
-    console.log("🚀 ~ file: verification.tsx:68 ~ type:", type)
 
   const email = router.query.user as string
   const returnToUrl = getReturnToUrl(returnTo, type);
-  console.log("🚀 ~ file: verification.tsx:72 ~ returnToUrl:", returnToUrl)
+
   useEffect(() => {
     dispatch(setActiveNav(Navs.VERIFICATION))
   }, [])
@@ -285,6 +284,7 @@ const Verification: NextPage = (props: any) => {
         }
         setFlow(nextFlow)
         
+        console.log("🚀 ~ file: verification.tsx:288 ~ .then ~ type:", type)
         if (data.state === "passed_challenge" && ['login', 'registe'].includes(type)) {
           const key = type === 'registe' ? registeLocalStorageKey: localStorageKey
           const values = JSON.parse(localStorage.getItem(key))

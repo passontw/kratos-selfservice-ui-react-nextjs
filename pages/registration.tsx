@@ -132,6 +132,7 @@ const Registration: NextPage = (props) => {
                         const nextQuery = {
                           flow: item.flow.id,
                           return_to: returnTo,
+                          type: "registe",
                         };
                         await router.push(`/verification?${queryString.stringify(nextQuery)}`)
                         return
