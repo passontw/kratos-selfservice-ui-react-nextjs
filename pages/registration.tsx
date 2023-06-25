@@ -35,6 +35,7 @@ const getNextFlow = (flow) => {
   const nextNodes = flow.ui.nodes.filter((node) => {
     if (node.attributes.name === "traits.avatar") return false
     if (node.attributes.name === "traits.loginVerification") return false
+    if (node.attributes.name === "traits.location") return false
     return true
   })
 
@@ -165,7 +166,7 @@ const Registration: NextPage = (props) => {
                     
                     nextFlow.ui.messages = [{
                       id: 400007,
-                      text: lang?.emailAlreadyExists || "Email account already exists. Please try to log in or click forget password.",
+                      text: lang?.emailAlreadyExists || "Email account already existed.Please try login or forgot password.",
                       type: "error",
                     }];
                   } else {
