@@ -21,6 +21,7 @@ import { Navs } from "../types/enum"
 
 import { StyledMenuWrapper } from "./../styles/share"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import LinkNav from '../components/LinkNav'
 
 const dayjs = require("dayjs")
 const utc = require("dayjs/plugin/utc")
@@ -359,37 +360,42 @@ const Verification: NextPage = (props: any) => {
             <meta name="description" content="Master ID" />
           </div>
           <CmidHead />
-          <Box mt="62px" display="flex" flexDirection="column">
-            <span style={{ color: "#FFF", fontSize: "36px", fontFamily: "Teko" }}>
-              {verifySuccess ? lang?.verifySucess || "Verified Success" : 
-                lang?.verifyAccount || "Verify Account"}
-            </span>
-            <span
-              style={{
-                color: "#A5A5A9",
-                marginBottom: "48px",
-                fontFamily: "open sans",
-                fontSize: "14px",
-              }}
-            >
-              {verifySuccess
-                ? lang?.verifySucessDesc || "Congratulation, your account is approved. You will be automatically redirected to %service% in 5 seconds."
-                : lang?.verifyAcctDesc.replace("master123@gmail.com", `${email}`) || `Enter the 6-digit code we sent to ${email} to verify account.`}
-            </span>
-          </Box>
-          <Flow
-            onSubmit={onSubmit}
-            flow={flow}
-            code={sixDigitCode}
-            lang={lang}
-            returnTo={returnTo}
-            type={type}
-            // hideGlobalMessages
-          />
+          <Box display="flex" justifyContent="center">
+            <Box width={{ xs: "100%", sm: "480px"}}>
+              <Box mt="62px" display="flex" flexDirection="column">
+              <span style={{ color: "#FFF", fontSize: "36px", fontFamily: "Teko" }}>
+                {verifySuccess ? lang?.verifySucess || "Verified Success" : 
+                  lang?.verifyAccount || "Verify Account"}
+              </span>
+              <span
+                style={{
+                  color: "#A5A5A9",
+                  marginBottom: "48px",
+                  fontFamily: "open sans",
+                  fontSize: "14px",
+                }}
+              >
+                {verifySuccess
+                  ? lang?.verifySucessDesc || "Congratulation, your account is approved. You will be automatically redirected to %service% in 5 seconds."
+                  : lang?.verifyAcctDesc.replace("master123@gmail.com", `${email}`) || `Enter the 6-digit code we sent to ${email} to verify account.`}
+              </span>
+            </Box>
+            <Flow
+              onSubmit={onSubmit}
+              flow={flow}
+              code={sixDigitCode}
+              lang={lang}
+              returnTo={returnTo}
+              type={type}
+              // hideGlobalMessages
+            />
+            </Box>
+          </Box>        
           <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
+          <LinkNav />
         </StyledMenuWrapper>
       </div>
-      <AppsList />
+      {/* <AppsList /> */}
     </>
   )
 }

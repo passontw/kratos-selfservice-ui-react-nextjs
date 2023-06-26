@@ -32,6 +32,7 @@ import { handleYupErrors } from "../util/yupHelpers"
 
 import { StyledMenuWrapper } from "./../styles/share"
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import LinkNav from '../components/LinkNav'
 
 const localStorageKey = "!@#$%^&*()data"
 
@@ -426,18 +427,23 @@ const Login: NextPage = (props : any) => {
           <Box display="flex" justifyContent={{ xs: "center", sm: "left" }}>
             <CmidHead />
           </Box>
-          <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
-            {lang.welcomeBack}
+          <Box display="flex" justifyContent="center">
+            <Box width={{ xs: "100%", sm: "480px"}}>
+              <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
+                {lang.welcomeBack}
+              </Box>
+              {router.query.error && (
+                <p style={{ color: "red" }}>{router.query.error}</p>
+              )}
+              <Flow onSubmit={onSubmit} flow={flow} router={router} lang={lang}/>
+            </Box>
           </Box>
-          {router.query.error && (
-            <p style={{ color: "red" }}>{router.query.error}</p>
-          )}
-          <Flow onSubmit={onSubmit} flow={flow} router={router} lang={lang}/>
-          <MenuTag />
+          {/* <MenuTag /> */}
         </StyledMenuWrapper>
         <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
+        <LinkNav />
       </div>
-      <AppsList />
+      {/* <AppsList /> */}
     </>
   )
 }

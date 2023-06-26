@@ -25,6 +25,7 @@ import { registrationFormSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import queryString from "query-string"
+import LinkNav from '../components/LinkNav'
 
 const localStorageKey = "!@#$%^&*()registedata"
 
@@ -288,76 +289,81 @@ const Registration: NextPage = (props) => {
           {/* <MarginCard> */}
           {/* <CardTitle>Create account</CardTitle> */}
           <CmidHead />
-          <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
-            {lang?.joinUs}
-          </Box>
-          <Flow onSubmit={onSubmit} flow={nextFlow} router={router} lang={lang} />
-          {/* Moblie Terms Start */}
-          <Box
-            mt="30px"
-            color="#A5A5A9"
-            fontSize="14px"
-            fontFamily="open sans"
-            justifyContent="center"
-            display={{ xs: "flex", md: "none" }}
-            flexWrap="wrap"
-            whiteSpace="nowrap"
-          >
-            <Box
-              textAlign="center" 
-              dangerouslySetInnerHTML={{ __html: lang?.agreePolicyHint.replace(/\n/g, '<br/>') }} />
-            {/* <Box>{lang?.agreePolicyHint}</Box>
-            <Box display="flex" mt="2px" alignItems="center">
-              you agree to our{" "}
-              <Link className="link" href="/">
-                Terms of Use
-              </Link>{" "}
-              &{" "}
-              <Link className="link" href="/">
-                Privacy Policy
-              </Link>
-              .
-            </Box> */}
-          </Box>
-          {/* Mobile Terms End */}
-          <StyledAppItemWrap>
-            <AppItem appIcon="MasterControl" appName="Master Control" mobile />
-            <AppItem appIcon="Stormplay" appName="Stormplay" mobile />
-            <AppItem appIcon="Cmodx" appName="CMODX" mobile />
-          </StyledAppItemWrap>
-          {/* Desktop Terms Start */}
-          <Box
-            mt="30px"
-            color="#A5A5A9"
-            fontSize="14px"
-            fontFamily="open sans"
-            justifyContent="center"
-            flexWrap="wrap"
-            paddingBottom="86px"
-            whiteSpace="nowrap"
-            display={{ xs: "none", md: "flex" }}
-          >
-            <Box
-              textAlign="center" 
-              dangerouslySetInnerHTML={{ __html: lang?.agreePolicyHint.replace(/\n/g, '<br/>') }} />
-            {/* <Box>{lang?.agreePolicyHint}</Box> */}
-            {/* <Box display="flex" mt="2px" alignItems="center">
-              you agree to our{" "}
-              <Link className="link" href="/">
-                Terms of Use
-              </Link>{" "}
-              &{" "}
-              <Link className="link" href="/">
-                Privacy Policy
-              </Link>
-              .
-            </Box> */}
-          </Box>
-          {/* Desktop Terms End */}
+          <Box display="flex" justifyContent="center">
+            <Box width={{ xs: "100%", sm: "480px"}}>
+            <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
+              {lang?.joinUs}
+            </Box>
+            <Flow onSubmit={onSubmit} flow={nextFlow} router={router} lang={lang} />
+            {/* Moblie Terms Start */}
+              <Box
+                mt="30px"
+                color="#A5A5A9"
+                fontSize="14px"
+                fontFamily="open sans"
+                justifyContent="center"
+                display={{ xs: "flex", md: "none" }}
+                flexWrap="wrap"
+                whiteSpace="nowrap"
+              >
+                <Box
+                  textAlign="center" 
+                  dangerouslySetInnerHTML={{ __html: lang?.agreePolicyHint.replace(/\n/g, '<br/>') }} />
+                {/* <Box>{lang?.agreePolicyHint}</Box>
+                <Box display="flex" mt="2px" alignItems="center">
+                  you agree to our{" "}
+                  <Link className="link" href="/">
+                    Terms of Use
+                  </Link>{" "}
+                  &{" "}
+                  <Link className="link" href="/">
+                    Privacy Policy
+                  </Link>
+                  .
+                </Box> */}
+              </Box>
+              {/* Mobile Terms End */}
+              {/* <StyledAppItemWrap>
+                <AppItem appIcon="MasterControl" appName="Master Control" mobile />
+                <AppItem appIcon="Stormplay" appName="Stormplay" mobile />
+                <AppItem appIcon="Cmodx" appName="CMODX" mobile />
+              </StyledAppItemWrap> */}
+              {/* Desktop Terms Start */}
+              <Box
+                mt="30px"
+                color="#A5A5A9"
+                fontSize="14px"
+                fontFamily="open sans"
+                justifyContent="center"
+                flexWrap="wrap"
+                paddingBottom="86px"
+                whiteSpace="nowrap"
+                display={{ xs: "none", md: "flex" }}
+              >
+                <Box
+                  textAlign="center" 
+                  dangerouslySetInnerHTML={{ __html: lang?.agreePolicyHint.replace(/\n/g, '<br/>') }} />
+                {/* <Box>{lang?.agreePolicyHint}</Box> */}
+                {/* <Box display="flex" mt="2px" alignItems="center">
+                  you agree to our{" "}
+                  <Link className="link" href="/">
+                    Terms of Use
+                  </Link>{" "}
+                  &{" "}
+                  <Link className="link" href="/">
+                    Privacy Policy
+                  </Link>
+                  .
+                </Box> */}
+              </Box>
+              {/* Desktop Terms End */}
+            </Box>
+          </Box>        
         </StyledMenuWrapper>
         <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
+        <LinkNav />
       </div>
-      <AppsList />
+      {/* <AppsList /> */}
     </>
   )
 }

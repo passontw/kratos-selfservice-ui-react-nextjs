@@ -60,7 +60,8 @@ export const StyledCopyright = styled.span`
 export const StyledMenuWrapper = styled.div`
   padding: 80px 20px 150px 20px;
   @media only screen and (min-width: 600px) {
-    padding: 80px 80px 40px 80px;
+    /* padding: 80px 80px 40px 80px; */
+    padding: 48px;
   }
   @media only screen and (max-width: 600px) {
     padding-top: 35px;
