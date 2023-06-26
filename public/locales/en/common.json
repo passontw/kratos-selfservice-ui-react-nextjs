@@ -23,7 +23,7 @@
     "redirect_now": "Redirect now",
     "error-field_required": "This field is required, please fill it out.",
     "error-field_invalid_email_format": "Invalid email format, please check and try again.",
-    "error-email_existed": "Email account already existed.Please try login or forgot password.",
+    "error-email_existed": "Email account already exists. Please try to log in or click forget password.",
     "error-less8chars": "Your password must contain at least 8 characters",
     "continue_acct": "Continue using %Service% with",
     "error-at_least_1num": "Your password must contain at least 1 number",
@@ -110,5 +110,6 @@
     "ory_errormsg_security_violation": "A security violation was detected, please fill out the form again.",
     "ory_errormsg_interaction_expired": "Your interaction expired, please fill out the form again.",
     "ory_errormsg_route_address_no_allowed": "The %page_route% address is not allowed.",
-    "log_out_all_device_desc": "This will remove access to your Master ID account from all devices."
+    "log_out_all_device_desc": "This will remove access to your Master ID account from all devices.",
+    "account_deleted": "Account deleted"
 }

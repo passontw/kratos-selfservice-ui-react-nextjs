@@ -26,6 +26,7 @@ export function useI18nConfig() {
     forgotPw: t('forgot_pw'),
     noAccount: t('dont_have_acct'),
     loginDiffAccount: t('login_diff_acct'),
+    loginOtherAccount: t('login_with_other_acct'),
     termsOfUse: t('terms_of_use'),
     privacyPolicy: t('privacy_policy'),
     orySecurityViolation: t('ory_errormsg_security_violation'),

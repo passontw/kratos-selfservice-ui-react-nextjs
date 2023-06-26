@@ -24,6 +24,9 @@ const theme = createTheme({
         styleOverrides: {
           root: {
             color: '#FFFFFF',
+            '&:hover': {
+              backgroundColor: '#272735',
+            },
           },
         },
       },
@@ -35,22 +38,27 @@ export default function MenuPopupState() {
     const [value, setValue] = useLocalStorage('lang', '');
     const menuItems = [
         { label: 'English', locale: 'en' },
+        { label: '繁體中文', locale: 'zh-Hant' },
+        { label: '簡體中文', locale: 'zh-Hans' },
+        { label: 'Nederlands', locale: 'nl' },
         { label: 'Deutsch', locale: 'de' },
-        { label: 'Español', locale: 'es' },
         { label: 'Français', locale: 'fr' },
+        { label: '印尼文', locale: 'id' },
         { label: 'Italian', locale: 'it' },
         { label: '日本語', locale: 'ja' },
-        { label: 'Nederlands', locale: 'nl' },
         { label: 'Polski', locale: 'pl' },
         { label: 'Português (BR)', locale: 'pt_BR' },
         { label: 'Русский', locale: 'ru' },
-        { label: '繁體中文', locale: 'zh-Hant' },
+        { label: 'Español', locale: 'es' },
+        { label: '泰文', locale: 'th' },
+        { label: '土耳其文', locale: 'tr' },
+
         // ...add more languages here
     ];
 
     useEffect(() => {
         // console.log(router.asPath)
-        console.log(router.locale)
+        // console.log(router.locale)
         const conditions = ["/profile", "/account"];
         // console.log(router.pathname)
         if (conditions.includes(router.pathname)) {
@@ -108,7 +116,7 @@ export default function MenuPopupState() {
                                 backgroundColor: '#37374F',
                               },
                               '&::-webkit-scrollbar-thumb': {
-                                background: '#272735',
+                                background: '#A62BC3',
                                 borderRadius: '4px',
                               },
                              },

@@ -382,7 +382,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
               <Box className="text">
                 <Box height="19px" width="fit-content" zIndex={1} bgcolor="#1D1D28" padding="0 10px">
                 {this.props.router?.pathname === "/login"
-                  ? lang?.loginDiffAccount
+                  ? lang?.loginOtherAccount
                   : lang?.signupOtherAcct}
                 </Box>
               </Box>

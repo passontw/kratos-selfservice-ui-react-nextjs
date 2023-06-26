@@ -39,6 +39,7 @@ const VerificationInput = () => {
 
   const handleKeyDown = (index, event) => {
     if (event.key === "Backspace" && !inputValues[index]) {
+      console.log('12121212121212')
       event.preventDefault()
       const newInputValues = [...inputValues]
       newInputValues[index - 1] = ""

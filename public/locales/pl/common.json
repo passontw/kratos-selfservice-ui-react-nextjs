@@ -110,5 +110,6 @@
     "ory_errormsg_security_violation": "Wykryto naruszenie bezpieczeństwa, wypełnij formularz ponownie.",
     "ory_errormsg_interaction_expired": "Twoja interakcja wygasła, wypełnij formularz ponownie.",
     "ory_errormsg_route_address_no_allowed": "Adres %page_route% jest niedozwolony.",
-    "log_out_all_device_desc": "Spowoduje to usunięcie dostępu do Twojego konta Master ID ze wszystkich urządzeń."
+    "log_out_all_device_desc": "Spowoduje to usunięcie dostępu do Twojego konta Master ID ze wszystkich urządzeń.",
+    "account_deleted": "Konto usunięte"
 }

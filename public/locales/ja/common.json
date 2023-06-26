@@ -102,5 +102,14 @@
     "pw_no_match": "パスワードが一致しません",
     "verif_delete_acct_desc": "master123@gmail.com にお送りした6桁のコードを入力し、削除作業を完了させてください。",
     "delete_acct_desc": "お客様のアカウントおよび関連するデータは永久に削除され、復元することはできません。",
-    "acct_use_cannot_link": "アカウントは既に使用されています。連携できません。"
+    "acct_use_cannot_link": "アカウントは既に使用されています。連携できません。",
+    "profile_updated_succ": "プロフィールの更新が完了しました",
+    "linked": "が接続されています",
+    "unlinked": "が接続されていません",
+    "log_out_all_devices": "すべてのデバイスをログアウトする",
+    "ory_errormsg_security_violation": "不正な入力が検出されましたので、再度フォームを入力してください。",
+    "ory_errormsg_interaction_expired": "入力が無効となりましたので、再度入力してください。",
+    "ory_errormsg_route_address_no_allowed": "%page_route% アドレスは使用できません。",
+    "log_out_all_device_desc": "これにより、すべてのデバイスからMaster IDアカウントへのアクセスが削除されます。",
+    "account_deleted": "アカウントが削除されました"
 }

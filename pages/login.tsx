@@ -429,7 +429,7 @@ const Login: NextPage = (props : any) => {
           </Box>
           <Box display="flex" justifyContent="center">
             <Box width={{ xs: "100%", sm: "480px"}}>
-              <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
+              <Box fontFamily="Teko" fontSize="36px" color="#FFF" mt="62px">
                 {lang.welcomeBack}
               </Box>
               {router.query.error && (
