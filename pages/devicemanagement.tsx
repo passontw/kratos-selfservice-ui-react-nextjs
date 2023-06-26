@@ -20,6 +20,7 @@ import ory from "../pkg/sdk"
 import { setActiveNav, setDialog } from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { Ring } from '@uiball/loaders'
 
 const dayjs = require("dayjs")
 var utc = require("dayjs/plugin/utc")
@@ -245,7 +246,7 @@ const DeviceManagement: NextPage = (props) => {
   }, [])
   return (
     <AccountLayout lang={lang}>
-      <Box
+      {flow ? <Box
         display="flex"
         flexDirection="column"
         position="relative"
@@ -295,7 +296,19 @@ const DeviceManagement: NextPage = (props) => {
             <SessionList sessions={sessions} setSessions={setSessions} />
           </Box>
         </SettingsCard>
-      </Box>
+      </Box> :
+      <Box 
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="50vh">
+        <Ring 
+          size={40}
+          lineWeight={5}
+          speed={2} 
+          color="#A62BC3" 
+        />
+      </Box>}
       <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
       <LinkNav />
     </AccountLayout>

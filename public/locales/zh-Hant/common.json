@@ -110,5 +110,6 @@
     "ory_errormsg_security_violation": "偵測到安全違規，請重新填寫表單",
     "ory_errormsg_interaction_expired": "您的操作已過期，請重新填寫表單",
     "ory_errormsg_route_address_no_allowed": "不允許使用 %page_route% 網址",
-    "log_out_all_device_desc": "您在所有裝置上的 MasterID 帳號權限將被移除"
+    "log_out_all_device_desc": "您在所有裝置上的 MasterID 帳號權限將被移除",
+    "account_deleted": "帳戶已刪除"
 }

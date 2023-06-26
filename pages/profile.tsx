@@ -21,6 +21,7 @@ import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import cityJson from "../city.json"
+import { Ring } from '@uiball/loaders'
 
 interface Props {
   flow?: SettingsFlow
@@ -178,10 +179,9 @@ const Profile: NextPage = (props) => {
 
   return (
     <AccountLayout lang={lang}>
+      {flow ? 
       <StyledProfileArea paddingRight="0">
         <SettingsCard only="profile" flow={flow}>
-          {/* <H3>Profile Settings</H3> */}
-          {/* <Messages messages={flow?.ui.messages} /> */}
           <Flow
             hideGlobalMessages
             onSubmit={onSubmit}
@@ -189,9 +189,20 @@ const Profile: NextPage = (props) => {
             flow={flow}
             lang={lang}
           />
-          
         </SettingsCard>
-      </StyledProfileArea>
+      </StyledProfileArea> :
+      <Box 
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="50vh">
+        <Ring 
+          size={40}
+          lineWeight={5}
+          speed={2} 
+          color="#A62BC3" 
+        />
+      </Box>}
     </AccountLayout>
   )
 }

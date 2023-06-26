@@ -24,6 +24,7 @@ import {
 } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { Ring } from '@uiball/loaders'
 
 const linkAttributesNamesKey = "!@#$%^linkAttributesNamesKey";
 
@@ -315,7 +316,7 @@ const Account: NextPage = (props) => {
 
   return (
     <AccountLayout lang={lang}>
-      <Box display="flex" flexDirection="column">
+      {flow ? <Box display="flex" flexDirection="column">
         <SettingsCard only="oidc" flow={flow}>
           <Box
             color="#717197"
@@ -440,7 +441,19 @@ const Account: NextPage = (props) => {
             lang={lang}
           />
         </SettingsCard>
-      </Box>
+      </Box> :
+      <Box 
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="50vh">
+        <Ring 
+          size={40}
+          lineWeight={5}
+          speed={2} 
+          color="#A62BC3" 
+        />
+      </Box>}
     </AccountLayout>
   )
 }

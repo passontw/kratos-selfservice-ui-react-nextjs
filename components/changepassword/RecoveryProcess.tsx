@@ -19,6 +19,7 @@ import {
 import { Stage } from "../../types/enum"
 import { recoveryFormSchema, recoveryCodeFormSchema } from "../../util/schemas"
 import { handleYupErrors, handleYupSchema } from "../../util/yupHelpers"
+import { Ring } from '@uiball/loaders'
 
 const dayjs = require("dayjs")
 const utc = require("dayjs/plugin/utc")
@@ -365,14 +366,25 @@ const RecoveryProcess: NextPage = (props) => {
               {`${lang?.email} *`}
             </Box>
           )}
-
-          <Flow
+          {flow ? <Flow
             onSubmit={onSubmit}
             flow={flow}
             code={sixDigitCode}
             hideSocialLogin
             lang={lang}
-          />
+          /> : 
+          <Box 
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="90px">
+            <Ring 
+              size={40}
+              lineWeight={5}
+              speed={2} 
+              color="#A62BC3" 
+            />
+        </Box>}
         </Box>
       </Box>
     </>

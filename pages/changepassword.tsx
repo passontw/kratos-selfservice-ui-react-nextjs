@@ -23,6 +23,8 @@ import { Navs, Stage } from "../types/enum"
 import { changePasswordSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import Box from '@mui/material/Box'
+import { Ring } from '@uiball/loaders'
 
 interface Props {
   flow?: SettingsFlow
@@ -155,26 +157,40 @@ const ChangePassword: NextPage = (props) => {
 
   return (
     <AccountLayout lang={lang}>
-      <StyledChangePasswordArea marginTop="48px">
-        <StyledChangePasswordDeco src={"/images/change-password-deco.png"} />
-        <StyledSection>
-          <StyledAccount>{lang?.account || 'Account'}</StyledAccount>
-          <StyledEmail>{email}</StyledEmail>
-        </StyledSection>
-      </StyledChangePasswordArea>
-      <StyledChangePasswordArea>
-        <SettingsCard only="password" flow={flow}>
-          {/* <Messages messages={flow?.ui.messages} /> */}
-          <Flow
-            hideGlobalMessages
-            confirmPasswordError={confirmPasswordError}
-            onSubmit={onSubmit}
-            only="password"
-            flow={flow}
-            lang={lang}
-          />
-        </SettingsCard>
-      </StyledChangePasswordArea>
+      {flow ? <>
+        <StyledChangePasswordArea marginTop="48px">
+          <StyledChangePasswordDeco src={"/images/change-password-deco.png"} />
+          <StyledSection>
+            <StyledAccount>{lang?.account || 'Account'}</StyledAccount>
+            <StyledEmail>{email}</StyledEmail>
+          </StyledSection>
+        </StyledChangePasswordArea>
+        <StyledChangePasswordArea>
+          <SettingsCard only="password" flow={flow}>
+            {/* <Messages messages={flow?.ui.messages} /> */}
+            <Flow
+              hideGlobalMessages
+              confirmPasswordError={confirmPasswordError}
+              onSubmit={onSubmit}
+              only="password"
+              flow={flow}
+              lang={lang}
+            />
+          </SettingsCard>
+        </StyledChangePasswordArea>
+      </> : 
+      <Box 
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="50vh">
+        <Ring 
+          size={40}
+          lineWeight={5}
+          speed={2} 
+          color="#A62BC3" 
+        />
+      </Box>}
     </AccountLayout>
   )
 }

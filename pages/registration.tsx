@@ -26,6 +26,7 @@ import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import queryString from "query-string"
 import LinkNav from '../components/LinkNav'
+import { Ring } from '@uiball/loaders'
 
 const localStorageKey = "!@#$%^&*()registedata"
 
@@ -294,7 +295,20 @@ const Registration: NextPage = (props) => {
             <Box fontFamily="Teko" fontSize="36px" color="#FFF" mt="62px">
               {lang?.joinUs}
             </Box>
-            <Flow onSubmit={onSubmit} flow={nextFlow} router={router} lang={lang} />
+            {flow ? 
+              <Flow onSubmit={onSubmit} flow={nextFlow} router={router} lang={lang} /> :
+              <Box 
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="90px">
+                <Ring 
+                  size={40}
+                  lineWeight={5}
+                  speed={2} 
+                  color="#A62BC3" 
+                />
+              </Box>}
             {/* Moblie Terms Start */}
               <Box
                 mt="30px"
