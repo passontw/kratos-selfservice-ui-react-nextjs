@@ -35,11 +35,11 @@ const registeLocalStorageKey = "!@#$%^&*()registedata"
 
 const { NEXT_PUBLIC_REDIRECT_URI } = process.env
 
-const getReturnToUrl = (returnTo, type) => {
+const getReturnToUrl = (returnTo, type, path: string) => {
   if (returnTo) return returnTo;
-  if (type === 'registe') return "/profile";
-  if (type === 'continueregiste') return "/profile"
-  return "/profile";
+  if (type === 'registe') return path;
+  if (type === 'continueregiste') return path
+  return path;
 }
 
 const Verification: NextPage = (props: any) => {
@@ -52,6 +52,12 @@ const Verification: NextPage = (props: any) => {
 
   // Get ?flow=... from the URL
   const router = useRouter()
+  const locale = router.locale
+  let path ='/profile'
+
+  if (locale && locale !== 'en') {
+    path =`/${locale}${path}`
+  }
   const {
     login_challenge,
     return_to: returnTo,
@@ -67,7 +73,7 @@ const Verification: NextPage = (props: any) => {
   } = router.query
 
   const email = router.query.user as string
-  const returnToUrl = getReturnToUrl(returnTo, type);
+  const returnToUrl = getReturnToUrl(returnTo, type, path);
 
   useEffect(() => {
     dispatch(setActiveNav(Navs.VERIFICATION))
@@ -377,7 +383,7 @@ const Verification: NextPage = (props: any) => {
               >
                 {verifySuccess
                   ? lang?.verifySucessDesc || "Congratulation, your account is approved. You will be automatically redirected to %service% in 5 seconds."
-                  : lang?.verifyAcctDesc.replace("master123@gmail.com", `${email}`) || `Enter the 6-digit code we sent to ${email} to verify account.`}
+                  : lang?.verifyAcctDesc.replace("master123@gmail.com", `${email ? email : ''}`) || `Enter the 6-digit code we sent to ${email ? email : ''} to verify account.`}
               </span>
             </Box>
             <Flow

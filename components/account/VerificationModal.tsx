@@ -394,7 +394,7 @@ const Verification: NextPage = (props) => {
           {flow?.state === 'sent_email' ? 
             <Box>
               <Text>
-                {lang?.verifyDeleteAccDesc.replace("master123@gmail.com", `${email}`)}
+                {lang?.verifyDeleteAccDesc.replace("master123@gmail.com", `${email ? email : ''}`)}
               </Text>
               <Flow
                 onSubmit={onSubmit}

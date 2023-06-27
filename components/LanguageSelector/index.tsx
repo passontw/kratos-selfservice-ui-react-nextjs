@@ -57,10 +57,7 @@ export default function MenuPopupState() {
     ];
 
     useEffect(() => {
-        // console.log(router.asPath)
-        // console.log(router.locale)
-        const conditions = ["/profile", "/account"];
-        // console.log(router.pathname)
+        const conditions = ["/login", "/registration", "/settings", "/profile", "/account"];
         if (conditions.includes(router.pathname)) {
           setValue(value);
           router.push(router.pathname, router.pathname, { locale: value });
