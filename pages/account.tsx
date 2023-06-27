@@ -180,7 +180,11 @@ const Account: NextPage = (props) => {
               // The settings have been saved and the flow was updated. Let's show it to the user!
               setFlow(data)
               // if (data.state === "success") window.location.replace("/account")
-              if (data.state === "success") window.location.replace(path)
+              if (data.state === "success") {
+                setTimeout(() => {
+                  window.location.replace(path)
+                }, 1000)
+              }
             })
             .catch(handleFlowError(router, "account", setFlow))
             .catch(async (err: any) => {

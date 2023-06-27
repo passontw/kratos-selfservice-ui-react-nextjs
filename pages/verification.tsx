@@ -6,7 +6,6 @@ import { useRouter } from "next/router"
 import queryString from "query-string"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import AppsList from '../components/AppsList'
 import isEmpty from 'lodash/isEmpty'
 import cloneDeep from 'lodash/cloneDeep'
 import CmidHead from "../components/CmidHead"
@@ -202,7 +201,6 @@ const Verification: NextPage = (props: any) => {
   }
 
   const onSubmit = async (values: UpdateVerificationFlowBody, isResendCode) => {
-    console.log("🚀 ~ file: verification.tsx:199 ~ onSubmit ~ values:", values)
     const {
       code,
       email,
@@ -291,7 +289,6 @@ const Verification: NextPage = (props: any) => {
         }
         setFlow(nextFlow)
         
-        console.log("🚀 ~ file: verification.tsx:288 ~ .then ~ type:", type)
         if (data.state === "passed_challenge" && ['login', 'registe'].includes(type)) {
           const key = type === 'registe' ? registeLocalStorageKey: localStorageKey
           const values = JSON.parse(localStorage.getItem(key))
@@ -383,7 +380,7 @@ const Verification: NextPage = (props: any) => {
               >
                 {verifySuccess
                   ? lang?.verifySucessDesc || "Congratulation, your account is approved. You will be automatically redirected to %service% in 5 seconds."
-                  : lang?.verifyAcctDesc.replace("master123@gmail.com", `${email ? email : ''}`) || `Enter the 6-digit code we sent to ${email ? email : ''} to verify account.`}
+                  : lang?.verifyAcctDesc.replace("master123@gmail.com", `${!isEmpty(email) ? email : ''}`) || `Enter the 6-digit code we sent to ${!isEmpty(email) ? email : ''} to verify account.`}
               </span>
             </Box>
             <Flow
