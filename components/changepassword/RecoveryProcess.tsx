@@ -153,38 +153,41 @@ const RecoveryProcess: NextPage = (props) => {
       isResendCode,
     } = values;
 
-    const createdTimeDayObject = dayjs(flow.issued_at)
-    const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
-    const isValidate = validateDiffMinute(setFlow, flow, diffMinute)
-
-    if (!isValidate) {
-      const nextFlow = cloneDeep(flow)
-      const identifierIndex = nextFlow.ui.nodes.findIndex(
-        (node) => node.attributes.name === "code",
-      )
-
-      if (identifierIndex !== -1) {
-        nextFlow.ui.messages = []
-        nextFlow.ui.nodes[identifierIndex].messages = [
-          {
-            id: 400002,
-            text: "Verification code is no longer valid, please try again.",
-            type: "error",
-          },
-        ]
-        setFlow(nextFlow)
-        return
+    if (!isResendCode) {
+      const createdTimeDayObject = dayjs(flow.issued_at)
+      const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
+      const isValidate = validateDiffMinute(setFlow, flow, diffMinute)
+  
+      if (!isValidate) {
+        const nextFlow = cloneDeep(flow)
+        const identifierIndex = nextFlow.ui.nodes.findIndex(
+          (node) => node.attributes.name === "code",
+        )
+  
+        if (identifierIndex !== -1) {
+          nextFlow.ui.messages = []
+          nextFlow.ui.nodes[identifierIndex].messages = [
+            {
+              id: 400002,
+              text: "Verification code is no longer valid, please try again.",
+              type: "error",
+            },
+          ]
+          setFlow(nextFlow)
+          return
+        }
+      } else {
+        const nextFlow = cloneDeep(flow)
+        const identifierIndex = nextFlow.ui.nodes.findIndex(
+          (node) => node.attributes.name === "code",
+        )
+        if (identifierIndex !== -1) {
+          nextFlow.ui.messages = []
+          nextFlow.ui.nodes[identifierIndex].messages = []
+          setFlow(nextFlow)
+        }
       }
-    } else {
-      const nextFlow = cloneDeep(flow)
-      const identifierIndex = nextFlow.ui.nodes.findIndex(
-        (node) => node.attributes.name === "code",
-      )
-      if (identifierIndex !== -1) {
-        nextFlow.ui.messages = []
-        nextFlow.ui.nodes[identifierIndex].messages = []
-        setFlow(nextFlow)
-      }
+  
     }
 
     if (!isResendCode && flow.state === "sent_email") {

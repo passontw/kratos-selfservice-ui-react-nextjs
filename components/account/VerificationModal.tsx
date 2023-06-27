@@ -202,7 +202,6 @@ const Verification: NextPage = (props) => {
     } = values;
 
     const nextFlow = cloneDeep(flow)
-
     if (isEmpty(values.email) && code.length !== 6) {
       const codeNodes = nextFlow.ui.nodes || []
       const codeIndex = codeNodes.findIndex(
@@ -218,34 +217,36 @@ const Verification: NextPage = (props) => {
       setFlow(nextFlow)
       return
     }
-
-    const createdTimeDayObject = dayjs(nextFlow.issued_at)
-    const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
-    const isValidate = validateDiffMinute(setFlow, nextFlow, diffMinute);
-    if (!isValidate) {
-      const nextFlow = cloneDeep(flow);
-      const identifierIndex = nextFlow.ui.nodes.findIndex(
-        (node) => node.attributes.name === "code",
-      )
-      if (identifierIndex !== -1) {
-        nextFlow.ui.messages = [];
-        nextFlow.ui.nodes[identifierIndex].messages = [{
-          id: 400002,
-          text: "Verification code is no longer valid, please try again.",
-          type: "error",
-        }]
-        setFlow(nextFlow)
-        return;
-      }
-    } else {
-      const nextFlow = cloneDeep(flow);
-      const identifierIndex = nextFlow.ui.nodes.findIndex(
-        (node) => node.attributes.name === "code",
-      )
-      if (identifierIndex !== -1) {
-        nextFlow.ui.messages = [];
-        nextFlow.ui.nodes[identifierIndex].messages = []
-        setFlow(nextFlow)
+    
+    if (!isResendCode) {
+      const createdTimeDayObject = dayjs(nextFlow.issued_at)
+      const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
+      const isValidate = validateDiffMinute(setFlow, nextFlow, diffMinute);
+      if (!isValidate) {
+        const nextFlow = cloneDeep(flow);
+        const identifierIndex = nextFlow.ui.nodes.findIndex(
+          (node) => node.attributes.name === "code",
+        )
+        if (identifierIndex !== -1) {
+          nextFlow.ui.messages = [];
+          nextFlow.ui.nodes[identifierIndex].messages = [{
+            id: 400002,
+            text: "Verification code is no longer valid, please try again.",
+            type: "error",
+          }]
+          setFlow(nextFlow)
+          return;
+        }
+      } else {
+        const nextFlow = cloneDeep(flow);
+        const identifierIndex = nextFlow.ui.nodes.findIndex(
+          (node) => node.attributes.name === "code",
+        )
+        if (identifierIndex !== -1) {
+          nextFlow.ui.messages = [];
+          nextFlow.ui.nodes[identifierIndex].messages = []
+          setFlow(nextFlow)
+        }
       }
     }
 
