@@ -28,11 +28,12 @@ import {
   setLockCodeResend,
 } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
-import { handleYupErrors } from "../util/yupHelpers"
+import { handleYupErrors, handleYupSchema } from "../util/yupHelpers"
 
 import { StyledMenuWrapper } from "./../styles/share"
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import LinkNav from '../components/LinkNav'
+import { loginFormSchema } from "../util/schemas"
 
 const localStorageKey = "!@#$%^&*()data"
 
@@ -203,6 +204,7 @@ const Login: NextPage = (props : any) => {
 
   // const onSubmit = async (values: UpdateLoginFlowBody) => {
   const onSubmit = async (values: any) => {
+
     const login_challenge = router.query.login_challenge
     // TODO - this is temp method to add subject, need to get subject from account
     let subject = ""
@@ -212,7 +214,9 @@ const Login: NextPage = (props : any) => {
 
     try {
       const isEmailSignin = isEmpty(values.provider)
+      
       if (isEmailSignin) {
+        await handleYupSchema(loginFormSchema, values)
         const response = await axios.get(
           `/api/hydra/validateIdentity?email=${values.identifier}`,
         )
@@ -338,7 +342,8 @@ const Login: NextPage = (props : any) => {
               // Yup, it is!
               if (err && err.response) {
                 const nextFlow = err.response?.data
-                const [message = { text: "" }] = nextFlow.ui.messages
+                console.log("🚀 ~ file: login.tsx:343 ~ onSubmit ~ nextFlow.ui.messages:", nextFlow.ui.messages)
+                const [message = { text: "" }] = nextFlow.ui.messages || []
                 if (
                   message.text.includes(
                     "check for spelling mistakes in your password or username, email address, or phone number.",
