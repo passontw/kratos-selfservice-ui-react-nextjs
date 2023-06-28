@@ -292,10 +292,31 @@ const Verification: NextPage = (props: any) => {
         }
         setFlow(nextFlow)
         
-        if (data.state === "passed_challenge" && ['login', 'registe'].includes(type)) {
+        if (data.state === "passed_challenge" && ['login'].includes(type)) {
           const key = type === 'registe' ? registeLocalStorageKey: localStorageKey
           const values = JSON.parse(localStorage.getItem(key))
 
+          return ory.createBrowserLoginFlow({
+            refresh: Boolean(refresh),
+            aal: aal ? String(aal) : undefined,
+            returnTo: Boolean(login_challenge)
+              ? NEXT_PUBLIC_REDIRECT_URI
+              : returnToUrl,
+          }).then(({ data }) => {
+            const csrfNode = data.ui.nodes.find(node => node.attributes.name === "csrf_token")
+            const nextValues = type === 'registe'
+            ? {
+              identifier: values['traits.email'],
+              method: 'password',
+              password: values.password,
+            }
+            : values
+            return ory
+              .updateLoginFlow({
+                flow: String(data?.id),
+                updateLoginFlowBody: { ...nextValues, csrf_token: csrfNode?.attributes.value },
+              }).then(() => flow)
+          }).then(flow => {
           if (type !== 'registe') {
             router.replace(returnToUrl)
             return;
@@ -304,6 +325,10 @@ const Verification: NextPage = (props: any) => {
             setTimeout(() => router.replace(returnToUrl), 2000)
             return;
           }
+        }).catch(error => {
+          console.log(error)
+        })
+        return;
         }
       })
       .catch((err: any) => {
