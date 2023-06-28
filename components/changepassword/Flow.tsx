@@ -294,7 +294,7 @@ export default class Flow<T extends Values> extends Component<
               color: "#fff",
               caretColor: "#fff",
               borderRadius: "8px",
-              padding: "12px 50px 12px 16px",
+              padding: "12px 50px 12px 24px",
               margin: "0px",
               fontFamily: "open sans",
             }}

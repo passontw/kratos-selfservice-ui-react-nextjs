@@ -4,36 +4,39 @@ import { Alert, AlertContent } from "@ory/themes"
 
 import ErrorIcon from "../../public/images/ErrorIcon"
 import SuccessIcon from "../../public/images/SuccessIcon"
+import { useTranslation } from 'next-i18next'
 
 interface MessageProps {
   message: UiText
 }
 
-const getDisplayMessage = (displayMessage = "") => {
+const getDisplayMessage = (displayMessage = "", t: any) => {
+
   if (
     displayMessage.includes(
       "check for spelling mistakes in your password or username, email address, or phone number.",
     )
   ) {
-    return "Your email or password is incorrect. Please check and try again."
+    return t('error-email_or_pw_incorrect')
   }
   if (displayMessage.includes("The provided credentials are invalid")) {
-    return "The provided credentials are invalid. Please try again or sign up."
+    return t('error-email_or_pw_incorrect')
   }
 
   if (displayMessage.includes("An account with the same identifier")) {
-    return "Email account already existed. Please try login or forgot password."
+    return t('error-email_existed')
   }
 
   return displayMessage
 }
 export const Message = ({ message }: MessageProps) => {
+  const { t } = useTranslation()
   console.log("@message", message)
   const dontShowMsg = "An email containing".includes(
     message.text.substring(0, 10),
   )
 
-  const displayMessage = getDisplayMessage(message.text)
+  const displayMessage = getDisplayMessage(message.text, t)
 
   return dontShowMsg ? null : (
     <Alert severity={message.type === "error" ? "error" : "info"}>

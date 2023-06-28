@@ -46,9 +46,9 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children, lang }) => {
       case Navs.ACCOUNT:
         title = lang?.acctSettings || "Account Settings"
         break
-      case Navs.EXPORT:
-        title = lang?.exportUserData || "Export User Data"
-        break
+      // case Navs.EXPORT:
+      //   title = lang?.exportUserData || "Export User Data"
+      //   break
       case Navs.DEVICEMANAGEMENT:
         title = lang?.deviceMgmt || "Device Management"
         break

@@ -84,7 +84,7 @@ const Login: NextPage = (props : any) => {
 
   useEffect(() => {
     if (accountDeleted) {
-      showToast("Account deleted")
+      showToast(lang?.accountDeleted || "Account deleted")
     }
     dispatch(setActiveNav(Navs.LOGIN))
     dispatch(setActiveStage(Stage.NONE))
