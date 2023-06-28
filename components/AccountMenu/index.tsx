@@ -40,7 +40,7 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ lang }) => {
       path: "/devicemanagement",
       icon: "ServiceManagement",
     },
-    { name: lang?.exportUserData || "Export User Data", path: "/export", icon: "Export" },
+    // { name: lang?.exportUserData || "Export User Data", path: "/export", icon: "Export" },
   ]
 
   const Component = ({

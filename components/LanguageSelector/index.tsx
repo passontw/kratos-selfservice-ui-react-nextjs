@@ -76,15 +76,18 @@ export default function MenuPopupState() {
                 <React.Fragment>
                     <Button 
                         {...bindTrigger(popupState)}
-                        style={{
-                            width: '150px',
-                            height: '44px',
-                            borderRadius: '8px',
-                            padding: '12px 20px',
-                            color: '#C0C0C0',
-                            border: '1px solid #C0C0C0',
-                            backgroundColor: '#32323D',
-                            fontSize: '13px',
+                        sx={{
+                          width: '150px',
+                          height: '44px',
+                          borderRadius: '8px',
+                          padding: '12px 20px',
+                          color: '#C0C0C0',
+                          border: '1px solid #C0C0C0',
+                          backgroundColor: '#1F1F2A',
+                          fontSize: '13px',
+                          '@media (max-width: 600px)': {
+                            width: '80vw',
+                          },
                         }}
                     >
                         <Box display="flex" width="100%" position="relative">
@@ -97,13 +100,22 @@ export default function MenuPopupState() {
                         {...bindMenu(popupState)}
                         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                         transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                        MenuListProps={{ style: { backgroundColor: '#37374F' } }}
+                        MenuListProps={{
+                          style: { backgroundColor: '#37374F' },
+                          sx: {
+                            width: '150px',
+                            '@media (max-width: 600px)': {
+                              width: '80vw',
+                            },
+                          },
+                        }}
                         sx={{ 
                             "& .MuiPaper-root": { borderRadius: '12px', marginTop: '-10px' },
                             "& .MuiPopover-paper": { borderRadius: '12px' },
                             "& .MuiMenu-list": { 
                               maxHeight: '200px',
-                              overflow: 'auto',
+                              overflowY: 'scroll',
+                              overflowX: 'hidden',
                               '&::-webkit-scrollbar': {
                                 width: '5px',
                                 height: '5px',
@@ -121,7 +133,13 @@ export default function MenuPopupState() {
                         {menuItems.map((item) => (
                             <MenuItem
                                 key={item.locale}
-                                style={{ minWidth: '166px', fontSize: '14px' }}
+                                sx={{
+                                  width: '100%',
+                                  fontSize: '14px',
+                                  '@media (max-width: 600px)': {
+                                    width: '80vw',
+                                  },
+                                }}
                                 onClick={() => {
                                     setButtonText(item.label);
                                     setValue(item.locale);

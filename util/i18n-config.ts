@@ -68,6 +68,7 @@ export function useI18nConfig() {
     turnOn: t('turn_on'),
     turnOff: t('turn_off'),
     deleteAccount: t('acct_setting-delete_acct-verfi_code'),
+    accountDeleted: t('account_deleted'),
     verifyDeleteAccDesc: t('verif_delete_acct_desc'),
     linked: t('linked'),
     unlinked: t('unlinked'),

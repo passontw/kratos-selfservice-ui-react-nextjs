@@ -296,7 +296,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           >
             {selectValue && (
               <Select
-                title="Gender"
+                title={t('gender') || "Gender"}
                 defaultValue={defaultSelectValue}
                 options={genderRadios}
                 width={"calc(100vw)"}
@@ -308,7 +308,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             )}
             {selectValue2 && (
               <Select
-                title="Gender"
+                title={t('gender') || "Gender"}
                 defaultValue={defaultSelectValue}
                 options={genderRadios}
                 width={"calc(100vw)"}
