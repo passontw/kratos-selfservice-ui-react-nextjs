@@ -14,6 +14,9 @@ import {
 } from "@ory/client"
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
 import { Component, FormEvent, MouseEvent } from "react"
+import { connect } from "react-redux"
+
+import { setIsInputChanging } from "../../state/store/slice/verificationSlice"
 
 import { Messages } from "./Messages"
 import { Node } from "./Node"
@@ -57,7 +60,14 @@ type State<T> = {
   isLoading: boolean
 }
 
-export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
+const mapStateToProps = (state: any) => {
+  // Map necessary state properties to component props
+  return {
+    isInputChanging: state.verification.isInputChanging,
+  }
+}
+
+class MyFlow<T extends Values> extends Component<Props<T>, State<T>> {
   constructor(props: Props<T>) {
     super(props)
     this.state = {
@@ -107,6 +117,9 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   }
 
   handleSubmit = (event: FormEvent<HTMLFormElement> | MouseEvent) => {
+    // tell application that we are currently clearing "input is being changed" state
+    // when we try submit the form
+    this.props.dispatch(setIsInputChanging(false))
     event.stopPropagation()
     event.preventDefault()
 
@@ -182,7 +195,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   }
 
   render() {
-    const { hideGlobalMessages, flow } = this.props
+    const { hideGlobalMessages, flow, isInputChanging } = this.props
     const { values, isLoading } = this.state
 
     const nodes = this.filterNodes()
@@ -202,7 +215,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           const excludedFields = {
             // verification: ["email"],
           }
-          
+
           const pathname = window.location.pathname.slice(
             1,
           ) as keyof typeof excludedFields
@@ -240,3 +253,5 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     )
   }
 }
+
+export const Flow = connect(mapStateToProps)(MyFlow)

@@ -16,6 +16,7 @@ import {
   selectActiveStage,
   selectSixDigitCode,
 } from "../../state/store/slice/layoutSlice"
+import { selectIsInputChanging } from "../../state/store/slice/verificationSlice"
 import {
   StyledDefaultInput,
   StyledDefaultLabel,
@@ -28,11 +29,33 @@ import { CenterLink } from "../styled"
 import { NodeInputProps } from "./helpers"
 
 export function NodeInputDefault<T>(props: NodeInputProps) {
+  const isInputChanging = useSelector(selectIsInputChanging)
   const router = useRouter()
   const dispatch = useDispatch()
   const nav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
   const { node, attributes, value, setValue, disabled, validationMsgs } = props
+
+  // lifted state for input control
+  const [code, setCode] = useState(Array(6).fill(""))
+  const [isTouched, setIsTouched] = useState(false)
+  // const [isInputChanging, setIsInputChanging] = useState(false)
+  const [inputBlurred, setInputBlurred] = useState(false)
+  const [validationError, setValidationError] = useState("")
+
+  const codeInputControlProps = {
+    code,
+    setCode,
+    isTouched,
+    setIsTouched,
+    // isInputChanging,
+    // setIsInputChanging,
+    inputBlurred,
+    setInputBlurred,
+    validationError,
+    setValidationError,
+  }
+
   const label =
     node.meta.label?.text === "ID"
       ? "Email"
@@ -99,6 +122,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   useEffect(() => {
     if (value && attributes.name === "traits.gender") {
       setGender(value ? value : 3)
+
       setDefaultSelectValue(
         value
           ? genderRadios.find((g) => g.value === parseInt(value))
@@ -118,100 +142,126 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     (validationMsgs[0]?.text.includes("Email account") ||
       validationMsgs[0]?.text.includes("The provided credentials are invalid"))
 
+  console.log("@validation node.messages:", node.messages)
+  console.log("@validation validationMsgs:", validationMsgs)
+  console.log("@validation accountError:", accountError)
+  console.log("@validation isInputChanging:", isInputChanging)
+
   const verifyCodeConditions =
     (activeStage === Stage.VERIFY_CODE &&
       // nav !== Navs.RECOVERY &&
       nav !== Navs.LOGIN) ||
-    (nav === Navs.VERIFICATION && activeStage === Stage.NONE)
-    || activeStage === Stage.DELETE_ACCOUNT
+    (nav === Navs.VERIFICATION && activeStage === Stage.NONE) ||
+    activeStage === Stage.DELETE_ACCOUNT
   // const verifyCodeConditions2 = activeStage === Stage.DELETE_ACCOUNT
+
+  const isRouteAllowed =
+    window.location.pathname !== "/verification" &&
+    window.location.pathname !== "/account" &&
+    window.location.pathname !== "/recovery"
 
   // Render a generic text input field.
   return (
     <>
       {verifyCodeConditions && (
-        <VerificationInput />
+        // Old stable version
+        // <VerificationInput />
+        // new version with added validation
+        <CodeInput
+          show={attributes.name}
+          validationMsgs={node.messages}
+          {...codeInputControlProps}
+        />
       )}
       {/* {verifyCodeConditions2 && <VerificationInput />} */}
       <StyledDefaultInput isInputLabel={isInputLabel}>
         {isInputLabel && (
           <StyledDefaultLabel isError={isError}>{label}</StyledDefaultLabel>
         )}
-        <TextInput
-          className="my-text-input"
-          style={{
-            display:
-              (label === "Verify code") ||
-              attributes.name === "traits.gender"
-                ? "none"
-                : "unset",
-            border: isError || accountError ? "1px solid #F24867" : "none",
-            backgroundColor: "#37374F",
-            height: "44px",
-            color: "#fff",
-            caretColor: "#fff",
-            borderRadius: "8px",
-            padding: isInputLabel ? "0px 50px 0px 82px" : "12px 50px 12px 16px",
-            margin: "0px",
-            fontFamily: "Open Sans",
-          }}
-          placeholder={
-            isInputLabel
-              ? ""
-              : (nav === Navs.SETTINGS || nav === Navs.CHANGEPASSWORD) &&
-                attributes.name === "password"
-              ? "Enter new password"
-              : label
-          }
-          // title={node.meta.label?.text}
-          onClick={onClick}
-          onChange={(e) => {
-            setValue(e.target.value)
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.stopPropagation()
-              e.preventDefault()
+
+        {!isInputChanging && (
+          <TextInput
+            className="my-text-input"
+            style={{
+              display:
+                label === "Verify code" || attributes.name === "traits.gender"
+                  ? "none"
+                  : "unset",
+              border: isError || accountError ? "1px solid #F24867" : "none",
+              backgroundColor: "#37374F",
+              height: "44px",
+              color: "#fff",
+              caretColor: "#fff",
+              borderRadius: "8px",
+              padding: isInputLabel
+                ? "0px 50px 0px 82px"
+                : "12px 50px 12px 16px",
+              margin: "0px",
+              fontFamily: "Open Sans",
+            }}
+            placeholder={
+              isInputLabel
+                ? ""
+                : (nav === Navs.SETTINGS || nav === Navs.CHANGEPASSWORD) &&
+                  attributes.name === "password"
+                ? "Enter new password"
+                : label
             }
-          }}
-          type={inputType === "email" ? "text" : inputType}
-          name={attributes.name}
-          value={value}
-          disabled={attributes.disabled || disabled}
-          help={node.messages.length > 0}
-          state={
-            node.messages.find(({ type }) => type === "error")
-              ? "error"
-              : undefined
-          }
-          subtitle={
-            <>
-              {node.messages.map(({ type, text = "", id }, k) => {
-                let displayText = text
-                if (text.includes("is missing")) {
-                  displayText = "This field is required, please fill it out."
-                }
-                if (text.includes("is not valid")) {
-                  displayText =
-                    "Invalid email format, please check and try again."
-                }
-                return (
-                  <span
-                    key={`${id}-${k}`}
-                    data-testid={`ui/message/${id}`}
-                    style={{
-                      color: "#F24867",
-                      fontSize: "13px",
-                      fontFamily: "Open Sans",
-                    }}
-                  >
-                    {displayText}
-                  </span>
-                )
-              })}
-            </>
-          }
-        />
+            // title={node.meta.label?.text}
+            onClick={onClick}
+            onChange={(e) => {
+              setValue(e.target.value)
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.stopPropagation()
+                e.preventDefault()
+              }
+            }}
+            type={inputType === "email" ? "text" : inputType}
+            name={attributes.name}
+            value={value}
+            disabled={attributes.disabled || disabled}
+            help={node.messages.length > 0}
+            state={
+              node.messages.find(({ type }) => type === "error")
+                ? "error"
+                : undefined
+            }
+            subtitle={
+              isRouteAllowed ? (
+                <>
+                  {node.messages.map(({ type, text = "", id }, k) => {
+                    let displayText = text
+                    if (text.includes("is missing")) {
+                      displayText =
+                        "This field is required, please fill it out."
+                    }
+                    if (text.includes("is not valid")) {
+                      displayText =
+                        "Invalid email format, please check and try again."
+                    }
+                    return (
+                      <span
+                        key={`${id}-${k}`}
+                        data-testid={`ui/message/${id}`}
+                        style={{
+                          color: "#F24867",
+                          fontSize: "13px",
+                          fontFamily: "Open Sans",
+                        }}
+                      >
+                        {displayText}
+                      </span>
+                    )
+                  })}
+                </>
+              ) : (
+                <></>
+              )
+            }
+          />
+        )}
         {attributes.type === "password" && (
           <StyledPasswordIcon isError={isError}>
             <Eye setInputType={handleEye} />

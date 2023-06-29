@@ -301,11 +301,14 @@ export default class Flow<T extends Values> extends Component<
             {console.log("@profile flow:", flow)}
 
             <StyledProfileImageWrap>
-              <StyledProfileImage src={"/images/profile-demo.jpg"} style={{
-                height: "168px",
-                width: "168px",
-                borderRadius: "50%",
-              }}/>
+              <StyledProfileImage
+                src={"/images/profile-demo.jpg"}
+                style={{
+                  height: "168px",
+                  width: "168px",
+                  borderRadius: "50%",
+                }}
+              />
               {/* <StyledProfileImage src={"/images/profile-pic.png"} /> */}
               <StyledEditButton src={"/images/edit-icon.png"} />
             </StyledProfileImageWrap>

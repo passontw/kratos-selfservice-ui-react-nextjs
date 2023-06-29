@@ -14,6 +14,7 @@ import {
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
 import { Button } from "@ory/themes"
 import isEmpty from "lodash/isEmpty"
+import queryString from "query-string"
 import { Component, FormEvent, MouseEvent } from "react"
 
 import Apple from "../../public/images/login_icons/Apple"
@@ -22,7 +23,6 @@ import { StyledMenuLine } from "../../styles/share"
 
 import { Messages } from "./Messages"
 import { Node } from "./Node"
-import queryString from "query-string"
 
 export type Values = Partial<
   | UpdateLoginFlowBody
@@ -233,7 +233,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     }
 
     if (router?.pathname === "/registration") {
-
       const list = ["Name", "E-Mail", "Password", "Sign up"]
       nodes = nodes
         .map((item) => item)
@@ -257,8 +256,8 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       return false
     }
 
-    const showGlobalMessages = getShowGlobalMessages();
-    const isLoginPath = router?.pathname === "/login";
+    const showGlobalMessages = getShowGlobalMessages()
+    const isLoginPath = router?.pathname === "/login"
     return (
       <form
         action={flow.ui.action}
@@ -358,17 +357,23 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 },
               }}
               onClick={() => {
-                const {router, flow} = this.props;
-                console.log("🚀 ~ file: Flow.tsx:351 ~ Flow<T ~ render ~ flow:", flow)
+                const { router, flow } = this.props
+                console.log(
+                  "🚀 ~ file: Flow.tsx:351 ~ Flow<T ~ render ~ flow:",
+                  flow,
+                )
                 if (isLoginPath) {
-                  if(isEmpty(flow?.oauth2_login_request)) {
-                    return router.push("/registration");
+                  if (isEmpty(flow?.oauth2_login_request)) {
+                    return router.push("/registration")
                   }
-                  const queryStr = flow?.oauth2_login_request.request_url.split('?')[1]
+                  const queryStr =
+                    flow?.oauth2_login_request.request_url.split("?")[1]
                   const oauth2Query = queryString.parse(queryStr)
-                  return router.push(`/registration?return_to=${oauth2Query.return_to}`);
+                  return router.push(
+                    `/registration?return_to=${oauth2Query.return_to}`,
+                  )
                 }
-                return router.push('/login');
+                return router.push("/login")
               }}
             >
               {isLoginPath ? " Sign up" : " Login"}

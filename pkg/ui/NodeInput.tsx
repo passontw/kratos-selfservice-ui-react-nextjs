@@ -8,6 +8,7 @@ import { NodeInputProps } from "./helpers"
 export function NodeInput<T>(props: NodeInputProps) {
   const { attributes } = props
 
+  console.log("@validation NodeInput:", props.validationMsgs)
   console.log(attributes)
 
   switch (attributes.type) {
