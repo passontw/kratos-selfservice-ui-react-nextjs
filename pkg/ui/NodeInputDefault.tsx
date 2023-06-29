@@ -206,7 +206,10 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
                 label === "Verify code" || attributes.name === "traits.gender"
                   ? "none"
                   : "unset",
-              border: isError || accountError ? "1px solid #F24867" : "none",
+              border:
+                isError || accountError
+                  ? "1px solid #F24867"
+                  : "8px solid #37374F",
               backgroundColor: "#37374F",
               height: "44px",
               color: "#fff",
