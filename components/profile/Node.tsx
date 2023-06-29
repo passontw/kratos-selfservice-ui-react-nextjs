@@ -20,6 +20,7 @@ interface Props {
   value: any
   setValue: ValueSetter
   dispatchSubmit: FormDispatcher
+  lang?: any
 }
 
 export const Node = ({
@@ -28,6 +29,7 @@ export const Node = ({
   setValue,
   disabled,
   dispatchSubmit,
+  lang,
 }: Props) => {
   if (isUiNodeImageAttributes(node.attributes)) {
     return <NodeImage node={node} attributes={node.attributes} />
@@ -54,6 +56,7 @@ export const Node = ({
         node={node}
         disabled={disabled}
         attributes={node.attributes}
+        lang={lang}
       />
     )
   }

@@ -43,6 +43,14 @@ export const StyledFooter = styled.footer`
   position: absolute;
   bottom: 0px;
   left: 0px;
+  @media only screen and (max-width: 600px) {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 0px;
+    width: 100%;
+  }
   @media only screen and (min-width: 600px) {
     border-top: 1px solid transparent;
   }
@@ -60,10 +68,12 @@ export const StyledCopyright = styled.span`
 export const StyledMenuWrapper = styled.div`
   padding: 80px 20px 150px 20px;
   @media only screen and (min-width: 600px) {
-    padding: 80px 80px 40px 80px;
+    /* padding: 80px 80px 40px 80px; */
+    padding: 48px;
   }
   @media only screen and (max-width: 600px) {
     padding-top: 35px;
+    padding-bottom: 200px;
   }
 `
 
@@ -95,7 +105,7 @@ export const StyledNav = styled.div`
     display: inline-block;
     position: absolute;
     bottom: 20px;
-    right: 20px;
+    right: 32px;
   }
 `
 export const StyledLink = styled.a`

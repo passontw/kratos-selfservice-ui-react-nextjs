@@ -22,6 +22,9 @@ import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
 import { changePasswordSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import Box from '@mui/material/Box'
+import { Ring } from '@uiball/loaders'
 
 interface Props {
   flow?: SettingsFlow
@@ -48,7 +51,8 @@ function SettingsCard({
   return <ActionCard wide>{children}</ActionCard>
 }
 
-const ChangePassword: NextPage = () => {
+const ChangePassword: NextPage = (props) => {
+  const { lang } = props
   const [confirmPasswordError, setConfirmPasswordError] = useState("")
   const [flow, setFlow] = useState<SettingsFlow>()
   const dispatch = useDispatch()
@@ -152,28 +156,49 @@ const ChangePassword: NextPage = () => {
   }
 
   return (
-    <AccountLayout>
-      <StyledChangePasswordArea marginTop="48px">
-        <StyledChangePasswordDeco src={"/images/change-password-deco.png"} />
-        <StyledSection>
-          <StyledAccount>Account</StyledAccount>
-          <StyledEmail>{email}</StyledEmail>
-        </StyledSection>
-      </StyledChangePasswordArea>
-      <StyledChangePasswordArea>
-        <SettingsCard only="password" flow={flow}>
-          {/* <Messages messages={flow?.ui.messages} /> */}
-          <Flow
-            hideGlobalMessages
-            confirmPasswordError={confirmPasswordError}
-            onSubmit={onSubmit}
-            only="password"
-            flow={flow}
-          />
-        </SettingsCard>
-      </StyledChangePasswordArea>
+    <AccountLayout lang={lang}>
+      {flow ? <>
+        <StyledChangePasswordArea marginTop="48px">
+          <StyledChangePasswordDeco src={"/images/change-password-deco.png"} />
+          <StyledSection>
+            <StyledAccount>{lang?.account || 'Account'}</StyledAccount>
+            <StyledEmail>{email}</StyledEmail>
+          </StyledSection>
+        </StyledChangePasswordArea>
+        <StyledChangePasswordArea>
+          <SettingsCard only="password" flow={flow}>
+            {/* <Messages messages={flow?.ui.messages} /> */}
+            <Flow
+              hideGlobalMessages
+              confirmPasswordError={confirmPasswordError}
+              onSubmit={onSubmit}
+              only="password"
+              flow={flow}
+              lang={lang}
+            />
+          </SettingsCard>
+        </StyledChangePasswordArea>
+      </> : 
+      <Box 
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="50vh">
+        <Ring 
+          size={40}
+          lineWeight={5}
+          speed={2} 
+          color="#A62BC3" 
+        />
+      </Box>}
     </AccountLayout>
   )
 }
 
 export default ChangePassword
+
+export async function getStaticProps({ locale } : any) {
+  return {
+    props: {...(await serverSideTranslations(locale, ['common']))},
+  }
+}

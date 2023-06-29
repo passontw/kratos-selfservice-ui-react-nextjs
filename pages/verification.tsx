@@ -20,6 +20,8 @@ import {
 import { Navs } from "../types/enum"
 
 import { StyledMenuWrapper } from "./../styles/share"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import LinkNav from '../components/LinkNav'
 
 const dayjs = require("dayjs")
 const utc = require("dayjs/plugin/utc")
@@ -33,14 +35,15 @@ const registeLocalStorageKey = "!@#$%^&*()registedata"
 
 const { NEXT_PUBLIC_REDIRECT_URI } = process.env
 
-const getReturnToUrl = (returnTo, type) => {
+const getReturnToUrl = (returnTo, type, path: string) => {
   if (returnTo) return returnTo;
-  if (type === 'registe') return "/profile";
-  if (type === 'continueregiste') return "/profile"
-  return undefined;
+  if (type === 'registe') return path;
+  if (type === 'continueregiste') return path
+  return path;
 }
 
-const Verification: NextPage = () => {
+const Verification: NextPage = (props: any) => {
+  const { lang } = props
   const dispatch = useDispatch()
   const sixDigitCode = useSelector(selectSixDigitCode)
   const [initFlow, setInitFlow] = useState(false)
@@ -49,6 +52,12 @@ const Verification: NextPage = () => {
 
   // Get ?flow=... from the URL
   const router = useRouter()
+  const locale = router.locale
+  let path ='/profile'
+
+  if (locale && locale !== 'en') {
+    path =`/${locale}${path}`
+  }
   const {
     login_challenge,
     return_to: returnTo,
@@ -64,7 +73,8 @@ const Verification: NextPage = () => {
   } = router.query
 
   const email = router.query.user as string
-  const returnToUrl = getReturnToUrl(returnTo, type);
+  const returnToUrl = getReturnToUrl(returnTo, type, path);
+
   useEffect(() => {
     dispatch(setActiveNav(Navs.VERIFICATION))
   }, [])
@@ -99,10 +109,14 @@ const Verification: NextPage = () => {
               return
             case 410:
               const newFlowID = err.response.data.use_flow_id
+              const nextQuery = {
+                flow: newFlowID,
+                return_to: returnTo,
+              };
               router
                 // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
                 // their data when they reload the page.
-                .push(`/verification?flow=${newFlowID}`, undefined, {
+                .push(`/verification?${queryString.stringify(nextQuery)}`, undefined, {
                   shallow: true,
                 })
 
@@ -137,7 +151,10 @@ const Verification: NextPage = () => {
             // Status code 410 means the request has expired - so let's load a fresh flow!
             case 403:
               // Status code 403 implies some other issue (e.g. CSRF) - let's reload!
-              return router.push("/verification")
+              const nextQuery = {
+                return_to: returnTo,
+              };
+              return router.push(`/verification?${queryString.stringify(nextQuery)}`)
           }
 
           throw err
@@ -177,18 +194,35 @@ const Verification: NextPage = () => {
     if (identifierIndex === -1) return true;
     nextFlow.ui.nodes[identifierIndex].messages = [{
       id: 400009,
-      text: 'Verification code is no longer valid',
+      text: lang?.verifyCodeInvalid || 'Verification code is no longer valid, please try again.',
       type: 'error'
     }]
     setFlow(nextFlow)
     return false;
   }
 
-  const onSubmit = async (values: UpdateVerificationFlowBody) => {
+  const onSubmit = async (values: UpdateVerificationFlowBody, isResendCode) => {
+    console.log("🚀 ~ file: verification.tsx:199 ~ onSubmit ~ values:", values)
+    const {
+      code,
+      email,
+      csrf_token,
+      method,
+    } = values;
+    
     if (flow.state === "sent_email" && isEmpty(values.code) && isEmpty(values.email)) {
       return null;
     }
 
+    const nextValues = isResendCode ? {
+      email,
+      csrf_token,
+      method,
+    } : {
+      code,
+      csrf_token,
+      method,
+    };
     const createdTimeDayObject = dayjs(flow.issued_at)
     const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
     
@@ -202,7 +236,7 @@ const Verification: NextPage = () => {
         nextFlow.ui.messages = [];
         nextFlow.ui.nodes[identifierIndex].messages = [{
           id: 400002,
-          text: "Verification code is no longer valid, please try again.",
+          text: lang?.verifyCodeInvalid || "Verification code is no longer valid, please try again.",
           type: "error",
         }]
         setFlow(nextFlow)
@@ -235,7 +269,7 @@ const Verification: NextPage = () => {
     return  await ory
       .updateVerificationFlow({
         flow: String(flow?.id),
-        updateVerificationFlowBody: values,
+        updateVerificationFlowBody: nextValues,
       })
       .then(({ data }) => {
         // Form submission was successful, show the message to the user!
@@ -257,7 +291,8 @@ const Verification: NextPage = () => {
         }
         setFlow(nextFlow)
         
-        if (data.state === "passed_challenge" && ['login', 'continueregiste', 'registe'].includes(type)) {
+        console.log("🚀 ~ file: verification.tsx:288 ~ .then ~ type:", type)
+        if (data.state === "passed_challenge" && ['login', 'registe'].includes(type)) {
           const key = type === 'registe' ? registeLocalStorageKey: localStorageKey
           const values = JSON.parse(localStorage.getItem(key))
 
@@ -327,39 +362,54 @@ const Verification: NextPage = () => {
       <div className="mainWrapper">
         <StyledMenuWrapper>
           <div>
-            <title>Verify your account - Ory NextJS Integration Example</title>
-            <meta name="description" content="NextJS + React + Vercel + Ory" />
+            <title>Verify your account - Master ID</title>
+            <meta name="description" content="Master ID" />
           </div>
           <CmidHead />
-          <Box mt="62px" display="flex" flexDirection="column">
-            <span style={{ color: "#FFF", fontSize: "36px", fontFamily: "Teko" }}>
-              {verifySuccess ? "Verified Success" : "Verify Account"}
-            </span>
-            <span
-              style={{
-                color: "#A5A5A9",
-                marginBottom: "48px",
-                fontFamily: "open sans",
-                fontSize: "14px",
-              }}
-            >
-              {verifySuccess
-                ? "Congratulation, your account is approved. You will be automatically redirected to %service% in 5 seconds."
-                : `Enter the 6-digit code we sent to ${email} to verify account.`}
-            </span>
-          </Box>
-          <Flow
-            onSubmit={onSubmit}
-            flow={flow}
-            code={sixDigitCode}
-            // hideGlobalMessages
-          />
+          <Box display="flex" justifyContent="center">
+            <Box width={{ xs: "100%", sm: "400px"}}>
+              <Box mt="62px" display="flex" flexDirection="column">
+              <span style={{ color: "#FFF", fontSize: "36px", fontFamily: "Teko" }}>
+                {verifySuccess ? lang?.verifySucess || "Verified Success" : 
+                  lang?.verifyAccount || "Verify Account"}
+              </span>
+              <span
+                style={{
+                  color: "#A5A5A9",
+                  marginBottom: "48px",
+                  fontFamily: "open sans",
+                  fontSize: "14px",
+                }}
+              >
+                {verifySuccess
+                  ? lang?.verifySucessDesc || "Congratulation, your account is approved. You will be automatically redirected to %service% in 5 seconds."
+                  : lang?.verifyAcctDesc.replace("master123@gmail.com", `${email ? email : ''}`) || `Enter the 6-digit code we sent to ${email ? email : ''} to verify account.`}
+              </span>
+            </Box>
+            <Flow
+              onSubmit={onSubmit}
+              flow={flow}
+              code={sixDigitCode}
+              lang={lang}
+              returnTo={returnTo}
+              type={type}
+              // hideGlobalMessages
+            />
+            </Box>
+          </Box>        
           <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
+          <LinkNav />
         </StyledMenuWrapper>
       </div>
-      <AppsList />
+      {/* <AppsList /> */}
     </>
   )
 }
 
 export default Verification
+
+export async function getStaticProps({ locale } : any) {
+  return {
+    props: {...(await serverSideTranslations(locale, ['common']))},
+  }
+}

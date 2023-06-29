@@ -93,8 +93,8 @@ const ResetPassword: NextPage = () => {
     <div className="resetWrapper">
       {/* <ChangePassword /> */}
       {/* <Head>
-        <title>Reset Password - Ory NextJS Integration Example</title>
-        <meta name="description" content="NextJS + React + Vercel + Ory" />
+        <title>Reset Password - Master ID</title>
+        <meta name="description" content="Master ID" />
       </Head> */}
       <Box
         width="100%"

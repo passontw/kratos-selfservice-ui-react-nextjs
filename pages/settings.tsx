@@ -17,6 +17,7 @@ import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
 import { updateSettingsPasswordSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 interface Props {
   flow?: SettingsFlow
@@ -56,7 +57,8 @@ function SettingsCard({
   )
 }
 
-const Settings: NextPage = () => {
+const Settings: NextPage = (props) => {
+  const { lang } = props
   const dispatch = useDispatch()
   const [confirmPasswordError, setConfirmPasswordError] = useState("")
   const [flow, setFlow] = useState<SettingsFlow>()
@@ -107,13 +109,23 @@ const Settings: NextPage = () => {
     try {
       await handleYupSchema(updateSettingsPasswordSchema, {
         confirmPassword,
-        password: values.password,
+        password: values.password === "" ? undefined: values.password,
       })
+
+      const locale = router.locale
+      let settingsPath = '/settings'
+      let loginPath = '/login'
+
+      if (locale && locale !== 'en') {
+        settingsPath = `/${locale}${settingsPath}`
+        loginPath = `/${locale}${loginPath}`
+      }
 
       router
         // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
         // his data when she/he reloads the page.
-        .push(`/settings?flow=${flow?.id}`, undefined, { shallow: true })
+        // .push(`/settings?flow=${flow?.id}`, undefined, { shallow: true })
+        .push(`${settingsPath}?flow=${flow?.id}`, undefined, { shallow: true })
         .then(() =>
           ory
             .updateSettingsFlow({
@@ -124,7 +136,8 @@ const Settings: NextPage = () => {
               // The settings have been saved and the flow was updated. Let's show it to the user!
               setFlow(data)
               onLogout()
-              router.push("/login")
+              // router.push("/login")
+              router.push(loginPath)
             })
             .catch(handleFlowError(router, "login", setFlow))
             .catch(async (err: any) => {
@@ -207,7 +220,7 @@ const Settings: NextPage = () => {
         <SettingsCard only="password" flow={flow}>
           <Box>
             <Box fontSize="20px" fontFamily="open sans" color="#FFF" mb="24px">
-              Change Password
+              {lang?.changePw}
             </Box>
             {/* <Messages messages={flow?.ui.messages} /> */}
             <Flow
@@ -216,6 +229,7 @@ const Settings: NextPage = () => {
               onSubmit={onSubmit}
               only="password"
               flow={flow}
+              lang={lang}
             />
           </Box>
         </SettingsCard>
@@ -230,3 +244,9 @@ const Settings: NextPage = () => {
 }
 
 export default Settings
+
+export async function getStaticProps({ locale } : any) {
+  return {
+    props: {...(await serverSideTranslations(locale, ['common']))},
+  }
+}

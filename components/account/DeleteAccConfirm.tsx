@@ -1,5 +1,6 @@
 import { Box } from "@mui/material"
 import Text from "../Text"
+import { useTranslation } from "next-i18next"
 
 interface DeleteAccConfirmProps {
   onClick?: () => void
@@ -10,12 +11,12 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
   onClick: close,
   confirmDelete,
 }) => {
+  const { t } = useTranslation()
 
   return (
     <Box>
       <Text my={"5px"}>
-        Your account and associated data will be permanently deleted and cannot
-        be restored.
+        {t('delete_acct_desc')}
       </Text>
       <Box display="flex" gap="14px" flexDirection="row-reverse">
         <Box
@@ -39,7 +40,7 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
           }}
           onClick={confirmDelete}
         >
-          Delete
+          {t('delete') || 'Delete'}
         </Box>
         <Box
           width="95px"
@@ -66,7 +67,7 @@ const DeleteAccConfirm: React.FC<DeleteAccConfirmProps> = ({
             window.location.reload()
           }}
         >
-          Cancel
+          {t('cancel') || 'Cancel'}
         </Box>
       </Box>
     </Box>

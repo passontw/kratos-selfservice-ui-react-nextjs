@@ -17,11 +17,14 @@ import ory from "../pkg/sdk"
 import Bin from "../public/images/Bin"
 import {
   selectMfaModalOpen,
+  selectMfaState,
   setAccountDeleted,
   setActiveNav,
   setActiveStage,
 } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { Ring } from '@uiball/loaders'
 
 const linkAttributesNamesKey = "!@#$%^linkAttributesNamesKey";
 
@@ -50,19 +53,17 @@ function SettingsCard({
   return <Box>{children}</Box>
 }
 
-const Account: NextPage = () => {
+const Account: NextPage = (props) => {
+  const { lang } = props
   const dispatch = useDispatch()
   const [showModal, setShowModal] = useState(false)
   const [flow, setFlow] = useState<SettingsFlow>()
   const router = useRouter()
   const mfaModalOpen = useSelector(selectMfaModalOpen)
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const mfaState = useSelector(selectMfaState)
 
   const { flow: flowId, return_to: returnTo } = router.query
-
-  const handleConfirmDelete = () => {
-    setConfirmDelete(true)
-  }
 
   const handleCloseDelete = () => {
     setShowModal(false)
@@ -85,7 +86,13 @@ const Account: NextPage = () => {
       )
       .then(() => {
         dispatch(setAccountDeleted(true))
-        router.push("/login")
+        const locale = router.locale
+        let path = '/login'
+        if (locale && locale !== 'en') {
+          path = `/${locale}${path}`
+        }
+        // router.push("/login")
+        router.push(path)
       })
       .catch((error) => {
         showToast(error.message, false)
@@ -100,8 +107,16 @@ const Account: NextPage = () => {
         })
         const { traits } = data.identity
         setShowModal(true)
+        // return router.push(
+        //   `/account?flow=${flowId || flow?.id}&user=${traits.email}`,
+        // )
+        const locale = router.locale
+        let path = '/account'
+        if (locale && locale !== 'en') {
+          path = `/${locale}${path}`
+        }
         return router.push(
-          `/account?flow=${flowId || flow?.id}&user=${traits.email}`,
+          `${path}?flow=${flowId || flow?.id}&user=${traits.email}`,
         )
       }
     }
@@ -109,11 +124,17 @@ const Account: NextPage = () => {
   }, [confirmDelete])
 
   const onSubmit = (values: UpdateSettingsFlowBody) => {
+    const locale = router.locale
+    let path = '/account'
+    if (locale && locale !== 'en') {
+      path = `/${locale}${path}`
+    }
     return (
       router
         // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
         // his data when she/he reloads the page.
-        .push(`/account?flow=${flow?.id}`, undefined, { shallow: true })
+        // .push(`/account?flow=${flow?.id}`, undefined, { shallow: true })
+        .push(`${path}?flow=${flow?.id}`, undefined, { shallow: true })
         .then(() =>
           ory
             .updateSettingsFlow({
@@ -134,20 +155,20 @@ const Account: NextPage = () => {
                 if (linkAttributesNames.googleAttributesName !== googleAttributesName) {
                   if (googleAttributesName === "unlink") {
                     // alert("google linked");
-                    showToast("google linked")
+                    showToast(`Google ${lang?.linked}`)
                   } else {
                     // alert("google unlinked");
-                    showToast("google unlinked")
+                    showToast(`Google ${lang?.unlinked}`)
                   }
                 }
 
                 if (linkAttributesNames.appleAttributesName !== appleAttributesName) {
                   if (appleAttributesName === "unlink") {
                     // alert("apple linked");
-                    showToast("apple linked")
+                    showToast(`Apple ${lang?.linked}`)
                   } else {
                     // alert("apple unlinked");
-                    showToast("apple unlinked")
+                    showToast(`Apple ${lang?.unlinked}`)
                   }
                 }
               }
@@ -158,6 +179,8 @@ const Account: NextPage = () => {
               }));
               // The settings have been saved and the flow was updated. Let's show it to the user!
               setFlow(data)
+              // if (data.state === "success") window.location.replace("/account")
+              if (data.state === "success") window.location.replace(path)
             })
             .catch(handleFlowError(router, "account", setFlow))
             .catch(async (err: any) => {
@@ -176,7 +199,7 @@ const Account: NextPage = () => {
   useEffect(() => {
     if (flow?.ui.messages) {
       if (flow?.ui.messages[0]?.id === 4000007) {
-        showToast("Account already in use. Can't be linked.", false)
+        showToast(lang?.cannotLinkAcc || "Account already in use. Can't be linked.", false)
       }
       //  else if (flow?.ui.messages[0]?.id === 1050001) {
       //   showToast("update success")
@@ -193,7 +216,13 @@ const Account: NextPage = () => {
         headers: { withCredentials: true },
       })
       .catch(() => {
-        window.location.replace("/login")
+        const locale = router.locale
+        let path = '/login'
+        if (locale && locale !== 'en') {
+          path = `/${locale}${path}`
+        }
+        // window.location.replace("/login")
+        window.location.replace(path)
       });
   }, [])
 
@@ -221,7 +250,13 @@ const Account: NextPage = () => {
               return
             }
           } else {
-            router.replace("/account")
+            const locale = router.locale
+            let path = '/login'
+            if (locale && locale !== 'en') {
+              path = `/${locale}${path}`
+            }
+            // router.replace("/account")
+            router.replace(path)
           }
         })
     } else {
@@ -249,19 +284,19 @@ const Account: NextPage = () => {
             if (!isEmpty(linkAttributesNames)) {
               if (linkAttributesNames.googleAttributesName !== googleAttributesName) {
                 if (googleAttributesName === "unlink") {
-                  showToast("google linked")
+                  showToast(`Google ${lang?.linked}`)
                 } else {
-                  showToast("google unlinked")
+                  showToast(`Google ${lang?.unlinked}`)
                 }
               }
 
               if (linkAttributesNames.appleAttributesName !== appleAttributesName) {
                 if (appleAttributesName === "unlink") {
                   // alert("apple linked");
-                  showToast("apple linked")
+                  showToast(`Apple ${lang?.linked}`)
                 } else {
                   // alert("apple unlinked");
-                  showToast("apple unlinked")
+                  showToast(`Apple ${lang?.unlinked}`)
                 }
               }
             }
@@ -280,8 +315,8 @@ const Account: NextPage = () => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   return (
-    <AccountLayout>
-      <Box display="flex" flexDirection="column">
+    <AccountLayout lang={lang}>
+      {flow ? <Box display="flex" flexDirection="column">
         <SettingsCard only="oidc" flow={flow}>
           <Box
             color="#717197"
@@ -295,7 +330,7 @@ const Account: NextPage = () => {
               xs: "24px",
             }}
           >
-            Account Linking
+            {lang?.accountLinking}
           </Box>
           <Box
             color="#A5A5A9"
@@ -304,8 +339,7 @@ const Account: NextPage = () => {
             mt="4px"
             mb="12px"
           >
-            Connect your account with one of these third parties to sign in
-            quickly and easily.
+             {lang?.accountLinkingDesc}
           </Box>
           {/* <Messages messages={flow?.ui.messages} /> */}
           <Flow
@@ -313,6 +347,7 @@ const Account: NextPage = () => {
             onSubmit={onSubmit}
             only="oidc"
             flow={flow}
+            lang={lang}
           // handleToast={handleToast}
           />
         </SettingsCard>
@@ -321,7 +356,7 @@ const Account: NextPage = () => {
               sm: "22px",
               xs: "18px",
             }} mt="36px">
-            2-step Verification
+            {lang?.twoStepVerify}
           </Box>
           <Box
             color="#A5A5A9"
@@ -330,8 +365,7 @@ const Account: NextPage = () => {
             mt="4px"
             mb="12px"
           >
-            Each time you sign in to Cooler Master service, we’ll send you a
-            verification code to prevent unauthorized access.
+            {lang?.twoStepVerifyDesc}
           </Box>
           {/* <Messages messages={flow?.ui.messages} /> */}
           <ProfileFlow
@@ -340,8 +374,9 @@ const Account: NextPage = () => {
             only="profile"
             flow={flow}
             modalOpen={mfaModalOpen}
-            // mfaState={mfaState}
+            mfaState={mfaState}
             dispatch={dispatch}
+            lang={lang}
           />
         </SettingsCard>
         <SettingsCard only="profile" flow={flow}>
@@ -349,7 +384,7 @@ const Account: NextPage = () => {
               sm: "22px",
               xs: "18px",
             }} mt="36px">
-            Account Management
+            {lang?.accountManagement}
           </Box>
           <Box
             mt="12px"
@@ -381,7 +416,7 @@ const Account: NextPage = () => {
                   sm: "20px",
                   xs: "16px",
                 }} fontFamily="open sans">
-                Delete my account
+                {lang?.deleteMyAccount}
               </Box>
             </Box>
           </Box>
@@ -403,11 +438,30 @@ const Account: NextPage = () => {
             deleteAccount={deleteAccount}
             show={showModal}
             close={handleCloseDelete}
+            lang={lang}
           />
         </SettingsCard>
-      </Box>
+      </Box> :
+      <Box 
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="50vh">
+        <Ring 
+          size={40}
+          lineWeight={5}
+          speed={2} 
+          color="#A62BC3" 
+        />
+      </Box>}
     </AccountLayout>
   )
 }
 
 export default Account
+
+export async function getStaticProps({ locale } : any) {
+  return {
+    props: {...(await serverSideTranslations(locale, ['common']))},
+  }
+}

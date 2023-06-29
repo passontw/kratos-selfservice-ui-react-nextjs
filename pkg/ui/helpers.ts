@@ -20,4 +20,5 @@ export interface NodeInputProps {
   handleToast?: any
   validationMsgs?: any
   className?: string
+  lang?: any
 }

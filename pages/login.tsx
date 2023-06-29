@@ -28,10 +28,11 @@ import {
   setLockCodeResend,
 } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
-import { loginFormSchema } from "../util/schemas"
-import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
+import { handleYupErrors } from "../util/yupHelpers"
 
 import { StyledMenuWrapper } from "./../styles/share"
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import LinkNav from '../components/LinkNav'
 
 const localStorageKey = "!@#$%^&*()data"
 
@@ -45,14 +46,19 @@ const getSessionData = async () => {
 
 const validateLoginFlow = async (router, options) => {
   const { login_challenge, refresh, aal, returnTo, setFlow } = options
-
+  const locale = router.locale
+  let path = '/profile'
+  if (locale && locale !== 'en') {
+    path = `/${locale}${path}`
+  }
   try {
     const sessionData = await getSessionData()
     if (isEmpty(sessionData) ) {
       const { data } = await ory.createBrowserLoginFlow({
         refresh: Boolean(refresh),
         aal: aal ? String(aal) : undefined,
-        returnTo: returnTo || "/profile",
+        // returnTo: returnTo || "/profile",
+        returnTo: returnTo || path,
       })
 
       if (router.query.login_challenge) {
@@ -60,7 +66,8 @@ const validateLoginFlow = async (router, options) => {
       }
       setFlow(data)
     } else {
-      const nextUri = "/profile"
+      // const nextUri = "/profile"
+      const nextUri = path
       router.push(nextUri)
       return
     }
@@ -69,20 +76,27 @@ const validateLoginFlow = async (router, options) => {
   }
 }
 
-const Login: NextPage = () => {
+const Login: NextPage = (props : any) => {
+  const { lang } = props
   const [flow, setFlow] = useState<LoginFlow>()
   const dispatch = useDispatch()
   const accountDeleted = useSelector(selectAccountDeleted)
 
   useEffect(() => {
     if (accountDeleted) {
-      showToast("Account deleted")
+      showToast(lang?.accountDeleted || "Account deleted")
     }
     dispatch(setActiveNav(Navs.LOGIN))
     dispatch(setActiveStage(Stage.NONE))
     dispatch(setDialog(null))
     dispatch(setLockCodeResend(false))
     dispatch(setAccountDeleted(false))
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        console.log(position)        
+        return 
+      })
+    }
   }, [])
 
   // Get ?flow=... from the URL
@@ -128,9 +142,18 @@ const Login: NextPage = () => {
       ory
         .getLoginFlow({ id: String(flowId) })
         .then(({ data }) => {
+          const requestUrl = data?.oauth2_login_request?.request_url;
+          if (requestUrl) {
+            const queryStr = requestUrl.split('?')[1];
+            const queryObj = queryString.parse(queryStr);
+            router.replace(`/login?${queryString.stringify({
+              flow: flowId,
+              return_to: queryObj.return_to,
+            })}`)
+          }
           setFlow(data)
         })
-        .catch(handleGetFlowError(router, "login", setFlow))
+        .catch(handleGetFlowError(router, "login", setFlow, lang))
       return
     }
     const options = {
@@ -190,9 +213,6 @@ const Login: NextPage = () => {
     try {
       const isEmailSignin = isEmpty(values.provider)
       if (isEmailSignin) {
-        await handleYupSchema(loginFormSchema, values)
-      }
-      if (isEmailSignin) {
         const response = await axios.get(
           `/api/hydra/validateIdentity?email=${values.identifier}`,
         )
@@ -204,7 +224,7 @@ const Login: NextPage = () => {
               messages: [
                 {
                   id: 400001,
-                  text: "Email account doesn’t exist. Please try again or sign up",
+                  text: lang?.emailDoesNotExist || "Email account doesn’t exist. Please try again or sign up",
                   type: "error",
                 },
               ],
@@ -232,16 +252,16 @@ const Login: NextPage = () => {
               })
           })
           .then(([loginResult, myResult]) => {
-            console.log("ttt", myResult.identity.traits)
-            if (myResult.identity.traits.email === "cmctc.sw@gmail.com") {
-              router.push("/launch")
-              return
-            }
+            // if (myResult.identity.traits.email === "cmctc.sw@gmail.com") {
+            //   router.push("/launch")
+            //   return
+            // }
             const { session } = loginResult.data
             const { traits } = session.identity
             const { verifiable_addresses = [] } = myResult.identity
 
             const [verifiable_address] = verifiable_addresses
+
             if (isEmpty(verifiable_address) || !verifiable_address.verified) {
               return ory
                 .createBrowserLogoutFlow()
@@ -253,9 +273,16 @@ const Login: NextPage = () => {
                 .then(() => {
                   // alert("please continue registe flow")
                   localStorage.setItem(localStorageKey, JSON.stringify(values))
-                  window.location.href = `/verification?${queryString.stringify(
-                    router.query,
-                  )}&user=${values.identifier}&type=continueregiste`
+                  const locale = router.locale
+                  let path = '/verification'
+                  if (locale && locale !== 'en') {
+                    path = `/${locale}${path}`
+                  }
+                  window.location.href = `${path}?${queryString.stringify({
+                    return_to: returnTo,
+                    user: values.identifier,
+                    type: 'continueregiste',
+                  })}`
                   return
                 })
             }
@@ -270,9 +297,18 @@ const Login: NextPage = () => {
                 })
                 .then(() => {
                   localStorage.setItem(localStorageKey, JSON.stringify(values))
-                  window.location.href = `/verification?${queryString.stringify(
-                    router.query,
-                  )}&user=${traits.email}&csrf=${values.csrf_token}&type=login`
+                  const locale = router.locale
+                  let path = '/verification'
+
+                  if (locale && locale !== 'en') {
+                    path = `/${locale}${path}`
+                  }
+                  // window.location.href = `/verification?${queryString.stringify(
+                  //   router.query,
+                  // )}&user=${traits.email}&csrf=${values.csrf_token}&type=login`
+                  window.location.href = `${path}?${queryString.stringify(
+                    router.query
+                  )}&user=${traits.email}&csrf=${values.csrf_token}&type=login`;
                   return
                 })
             }
@@ -286,7 +322,13 @@ const Login: NextPage = () => {
                 window.location.href = flow?.return_to
                 return
               }
-              router.push("/profile")
+              const locale = router.locale
+              let path = '/profile'
+              if (locale && locale !== 'en') {
+                path = `/${locale}${path}`
+              }
+              router.push(path)
+              // router.push("/profile")
             }
           })
           .catch(handleFlowError(router, "login", setFlow))
@@ -379,26 +421,37 @@ const Login: NextPage = () => {
       <div className="mainWrapper">
         <StyledMenuWrapper>
           <div>
-            <title>Sign in - Ory NextJS Integration Example</title>
-            <meta name="description" content="NextJS + React + Vercel + Ory" />
+            <title>Sign in - Master ID</title>
+            <meta name="description" content="Master ID" />
           </div>
           <Box display="flex" justifyContent={{ xs: "center", sm: "left" }}>
             <CmidHead />
           </Box>
-          <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
-            Welcome back
+          <Box display="flex" justifyContent="center">
+            <Box width={{ xs: "100%", sm: "480px"}}>
+              <Box fontFamily="Teko" fontSize="36px" color="#FFF" mt="62px">
+                {lang.welcomeBack}
+              </Box>
+              {router.query.error && (
+                <p style={{ color: "red" }}>{router.query.error}</p>
+              )}
+              <Flow onSubmit={onSubmit} flow={flow} router={router} lang={lang}/>
+            </Box>
           </Box>
-          {router.query.error && (
-            <p style={{ color: "red" }}>{router.query.error}</p>
-          )}
-          <Flow onSubmit={onSubmit} flow={flow} router={router} />
-          <MenuTag />
+          {/* <MenuTag /> */}
         </StyledMenuWrapper>
         <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
+        <LinkNav />
       </div>
-      <AppsList />
+      {/* <AppsList /> */}
     </>
   )
 }
 
 export default Login
+
+export async function getStaticProps({ locale } : any) {
+  return {
+    props: {...(await serverSideTranslations(locale, ['common']))},
+  }
+}

@@ -41,6 +41,7 @@ export interface DialogProps {
   padding?: string
   children?: any
   icon?: Icon
+  lang?: any
 }
 
 const Transition = forwardRef(function Transition(
@@ -64,6 +65,7 @@ const Dialog: React.FC<DialogProps> = ({
   center,
   padding,
   icon,
+  lang,
   children,
 }) => {
   const dispatch = useDispatch()
@@ -175,8 +177,8 @@ const Dialog: React.FC<DialogProps> = ({
       <StyledDialogContent center={center} padding={padding}>
         {React.cloneElement(children, { onClick: handleClose })}
         {activeStage === Stage.FORGOT_PASSWORD && (
-          <Box position="relative" width="108%" height="44px" mt="33px">
-            <Box
+          <Box>
+            {/* <Box
               width="95px"
               height="44px"
               position="absolute"
@@ -201,8 +203,8 @@ const Dialog: React.FC<DialogProps> = ({
                 dispatch(setActiveStage(Stage.NONE))
               }}
             >
-              Cancel
-          </Box>
+              {lang?.cancel}
+          </Box> */}
         </Box>
         )}
       </StyledDialogContent>

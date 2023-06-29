@@ -22,23 +22,25 @@ import {
   StyledMobile,
 } from "./styles"
 
-interface AccountMenuProps {}
+interface AccountMenuProps {
+  lang?: any;
+}
 
-const AccountMenu: React.FC<AccountMenuProps> = () => {
+const AccountMenu: React.FC<AccountMenuProps> = ({ lang }) => {
   const dispatch = useDispatch()
   const router = useRouter()
   const onLogout = LogoutLink()
 
   const accountMenuData = [
-    { name: "Personal Info", path: "/profile", icon: "User" },
-    { name: "Account Settings", path: "/account", icon: "Tool" },
-    { name: "Change Password", path: "/changepassword", icon: "Lock" },
+    { name: lang?.personalInfo || "Personal Info", path: "/profile", icon: "User" },
+    { name: lang?.acctSettings || "Account Settings", path: "/account", icon: "Tool" },
+    { name: lang?.changePw || "Change Password", path: "/changepassword", icon: "Lock" },
     {
-      name: "Device Management",
+      name: lang?.deviceMgmt || "Device Management",
       path: "/devicemanagement",
       icon: "ServiceManagement",
     },
-    { name: "Export User Data", path: "/export", icon: "Export" },
+    // { name: lang?.exportUserData || "Export User Data", path: "/export", icon: "Export" },
   ]
 
   const Component = ({
@@ -101,7 +103,7 @@ const AccountMenu: React.FC<AccountMenuProps> = () => {
         <StyledLine />
         <StyledMenuItem>
           <LogOut />
-          Log out
+          {lang?.logout || "Log Out"}
         </StyledMenuItem>
       </StyledMobile>
     </StyledWrapper>

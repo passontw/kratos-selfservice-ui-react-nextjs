@@ -8,7 +8,7 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
-import { Flow } from "../../pkg"
+import { Flow } from "../../pkg/ui/ForgotPassword"
 import { handleFlowError } from "../../pkg/errors"
 import ory from "../../pkg/sdk"
 import {
@@ -19,6 +19,7 @@ import {
 import { Stage } from "../../types/enum"
 import { recoveryFormSchema, recoveryCodeFormSchema } from "../../util/schemas"
 import { handleYupErrors, handleYupSchema } from "../../util/yupHelpers"
+import { Ring } from '@uiball/loaders'
 
 const dayjs = require("dayjs")
 const utc = require("dayjs/plugin/utc")
@@ -27,12 +28,30 @@ const timezone = require("dayjs/plugin/timezone") // dependent on utc plugin
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-const RecoveryProcess: NextPage = () => {
-  // console.log(props)
+const getNextValues = (flow, values) => {
+  if (flow.state !== "sent_email") return values;
+  const  {
+    isResendCode,
+    code,
+    csrf_token,
+    email,
+    method,
+  } = values;
+  return isResendCode ? {
+    email,
+    csrf_token,
+    method,
+  } : {
+    code,
+    csrf_token,
+    method,
+  };
+};
+
+const RecoveryProcess: NextPage = (props) => {
+  const { lang } = props
   const [flow, setFlow] = useState<RecoveryFlow>()
-  const [dialogMsg, setDialogMsg] = useState<string>(
-    "Enter your registered email below and we’ll send you a reset link.",
-  )
+  const [dialogMsg, setDialogMsg] = useState<string>(lang?.forgotPwDesc)
   const dispatch = useDispatch()
   const activeStage = useSelector(selectActiveStage)
   const sixDigitCode = useSelector(selectSixDigitCode)
@@ -42,11 +61,8 @@ const RecoveryProcess: NextPage = () => {
 
   // relocate the validation to fit design
   useEffect(() => {
-    console.log("@validationRelocation ran again")
     const targetDestination = document.querySelector(".targetDestination")
     const targetErrorMsg = document.querySelector("h3")
-    console.log("@validationRelocation targetErrorMsg:", targetErrorMsg)
-
     const submitBtn = document.querySelector(".targetDestination button")
     // move only when error msg appeared, submit button is visible,
     // and there is no query string which indicates that the flow is still on step 1
@@ -63,7 +79,6 @@ const RecoveryProcess: NextPage = () => {
       // style the button to fit new ui
       submitBtn.style.margin = "33px 0px 0px"
     } else {
-      console.log("@validationRelocation ran with NEW TARGET BUTTON")
       // else if error msg is not present style message to fit original ui
       if (targetErrorMsg) {
         targetErrorMsg.style.display = "none"
@@ -134,6 +149,10 @@ const RecoveryProcess: NextPage = () => {
   }
 
   const onSubmit = async (values: UpdateRecoveryFlowBody) => {
+    const  {
+      isResendCode,
+    } = values;
+
     const createdTimeDayObject = dayjs(flow.issued_at)
     const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
     const isValidate = validateDiffMinute(setFlow, flow, diffMinute)
@@ -168,7 +187,7 @@ const RecoveryProcess: NextPage = () => {
       }
     }
 
-    if (flow.state === "sent_email") {
+    if (!isResendCode && flow.state === "sent_email") {
       const nextFlow = cloneDeep(flow)
       const identifierIndex = nextFlow.ui.nodes.findIndex(
         (node) => node.attributes.name === "code",
@@ -188,7 +207,7 @@ const RecoveryProcess: NextPage = () => {
         })
       }
 
-      if (flow.state === "sent_email") {
+      if (!isResendCode && flow.state === "sent_email") {
         await handleYupSchema(recoveryCodeFormSchema, {
           code: values.code,
         })
@@ -276,9 +295,9 @@ const RecoveryProcess: NextPage = () => {
         setFlow(nextFlow)
       }
     }
-
-    const nextValue =
-      flow.state === "choose_method" ? values : { ...values, email: undefined }
+    
+    
+    const nextValues = getNextValues(flow, values);
 
     return (
       router
@@ -289,15 +308,16 @@ const RecoveryProcess: NextPage = () => {
           ory
             .updateRecoveryFlow({
               flow: String(flow?.id),
-              updateRecoveryFlowBody: nextValue,
+              updateRecoveryFlowBody: nextValues,
             })
             .then(({ data }) => {
               // Form submission was successful, show the message to the user!
               setFlow(data)
               dispatch(setActiveStage(Stage.VERIFY_CODE))
-              setDialogMsg(
-                `Enter the 6-digit code we sent to ${values.email} to verify account.`,
-              )
+              // setDialogMsg(
+              //   `Enter the 6-digit code we sent to ${values.email} to verify account.`,
+              // )
+              setDialogMsg(lang?.verifyAcctDesc.replace("master123@gmail.com", `${values.email}`))
             })
             .catch(handleFlowError(router, "recovery", setFlow))
             .catch((err: any) => {
@@ -328,8 +348,8 @@ const RecoveryProcess: NextPage = () => {
           color="#FFF"
         >
           {activeStage === Stage.FORGOT_PASSWORD
-            ? "Forgot Password"
-            : "Verify Account"}
+            ? lang?.forgotPw
+            : lang?.verifyAccount}
         </Box>
         <Box bgcolor="#272735">
           <Box
@@ -343,16 +363,29 @@ const RecoveryProcess: NextPage = () => {
           </Box>
           {activeStage === Stage.FORGOT_PASSWORD && (
             <Box color="#717197" fontSize="14px" fontFamily="open sans">
-              Email *
+              {`${lang?.email} *`}
             </Box>
           )}
-
-          <Flow
-            onSubmit={onSubmit}
-            flow={flow}
-            code={sixDigitCode}
-            hideSocialLogin
-          />
+          {flow ? 
+            <Flow
+              onSubmit={onSubmit}
+              flow={flow}
+              code={sixDigitCode}
+              hideSocialLogin
+              lang={lang}
+            />
+            : <Box 
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="90px">
+                <Ring 
+                  size={40}
+                  lineWeight={5}
+                  speed={2} 
+                  color="#A62BC3" 
+                />
+            </Box>}
         </Box>
       </Box>
     </>

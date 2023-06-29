@@ -19,6 +19,8 @@ import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import { setActiveNav, setDialog } from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { Ring } from '@uiball/loaders'
 
 const dayjs = require("dayjs")
 var utc = require("dayjs/plugin/utc")
@@ -153,14 +155,14 @@ const SessionListItem = (props) => {
     agentResult.device.type && agentResult.device.vendor
       ? agentResult.device.model
       : agentResult.os.name
-
+  const {traits} = session.identity;
   return (
     <>
       <div key={session.id}>
         <DeviceCard
           device={deviceName}
           deviceType={deviceType}
-          location={device.location}
+          location={device.location === "Tokyo, JP" ? traits.location: device.location}
           browser={agentResult.browser.name}
           lastLogin={dayjs(session.authenticated_at).format()}
           isCurrent
@@ -170,7 +172,8 @@ const SessionListItem = (props) => {
   )
 }
 
-const DeviceManagement: NextPage = () => {
+const DeviceManagement: NextPage = (props) => {
+  const { lang } = props
   const dispatch = useDispatch()
   const [sessions, setSessions] = useState([])
   const [selfSession, setSelfSession] = useState({})
@@ -181,7 +184,7 @@ const DeviceManagement: NextPage = () => {
   const handleOpenLogoutAllModal = () => {
     dispatch(
       setDialog({
-        title: "Log out on all devices",
+        title: lang?.logOutAllDevices || "Log out on all devices",
         titleHeight: "56px",
         width: 480,
         // height: 218,
@@ -242,8 +245,8 @@ const DeviceManagement: NextPage = () => {
       })
   }, [])
   return (
-    <AccountLayout>
-      <Box
+    <AccountLayout lang={lang}>
+      {flow ? <Box
         display="flex"
         flexDirection="column"
         position="relative"
@@ -256,11 +259,10 @@ const DeviceManagement: NextPage = () => {
         <SettingsCard only="profile" flow={flow}>
           <Box fontFamily="open sans">
             <Box color="#717197" fontSize="22px">
-              Current Device
+              {lang?.currentDevice || 'Current Device'}
             </Box>
             <Box color="#A5A5A9" fontSize="14px" mt="4px" mb="12px">
-              You’re signed in on these devices. There might be multiple
-              activity sessions from the same device.
+              {lang?.currentDeviceDesc}
             </Box>
           </Box>
           <SessionListItem session={selfSession} />
@@ -272,7 +274,7 @@ const DeviceManagement: NextPage = () => {
             justifyContent="space-between"
           >
             <Box color="#717197" fontSize="22px" mb="12px">
-              Other Device
+              {lang?.otherDevice || 'Other Devices'}
             </Box>
             {sessions.length > 1 && (
               <Box
@@ -286,7 +288,7 @@ const DeviceManagement: NextPage = () => {
                   },
                 }}
               >
-                Log out all
+                {lang?.logOutAll || 'Log out all'}
               </Box>
             )}
           </Box>
@@ -294,7 +296,19 @@ const DeviceManagement: NextPage = () => {
             <SessionList sessions={sessions} setSessions={setSessions} />
           </Box>
         </SettingsCard>
-      </Box>
+      </Box> :
+      <Box 
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="50vh">
+        <Ring 
+          size={40}
+          lineWeight={5}
+          speed={2} 
+          color="#A62BC3" 
+        />
+      </Box>}
       <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
       <LinkNav />
     </AccountLayout>
@@ -302,3 +316,9 @@ const DeviceManagement: NextPage = () => {
 }
 
 export default DeviceManagement
+
+export async function getStaticProps({ locale } : any) {
+  return {
+    props: {...(await serverSideTranslations(locale, ['common']))},
+  }
+}

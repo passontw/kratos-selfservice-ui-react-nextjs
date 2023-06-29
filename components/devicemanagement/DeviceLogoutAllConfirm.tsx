@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux"
 import { setActiveStage } from "../../state/store/slice/layoutSlice"
 import { Stage } from "../../types/enum"
 import Text from "../Text"
+import { useTranslation } from "next-i18next"
 
 interface DeviceLogoutAllConfirmProps {
   onClick?: () => void
@@ -14,14 +15,16 @@ const DeviceLogoutAllConfirm: React.FC<DeviceLogoutAllConfirmProps> = ({
   onClick: close,
   confirmLogoutAll,
 }) => {
+  const { t } = useTranslation()
   return (
     <Box>
       <Text my={"5px"}>
-        This will remove access to your Master ID account from all devices.
+        {t('log_out_all_device_desc') || "This will remove access to your Master ID account from all devices."}
       </Text>
       <Box display="flex" gap="14px" flexDirection="row-reverse">
         <Box
-          width="95px"
+          minWidth="80px"
+          padding="0px 15px"
           height="44px"
           color="#FFF"
           fontSize="16px"
@@ -45,7 +48,7 @@ const DeviceLogoutAllConfirm: React.FC<DeviceLogoutAllConfirmProps> = ({
             close?.()
           }}
         >
-          Log out all
+          {t('log_out_all') || 'Log out all'}
         </Box>
         <Box
           width="95px"
@@ -71,7 +74,7 @@ const DeviceLogoutAllConfirm: React.FC<DeviceLogoutAllConfirmProps> = ({
             close?.()
           }}
         >
-          Cancel
+          {t('cancel') || 'Cancel'}
         </Box>
       </Box>
     </Box>

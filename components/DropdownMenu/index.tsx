@@ -7,7 +7,7 @@ import DefaultAvatar from "../../public/images/DefaultAvatar"
 import Dropdown from "../../public/images/Dropdown"
 import Logout from "../../public/images/Logout"
 
-function DropdownComponent() {
+function DropdownComponent({ lang }) {
   const [isOpen, setIsOpen] = useState(false)
   const ref = useRef(null)
   const onLogout = LogoutLink()
@@ -45,12 +45,12 @@ function DropdownComponent() {
         onClick={() => setIsOpen(!isOpen)}
       >
         <Box>
-          {/* <DefaultAvatar /> */}
-          <img src={"/images/profile-demo.jpg"} style={{
+          <DefaultAvatar />
+          {/* <img src={"/images/profile-demo.jpg"} style={{
                 height: "36px",
                 width: "36px",
                 borderRadius: "50%",
-              }}/>
+              }}/> */}
         </Box>
         <Box sx={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}>
           <Dropdown isOpen={isOpen} />
@@ -58,7 +58,8 @@ function DropdownComponent() {
       </Box>
       {isOpen && (
         <Box
-          width="125px"
+          minWidth="100px"
+          padding="0 15px"
           height="60px"
           bgcolor="#37374F"
           position="absolute"
@@ -84,6 +85,7 @@ function DropdownComponent() {
             <Logout />
           </Box>
           <Box
+            width="max-content"
             fontSize="16px"
             color="#FFF"
             fontFamily="open sans"
@@ -92,7 +94,7 @@ function DropdownComponent() {
               onLogout();
             }}
           >
-            Log Out
+            {lang?.logout}
           </Box>
         </Box>
       )}

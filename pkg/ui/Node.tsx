@@ -24,6 +24,7 @@ interface Props {
   dispatchSubmit: FormDispatcher
   validationMsgs: any
   className?: string
+  lang: any
 }
 
 export const Node = ({
@@ -35,6 +36,7 @@ export const Node = ({
   ref,
   validationMsgs,
   className,
+  lang
 }: Props) => {
   console.log("@modal Ref Node ref:", ref)
 
@@ -67,6 +69,7 @@ export const Node = ({
           attributes={node.attributes}
           validationMsgs={validationMsgs}
           className={className}
+          lang={lang}
         />
       </>
     )

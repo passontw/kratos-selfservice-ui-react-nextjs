@@ -1,6 +1,7 @@
 import { fontFamily, fontSize } from '@mui/system'
 import { UiNode, UiNodeAnchorAttributes } from "@ory/client"
 import { Button } from "@ory/themes"
+import { useTranslation } from 'next-i18next'
 
 interface Props {
   node: UiNode
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export const NodeAnchor = ({ node, attributes }: Props) => {
+  const { t } = useTranslation()
   return (
     <Button
       data-testid={`node/anchor/${attributes.id}`}
@@ -25,7 +27,8 @@ export const NodeAnchor = ({ node, attributes }: Props) => {
         fontFamily: 'Open Sans'
       }}
     >
-      {attributes.title.text === 'Continue'? 'Redirect now' : attributes.title.text }
+      {attributes.title.text === t('continue') || 
+        'Continue'? t('redirect_now') || 'Redirect now' : attributes.title.text }
     </Button>
   )
 }

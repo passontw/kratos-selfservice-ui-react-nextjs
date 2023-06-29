@@ -46,18 +46,27 @@ const Home: NextPage = () => {
   }, [router])
 
   useEffect(() => {
-    if (hasSession) {
-      router.push("/profile")
-    } else {
-      router.push("/login")
+    const locale = router.locale
+    let profilePath = '/profile'
+    let loginPath = '/login'
+
+    if (locale && locale !== 'en') {
+      profilePath = `/${locale}${profilePath}`
+      loginPath = `/${locale}${loginPath}`
     }
-  }, []);
+
+    if (hasSession) {
+      router.push(profilePath)
+    } else {
+      router.push(loginPath)
+    }
+  }, []) 
 
   return (
     <div className={"container-fluid"}>
       <Head>
-        <title>Ory NextJS Integration Example</title>
-        <meta name="description" content="NextJS + React + Vercel + Ory" />
+        <title>Master ID</title>
+        <meta name="description" content="Master ID" />
       </Head>
 
       {/* <MarginCard wide>

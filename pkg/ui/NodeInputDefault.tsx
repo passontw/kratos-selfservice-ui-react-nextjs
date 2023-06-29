@@ -1,20 +1,17 @@
-import { Box, Link } from "@mui/material"
+import { Box } from "@mui/material"
 import { TextInput } from "@ory/themes"
 import { useRouter } from "next/router"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import styled from "styled-components"
+import { useEffect, useMemo, useState } from "react"
+import { useSelector } from "react-redux"
+import { getNodeId } from "@ory/integrations/ui"
 
 import RadioGroup from "../../components/RadioGroup"
 import Select from "../../components/Select"
-import RecoveryProcess from "../../components/changepassword/RecoveryProcess"
-import CodeInput from "../../components/verification/CodeInput"
 import VerificationInput from "../../components/verification/VerificationInput"
 import Eye from "../../public/images/eyes"
 import {
   selectActiveNav,
   selectActiveStage,
-  selectSixDigitCode,
 } from "../../state/store/slice/layoutSlice"
 import {
   StyledDefaultInput,
@@ -23,24 +20,26 @@ import {
 } from "../../styles/share"
 import { Navs, Stage } from "../../types/enum"
 import { SelectOption } from "../../types/general"
-import { CenterLink } from "../styled"
 
 import { NodeInputProps } from "./helpers"
+import { useTranslation } from "next-i18next"
 
 export function NodeInputDefault<T>(props: NodeInputProps) {
   const router = useRouter()
-  const dispatch = useDispatch()
   const nav = useSelector(selectActiveNav)
   const activeStage = useSelector(selectActiveStage)
-  const { node, attributes, value, setValue, disabled, validationMsgs } = props
+  const { node, attributes, value, setValue, disabled, validationMsgs, lang } = props
+  const { t } = useTranslation()
   const label =
-    node.meta.label?.text === "ID"
-      ? "Email"
-      : node.meta.label?.text === "Name"
-      ? "Username"
-      : node.meta.label?.text === "E-Mail"
-      ? "Email"
-      : node.meta.label?.text
+  node.meta.label?.text === "ID"
+  ? lang?.email
+  : node.meta.label?.text === "Name" || node.meta.label?.text === "Username"
+  ? lang?.username
+  : node.meta.label?.text === "E-Mail" || node.meta.label?.text === "Email"
+  ? lang?.email
+  : node.meta.label?.text === "Password"
+  ? lang?.password
+  : node.meta.label?.text
   const [isError, setIsError] = useState(node.messages.length > 0)
   const [inputType, setInputType] = useState(attributes.type)
 
@@ -69,17 +68,35 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     }
   }
 
+  const translateDisplayText = (text: string) => {
+    if (text.includes("field is required")) {
+      return t('error-field_required')
+    } else if (text.includes("Invalid email format")) {
+      return t('error-field_invalid_email_format')
+    } else if (text.includes("at least 8 characters")) {
+      return t('error-less8chars')
+    } else if (text.includes("at least 1 alphabet")) {
+      return t('error-at_least_1alpha')
+    } else if (text.includes("at least 1 number")) {
+      return t('error-at_least_1num')
+    } else if (text.includes("account already exists")) {
+      return t('error-email_existed')
+    } else {
+      return text
+    }
+  }
+
   const genderRadios = [
     {
-      label: "Male",
+      label: t('gender-male') || "Male",
       value: 1,
     },
     {
-      label: "Female",
+      label: t('gender-female') || "Female",
       value: 2,
     },
     {
-      label: "Undisclosed",
+      label: t('gender-undisclosed') || "Undisclosed",
       value: 3,
     },
   ]
@@ -111,21 +128,21 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     }
   }, [value])
 
-  console.log("attributes@@@", attributes.name)
-  console.log("value@@@", value)
   const accountError =
     validationMsgs &&
     (validationMsgs[0]?.text.includes("Email account") ||
       validationMsgs[0]?.text.includes("The provided credentials are invalid"))
 
-  const verifyCodeConditions =
-    (activeStage === Stage.VERIFY_CODE &&
-      // nav !== Navs.RECOVERY &&
-      nav !== Navs.LOGIN) ||
-    (nav === Navs.VERIFICATION && activeStage === Stage.NONE)
-    || activeStage === Stage.DELETE_ACCOUNT
+  const getVerifyCodeConditions = () => {
+    if (nav === Navs.VERIFICATION && activeStage === Stage.NONE && getNodeId(node) === "code") return true;
+    if (activeStage === Stage.DELETE_ACCOUNT) return true;
+    if (activeStage === Stage.VERIFY_CODE &&
+      nav !== Navs.LOGIN) return true;
+    
+    return false;
+  }
+  const verifyCodeConditions = getVerifyCodeConditions();
   // const verifyCodeConditions2 = activeStage === Stage.DELETE_ACCOUNT
-
   // Render a generic text input field.
   return (
     <>
@@ -145,7 +162,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
               attributes.name === "traits.gender"
                 ? "none"
                 : "unset",
-            border: isError || accountError ? "1px solid #F24867" : "none",
+            border: isError ? "1px solid #F24867" : "8px solid #37374F",
             backgroundColor: "#37374F",
             height: "44px",
             color: "#fff",
@@ -160,7 +177,9 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
               ? ""
               : (nav === Navs.SETTINGS || nav === Navs.CHANGEPASSWORD) &&
                 attributes.name === "password"
-              ? "Enter new password"
+              ? lang?.enterNewPw
+              : attributes.name === "traits.phone"
+              ? lang?.phone
               : label
           }
           // title={node.meta.label?.text}
@@ -205,7 +224,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
                       fontFamily: "Open Sans",
                     }}
                   >
-                    {displayText}
+                    {translateDisplayText(displayText)}
                   </span>
                 )
               })}
@@ -235,7 +254,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             router.push("/recovery")
           }}
         >
-          Forgot Password?
+          {`${lang?.forgotPw}`}
         </Box>
       )}
       {attributes.name === "password" && nav === "REGISTER" && !isError && (
@@ -246,7 +265,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             fontFamily: "Open Sans",
           }}
         >
-          A combination of numbers and characters. (min 8 characters)
+          {lang?.signUpPwHint}
         </span>
       )}
       {nav === Navs.PROFILE && attributes.name === "traits.gender" && (
@@ -259,7 +278,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           >
             <RadioGroup
               value={gender}
-              label="Gender"
+              label={t('gender') || "Gender"}
               onChange={(e) => {
                 setGender(e.target.value)
                 setValue(e.target.value)
@@ -277,7 +296,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           >
             {selectValue && (
               <Select
-                title="Gender"
+                title={t('gender') || "Gender"}
                 defaultValue={defaultSelectValue}
                 options={genderRadios}
                 width={"calc(100vw)"}
@@ -289,7 +308,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
             )}
             {selectValue2 && (
               <Select
-                title="Gender"
+                title={t('gender') || "Gender"}
                 defaultValue={defaultSelectValue}
                 options={genderRadios}
                 width={"calc(100vw)"}

@@ -8,8 +8,6 @@ import { NodeInputProps } from "./helpers"
 export function NodeInput<T>(props: NodeInputProps) {
   const { attributes } = props
 
-  console.log(attributes)
-
   switch (attributes.type) {
     case "hidden":
       // Render a hidden input field

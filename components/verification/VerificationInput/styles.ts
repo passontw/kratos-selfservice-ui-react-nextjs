@@ -26,6 +26,7 @@ export const InputsContainer = styled("div")(({ theme }) => ({
   marginTop: "8px",
   height: "56px",
   gap: "15px",
+  // marginBottom: "48px",
 }))
 
 export const Container = styled("div")(({ theme }) => ({

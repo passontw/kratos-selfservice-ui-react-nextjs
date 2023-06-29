@@ -14,6 +14,7 @@ import MasterControlNew from "../public/images/app_icons/MasterControlNew"
 import Stormplay from "../public/images/app_icons/Stormplay"
 import { setActiveNav } from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 const refreshSessions = (setSessions) => {
   axios
@@ -29,7 +30,8 @@ const refreshSessions = (setSessions) => {
     })
 }
 
-const Export: NextPage = () => {
+const Export: NextPage = (props) => {
+  const { lang } = props
   const dispatch = useDispatch()
   const [sessions, setSessions] = useState([])
   const [flow, setFlow] = useState<SettingsFlow>()
@@ -76,7 +78,7 @@ const Export: NextPage = () => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   return (
-    <AccountLayout>
+    <AccountLayout lang={lang}>
       <Box
         display="flex"
         flexDirection="column"
@@ -188,3 +190,9 @@ const Export: NextPage = () => {
 }
 
 export default Export
+
+export async function getStaticProps({ locale } : any) {
+  return {
+    props: {...(await serverSideTranslations(locale, ['common']))},
+  }
+}

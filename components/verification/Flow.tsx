@@ -9,8 +9,6 @@ import {
   UpdateRegistrationFlowBody,
   UpdateSettingsFlowBody,
   UpdateVerificationFlowBody,
-  UiNodeGroupEnum,
-  UiTextTypeEnum,
 } from "@ory/client"
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
 import { Component, FormEvent, MouseEvent } from "react"
@@ -46,6 +44,7 @@ export type Props<T> = {
   onSubmit: (values: T) => Promise<void>
   hideGlobalMessages?: boolean
   code?: string
+  lang?: any
 }
 
 function emptyState<T>() {
@@ -109,6 +108,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   handleSubmit = (event: FormEvent<HTMLFormElement> | MouseEvent) => {
     event.stopPropagation()
     event.preventDefault()
+    const isResendCode = event.nativeEvent.submitter.id === "resendcode";
 
     if (this.state.isLoading) {
       return Promise.resolve()
@@ -141,7 +141,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     }))
 
     return this.props
-      .onSubmit({ ...body, ...this.state.values })
+      .onSubmit({ ...body, ...this.state.values }, isResendCode)
       .finally(() => {
         this.setState((state) => ({
           ...state,
@@ -182,7 +182,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   }
 
   render() {
-    const { hideGlobalMessages, flow } = this.props
+    const { hideGlobalMessages, flow, lang, type, returnTo } = this.props
     const { values, isLoading } = this.state
 
     const nodes = this.filterNodes()
@@ -218,6 +218,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
               node={node}
               value={getNodeId(node) === "code" ? this.props.code : values[id]}
               dispatchSubmit={this.handleSubmit}
+              lang={lang}
               setValue={(value) => {
                 return new Promise((resolve) => {
                   this.setState(

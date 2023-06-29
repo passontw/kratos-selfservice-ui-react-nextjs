@@ -6,11 +6,12 @@ const StyledProfileArea = styled("div")<{ paddingRight?: string }>(
   ({ theme, paddingRight }) => ({
     fontFamily: "Open Sans",
     marginTop: "48px",
+    marginBottom: "48px",
     backgroundColor: "#272735",
     paddingLeft: "74px",
     paddingRight: paddingRight ? paddingRight : "48px",
     borderRadius: "12px",
-    minHeight: "602px",
+    minHeight: "566px",
     [theme.breakpoints.down("sm")]: {
       paddingLeft: "0px",
       marginTop: "0px",
@@ -131,8 +132,8 @@ const StyledBirthdayWrap = styled("div")(() => ({
 }))
 
 const StyledSubmitButton = styled("div")(({ theme }) => ({
-  width: "76px",
-  marginBottom: "84px",
+  // width: "76px",
+  marginBottom: "48px",
   [theme.breakpoints.down("sm")]: {
     width: "100%",
     marginBottom: "0px",

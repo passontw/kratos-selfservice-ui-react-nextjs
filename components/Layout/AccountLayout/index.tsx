@@ -30,9 +30,10 @@ import {
 
 interface AccountLayoutProps {
   children: ReactNode
+  lang?: any
 }
 
-const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
+const AccountLayout: React.FC<AccountLayoutProps> = ({ children, lang }) => {
   const activeNav = useSelector(selectActiveNav)
   const dispatch = useDispatch()
 
@@ -40,19 +41,19 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
     let title = ""
     switch (activeNav) {
       case Navs.PROFILE:
-        title = "Personal Info"
+        title = lang?.personalInfo || "Personal Info"
         break
       case Navs.ACCOUNT:
-        title = "Account Settings"
+        title = lang?.acctSettings || "Account Settings"
         break
-      case Navs.EXPORT:
-        title = "Export User Data"
-        break
+      // case Navs.EXPORT:
+      //   title = lang?.exportUserData || "Export User Data"
+      //   break
       case Navs.DEVICEMANAGEMENT:
-        title = "Device Management"
+        title = lang?.deviceMgmt || "Device Management"
         break
       case Navs.CHANGEPASSWORD:
-        title = "Change Password"
+        title = lang?.changePw || "Change Password"
         break
       default:
         break
@@ -71,7 +72,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
         center: true,
         padding: "0px",
         icon: Icon.MENU,
-        children: <AccountMenu />,
+        children: <AccountMenu lang={lang} />,
       }),
     )
   }
@@ -84,7 +85,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
             <Cmid />
             <div>Master ID</div>
           </StyledHeader>
-          <AccountMenu />
+          <AccountMenu lang={lang} />
         </StyledMenuWrapper>
 
         <StyledContentWrapper>
@@ -121,7 +122,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children }) => {
               {renderTitle(activeNav)}
             </Box>
             <StyledDropdownMenu>
-              <DropdownMenu />
+              <DropdownMenu lang={lang} />
             </StyledDropdownMenu>
           </Box>
           <StyledContent>{children}</StyledContent>

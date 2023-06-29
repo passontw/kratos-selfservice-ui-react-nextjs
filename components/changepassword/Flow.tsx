@@ -62,6 +62,7 @@ export type Props<T> = {
   onSubmit: (values: T) => Promise<void>
   // Do not show the global messages. Useful when rendering them elsewhere.
   hideGlobalMessages?: boolean
+  lang?: any
 }
 
 function emptyState<T>() {
@@ -104,7 +105,7 @@ export default class Flow<T extends Values> extends Component<
       // }
       if (this.props.flow?.state === "success") {
         if (!this.props.confirmPasswordError) {
-          showToast("Password changed.")
+          showToast(this.props.lang?.passwordChanged || "Password changed.")
         }
       }
     }
@@ -181,8 +182,24 @@ export default class Flow<T extends Values> extends Component<
     this.setState((state) => ({ ...state, type: type }))
   }
 
+  translateErr = (text : string, lang: any) => {
+    if (text.includes("field is required")) {
+      return lang?.required
+    } else if (text.includes("at least 8 characters")) {
+      return lang?.atLeastChars
+    } else if (text.includes("at least 1 alphabet")) {
+      return lang?.atLeastAlpha
+    } else if (text.includes("at least 1 number")) {
+      return lang?.atLeastNum
+    } else if (text.includes("match")) {
+      return lang?.notMatch
+    } else {
+      return text
+    }
+  }
+
   render() {
-    const { hideGlobalMessages, flow, confirmPasswordError } = this.props
+    const { hideGlobalMessages, flow, lang, confirmPasswordError } = this.props
     const { values, isLoading } = this.state
 
     // Filter the nodes - only show the ones we want
@@ -212,7 +229,7 @@ export default class Flow<T extends Values> extends Component<
           attributes={csrfTokenNode.attributes}
         />
         <Box color="#717197" fontSize="14px" fontFamily="open sans">
-          New Password *
+          {`${lang?.newPw || "New Password"} *`}
         </Box>
         <NodeInputDefault
           value={values[getNodeId(passwordNode)]}
@@ -233,14 +250,15 @@ export default class Flow<T extends Values> extends Component<
             })
           }
           attributes={passwordNode.attributes}
+          lang={lang}
         />
         {!confirmPasswordError && (
           <Box color="#7E7E89" fontSize="13px" fontFamily="open sans">
-            A number and combination of characters. (min 8 characters)
+            {lang?.signUpPwHint}
           </Box>
         )}
         <Box color="#717197" fontSize="14px" fontFamily="open sans" mt="24px">
-          Confirm New Password *
+          {`${lang?.confirmNewPw || "Confirm Password"} *`}
         </Box>
         <StyledDefaultInput>
           <TextInput
@@ -253,7 +271,7 @@ export default class Flow<T extends Values> extends Component<
               }))
             }}
             className="my-text-input"
-            placeholder="Confirm new password"
+            placeholder={lang?.confirmNewPw}
             name="confirmPassword"
             value={this.state.confirmPassword}
             state={isEmpty(confirmPasswordError) ? undefined : "error"}
@@ -265,7 +283,7 @@ export default class Flow<T extends Values> extends Component<
                   fontSize: "13px",
                 }}
               >
-                {confirmPasswordError}
+                {this.translateErr(confirmPasswordError, lang)}
               </span>
             }
             style={{
@@ -276,7 +294,7 @@ export default class Flow<T extends Values> extends Component<
               color: "#fff",
               caretColor: "#fff",
               borderRadius: "8px",
-              padding: "12px 50px 12px 16px",
+              padding: "12px 50px 12px 24px",
               margin: "0px",
               fontFamily: "open sans",
             }}
@@ -285,7 +303,7 @@ export default class Flow<T extends Values> extends Component<
             <Eye setInputType={this.handleEye} />
           </StyledPasswordIcon>
         </StyledDefaultInput>
-        <Box position="relative" width={{ xs: "100%", sm: "76px" }} mt="24px">
+        <Box position="relative" width={{ xs: "100%", sm: "fit-content" }} mt="24px">
           <NodeInputSubmit
             value={values[getNodeId(submitNode)]}
             node={submitNode}
@@ -306,6 +324,7 @@ export default class Flow<T extends Values> extends Component<
             }
             attributes={submitNode.attributes}
             dispatchSubmit={this.handleSubmit}
+            lang={lang}
           />
         </Box>
       </form>

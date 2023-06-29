@@ -53,6 +53,7 @@ export type Props<T> = {
   onSubmit: (values: T) => Promise<void>
   // Do not show the global messages. Useful when rendering them elsewhere.
   hideGlobalMessages?: boolean
+  lang?: any
 }
 
 function emptyState<T>() {
@@ -164,7 +165,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   }
 
   render() {
-    const { hideGlobalMessages, flow } = this.props
+    const { hideGlobalMessages, flow, lang } = this.props
     const { values, isLoading } = this.state
 
     // Filter the nodes - only show the ones we want
@@ -210,6 +211,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                     node={node}
                     value={values[id]}
                     dispatchSubmit={this.handleSubmit}
+                    lang={lang}
                     setValue={(value) =>
                       new Promise((resolve) => {
                         this.setState(

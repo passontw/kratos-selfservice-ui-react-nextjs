@@ -2,11 +2,10 @@ import Box from "@mui/material/Box"
 import { RegistrationFlow } from "@ory/client"
 import cloneDeep from "lodash/cloneDeep"
 import type { NextPage } from "next"
-import Link from "next/link"
 import { useRouter } from "next/router"
-import queryString from "query-string"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
+import parse from 'html-react-parser';
 
 import AppItem from "../components/AppItem"
 import { StyledAppItemWrap } from "../components/AppItem/styles"
@@ -25,6 +24,11 @@ import { StyledMenuWrapper } from "../styles/share"
 import { Navs } from "../types/enum"
 import { registrationFormSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import queryString from "query-string"
+import LinkNav from '../components/LinkNav'
+import { Ring } from '@uiball/loaders'
+import Link from 'next/link'
 
 const localStorageKey = "!@#$%^&*()registedata"
 
@@ -35,6 +39,7 @@ const getNextFlow = (flow) => {
   const nextNodes = flow.ui.nodes.filter((node) => {
     if (node.attributes.name === "traits.avatar") return false
     if (node.attributes.name === "traits.loginVerification") return false
+    if (node.attributes.name === "traits.location") return false
     return true
   })
 
@@ -48,7 +53,8 @@ const getNextFlow = (flow) => {
 }
 
 // Renders the registration page
-const Registration: NextPage = () => {
+const Registration: NextPage = (props) => {
+  const { lang } = props
   const router = useRouter()
   const dispatch = useDispatch()
 
@@ -112,25 +118,34 @@ const Registration: NextPage = () => {
                 flow: String(flow?.id),
                 updateRegistrationFlowBody: values,
               })
-              .then(() => {
-                return ory
-                  .createBrowserLogoutFlow()
-                  .then(({ data: logoutFlow }) => {
-                    return ory.updateLogoutFlow({
-                      token: logoutFlow.logout_token,
-                    })
-                  })
-              })
-              .then(({ data }) => {
+              // .then(({data}) => {
+              //   return ory
+              //     .createBrowserLogoutFlow()
+              //     .then(({ data: logoutFlow }) => {
+              //       return ory.updateLogoutFlow({
+              //         token: logoutFlow.logout_token,
+              //       })
+              //     }).then(() => ({data}));
+              // })
+              .then( async ({ data }) => {
                 localStorage.setItem(localStorageKey, JSON.stringify(values));
-                window.location.href = `/verification?${queryString.stringify(
-                  {
-                    ...router.query,
-                    user: values["traits.email"],
-                    type: "registe",
+                if (data.continue_with) {
+                  for (const item of data.continue_with) {
+                    switch (item.action) {
+                      case "show_verification_ui":
+                        const nextQuery = {
+                          flow: item.flow.id,
+                          return_to: returnTo,
+                          type: "registe",
+                        };
+                        await router.push(`/verification?${queryString.stringify(nextQuery)}`)
+                        return
+                    }
                   }
-                )}`
-                return
+                }
+        
+                // If continue_with did not contain anything, we can just return to the home page.
+                await router.push(returnTo || "/")
               })
               .catch(handleFlowError(router, "registration", setFlow))
               .catch((err: any) => {
@@ -153,6 +168,19 @@ const Registration: NextPage = () => {
                         type: "error",
                       },
                     ]
+                    
+                    nextFlow.ui.messages = [{
+                      id: 400007,
+                      text: lang?.emailAlreadyExists || "Email account already existed.Please try login or forgot password.",
+                      type: "error",
+                    }];
+                  } else {
+                    const identifierIndex = nextFlow.ui.nodes.findIndex(
+                      (node) => node.attributes.name === "traits.email",
+                    )
+                    nextFlow.ui.nodes[identifierIndex].messages = []
+                    
+                    nextFlow.ui.messages = [];
                   }
                   setFlow(err.response?.data)
                   return
@@ -253,87 +281,99 @@ const Registration: NextPage = () => {
 
   const nextFlow = getNextFlow(flow)
 
+  const replaceTermsAndPolicy = (text) => {
+    const lang = router.locale === "en" ? " ": "/" + router.locale
+    const replacedText = text
+      .replace(/#(.*?)#/g, `<a href="${lang}/termsofuseagreement" target="_blank" class="link">$1</a>`)
+      .replace(/@(.*?)@/g, `<a href="${lang}/privacypolicy" target="_blank" class="link">$1</a>`);
+    return replacedText;
+  };
+
+  const formattedHint = replaceTermsAndPolicy(lang?.agreePolicyHint)?.replace(/\n/g, '<br/>');
+
   return (
     <>
       <div className="mainWrapper">
         <StyledMenuWrapper>
-          {/* <Head>
-            <title>Create account - Ory NextJS Integration Example</title>
-            <meta name="description" content="NextJS + React + Vercel + Ory" />
-          </Head> */}
           <div>
-            <title>Create account - Ory NextJS Integration Example</title>
-            <meta name="description" content="NextJS + React + Vercel + Ory" />
+            <title>Create account - Master ID</title>
+            <meta name="description" content="Master ID" />
           </div>
           {/* <MarginCard> */}
           {/* <CardTitle>Create account</CardTitle> */}
           <CmidHead />
-          <Box fontFamily="Teko" fontSize="36px" color="#717197" mt="62px">
-            Join us
-          </Box>
-          <Flow onSubmit={onSubmit} flow={nextFlow} router={router} />
-          {/* Moblie Terms Start */}
-          <Box
-            mt="30px"
-            color="#A5A5A9"
-            fontSize="14px"
-            fontFamily="open sans"
-            justifyContent="center"
-            display={{ xs: "flex", md: "none" }}
-            flexWrap="wrap"
-            whiteSpace="nowrap"
-          >
-            <Box>By signing up for Master ID,</Box>
-            <Box display="flex" mt="2px" alignItems="center">
-              you agree to our{" "}
-              <Link className="link" href="/">
-                Terms of Use
-              </Link>{" "}
-              &{" "}
-              <Link className="link" href="/">
-                Privacy Policy
-              </Link>
-              .
+          <Box display="flex" justifyContent="center">
+            <Box width={{ xs: "100%", sm: "480px"}}>
+              <Box fontFamily="Teko" fontSize="36px" color="#FFF" mt="62px">
+                {lang?.joinUs}
+              </Box>
+              {flow ? 
+                  <Flow onSubmit={onSubmit} flow={nextFlow} router={router} lang={lang} /> :
+                  <Box 
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    height="90px">
+                    <Ring 
+                      size={40}
+                      lineWeight={5}
+                      speed={2} 
+                      color="#A62BC3" 
+                    />
+                  </Box>}
+                  {/* Moblie Terms Start */}
+                  <Box
+                    mt="30px"
+                    color="#A5A5A9"
+                    fontSize="14px"
+                    fontFamily="open sans"
+                    justifyContent="center"
+                    display={{ xs: "flex", md: "none" }}
+                    flexWrap="wrap"
+                    // whiteSpace="nowrap"
+                    textAlign="center"
+                  >
+                  <Box />
+                  <div>{parse(formattedHint)}</div>
+              </Box>
+              {/* Mobile Terms End */}
+              {/* <StyledAppItemWrap>
+                <AppItem appIcon="MasterControl" appName="Master Control" mobile />
+                <AppItem appIcon="Stormplay" appName="Stormplay" mobile />
+                <AppItem appIcon="Cmodx" appName="CMODX" mobile />
+              </StyledAppItemWrap> */}
+              {/* Desktop Terms Start */}
+              <Box
+                mt="30px"
+                color="#A5A5A9"
+                fontSize="14px"
+                fontFamily="open sans"
+                justifyContent="center"
+                flexWrap="wrap"
+                paddingBottom="86px"
+                whiteSpace="nowrap"
+                textAlign="center"
+                display={{ xs: "none", md: "flex" }}
+              >
+                <Box />
+                  <div dangerouslySetInnerHTML={{ __html: formattedHint }} />
+                </Box>
+                {/* Desktop Terms End */}
             </Box>
-          </Box>
-          {/* Mobile Terms End */}
-          <StyledAppItemWrap>
-            <AppItem appIcon="MasterControl" appName="Master Control" mobile />
-            <AppItem appIcon="Stormplay" appName="Stormplay" mobile />
-            <AppItem appIcon="Cmodx" appName="CMODX" mobile />
-          </StyledAppItemWrap>
-          {/* Desktop Terms Start */}
-          <Box
-            mt="30px"
-            color="#A5A5A9"
-            fontSize="14px"
-            fontFamily="open sans"
-            justifyContent="center"
-            flexWrap="wrap"
-            paddingBottom="86px"
-            whiteSpace="nowrap"
-            display={{ xs: "none", md: "flex" }}
-          >
-            <Box>By signing up for Master ID,</Box>
-            <Box display="flex" mt="2px" alignItems="center">
-              you agree to our{" "}
-              <Link className="link" href="/">
-                Terms of Use
-              </Link>{" "}
-              &{" "}
-              <Link className="link" href="/">
-                Privacy Policy
-              </Link>
-              .
-            </Box>
-          </Box>
-          {/* Desktop Terms End */}
+          </Box>        
         </StyledMenuWrapper>
         <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
+        <LinkNav />
       </div>
-      <AppsList />
+      {/* <AppsList /> */}
     </>
   )
 }
 
 export default Registration
+
+export async function getStaticProps({ locale } : any) {
+  return {
+    props: {...(await serverSideTranslations(locale, ['common']))},
+  }
+}
