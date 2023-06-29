@@ -5,6 +5,7 @@ import { AxiosError } from "axios"
 import cloneDeep from "lodash/cloneDeep"
 import isEmpty from "lodash/isEmpty"
 import type { NextPage } from "next"
+import { useTranslation } from "next-i18next"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import queryString from "query-string"
@@ -21,7 +22,6 @@ import Text from "../Text"
 
 import DeleteAccConfirm from "./DeleteAccConfirm"
 import Flow from "./VerificationFlow"
-import { useTranslation } from "next-i18next"
 
 const dayjs = require("dayjs")
 const utc = require("dayjs/plugin/utc")
@@ -69,7 +69,7 @@ const Verification: NextPage = (props) => {
     close()
     dispatch(
       setDialog({
-        title: lang?.deleteAccount || 'Delete Account',
+        title: lang?.deleteAccount || "Delete Account",
         titleHeight: "56px",
         width: 480,
         // height: 238,
@@ -111,10 +111,10 @@ const Verification: NextPage = (props) => {
               const newFlowID = err.response.data.use_flow_id
               const { redirect_to } = router.query
               const locale = router.locale
-              let path ='/account'
+              let path = "/account"
 
-              if (locale && locale !== 'en') {
-                path =`/${locale}${path}`
+              if (locale && locale !== "en") {
+                path = `/${locale}${path}`
               }
               // router
               //   // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
@@ -122,8 +122,7 @@ const Verification: NextPage = (props) => {
               //   .push(`/account?flow=${newFlowID}`, undefined, {
               //     shallow: true,
               //   })
-              router
-                .push(`${path}?flow=${newFlowID}`, undefined, {
+              router.push(`${path}?flow=${newFlowID}`, undefined, {
                 shallow: true,
               })
 
@@ -155,9 +154,9 @@ const Verification: NextPage = (props) => {
         })
         .catch((err: AxiosError) => {
           const locale = router.locale
-          let path = '/account'
+          let path = "/account"
 
-          if (locale && locale !== 'en') {
+          if (locale && locale !== "en") {
             path = `/${locale}${path}`
           }
           switch (err.response?.status) {
@@ -198,14 +197,9 @@ const Verification: NextPage = (props) => {
   const onSubmit = async (values: UpdateVerificationFlowBody, isResendCode) => {
     // set inputChanging to true in order show validation
     dispatch(setIsInputChanging(false))
-    
+
     const { user } = router.query
-    const {
-      code = "",
-      email,
-      csrf_token,
-      method,
-    } = values;
+    const { code = "", email, csrf_token, method } = values
 
     const nextFlow = cloneDeep(flow)
 
@@ -265,18 +259,20 @@ const Verification: NextPage = (props) => {
     }
     console.log("@validationSubmit before routing")
 
-    const nextValues = isResendCode ? {
-      email: user,
-      csrf_token,
-      method,
-    } : {
-      code,
-      csrf_token,
-      method,
-    };
+    const nextValues = isResendCode
+      ? {
+          email: user,
+          csrf_token,
+          method,
+        }
+      : {
+          code,
+          csrf_token,
+          method,
+        }
     const locale = router.locale
-    let path = '/account'
-    if (locale && locale !== 'en') {
+    let path = "/account"
+    if (locale && locale !== "en") {
       path = `/${locale}${path}`
     }
     await router
@@ -349,9 +345,9 @@ const Verification: NextPage = (props) => {
               .push(`${path}?flow=${newFlowID}`, undefined, {
                 shallow: true,
               })
-              // .push(`/verification?flow=${newFlowID}`, undefined, {
-              //   shallow: true,
-              // })
+            // .push(`/verification?flow=${newFlowID}`, undefined, {
+            //   shallow: true,
+            // })
 
             ory
               .getVerificationFlow({ id: newFlowID })
@@ -406,13 +402,16 @@ const Verification: NextPage = (props) => {
             alignItems="center"
           >
             <Text size="20px" my="32px" color="#FFF">
-              {lang?.deleteAccount || 'Delete Account'}
+              {lang?.deleteAccount || "Delete Account"}
             </Text>
           </Box>
-          {flow?.state === 'sent_email' ? 
+          {flow?.state === "sent_email" ? (
             <Box>
               <Text>
-                {lang?.verifyDeleteAccDesc.replace("master123@gmail.com", `${email ? email : ''}`)}
+                {lang?.verifyDeleteAccDesc.replace(
+                  "master123@gmail.com",
+                  `${email ? email : ""}`,
+                )}
               </Text>
 
               <Flow
@@ -464,7 +463,7 @@ const Verification: NextPage = (props) => {
                   window.location.reload()
                 }}
               >
-                {lang?.cancel || 'Cancel'}
+                {lang?.cancel || "Cancel"}
               </Box>
             </Box>
           )}
