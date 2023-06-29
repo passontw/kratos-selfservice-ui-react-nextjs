@@ -366,25 +366,26 @@ const RecoveryProcess: NextPage = (props) => {
               {`${lang?.email} *`}
             </Box>
           )}
-          {flow ? <Flow
-            onSubmit={onSubmit}
-            flow={flow}
-            code={sixDigitCode}
-            hideSocialLogin
-            lang={lang}
-          /> : 
-          <Box 
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="90px">
-            <Ring 
-              size={40}
-              lineWeight={5}
-              speed={2} 
-              color="#A62BC3" 
+          {flow ? 
+            <Flow
+              onSubmit={onSubmit}
+              flow={flow}
+              code={sixDigitCode}
+              hideSocialLogin
+              lang={lang}
             />
-        </Box>}
+            : <Box 
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="90px">
+                <Ring 
+                  size={40}
+                  lineWeight={5}
+                  speed={2} 
+                  color="#A62BC3" 
+                />
+            </Box>}
         </Box>
       </Box>
     </>

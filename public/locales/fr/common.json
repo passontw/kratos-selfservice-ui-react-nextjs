@@ -16,7 +16,7 @@
   "signup": "S'inscrire",
   "already_have_acct": "Vous avez déjà un compte ?",
   "signup_with_other_acct": "Ou inscrivez-vous avec d'autres comptes",
-  "agree_tos_n_privacy_hint": "En vous inscrivant à Master ID,\nvous acceptez nos conditions d'utilisation et notre politique de confidentialité.",
+  "agree_tos_n_privacy_hint": "En vous inscrivant à Master ID,\nvous acceptez nos #conditions d'utilisation# et notre @politique de confidentialité@.",
   "masterid-desc": "Un compte est tout ce dont vous avez besoin. Commencez votre aventure virtuelle.",
   "verification_succeeded": "Vérification réussie",
   "verif_success_sentence": "Félicitations, votre compte est approuvé. Vous serez automatiquement redirigé vers %service% dans quelques secondes.",

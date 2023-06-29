@@ -16,7 +16,7 @@
     "signup": "Registeren",
     "already_have_acct": "Heb je al een account?",
     "signup_with_other_acct": "Of meld u aan met andere accounts",
-    "agree_tos_n_privacy_hint": "Door u aan te melden voor Master ID, gaat u akkoord met onze servicevoorwaarden en privacybeleid.",
+    "agree_tos_n_privacy_hint": "Door u aan te melden voor Master ID,\n gaat u akkoord met onze #servicevoorwaarden# en @privacybeleid@.",
     "masterid-desc": "Eén account is alles wat je nodig hebt. Begin je virtuele avontuur.",
     "verification_succeeded": "Verificatie voltooid",
     "verif_success_sentence": "Gefeliciteerd, je account is goedgekeurd. Je wordt binnen enkele seconden automatisch doorgestuurd naar %service%.",

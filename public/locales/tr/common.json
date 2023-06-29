@@ -16,7 +16,7 @@
     "signup": "Üye olun",
     "already_have_acct": "Bir hesabınız var mı?",
     "signup_with_other_acct": "Veya diğer hesaplarla kaydolun",
-    "agree_tos_n_privacy_hint": "Master ID'ye kaydolarak,\nHizmet Şartlarımızı ve Gizlilik Politikamızı kabul etmiş olursunuz.",
+    "agree_tos_n_privacy_hint": "Master ID'ye kaydolarak,\n#Hizmet Şartlarımızı# ve @Gizlilik Politikamızı@ kabul etmiş olursunuz.",
     "masterid-desc": "İhtiyacınız olan tek şey bir hesap. Sanal maceranıza başlayın.",
     "verification_succeeded": "Doğrulama Başarılı",
     "verif_success_sentence": "Tebrikler, hesabınız onaylandı. Birkaç saniye içinde otomatik olarak %service%'e yönlendirileceksiniz.",

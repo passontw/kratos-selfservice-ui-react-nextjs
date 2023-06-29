@@ -23,7 +23,8 @@ const DeviceLogoutConfirm: React.FC<DeviceLogoutConfirmProps> = ({
       </Text>
       <Box display="flex" gap="14px" flexDirection="row-reverse"> 
         <Box
-            width="95px"
+            minWidth="80px"
+            padding="0px 15px"
             height="44px"
             color="#FFF"
             fontSize="16px"

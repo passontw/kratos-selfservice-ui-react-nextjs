@@ -16,7 +16,7 @@
     "signup": "注册",
     "already_have_acct": "已有账户？",
     "signup_with_other_acct": "使用其他账户注册",
-    "agree_tos_n_privacy_hint": "注册Master ID，即表示您同意我们的服务条款和隐私政策。",
+    "agree_tos_n_privacy_hint": "注册Master ID，\n即表示您同意我们的#服务条款#和@隐私政策@。",
     "masterid-desc": "仅需一个账户即可满足您的需求。开始您的虚拟冒险。",
     "verification_succeeded": "验证成功",
     "verif_success_sentence": "恭喜，您的账户已经通过。几秒后，您将会跳转至 %service%。",

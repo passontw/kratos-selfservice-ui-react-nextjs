@@ -16,7 +16,7 @@
     "signup": "註冊",
     "already_have_acct": "已經有帳戶了嗎？",
     "signup_with_other_acct": "使用其他帳戶註冊",
-    "agree_tos_n_privacy_hint": "透過註冊 Master ID，\n即表示您同意我們的服務條款與隱私政策",
+    "agree_tos_n_privacy_hint": "透過註冊 Master ID，\n即表示您同意我們的#服務條款#與@隱私政策@",
     "masterid-desc": "一個帳號即可滿足您的需求，開啟您的虛擬冒險之旅吧！",
     "verification_succeeded": "驗證成功",
     "verif_success_sentence": "恭喜您，您的帳號已獲得批准。幾秒後，您將自動重新導向至 %service%。",
