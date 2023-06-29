@@ -176,9 +176,9 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   // Render a generic text input field.
 
   const isRouteAllowed =
-    window.location.pathname !== "/verification" &&
-    window.location.pathname !== "/account" &&
-    window.location.pathname !== "/recovery"
+    !window.location.pathname.includes("/verification") &&
+    !window.location.pathname.includes("/account") &&
+    !window.location.pathname.includes("/recovery")
 
   return (
     <>

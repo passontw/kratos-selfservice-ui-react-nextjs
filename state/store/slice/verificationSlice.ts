@@ -27,7 +27,7 @@ const verificationSlice = createSlice({
 // Selectors
 export const selectIsInputChanging = (state: {
   verification: { isInputChanging: boolean }
-}) => state.verification.isInputChanging
+}) => state.verification?.isInputChanging
 
 // Actions
 export const { setIsInputChanging } = verificationSlice.actions

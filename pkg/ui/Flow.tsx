@@ -85,6 +85,9 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
 
   componentDidMount() {
     this.initializeValues(this.filterNodes())
+    setTimeout(() => {
+      window.location.reload
+    }, 1500)
   }
 
   componentDidUpdate(prevProps: Props<T>) {
@@ -127,6 +130,8 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   initializeValues = (nodes: Array<UiNode> = []) => {
     // Compute the values
     const values = emptyState<T>()
+
+    console.log("@debugCloseModal initializing values:", nodes)
 
     nodes.forEach((node) => {
       // This only makes sense for text nodes
@@ -264,7 +269,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         onSubmit={this.handleSubmit}
       >
         {nodes.map((node, k) => {
-          console.log("@filterNodes node:", node)
+          console.log("@debugCloseModal looping node:", node)
 
           // list excludedFields
           const excludedFields = {
@@ -285,6 +290,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           if (excludedFields[pathname]?.includes(node.attributes.name)) return
 
           const id = getNodeId(node) as keyof Values
+          // return <div>Test</div>
           return (
             <span
               key={`${id}-${k}`}

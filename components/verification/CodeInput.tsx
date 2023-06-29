@@ -98,7 +98,6 @@ const CodeInput: React.FC<CodeInput> = ({
 }) => {
   const isInputChanging = useSelector(selectIsInputChanging)
   const ref = useRef(null)
-  // console.log("show@@@", show)
   const dispatch = useDispatch()
   const firstInputRef = useRef(null)
 
@@ -231,9 +230,9 @@ const CodeInput: React.FC<CodeInput> = ({
   }
 
   const isRouteAllowed =
-    window.location.pathname === "/verification" ||
-    window.location.pathname === "/account" ||
-    window.location.pathname === "/recovery"
+    window.location.pathname.includes("/verification") ||
+    window.location.pathname.includes("/account") ||
+    window.location.pathname.includes("/recovery")
 
   console.log("@validationDebug2 validationError:", validationError)
   console.log("@validationDebug2 validationMsgs (inner):", validationMsgs)
