@@ -8,6 +8,7 @@ import { useSelector } from "react-redux"
 
 import RadioGroup from "../../components/RadioGroup"
 import Select from "../../components/Select"
+import CodeInput from "../../components/verification/CodeInput"
 import VerificationInput from "../../components/verification/VerificationInput"
 import Eye from "../../public/images/eyes"
 import {
