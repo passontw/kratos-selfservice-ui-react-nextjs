@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box"
 import { RecoveryFlow, UpdateRecoveryFlowBody } from "@ory/client"
+import { Ring } from "@uiball/loaders"
 import axios from "axios"
 import cloneDeep from "lodash/cloneDeep"
 import isEmpty from "lodash/isEmpty"
@@ -8,9 +9,9 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
-import { Flow } from "../../pkg/ui/ForgotPassword"
 import { handleFlowError } from "../../pkg/errors"
 import ory from "../../pkg/sdk"
+import { Flow } from "../../pkg/ui/ForgotPassword"
 import {
   setActiveStage,
   selectActiveStage,
@@ -19,7 +20,6 @@ import {
 import { Stage } from "../../types/enum"
 import { recoveryFormSchema, recoveryCodeFormSchema } from "../../util/schemas"
 import { handleYupErrors, handleYupSchema } from "../../util/yupHelpers"
-import { Ring } from '@uiball/loaders'
 
 const dayjs = require("dayjs")
 const utc = require("dayjs/plugin/utc")
@@ -29,24 +29,20 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 
 const getNextValues = (flow, values) => {
-  if (flow.state !== "sent_email") return values;
-  const  {
-    isResendCode,
-    code,
-    csrf_token,
-    email,
-    method,
-  } = values;
-  return isResendCode ? {
-    email,
-    csrf_token,
-    method,
-  } : {
-    code,
-    csrf_token,
-    method,
-  };
-};
+  if (flow.state !== "sent_email") return values
+  const { isResendCode, code, csrf_token, email, method } = values
+  return isResendCode
+    ? {
+        email,
+        csrf_token,
+        method,
+      }
+    : {
+        code,
+        csrf_token,
+        method,
+      }
+}
 
 const RecoveryProcess: NextPage = (props) => {
   const { lang } = props
@@ -149,9 +145,7 @@ const RecoveryProcess: NextPage = (props) => {
   }
 
   const onSubmit = async (values: UpdateRecoveryFlowBody) => {
-    const  {
-      isResendCode,
-    } = values;
+    const { isResendCode } = values
 
     const createdTimeDayObject = dayjs(flow.issued_at)
     const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
@@ -295,9 +289,8 @@ const RecoveryProcess: NextPage = (props) => {
         setFlow(nextFlow)
       }
     }
-    
-    
-    const nextValues = getNextValues(flow, values);
+
+    const nextValues = getNextValues(flow, values)
 
     return (
       router
@@ -317,7 +310,12 @@ const RecoveryProcess: NextPage = (props) => {
               // setDialogMsg(
               //   `Enter the 6-digit code we sent to ${values.email} to verify account.`,
               // )
-              setDialogMsg(lang?.verifyAcctDesc.replace("master123@gmail.com", `${values.email}`))
+              setDialogMsg(
+                lang?.verifyAcctDesc.replace(
+                  "master123@gmail.com",
+                  `${values.email}`,
+                ),
+              )
             })
             .catch(handleFlowError(router, "recovery", setFlow))
             .catch((err: any) => {
@@ -366,7 +364,7 @@ const RecoveryProcess: NextPage = (props) => {
               {`${lang?.email} *`}
             </Box>
           )}
-          {flow ? 
+          {flow ? (
             <Flow
               onSubmit={onSubmit}
               flow={flow}
@@ -374,18 +372,16 @@ const RecoveryProcess: NextPage = (props) => {
               hideSocialLogin
               lang={lang}
             />
-            : <Box 
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                height="90px">
-                <Ring 
-                  size={40}
-                  lineWeight={5}
-                  speed={2} 
-                  color="#A62BC3" 
-                />
-            </Box>}
+          ) : (
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="90px"
+            >
+              <Ring size={40} lineWeight={5} speed={2} color="#A62BC3" />
+            </Box>
+          )}
         </Box>
       </Box>
     </>

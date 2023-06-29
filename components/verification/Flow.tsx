@@ -62,7 +62,7 @@ type State<T> = {
 const mapStateToProps = (state: any) => {
   // Map necessary state properties to component props
   return {
-    isInputChanging: state.verification.isInputChanging,
+    isInputChanging: state.verification?.isInputChanging,
   }
 }
 
