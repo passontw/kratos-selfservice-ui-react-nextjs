@@ -14,6 +14,7 @@ import {
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
 import { Button } from "@ory/themes"
 import isEmpty from "lodash/isEmpty"
+import queryString from "query-string"
 import { Component, FormEvent, MouseEvent } from "react"
 
 import Apple from "../../public/images/login_icons/Apple"
@@ -22,7 +23,6 @@ import { StyledMenuLine } from "../../styles/share"
 
 import { Messages } from "./Messages"
 import { Node } from "./Node"
-import queryString from "query-string"
 
 export type Values = Partial<
   | UpdateLoginFlowBody
@@ -233,7 +233,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     }
 
     if (router?.pathname === "/registration") {
-
       const list = ["Name", "E-Mail", "Password", "Sign up"]
       nodes = nodes
         .map((item) => item)
@@ -245,7 +244,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
 
     const getShowGlobalMessages = () => {
       if (hideGlobalMessages) return false
-      if (!isEmpty(flow?.ui?.messages)) return true;
+      if (!isEmpty(flow?.ui?.messages)) return true
       if (window.location.pathname === "/recovery") {
         const [message] = flow.ui.messages
         if (message.text?.includes("Email account")) {
@@ -256,8 +255,8 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       return false
     }
 
-    const showGlobalMessages = getShowGlobalMessages();
-    const isLoginPath = router?.pathname === "/login";
+    const showGlobalMessages = getShowGlobalMessages()
+    const isLoginPath = router?.pathname === "/login"
     return (
       <form
         action={flow.ui.action}
@@ -278,7 +277,9 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           }
 
           // grab the pathname remove the slash and type it to be a key of excludedFields
-          const pathname = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1) as keyof typeof excludedFields
+          const pathname = window.location.pathname.substring(
+            window.location.pathname.lastIndexOf("/") + 1,
+          ) as keyof typeof excludedFields
 
           // filter all nodes that are in the excludedFields belonging to this path route
           if (excludedFields[pathname]?.includes(node.attributes.name)) return
@@ -354,16 +355,19 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 },
               }}
               onClick={() => {
-                const {router, flow} = this.props;
+                const { router, flow } = this.props
                 if (isLoginPath) {
-                  if(isEmpty(flow?.oauth2_login_request)) {
-                    return router.push("/registration");
+                  if (isEmpty(flow?.oauth2_login_request)) {
+                    return router.push("/registration")
                   }
-                  const queryStr = flow?.oauth2_login_request.request_url.split('?')[1]
+                  const queryStr =
+                    flow?.oauth2_login_request.request_url.split("?")[1]
                   const oauth2Query = queryString.parse(queryStr)
-                  return router.push(`/registration?return_to=${oauth2Query.return_to}`);
+                  return router.push(
+                    `/registration?return_to=${oauth2Query.return_to}`,
+                  )
                 }
-                return router.push('/login');
+                return router.push("/login")
               }}
             >
               {isLoginPath ? ` ${lang?.signUp}` : ` ${lang?.login}`}
@@ -380,10 +384,16 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           >
             <StyledMenuLine>
               <Box className="text">
-                <Box height="19px" width="fit-content" zIndex={1} bgcolor="#1D1D28" padding="0 10px">
-                {this.props.router?.pathname === "/login"
-                  ? lang?.loginOtherAccount
-                  : lang?.signupOtherAcct}
+                <Box
+                  height="19px"
+                  width="fit-content"
+                  zIndex={1}
+                  bgcolor="#1D1D28"
+                  padding="0 10px"
+                >
+                  {this.props.router?.pathname === "/login"
+                    ? lang?.loginOtherAccount
+                    : lang?.signupOtherAcct}
                 </Box>
               </Box>
             </StyledMenuLine>

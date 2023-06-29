@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box"
 import { VerificationFlow, UpdateVerificationFlowBody } from "@ory/client"
+import { Ring } from "@uiball/loaders"
 import { AxiosError } from "axios"
 import cloneDeep from "lodash/cloneDeep"
 import isEmpty from "lodash/isEmpty"
@@ -9,13 +10,13 @@ import { useRouter } from "next/router"
 import queryString from "query-string"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Ring } from '@uiball/loaders'
 
 import ory from "../../pkg/sdk"
 import {
   selectSixDigitCode,
   setDialog,
 } from "../../state/store/slice/layoutSlice"
+import { setIsInputChanging } from "../../state/store/slice/verificationSlice"
 import Text from "../Text"
 
 import DeleteAccConfirm from "./DeleteAccConfirm"
@@ -30,22 +31,24 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 
 const validateDiffMinute = (setFlow, flow, diffMinute) => {
-  if (isEmpty(flow)) return false;
-  if (diffMinute < 5) return true;
+  if (isEmpty(flow)) return false
+  if (diffMinute < 5) return true
 
-  const nextFlow = cloneDeep(flow);
+  const nextFlow = cloneDeep(flow)
   const identifierIndex = nextFlow.ui.nodes.findIndex(
     (node) => node.attributes.name === "code",
   )
-  if (identifierIndex === -1) return true;
-  
-  nextFlow.ui.nodes[identifierIndex].messages = [{
-    id: 400009,
-    text: 'Verification code is no longer valid',
-    type: 'error'
-  }]
+  if (identifierIndex === -1) return true
+
+  nextFlow.ui.nodes[identifierIndex].messages = [
+    {
+      id: 400009,
+      text: "Verification code is no longer valid",
+      type: "error",
+    },
+  ]
   setFlow(nextFlow)
-  return false;
+  return false
 }
 
 const Verification: NextPage = (props) => {
@@ -193,6 +196,9 @@ const Verification: NextPage = (props) => {
   }, [flowId, router, router.isReady, returnTo, flow])
 
   const onSubmit = async (values: UpdateVerificationFlowBody, isResendCode) => {
+    // set inputChanging to true in order show validation
+    dispatch(setIsInputChanging(false))
+    
     const { user } = router.query
     const {
       code = "",
@@ -203,7 +209,10 @@ const Verification: NextPage = (props) => {
 
     const nextFlow = cloneDeep(flow)
 
+    console.log("@validationSubmit submitting")
+
     if (isEmpty(values.email) && code.length !== 6) {
+      console.log("@validationSubmit isEmpty")
       const codeNodes = nextFlow.ui.nodes || []
       const codeIndex = codeNodes.findIndex(
         (node) => node?.attributes?.name === "code",
@@ -219,35 +228,42 @@ const Verification: NextPage = (props) => {
       return
     }
 
+    console.log("@validationSubmit after isEmtpy")
+
     const createdTimeDayObject = dayjs(nextFlow.issued_at)
     const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
-    const isValidate = validateDiffMinute(setFlow, nextFlow, diffMinute);
+    const isValidate = validateDiffMinute(setFlow, nextFlow, diffMinute)
     if (!isValidate) {
-      const nextFlow = cloneDeep(flow);
+      console.log("@validationSubmit !isValidate")
+      const nextFlow = cloneDeep(flow)
       const identifierIndex = nextFlow.ui.nodes.findIndex(
         (node) => node.attributes.name === "code",
       )
       if (identifierIndex !== -1) {
-        nextFlow.ui.messages = [];
-        nextFlow.ui.nodes[identifierIndex].messages = [{
-          id: 400002,
-          text: "Verification code is no longer valid, please try again.",
-          type: "error",
-        }]
+        nextFlow.ui.messages = []
+        nextFlow.ui.nodes[identifierIndex].messages = [
+          {
+            id: 400002,
+            text: "Verification code is no longer valid, please try again.",
+            type: "error",
+          },
+        ]
         setFlow(nextFlow)
-        return;
+        return
       }
     } else {
-      const nextFlow = cloneDeep(flow);
+      console.log("@validationSubmit !isValidate ELSE")
+      const nextFlow = cloneDeep(flow)
       const identifierIndex = nextFlow.ui.nodes.findIndex(
         (node) => node.attributes.name === "code",
       )
       if (identifierIndex !== -1) {
-        nextFlow.ui.messages = [];
+        nextFlow.ui.messages = []
         nextFlow.ui.nodes[identifierIndex].messages = []
         setFlow(nextFlow)
       }
     }
+    console.log("@validationSubmit before routing")
 
     const nextValues = isResendCode ? {
       email: user,
@@ -273,16 +289,18 @@ const Verification: NextPage = (props) => {
         shallow: true,
       })
 
+    console.log("@validationSubmit after routing")
+
     return ory
       .updateVerificationFlow({
         flow: String(flow?.id),
         updateVerificationFlowBody: nextValues,
       })
       .then(({ data }) => {
-        const nextFlow = cloneDeep(data);
-        const [message] = nextFlow.ui.messages;
+        const nextFlow = cloneDeep(data)
+        const [message] = nextFlow.ui.messages
         if (message.text.includes("The verification code is invalid")) {
-          nextFlow.ui.messages = [];
+          nextFlow.ui.messages = []
           const codeNodes = nextFlow.ui.nodes || []
           const codeIndex = codeNodes.findIndex(
             (node) => node?.attributes?.name === "code",
@@ -396,27 +414,31 @@ const Verification: NextPage = (props) => {
               <Text>
                 {lang?.verifyDeleteAccDesc.replace("master123@gmail.com", `${email ? email : ''}`)}
               </Text>
+
               <Flow
                 onSubmit={onSubmit}
                 flow={flow}
                 hideGlobalMessages={isEmpty(flow?.ui?.messages)}
                 code={sixDigitCode}
               />
-            </Box> : 
-            <Box 
+            </Box>
+          ) : (
+            <Box
               display="flex"
               justifyContent="center"
               alignItems="center"
-              height="90px">
-              <Ring 
-                size={40}
-                lineWeight={5}
-                speed={2} 
-                color="#A62BC3" 
-              />
-            </Box>}
-            {flow?.state === 'sent_email' && 
-            <Box position="relative" display="flex" justifyContent="end" marginRight="120px">
+              height="90px"
+            >
+              <Ring size={40} lineWeight={5} speed={2} color="#A62BC3" />
+            </Box>
+          )}
+          {flow?.state === "sent_email" && (
+            <Box
+              position="relative"
+              display="flex"
+              justifyContent="end"
+              marginRight="120px"
+            >
               <Box
                 width="95px"
                 height="42px"
@@ -444,7 +466,8 @@ const Verification: NextPage = (props) => {
               >
                 {lang?.cancel || 'Cancel'}
               </Box>
-            </Box>}
+            </Box>
+          )}
         </Box>
       </Box>
     </Box>
