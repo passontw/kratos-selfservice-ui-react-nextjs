@@ -43,6 +43,7 @@ export default function MenuPopupState() {
         { label: '日本語', locale: 'ja' },
         { label: '한국어', locale: 'ko' },
         { label: 'ภาษาไทย', locale: 'th' },
+        { label: 'Tiếng Việt', locale: 'vi' },
         { label: 'Indonesia', locale: 'id' },
         { label: 'Español', locale: 'es' },
         { label: 'Français', locale: 'fr' },

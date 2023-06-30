@@ -9,8 +9,6 @@ import { useDispatch } from "react-redux"
 import UAParser from "ua-parser-js"
 
 import AccountLayout from "../components/Layout/AccountLayout"
-import LinkNav from "../components/LinkNav"
-import MenuFooter from "../components/MenuFooter"
 import { showToast } from "../components/Toast"
 import DeviceCard from "../components/devicemanagement/DeviceCard"
 import DeviceLogoutAllConfirm from "../components/devicemanagement/DeviceLogoutAllConfirm"
@@ -309,8 +307,6 @@ const DeviceManagement: NextPage = (props) => {
           color="#A62BC3" 
         />
       </Box>}
-      <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
-      <LinkNav />
     </AccountLayout>
   )
 }
