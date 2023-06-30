@@ -177,9 +177,17 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
 
   // routes where the old design of validation needs to be removed
   const isRouteAllowed =
-    !window.location.pathname.includes("/verification") &&
+    !window.location.pathname.includes("/verification") && 
     !window.location.pathname.includes("/account") &&
     !window.location.pathname.includes("/recovery")
+
+  const locale = router.locale
+  const inputPaddingLeft = locale === "ru"? 140 : 
+  (locale === "fr" || locale === "nl" || locale === "pl") && 
+    window.location.pathname.includes("/login")  ? 100 :
+  (locale === "fr" || locale === "nl" || locale === "pl" || locale === "pt_BR" || locale === "id") && 
+    window.location.pathname.includes("/registration") ? 140 :
+  window.location.pathname.includes("/registration") ? 100 : 82
 
   return (
     <>
@@ -207,14 +215,14 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
                 label === "Verify code" || attributes.name === "traits.gender"
                   ? "none"
                   : "unset",
-              border: isError || accountError ? "1px solid #F24867" : "none",
+              border: isError || accountError ? "1px solid #F24867" : "8px solid #37374F",
               backgroundColor: "#37374F",
               height: "44px",
               color: "#fff",
               caretColor: "#fff",
               borderRadius: "8px",
               padding: isInputLabel
-                ? "0px 50px 0px 82px"
+                ? `0px 50px 0px ${inputPaddingLeft}px`
                 : "12px 50px 12px 16px",
               margin: "0px",
               fontFamily: "Open Sans",
