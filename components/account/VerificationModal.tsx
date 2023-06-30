@@ -377,6 +377,7 @@ const Verification: NextPage = (props) => {
             left: "20px",
             marginLeft: "0",
             width: "78%",
+            padding: "0 32px 32px 32px",
           },
           "@media screen and (max-width: 460px)": {
             left: "20px",
