@@ -44,7 +44,8 @@ const Input = styled.input<InputProps>`
   width: 48px;
   height: 54px;
   background: #37374f;
-  border: 1px solid ${(props) => (props.error ? "red" : "#37374f")};
+  border: 1px solid
+    ${(props) => (props.error ? "rgb(242, 72, 103)" : "#37374f")};
   border-radius: 8px;
   text-align: center;
   font-size: 20px;
@@ -256,7 +257,9 @@ const CodeInput: React.FC<CodeInput> = ({
               ref={index === 0 ? firstInputRef : null}
               onChange={(e) => handleInputChange(e, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
-              error={validationError ? true : false}
+              error={
+                validationError || (validationMsgs.length && !isInputChanging)
+              }
               onBlur={() => setInputBlurred(true)}
             />
           ))}
