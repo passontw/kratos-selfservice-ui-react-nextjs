@@ -51,7 +51,7 @@ const Input = styled.input<InputProps>`
   font-size: 20px;
   color: #fff;
   @media only screen and (max-width: 435px) {
-    width: 45px;
+    width: 36px;
     height: 50px;
   }
 
@@ -222,6 +222,9 @@ const CodeInput: React.FC<CodeInput> = ({
     console.log("@validation validationMsgMapping msg:", msg)
     switch (msg) {
       case "The verification code is invalid or has already been used. Please try again.": {
+        return "Verification code is incorrect, please check and try again"
+      }
+      case "6 word": {
         return "Verification code is incorrect, please check and try again"
       }
       default: {
