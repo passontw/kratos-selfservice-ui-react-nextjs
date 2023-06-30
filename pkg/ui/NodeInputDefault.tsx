@@ -175,6 +175,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   // const verifyCodeConditions2 = activeStage === Stage.DELETE_ACCOUNT
   // Render a generic text input field.
 
+  // routes where the old design of validation needs to be removed
   const isRouteAllowed =
     !window.location.pathname.includes("/verification") &&
     !window.location.pathname.includes("/account") &&
@@ -206,10 +207,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
                 label === "Verify code" || attributes.name === "traits.gender"
                   ? "none"
                   : "unset",
-              border:
-                isError || accountError
-                  ? "1px solid #F24867"
-                  : "8px solid #37374F",
+              border: isError || accountError ? "1px solid #F24867" : "none",
               backgroundColor: "#37374F",
               height: "44px",
               color: "#fff",
