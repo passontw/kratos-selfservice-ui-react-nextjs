@@ -17,12 +17,14 @@ import {
   selectDialog,
   selectLockCodeResend,
   selectSixDigitCode,
+  setActiveStage,
   setLockCodeResend,
 } from "../../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../../types/enum"
 
 import { NodeInputProps } from "./helpers"
 import { useTranslation } from "next-i18next"
+import { useRouter } from 'next/router'
 
 export function NodeInputSubmit<T>({
   node,
@@ -31,6 +33,7 @@ export function NodeInputSubmit<T>({
   lang
 }: NodeInputProps) {
   const dispatch = useDispatch()
+  const router = useRouter()
   const { t } = useTranslation()
   const codeLocked = useSelector(selectLockCodeResend)
   const activeNav = useSelector(selectActiveNav)
@@ -52,12 +55,15 @@ export function NodeInputSubmit<T>({
     fontSize: "16px",
     fontFamily: "Open Sans",
     color: "#FFF",
+    minWidth: "95px",
     width:
       deleteAccount ? "111px" :
-      isDialogForgotPswd || activeNav === Navs.SETTINGS || linkRelated
+        activeNav === Navs.SETTINGS || linkRelated
         ? "95px"
-        : "100%",
-    position: isDialogForgotPswd || deleteAccount ? "absolute" : "unset",
+        : activeStage === Stage.VERIFY_CODE 
+          ? "100%"
+          : "@media (max-width: 600px) {100%}",
+    position: deleteAccount ? "absolute" : "unset",
     right:
       activeNav === Navs.SETTINGS
         ? "0px"
@@ -67,6 +73,7 @@ export function NodeInputSubmit<T>({
     marginTop: deleteAccount ? "50px" : isDialogForgotPswd ? "20px" : isSignINOUT ? "36px" : "unset",
     zIndex: 1,
   }
+
   const hiddenStyle = {
     display: "none",
   }
@@ -144,7 +151,6 @@ export function NodeInputSubmit<T>({
             <Box fontFamily="open sans" color="#A5A5A9" fontSize="14px">
               {`${lang?.didntReceive || t('didnt_receive') || "Didn't receive"} ?`}
             </Box>
-
             <Button
               style={
                 showButton ? (resendLink ? linkStyle : defaultStyle) : hiddenStyle
@@ -170,6 +176,56 @@ export function NodeInputSubmit<T>({
         </Box>
       ) : (
         <>
+          {isDialogForgotPswd ? 
+          <Box display="flex" justifyContent="end" gap="12px">
+            <Box
+              zIndex={1}
+              mt="20px"
+              width="95px"
+              height="44px"
+              bgcolor="transparent"
+              border="1px solid #C0C0C0"
+              borderRadius="8px"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              color="#C0C0C0"
+              fontFamily="open sans"
+              fontSize="16px"
+              right="140px"
+              sx={{
+                cursor: "pointer",
+              }}
+              onClick={(e) => {
+                if (activeStage === Stage.FORGOT_PASSWORD) {
+                  router.push("/login")
+                }
+                // handleClose(e, "")
+                dispatch(setActiveStage(Stage.NONE))
+              }}>
+              {lang?.cancel}
+            </Box>
+            <Button
+              style={
+                showButton
+                  ? resendLink
+                    ? linkStyle
+                    : defaultStyle
+                  : hiddenStyle
+              }
+              name={attributes.name}
+              value={attributes.value || ""}
+              disabled={attributes.disabled || disabled}
+              className={attributes.value}
+              // disabled={
+              //   buttonText === "Verify" && sixDigitCode.length !== 6
+              //     ? true
+              //     : attributes.disabled || disabled
+              // }
+            >
+              {buttonText}
+            </Button>
+          </Box> : 
           <Box>
             <Button
               style={
@@ -191,7 +247,7 @@ export function NodeInputSubmit<T>({
             >
               {buttonText}
             </Button>
-          </Box>
+          </Box>}
           {linkRelated && (
             <Box
               boxSizing="border-box"

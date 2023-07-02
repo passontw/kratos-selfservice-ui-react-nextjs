@@ -5,6 +5,7 @@ import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
+import parse from 'html-react-parser';
 
 import AppItem from "../components/AppItem"
 import { StyledAppItemWrap } from "../components/AppItem/styles"
@@ -27,6 +28,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import queryString from "query-string"
 import LinkNav from '../components/LinkNav'
 import { Ring } from '@uiball/loaders'
+import Link from 'next/link'
 
 const localStorageKey = "!@#$%^&*()registedata"
 
@@ -279,6 +281,16 @@ const Registration: NextPage = (props) => {
 
   const nextFlow = getNextFlow(flow)
 
+  const replaceTermsAndPolicy = (text) => {
+    const lang = router.locale === "en" ? " ": "/" + router.locale
+    const replacedText = text
+      .replace(/#(.*?)#/g, `<a href="${lang}/termsofuseagreement" target="_blank" class="link">$1</a>`)
+      .replace(/@(.*?)@/g, `<a href="${lang}/privacypolicy" target="_blank" class="link">$1</a>`);
+    return replacedText;
+  };
+
+  const formattedHint = replaceTermsAndPolicy(lang?.agreePolicyHint)?.replace(/\n/g, '<br/>');
+
   return (
     <>
       <div className="mainWrapper">
@@ -292,49 +304,37 @@ const Registration: NextPage = (props) => {
           <CmidHead />
           <Box display="flex" justifyContent="center">
             <Box width={{ xs: "100%", sm: "480px"}}>
-            <Box fontFamily="Teko" fontSize="36px" color="#FFF" mt="62px">
-              {lang?.joinUs}
-            </Box>
-            {flow ? 
-              <Flow onSubmit={onSubmit} flow={nextFlow} router={router} lang={lang} /> :
-              <Box 
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                height="90px">
-                <Ring 
-                  size={40}
-                  lineWeight={5}
-                  speed={2} 
-                  color="#A62BC3" 
-                />
-              </Box>}
-            {/* Moblie Terms Start */}
-              <Box
-                mt="30px"
-                color="#A5A5A9"
-                fontSize="14px"
-                fontFamily="open sans"
-                justifyContent="center"
-                display={{ xs: "flex", md: "none" }}
-                flexWrap="wrap"
-                whiteSpace="nowrap"
-              >
-                <Box
-                  textAlign="center" 
-                  dangerouslySetInnerHTML={{ __html: lang?.agreePolicyHint.replace(/\n/g, '<br/>') }} />
-                {/* <Box>{lang?.agreePolicyHint}</Box>
-                <Box display="flex" mt="2px" alignItems="center">
-                  you agree to our{" "}
-                  <Link className="link" href="/">
-                    Terms of Use
-                  </Link>{" "}
-                  &{" "}
-                  <Link className="link" href="/">
-                    Privacy Policy
-                  </Link>
-                  .
-                </Box> */}
+              <Box fontFamily="Teko" fontSize="36px" color="#FFF" mt="62px">
+                {lang?.joinUs}
+              </Box>
+              {flow ? 
+                  <Flow onSubmit={onSubmit} flow={nextFlow} router={router} lang={lang} /> :
+                  <Box 
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    height="90px">
+                    <Ring 
+                      size={40}
+                      lineWeight={5}
+                      speed={2} 
+                      color="#A62BC3" 
+                    />
+                  </Box>}
+                  {/* Moblie Terms Start */}
+                  <Box
+                    mt="30px"
+                    color="#A5A5A9"
+                    fontSize="14px"
+                    fontFamily="open sans"
+                    justifyContent="center"
+                    display={{ xs: "flex", md: "none" }}
+                    flexWrap="wrap"
+                    // whiteSpace="nowrap"
+                    textAlign="center"
+                  >
+                  <Box />
+                  <div>{parse(formattedHint)}</div>
               </Box>
               {/* Mobile Terms End */}
               {/* <StyledAppItemWrap>
@@ -352,25 +352,13 @@ const Registration: NextPage = (props) => {
                 flexWrap="wrap"
                 paddingBottom="86px"
                 whiteSpace="nowrap"
+                textAlign="center"
                 display={{ xs: "none", md: "flex" }}
               >
-                <Box
-                  textAlign="center" 
-                  dangerouslySetInnerHTML={{ __html: lang?.agreePolicyHint.replace(/\n/g, '<br/>') }} />
-                {/* <Box>{lang?.agreePolicyHint}</Box> */}
-                {/* <Box display="flex" mt="2px" alignItems="center">
-                  you agree to our{" "}
-                  <Link className="link" href="/">
-                    Terms of Use
-                  </Link>{" "}
-                  &{" "}
-                  <Link className="link" href="/">
-                    Privacy Policy
-                  </Link>
-                  .
-                </Box> */}
-              </Box>
-              {/* Desktop Terms End */}
+                <Box />
+                  <div dangerouslySetInnerHTML={{ __html: formattedHint }} />
+                </Box>
+                {/* Desktop Terms End */}
             </Box>
           </Box>        
         </StyledMenuWrapper>

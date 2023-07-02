@@ -16,7 +16,7 @@
     "signup": "Sign up",
     "already_have_acct": "Already have an account?",
     "signup_with_other_acct": "Or sign up with other accounts",
-    "agree_tos_n_privacy_hint": "By signing up for Master ID,\nyou agree to our Terms of Service & Privacy Policy.",
+    "agree_tos_n_privacy_hint": "By signing up for Master ID,\nyou agree to our #Terms of Service# & @Privacy Policy@.",
     "masterid-desc": "One account is all you need. Start your virtual adventure.",
     "verification_succeeded": "Verification Succeeded",
     "verif_success_sentence": "Congratulations, your account is approved. You will be automatically redirected to %service% in a few seconds.",

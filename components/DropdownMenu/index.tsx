@@ -58,7 +58,8 @@ function DropdownComponent({ lang }) {
       </Box>
       {isOpen && (
         <Box
-          width="125px"
+          minWidth="100px"
+          padding="0 15px"
           height="60px"
           bgcolor="#37374F"
           position="absolute"
@@ -84,6 +85,7 @@ function DropdownComponent({ lang }) {
             <Logout />
           </Box>
           <Box
+            width="max-content"
             fontSize="16px"
             color="#FFF"
             fontFamily="open sans"

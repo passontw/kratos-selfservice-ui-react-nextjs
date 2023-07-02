@@ -16,7 +16,7 @@
     "signup": "サインアップ",
     "already_have_acct": "既にアカウントをお持ちですか？",
     "signup_with_other_acct": "または別のアカウントでサインアップする",
-    "agree_tos_n_privacy_hint": "Master IDにサインアップすることで、当社の利用規約とプライバシーポリシーに同意したものとみなされます。",
+    "agree_tos_n_privacy_hint": "Master IDにサインアップすることで、\n当社の#利用規約#と@プライバシーポリシー@に同意したものとみなされます。",
     "masterid-desc": "1つのアカウントがあれば全て利用可能、新たな体験を始めましょう。",
     "verification_succeeded": "認証完了",
     "verif_success_sentence": "あなたのアカウントは承認されました。数秒後に%service%に自動的にリダイレクトされます。",

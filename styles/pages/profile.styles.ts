@@ -132,7 +132,7 @@ const StyledBirthdayWrap = styled("div")(() => ({
 }))
 
 const StyledSubmitButton = styled("div")(({ theme }) => ({
-  width: "76px",
+  // width: "76px",
   marginBottom: "48px",
   [theme.breakpoints.down("sm")]: {
     width: "100%",

@@ -182,7 +182,7 @@ export default class Flow<T extends Values> extends Component<
     this.setState((state) => ({ ...state, type: type }))
   }
 
-  translateErr = (text : string, lang: any) => {
+  translateErr = (text: string, lang: any) => {
     if (text.includes("field is required")) {
       return lang?.required
     } else if (text.includes("at least 8 characters")) {
@@ -303,7 +303,11 @@ export default class Flow<T extends Values> extends Component<
             <Eye setInputType={this.handleEye} />
           </StyledPasswordIcon>
         </StyledDefaultInput>
-        <Box position="relative" width={{ xs: "100%", sm: "76px" }} mt="24px">
+        <Box
+          position="relative"
+          width={{ xs: "100%", sm: "fit-content" }}
+          mt="24px"
+        >
           <NodeInputSubmit
             value={values[getNodeId(submitNode)]}
             node={submitNode}
