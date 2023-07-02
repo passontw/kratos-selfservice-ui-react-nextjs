@@ -246,6 +246,7 @@ const Verification: NextPage = (props: any) => {
           return;
         }
       } else {
+        const nextFlow = cloneDeep(flow);
         const identifierIndex = nextFlow.ui.nodes.findIndex(
           (node) => node.attributes.name === "code",
         )
