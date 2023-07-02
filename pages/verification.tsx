@@ -292,6 +292,11 @@ const Verification: NextPage = (props: any) => {
         }
         setFlow(nextFlow)
         
+        if (type === 'registe') {
+          setTimeout(() => router.replace(returnToUrl), 2000)
+          return;
+        }
+
         if (data.state === "passed_challenge" && ['login'].includes(type)) {
           const key = type === 'registe' ? registeLocalStorageKey: localStorageKey
           const values = JSON.parse(localStorage.getItem(key))
@@ -321,10 +326,7 @@ const Verification: NextPage = (props: any) => {
             router.replace(returnToUrl)
             return;
           }
-          if (type === 'registe') {
-            setTimeout(() => router.replace(returnToUrl), 2000)
-            return;
-          }
+          
         }).catch(error => {
           console.log(error)
         })
