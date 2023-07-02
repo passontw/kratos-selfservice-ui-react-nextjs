@@ -48,6 +48,7 @@ const RecoveryProcess: NextPage = (props) => {
   const { lang } = props
   const [flow, setFlow] = useState<RecoveryFlow>()
   const [dialogMsg, setDialogMsg] = useState<string>(lang?.forgotPwDesc)
+  const [issuedAt, setIssuedAt] = useState('');
   const dispatch = useDispatch()
   const activeStage = useSelector(selectActiveStage)
   const sixDigitCode = useSelector(selectSixDigitCode)
@@ -98,6 +99,7 @@ const RecoveryProcess: NextPage = (props) => {
         .getRecoveryFlow({ id: String(flowId) })
         .then(({ data }) => {
           setFlow(data)
+          setIssuedAt(data.issued_at);
         })
         .catch(handleFlowError(router, "recovery", setFlow))
       return
@@ -108,6 +110,7 @@ const RecoveryProcess: NextPage = (props) => {
       .createBrowserRecoveryFlow()
       .then(({ data }) => {
         setFlow(data)
+        setIssuedAt(data.issued_at);
       })
       .catch(handleFlowError(router, "recovery", setFlow))
       .catch((err: any) => {
@@ -148,7 +151,7 @@ const RecoveryProcess: NextPage = (props) => {
     const { isResendCode } = values
 
     if (!isResendCode) {
-      const createdTimeDayObject = dayjs(flow.issued_at)
+      const createdTimeDayObject = dayjs(issuedAt)
       const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
       const isValidate = validateDiffMinute(setFlow, flow, diffMinute)
   
@@ -182,6 +185,10 @@ const RecoveryProcess: NextPage = (props) => {
         }
       }
   
+    } else {
+      const time = dayjs(new Date());
+      const nextIssuedAt = time.utc().format();
+      setIssuedAt(nextIssuedAt)
     }
 
     if (!isResendCode && flow.state === "sent_email") {

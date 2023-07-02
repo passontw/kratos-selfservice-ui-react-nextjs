@@ -144,6 +144,7 @@ const Verification: NextPage = (props: any) => {
         .getVerificationFlow({ id: String(flowId) })
         .then(({ data }) => {
           setFlow(data)
+          setIssuedAt(data.issued_at);
           setInitFlow(true)
         })
         .catch((err: AxiosError) => {
@@ -171,6 +172,7 @@ const Verification: NextPage = (props: any) => {
       })
       .then(({ data }) => {
         setFlow(data)
+        setIssuedAt(data.issued_at);
         setInitFlow(true)
       })
       .catch((err: any) => {
@@ -256,7 +258,6 @@ const Verification: NextPage = (props: any) => {
     } else {
       const time = dayjs(new Date());
       const nextIssuedAt = time.utc().format();
-      console.log("🚀 ~ file: verification.tsx:262 ~ onSubmit ~ nextIssuedAt:", nextIssuedAt)
       setIssuedAt(nextIssuedAt)
     }
 
