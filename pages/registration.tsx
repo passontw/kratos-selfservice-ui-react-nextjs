@@ -138,6 +138,10 @@ const Registration: NextPage = (props) => {
                           return_to: returnTo,
                           type: "registe",
                         };
+
+                        if (values.method === "password") {
+                          nextQuery.email = values["traits.email"]
+                        }
                         await router.push(`/verification?${queryString.stringify(nextQuery)}`)
                         return
                     }

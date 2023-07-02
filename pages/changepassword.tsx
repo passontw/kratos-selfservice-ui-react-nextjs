@@ -125,7 +125,6 @@ const ChangePassword: NextPage = (props) => {
         )
     } catch (error) {
       const errors = handleYupErrors(error)
-      console.log("🚀 ~ file: changepassword.tsx:127 ~ onSubmit ~ errors:", errors)
 
       const nextFlow = cloneDeep(flow)
 

@@ -72,7 +72,7 @@ const Verification: NextPage = (props: any) => {
     type,
   } = router.query
 
-  const email = router.query.user as string
+  const email = router.query.user || router.query.email as string
   const returnToUrl = getReturnToUrl(returnTo, type, path);
 
   useEffect(() => {
