@@ -46,6 +46,7 @@ const Verification: NextPage = (props: any) => {
   const dispatch = useDispatch()
   const sixDigitCode = useSelector(selectSixDigitCode)
   const [initFlow, setInitFlow] = useState(false)
+  const [issuedAt, setIssuedAt] = useState('');
   const [flow, setFlow] = useState<VerificationFlow>()
   const [verifySuccess, setVerifySuccess] = useState(false)
 
@@ -99,6 +100,7 @@ const Verification: NextPage = (props: any) => {
         .then(({ data }) => {
           // Form submission was successful, show the message to the user!
           setFlow(data)
+          setIssuedAt(data.issued_at);
         })
         .catch((err: any) => {
           switch (err.response?.status) {
@@ -199,7 +201,7 @@ const Verification: NextPage = (props: any) => {
     setFlow(nextFlow)
     return false;
   }
-
+  
   const onSubmit = async (values: UpdateVerificationFlowBody, isResendCode) => {
     const {
       code,
@@ -207,7 +209,6 @@ const Verification: NextPage = (props: any) => {
       csrf_token,
       method,
     } = values;
-    
     if (flow.state === "sent_email" && isEmpty(values.code) && isEmpty(values.email)) {
       return null;
     }
@@ -223,7 +224,7 @@ const Verification: NextPage = (props: any) => {
     };
 
     if (!isResendCode) {
-      const createdTimeDayObject = dayjs(flow.issued_at)
+      const createdTimeDayObject = dayjs(issuedAt)
       const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
       
       const isValidate = validateDiffMinute(setFlow, flow, diffMinute);
@@ -243,7 +244,6 @@ const Verification: NextPage = (props: any) => {
           return;
         }
       } else {
-        const nextFlow = cloneDeep(flow);
         const identifierIndex = nextFlow.ui.nodes.findIndex(
           (node) => node.attributes.name === "code",
         )
@@ -253,6 +253,11 @@ const Verification: NextPage = (props: any) => {
           setFlow(nextFlow)
         }
       }
+    } else {
+      const time = dayjs(new Date());
+      const nextIssuedAt = time.utc().format();
+      console.log("🚀 ~ file: verification.tsx:262 ~ onSubmit ~ nextIssuedAt:", nextIssuedAt)
+      setIssuedAt(nextIssuedAt)
     }
 
     await router
