@@ -203,7 +203,15 @@ const Login: NextPage = (props : any) => {
 
   // const onSubmit = async (values: UpdateLoginFlowBody) => {
   const onSubmit = async (values: any) => {
-
+    if (!isEmpty(flow)) {
+      const nextFlow = cloneDeep(flow);
+      nextFlow.ui.messages = [];
+      nextFlow.ui.nodes = nextFlow?.ui.nodes.map(node => {
+        node.messages = [];
+        return node;
+      })
+      setFlow(nextFlow);
+    }
     const login_challenge = router.query.login_challenge
     // TODO - this is temp method to add subject, need to get subject from account
     let subject = ""
