@@ -196,6 +196,7 @@ const Verification: NextPage = (props) => {
 
   const onSubmit = async (values: UpdateVerificationFlowBody, isResendCode) => {
     // set inputChanging to true in order show validation
+    console.log("@validationDebug2 onSubmit setIsInputChanging - false")
     dispatch(setIsInputChanging(false))
 
     const { user } = router.query
@@ -218,33 +219,35 @@ const Verification: NextPage = (props) => {
       setFlow(nextFlow)
       return
     }
-    
+
     if (!isResendCode) {
       const createdTimeDayObject = dayjs(nextFlow.issued_at)
       const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
-      const isValidate = validateDiffMinute(setFlow, nextFlow, diffMinute);
+      const isValidate = validateDiffMinute(setFlow, nextFlow, diffMinute)
       if (!isValidate) {
-        const nextFlow = cloneDeep(flow);
+        const nextFlow = cloneDeep(flow)
         const identifierIndex = nextFlow.ui.nodes.findIndex(
           (node) => node.attributes.name === "code",
         )
         if (identifierIndex !== -1) {
-          nextFlow.ui.messages = [];
-          nextFlow.ui.nodes[identifierIndex].messages = [{
-            id: 400002,
-            text: "Verification code is no longer valid, please try again.",
-            type: "error",
-          }]
+          nextFlow.ui.messages = []
+          nextFlow.ui.nodes[identifierIndex].messages = [
+            {
+              id: 400002,
+              text: "Verification code is no longer valid, please try again.",
+              type: "error",
+            },
+          ]
           setFlow(nextFlow)
-          return;
+          return
         }
       } else {
-        const nextFlow = cloneDeep(flow);
+        const nextFlow = cloneDeep(flow)
         const identifierIndex = nextFlow.ui.nodes.findIndex(
           (node) => node.attributes.name === "code",
         )
         if (identifierIndex !== -1) {
-          nextFlow.ui.messages = [];
+          nextFlow.ui.messages = []
           nextFlow.ui.nodes[identifierIndex].messages = []
           setFlow(nextFlow)
         }
@@ -407,7 +410,6 @@ const Verification: NextPage = (props) => {
                   `${email ? email : ""}`,
                 )}
               </Text>
-
               <Flow
                 onSubmit={onSubmit}
                 flow={flow}
@@ -423,7 +425,7 @@ const Verification: NextPage = (props) => {
               height="90px"
             >
               <Ring size={40} lineWeight={5} speed={2} color="#A62BC3" />
-            </Box>   
+            </Box>
           )}
           {flow?.state === "sent_email" && (
             <Box

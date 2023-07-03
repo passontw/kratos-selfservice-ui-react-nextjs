@@ -19,6 +19,7 @@ const verificationSlice = createSlice({
       state: verificationInitialStateI,
       { payload }: { payload: boolean },
     ) => {
+      console.log("@validationDebug2 verificationSlice reducer")
       state.isInputChanging = payload
     },
   },
@@ -27,7 +28,7 @@ const verificationSlice = createSlice({
 // Selectors
 export const selectIsInputChanging = (state: {
   verification: { isInputChanging: boolean }
-}) => state.verification?.isInputChanging
+}) => state?.verification?.isInputChanging
 
 // Actions
 export const { setIsInputChanging } = verificationSlice.actions

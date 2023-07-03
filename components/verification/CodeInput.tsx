@@ -124,7 +124,7 @@ const CodeInput: React.FC<CodeInput> = ({
   const handleInputChange = (e, index) => {
     // if inputs are still untouched set them to touched as inputs are being typed in
     if (!isTouched) {
-      setIsTouched(true)
+      // setIsTouched(true)
     }
 
     dispatch(setIsInputChanging(true))
@@ -213,18 +213,25 @@ const CodeInput: React.FC<CodeInput> = ({
 
   // mapping validation message from ORY to match the confirmed design from clients
   const validationMsgMapping = (msg: string) => {
+    console.log("@validationDebug2 msg:", msg)
     switch (msg) {
       case "The verification code is invalid or has already been used. Please try again.": {
+        console.log("@validationDebug2 HERE 1")
         return (
           t("error-verif_code_incorrect") ||
-          "Verification code is incorrect, please check and try again"
+          "Verification code is incorrect, please check and try again."
         )
       }
       case "6 word": {
+        console.log("@validationDebug2 HERE 2")
         return (
           t("error-verif_code_incorrect") ||
-          "Verification code is incorrect, please check and try again"
+          "This field is required, please fill it out"
         )
+      }
+      case "": {
+        console.log("@validationDebug2 HERE 3")
+        return "This field is required, please fill it out"
       }
       default: {
         return msg
@@ -241,6 +248,7 @@ const CodeInput: React.FC<CodeInput> = ({
   console.log("@validationDebug2 validationMsgs (inner):", validationMsgs)
   console.log("@validationDebug2 redux isInputChanging:", isInputChanging)
   console.log("@validationDebug2 redux globalState:", globalState)
+  console.log("@validationDebug2 code:", code)
 
   return show !== "email" ? (
     <Container>
@@ -263,7 +271,7 @@ const CodeInput: React.FC<CodeInput> = ({
               error={
                 validationError || (validationMsgs.length && !isInputChanging)
               }
-              onBlur={() => setInputBlurred(true)}
+              // onBlur={() => setInputBlurred(true)}
             />
           ))}
         </InputsWrapper>
@@ -284,7 +292,7 @@ const CodeInput: React.FC<CodeInput> = ({
                 index: number,
               ) => (
                 <div key={index} style={{ margin: "10px 0" }}>
-                  {" "}
+                  {console.log("@validationDebug2 mapped msg", msg.text)}
                   {validationMsgMapping(msg.text)}
                 </div>
               ),

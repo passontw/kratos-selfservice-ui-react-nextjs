@@ -62,7 +62,7 @@ type State<T> = {
 const mapStateToProps = (state: any) => {
   // Map necessary state properties to component props
   return {
-    isInputChanging: state.verification?.isInputChanging,
+    isInputChanging: state?.verification?.isInputChanging,
   }
 }
 
@@ -118,6 +118,9 @@ class MyFlow<T extends Values> extends Component<Props<T>, State<T>> {
   handleSubmit = (event: FormEvent<HTMLFormElement> | MouseEvent) => {
     // tell application that we are currently clearing "input is being changed" state
     // when we try submit the form
+    console.log(
+      "@validationDebug2 submitting, dispatch setIsInputChanging(false)",
+    )
     this.props.dispatch(setIsInputChanging(false))
     event.stopPropagation()
     event.preventDefault()
