@@ -98,6 +98,7 @@ const CodeInput: React.FC<CodeInput> = ({
   setValidationError,
 }) => {
   const isInputChanging = useSelector(selectIsInputChanging)
+  const globalState = useSelector((state) => state)
   const ref = useRef(null)
   const dispatch = useDispatch()
   const firstInputRef = useRef(null)
@@ -107,18 +108,13 @@ const CodeInput: React.FC<CodeInput> = ({
   }, [])
 
   useEffect(() => {
-    console.log("@validation code:", code)
     const isEmpty = !code.filter((item) => item !== "").length
-    console.log("@validation isEmpty", isEmpty)
     if (isEmpty && inputBlurred) {
       setValidationError("This field is required, please fill it out.")
     } else {
       setValidationError("")
     }
   }, [code, inputBlurred])
-
-  console.log("@validation validationError:", validationError)
-  console.log("@validation isTouched", isTouched)
 
   const handleInputChange = (e, index) => {
     // if inputs are still untouched set them to touched as inputs are being typed in
@@ -151,24 +147,16 @@ const CodeInput: React.FC<CodeInput> = ({
         }
       }
     } else if (/^[0-9]*$/.test(value)) {
-      console.log("@validationDebug 2")
       updatedCode = [
         ...code.slice(0, index),
         value.slice(-1),
         ...code.slice(index + 1),
       ]
       if (value && index < 5) {
-        console.log(
-          "@validationDebug 2 getting element by id and focusing at index:",
-          `input-${index + 1}`,
-          e.target.parentNode.querySelector(`#input-verification-${index + 1}`),
-        )
         // select input that isn't nested inside hidden sections
         const targetInput = e.target.parentNode.querySelector(
           `#input-verification-${index + 1}`,
         )
-
-        console.log("@validationDebug targetted input:", targetInput)
 
         // focus the correct input for the user to type in
         if (targetInput) {
@@ -219,7 +207,6 @@ const CodeInput: React.FC<CodeInput> = ({
 
   // mapping validation message from ORY to match the confirmed design from clients
   const validationMsgMapping = (msg: string) => {
-    console.log("@validation validationMsgMapping msg:", msg)
     switch (msg) {
       case "The verification code is invalid or has already been used. Please try again.": {
         return "Verification code is incorrect, please check and try again"
@@ -240,7 +227,8 @@ const CodeInput: React.FC<CodeInput> = ({
 
   console.log("@validationDebug2 validationError:", validationError)
   console.log("@validationDebug2 validationMsgs (inner):", validationMsgs)
-  console.log("@validationDebug2 isInputChanging:", isInputChanging)
+  console.log("@validationDebug2 redux isInputChanging:", isInputChanging)
+  console.log("@validationDebug2 redux globalState:", globalState)
 
   return show !== "email" ? (
     <Container>
