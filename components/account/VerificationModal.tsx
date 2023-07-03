@@ -423,7 +423,7 @@ const Verification: NextPage = (props) => {
               height="90px"
             >
               <Ring size={40} lineWeight={5} speed={2} color="#A62BC3" />
-            </Box>
+            </Box>   
           )}
           {flow?.state === "sent_email" && (
             <Box

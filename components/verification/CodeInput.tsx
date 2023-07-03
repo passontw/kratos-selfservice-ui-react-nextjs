@@ -13,6 +13,7 @@ import {
   selectIsInputChanging,
   setIsInputChanging,
 } from "../../state/store/slice/verificationSlice"
+import { useTranslation } from 'next-i18next'
 
 const Container = styled.div`
   display: flex;
@@ -98,6 +99,7 @@ const CodeInput: React.FC<CodeInput> = ({
   setValidationError,
 }) => {
   const isInputChanging = useSelector(selectIsInputChanging)
+  const { t } = useTranslation()
   const ref = useRef(null)
   const dispatch = useDispatch()
   const firstInputRef = useRef(null)
@@ -111,7 +113,7 @@ const CodeInput: React.FC<CodeInput> = ({
     const isEmpty = !code.filter((item) => item !== "").length
     console.log("@validation isEmpty", isEmpty)
     if (isEmpty && inputBlurred) {
-      setValidationError("This field is required, please fill it out.")
+      setValidationError(t('error-field_required') || "This field is required, please fill it out.")
     } else {
       setValidationError("")
     }
@@ -210,11 +212,10 @@ const CodeInput: React.FC<CodeInput> = ({
 
   const isInValid =
     validationMsgs &&
-    validationMsgs[0]?.text ===
-      "The recovery code is invalid or has already been used. Please try again."
+    validationMsgs[0]?.text === "The recovery code is invalid or has already been used. Please try again."
 
   const text = isInValid
-    ? "Verification code is incorrect, please check and try again."
+    ? t("error-verif_code_incorrect") || "Verification code is incorrect, please check and try again."
     : ""
 
   // mapping validation message from ORY to match the confirmed design from clients
@@ -222,10 +223,10 @@ const CodeInput: React.FC<CodeInput> = ({
     console.log("@validation validationMsgMapping msg:", msg)
     switch (msg) {
       case "The verification code is invalid or has already been used. Please try again.": {
-        return "Verification code is incorrect, please check and try again"
+        return t("error-verif_code_incorrect") || "Verification code is incorrect, please check and try again"
       }
       case "6 word": {
-        return "Verification code is incorrect, please check and try again"
+        return t("error-verif_code_incorrect") || "Verification code is incorrect, please check and try again"
       }
       default: {
         return msg
@@ -244,7 +245,7 @@ const CodeInput: React.FC<CodeInput> = ({
 
   return show !== "email" ? (
     <Container>
-      <Title>Verification Code</Title>
+      <Title>{t("verif_code") || "Verification Code"}</Title>
       <span className="verification-inputs">
         <InputsWrapper onClick={() => !isTouched && setIsTouched(true)}>
           {code.map((digit, index) => (
