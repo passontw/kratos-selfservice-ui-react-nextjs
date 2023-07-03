@@ -20,7 +20,7 @@ export const recoveryFormSchema = yup.object().shape({
 export const recoveryCodeFormSchema = yup.object().shape({
   code: yup.string()
     .min(6, '6 word')
-    .required('Required')
+    .required('This field is required, please fill it out.')
 })
 
 export const changePasswordSchema = yup.object().shape({
@@ -51,7 +51,7 @@ export const updateSettingsPasswordSchema = yup.object().shape({
     .string()
     .matches(/^(?=.*[A-Za-z])[A-Za-z\d]/, "Need at least 8 characters")
     .matches(/(?=.*\d)/, "Need at least 1 number")
-    .required("Required")
+    .required("This field is required, please fill it out.")
     .min(8, "Need at least 8 characters"),
   confirmPassword: yup
     .string()
@@ -60,7 +60,7 @@ export const updateSettingsPasswordSchema = yup.object().shape({
     .min(8, "Need at least 8 characters")
     .when("password", (password, field) => {
       if (password[0] === undefined) {
-        return field.required("Required")
+        return field.required("This field is required, please fill it out.")
       } else {
         return password
           ? field.oneOf([yup.ref("password")], "Password doesn't match")
@@ -74,7 +74,7 @@ export const updatePasswordSchema = yup.object().shape({
     .string()
     .matches(/^(?=.*[A-Za-z])[A-Za-z\d]/, "Your password must contain at least 1 alphabet letter")
     .matches(/(?=.*\d)/, "Your password must contain at least 1 number")
-    .required("Required")
+    .required("This field is required, please fill it out.")
     .min(8, "Your password must contain at least 8 characters"),
   confirmPassword: yup
     .string()
@@ -83,7 +83,7 @@ export const updatePasswordSchema = yup.object().shape({
     .min(8, "Your password must contain at least 8 characters")
     .when("password", (password, field) => {
       if (password[0] === undefined) {
-        return field.required("Required")
+        return field.required("This field is required, please fill it out.")
       } else {
         return password
           ? field.oneOf([yup.ref("password")], "Password doesn't match")

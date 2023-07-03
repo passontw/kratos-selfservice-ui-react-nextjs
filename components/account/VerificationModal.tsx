@@ -202,9 +202,6 @@ const Verification: NextPage = (props) => {
     const { code = "", email, csrf_token, method } = values
 
     const nextFlow = cloneDeep(flow)
-
-    console.log("@validationSubmit submitting")
-
     if (isEmpty(values.email) && code.length !== 6) {
       console.log("@validationSubmit isEmpty")
       const codeNodes = nextFlow.ui.nodes || []
@@ -221,40 +218,36 @@ const Verification: NextPage = (props) => {
       setFlow(nextFlow)
       return
     }
-
-    console.log("@validationSubmit after isEmtpy")
-
-    const createdTimeDayObject = dayjs(nextFlow.issued_at)
-    const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
-    const isValidate = validateDiffMinute(setFlow, nextFlow, diffMinute)
-    if (!isValidate) {
-      console.log("@validationSubmit !isValidate")
-      const nextFlow = cloneDeep(flow)
-      const identifierIndex = nextFlow.ui.nodes.findIndex(
-        (node) => node.attributes.name === "code",
-      )
-      if (identifierIndex !== -1) {
-        nextFlow.ui.messages = []
-        nextFlow.ui.nodes[identifierIndex].messages = [
-          {
+    
+    if (!isResendCode) {
+      const createdTimeDayObject = dayjs(nextFlow.issued_at)
+      const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
+      const isValidate = validateDiffMinute(setFlow, nextFlow, diffMinute);
+      if (!isValidate) {
+        const nextFlow = cloneDeep(flow);
+        const identifierIndex = nextFlow.ui.nodes.findIndex(
+          (node) => node.attributes.name === "code",
+        )
+        if (identifierIndex !== -1) {
+          nextFlow.ui.messages = [];
+          nextFlow.ui.nodes[identifierIndex].messages = [{
             id: 400002,
             text: "Verification code is no longer valid, please try again.",
             type: "error",
-          },
-        ]
-        setFlow(nextFlow)
-        return
-      }
-    } else {
-      console.log("@validationSubmit !isValidate ELSE")
-      const nextFlow = cloneDeep(flow)
-      const identifierIndex = nextFlow.ui.nodes.findIndex(
-        (node) => node.attributes.name === "code",
-      )
-      if (identifierIndex !== -1) {
-        nextFlow.ui.messages = []
-        nextFlow.ui.nodes[identifierIndex].messages = []
-        setFlow(nextFlow)
+          }]
+          setFlow(nextFlow)
+          return;
+        }
+      } else {
+        const nextFlow = cloneDeep(flow);
+        const identifierIndex = nextFlow.ui.nodes.findIndex(
+          (node) => node.attributes.name === "code",
+        )
+        if (identifierIndex !== -1) {
+          nextFlow.ui.messages = [];
+          nextFlow.ui.nodes[identifierIndex].messages = []
+          setFlow(nextFlow)
+        }
       }
     }
     console.log("@validationSubmit before routing")
@@ -430,7 +423,7 @@ const Verification: NextPage = (props) => {
               height="90px"
             >
               <Ring size={40} lineWeight={5} speed={2} color="#A62BC3" />
-            </Box>
+            </Box>   
           )}
           {flow?.state === "sent_email" && (
             <Box

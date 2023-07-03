@@ -1,3 +1,4 @@
+import { useTranslation } from "next-i18next"
 import React, {
   useState,
   useRef,
@@ -99,6 +100,7 @@ const CodeInput: React.FC<CodeInput> = ({
 }) => {
   const isInputChanging = useSelector(selectIsInputChanging)
   const globalState = useSelector((state) => state)
+  const { t } = useTranslation()
   const ref = useRef(null)
   const dispatch = useDispatch()
   const firstInputRef = useRef(null)
@@ -110,7 +112,10 @@ const CodeInput: React.FC<CodeInput> = ({
   useEffect(() => {
     const isEmpty = !code.filter((item) => item !== "").length
     if (isEmpty && inputBlurred) {
-      setValidationError("This field is required, please fill it out.")
+      setValidationError(
+        t("error-field_required") ||
+          "This field is required, please fill it out.",
+      )
     } else {
       setValidationError("")
     }
@@ -202,17 +207,24 @@ const CodeInput: React.FC<CodeInput> = ({
       "The recovery code is invalid or has already been used. Please try again."
 
   const text = isInValid
-    ? "Verification code is incorrect, please check and try again."
+    ? t("error-verif_code_incorrect") ||
+      "Verification code is incorrect, please check and try again."
     : ""
 
   // mapping validation message from ORY to match the confirmed design from clients
   const validationMsgMapping = (msg: string) => {
     switch (msg) {
       case "The verification code is invalid or has already been used. Please try again.": {
-        return "Verification code is incorrect, please check and try again"
+        return (
+          t("error-verif_code_incorrect") ||
+          "Verification code is incorrect, please check and try again"
+        )
       }
       case "6 word": {
-        return "Verification code is incorrect, please check and try again"
+        return (
+          t("error-verif_code_incorrect") ||
+          "Verification code is incorrect, please check and try again"
+        )
       }
       default: {
         return msg
@@ -232,7 +244,7 @@ const CodeInput: React.FC<CodeInput> = ({
 
   return show !== "email" ? (
     <Container>
-      <Title>Verification Code</Title>
+      <Title>{t("verif_code") || "Verification Code"}</Title>
       <span className="verification-inputs">
         <InputsWrapper onClick={() => !isTouched && setIsTouched(true)}>
           {code.map((digit, index) => (

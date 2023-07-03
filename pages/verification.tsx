@@ -6,7 +6,6 @@ import { useRouter } from "next/router"
 import queryString from "query-string"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import AppsList from '../components/AppsList'
 import isEmpty from 'lodash/isEmpty'
 import cloneDeep from 'lodash/cloneDeep'
 import CmidHead from "../components/CmidHead"
@@ -47,6 +46,7 @@ const Verification: NextPage = (props: any) => {
   const dispatch = useDispatch()
   const sixDigitCode = useSelector(selectSixDigitCode)
   const [initFlow, setInitFlow] = useState(false)
+  const [issuedAt, setIssuedAt] = useState('');
   const [flow, setFlow] = useState<VerificationFlow>()
   const [verifySuccess, setVerifySuccess] = useState(false)
 
@@ -72,7 +72,7 @@ const Verification: NextPage = (props: any) => {
     type,
   } = router.query
 
-  const email = router.query.user as string
+  const email = router.query.user || router.query.email as string
   const returnToUrl = getReturnToUrl(returnTo, type, path);
 
   useEffect(() => {
@@ -100,6 +100,7 @@ const Verification: NextPage = (props: any) => {
         .then(({ data }) => {
           // Form submission was successful, show the message to the user!
           setFlow(data)
+          setIssuedAt(data.issued_at);
         })
         .catch((err: any) => {
           switch (err.response?.status) {
@@ -143,6 +144,7 @@ const Verification: NextPage = (props: any) => {
         .getVerificationFlow({ id: String(flowId) })
         .then(({ data }) => {
           setFlow(data)
+          setIssuedAt(data.issued_at);
           setInitFlow(true)
         })
         .catch((err: AxiosError) => {
@@ -170,6 +172,7 @@ const Verification: NextPage = (props: any) => {
       })
       .then(({ data }) => {
         setFlow(data)
+        setIssuedAt(data.issued_at);
         setInitFlow(true)
       })
       .catch((err: any) => {
@@ -200,16 +203,14 @@ const Verification: NextPage = (props: any) => {
     setFlow(nextFlow)
     return false;
   }
-
+  
   const onSubmit = async (values: UpdateVerificationFlowBody, isResendCode) => {
-    console.log("🚀 ~ file: verification.tsx:199 ~ onSubmit ~ values:", values)
     const {
       code,
       email,
       csrf_token,
       method,
     } = values;
-    
     if (flow.state === "sent_email" && isEmpty(values.code) && isEmpty(values.email)) {
       return null;
     }
@@ -223,35 +224,42 @@ const Verification: NextPage = (props: any) => {
       csrf_token,
       method,
     };
-    const createdTimeDayObject = dayjs(flow.issued_at)
-    const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
-    
-    const isValidate = validateDiffMinute(setFlow, flow, diffMinute);
-    if (!isValidate) {
-      const nextFlow = cloneDeep(flow);
-      const identifierIndex = nextFlow.ui.nodes.findIndex(
-        (node) => node.attributes.name === "code",
-      )
-      if (identifierIndex !== -1) {
-        nextFlow.ui.messages = [];
-        nextFlow.ui.nodes[identifierIndex].messages = [{
-          id: 400002,
-          text: lang?.verifyCodeInvalid || "Verification code is no longer valid, please try again.",
-          type: "error",
-        }]
-        setFlow(nextFlow)
-        return;
+
+    if (!isResendCode) {
+      const createdTimeDayObject = dayjs(issuedAt)
+      const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
+      
+      const isValidate = validateDiffMinute(setFlow, flow, diffMinute);
+      if (!isValidate) {
+        const nextFlow = cloneDeep(flow);
+        const identifierIndex = nextFlow.ui.nodes.findIndex(
+          (node) => node.attributes.name === "code",
+        )
+        if (identifierIndex !== -1) {
+          nextFlow.ui.messages = [];
+          nextFlow.ui.nodes[identifierIndex].messages = [{
+            id: 400002,
+            text: lang?.verifyCodeInvalid || "Verification code is no longer valid, please try again.",
+            type: "error",
+          }]
+          setFlow(nextFlow)
+          return;
+        }
+      } else {
+        const nextFlow = cloneDeep(flow);
+        const identifierIndex = nextFlow.ui.nodes.findIndex(
+          (node) => node.attributes.name === "code",
+        )
+        if (identifierIndex !== -1) {
+          nextFlow.ui.messages = [];
+          nextFlow.ui.nodes[identifierIndex].messages = []
+          setFlow(nextFlow)
+        }
       }
     } else {
-      const nextFlow = cloneDeep(flow);
-      const identifierIndex = nextFlow.ui.nodes.findIndex(
-        (node) => node.attributes.name === "code",
-      )
-      if (identifierIndex !== -1) {
-        nextFlow.ui.messages = [];
-        nextFlow.ui.nodes[identifierIndex].messages = []
-        setFlow(nextFlow)
-      }
+      const time = dayjs(new Date());
+      const nextIssuedAt = time.utc().format();
+      setIssuedAt(nextIssuedAt)
     }
 
     await router
@@ -291,8 +299,12 @@ const Verification: NextPage = (props: any) => {
         }
         setFlow(nextFlow)
         
-        console.log("🚀 ~ file: verification.tsx:288 ~ .then ~ type:", type)
-        if (data.state === "passed_challenge" && ['login', 'registe'].includes(type)) {
+        if (type === 'registe') {
+          setTimeout(() => router.replace(returnToUrl), 2000)
+          return;
+        }
+
+        if (data.state === "passed_challenge" && ['login'].includes(type)) {
           const key = type === 'registe' ? registeLocalStorageKey: localStorageKey
           const values = JSON.parse(localStorage.getItem(key))
 
@@ -317,19 +329,15 @@ const Verification: NextPage = (props: any) => {
                 updateLoginFlowBody: { ...nextValues, csrf_token: csrfNode?.attributes.value },
               }).then(() => flow)
           }).then(flow => {
-            if (type !== 'registe') {
-              router.replace(returnToUrl)
-              return;
-            }
-            if (type === 'registe') {
-              setTimeout(() => router.replace(returnToUrl), 2000)
-              return;
-            }
-
-          }).catch(error => {
-            console.log(error)
-          })
-          return;
+          if (type !== 'registe') {
+            router.replace(returnToUrl)
+            return;
+          }
+          
+        }).catch(error => {
+          console.log(error)
+        })
+        return;
         }
       })
       .catch((err: any) => {
@@ -383,7 +391,7 @@ const Verification: NextPage = (props: any) => {
               >
                 {verifySuccess
                   ? lang?.verifySucessDesc || "Congratulation, your account is approved. You will be automatically redirected to %service% in 5 seconds."
-                  : lang?.verifyAcctDesc.replace("master123@gmail.com", `${email ? email : ''}`) || `Enter the 6-digit code we sent to ${email ? email : ''} to verify account.`}
+                  : lang?.verifyAcctDesc.replace("master123@gmail.com", `${!isEmpty(email) ? email : ''}`) || `Enter the 6-digit code we sent to ${!isEmpty(email) ? email : ''} to verify account.`}
               </span>
             </Box>
             <Flow

@@ -11,10 +11,8 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import { api } from "../axios/api"
-import AppsList from "../components/AppsList"
 import CmidHead from "../components/CmidHead"
 import MenuFooter from "../components/MenuFooter"
-import MenuTag from "../components/MenuTag"
 import { showToast } from "../components/Toast"
 import { LogoutLink, Flow } from "../pkg"
 import { handleGetFlowError, handleFlowError } from "../pkg/errors"
@@ -28,13 +26,15 @@ import {
   setLockCodeResend,
 } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
-import { handleYupErrors } from "../util/yupHelpers"
+import { handleYupErrors, handleYupSchema } from "../util/yupHelpers"
 
 import { StyledMenuWrapper } from "./../styles/share"
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import LinkNav from '../components/LinkNav'
+import { loginFormSchema } from "../util/schemas"
 
 const localStorageKey = "!@#$%^&*()data"
+const linkAttributesNamesKey = "!@#$%^linkAttributesNamesKey";
 
 const getSessionData = async () => {
   try {
@@ -203,6 +203,15 @@ const Login: NextPage = (props : any) => {
 
   // const onSubmit = async (values: UpdateLoginFlowBody) => {
   const onSubmit = async (values: any) => {
+    if (!isEmpty(flow)) {
+      const nextFlow = cloneDeep(flow);
+      nextFlow.ui.messages = [];
+      nextFlow.ui.nodes = nextFlow?.ui.nodes.map(node => {
+        node.messages = [];
+        return node;
+      })
+      setFlow(nextFlow);
+    }
     const login_challenge = router.query.login_challenge
     // TODO - this is temp method to add subject, need to get subject from account
     let subject = ""
@@ -212,7 +221,9 @@ const Login: NextPage = (props : any) => {
 
     try {
       const isEmailSignin = isEmpty(values.provider)
+      
       if (isEmailSignin) {
+        await handleYupSchema(loginFormSchema, values)
         const response = await axios.get(
           `/api/hydra/validateIdentity?email=${values.identifier}`,
         )
@@ -243,6 +254,7 @@ const Login: NextPage = (props : any) => {
 
           // We logged in successfully! Let's bring the user home.
           .then((loginResult) => {
+            localStorage.setItem(linkAttributesNamesKey, '{}');
             return axios
               .get("/api/.ory/sessions/whoami", {
                 headers: { withCredentials: true },
@@ -338,7 +350,8 @@ const Login: NextPage = (props : any) => {
               // Yup, it is!
               if (err && err.response) {
                 const nextFlow = err.response?.data
-                const [message = { text: "" }] = nextFlow.ui.messages
+
+                const [message = { text: "" }] = nextFlow.ui.messages || []
                 if (
                   message.text.includes(
                     "check for spelling mistakes in your password or username, email address, or phone number.",

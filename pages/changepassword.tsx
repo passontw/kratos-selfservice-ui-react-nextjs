@@ -1,4 +1,5 @@
 import axios from "axios"
+import isEmpty from "lodash/isEmpty"
 import {
   StyledChangePasswordArea,
   StyledSection,
@@ -93,7 +94,7 @@ const ChangePassword: NextPage = (props) => {
     try {
       await handleYupSchema(changePasswordSchema, {
         confirmPassword,
-        password: values.password,
+        password: isEmpty(values.password)? undefined: values.password,
       })
       return router
         // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing

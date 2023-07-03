@@ -189,17 +189,23 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     window.location.pathname.includes("/registration") ? 140 :
   window.location.pathname.includes("/registration") ? 100 : 82
 
+  const codeMargin = nav === Navs.ACCOUNT 
+    ? "24px 0 0 0" : nav === Navs.VERIFICATION || nav === Navs.RECOVERY
+    ? "0 0 38px 0" : "unset"
+
   return (
     <>
       {verifyCodeConditions && (
         // Old stable version
         // <VerificationInput />
         // new version with added validation
-        <CodeInput
-          show={attributes.name}
-          validationMsgs={node.messages}
-          {...codeInputControlProps}
-        />
+        <Box m={codeMargin}>
+          <CodeInput
+            show={attributes.name}
+            validationMsgs={node.messages}
+            {...codeInputControlProps}
+          />
+        </Box>
       )}
       {/* {verifyCodeConditions2 && <VerificationInput />} */}
       <StyledDefaultInput isInputLabel={isInputLabel}>
@@ -262,12 +268,10 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
                   {node.messages.map(({ type, text = "", id }, k) => {
                     let displayText = text
                     if (text.includes("is missing")) {
-                      displayText =
-                        "This field is required, please fill it out."
+                      displayText = "This field is required, please fill it out."
                     }
                     if (text.includes("is not valid")) {
-                      displayText =
-                        "Invalid email format, please check and try again."
+                      displayText = "Invalid email format, please check and try again."
                     }
                     return (
                       <span
@@ -279,7 +283,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
                           fontFamily: "Open Sans",
                         }}
                       >
-                        {displayText}
+                        {translateDisplayText(displayText)}
                       </span>
                     )
                   })}
