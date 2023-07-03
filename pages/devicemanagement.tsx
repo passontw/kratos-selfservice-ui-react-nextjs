@@ -154,6 +154,7 @@ const SessionListItem = (props) => {
       ? agentResult.device.model
       : agentResult.os.name
   const {traits} = session.identity;
+
   return (
     <>
       <div key={session.id}>

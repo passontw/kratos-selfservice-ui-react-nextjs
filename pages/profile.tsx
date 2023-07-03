@@ -62,7 +62,7 @@ const getCityName = () => {
             const resultCity = cityJson.find(city => {
               return city['欄位2'] === key;
             })
-            const result = `${resultCity['欄位3'].split(',')[1]},${country_code.toUpperCase()}`;
+            const result = `${city},${country_code.toUpperCase()}`;
             resolve(result);
           }).catch(() => resolve('Unknow'));
       });
