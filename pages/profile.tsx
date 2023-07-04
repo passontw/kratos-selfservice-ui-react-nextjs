@@ -62,7 +62,7 @@ const getCityName = () => {
             const resultCity = cityJson.find(city => {
               return city['欄位2'] === key;
             })
-            const result = `${resultCity['欄位3'].split(',')[1]},${country_code.toUpperCase()}`;
+            const result = `${city},${country_code.toUpperCase()}`;
             resolve(result);
           }).catch(() => resolve('Unknow'));
       });
@@ -96,6 +96,7 @@ const Profile: NextPage = (props) => {
     }).then(async ({data}) => {
       const filteredNodes = data.ui.nodes.filter(node => {
         if (node.attributes.name === 'link') return false;
+        if (node.attributes.name === 'unlink') return false;
         if (node.attributes.name === 'method') return false;
         if (node.attributes.name === 'password') return false;
         return true;
@@ -109,6 +110,7 @@ const Profile: NextPage = (props) => {
         }
         return result;
       }, {method: 'profile'})
+      
       return ory.updateSettingsFlow({
         flow: String(data?.id),
         updateSettingsFlowBody: values,

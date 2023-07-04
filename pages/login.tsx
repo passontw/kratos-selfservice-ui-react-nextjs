@@ -203,8 +203,8 @@ const Login: NextPage = (props : any) => {
 
   // const onSubmit = async (values: UpdateLoginFlowBody) => {
   const onSubmit = async (values: any) => {
+    let nextFlow = cloneDeep(flow);
     if (!isEmpty(flow)) {
-      const nextFlow = cloneDeep(flow);
       nextFlow.ui.messages = [];
       nextFlow.ui.nodes = nextFlow?.ui.nodes.map(node => {
         node.messages = [];
@@ -349,8 +349,8 @@ const Login: NextPage = (props : any) => {
             if (err.response?.status === 400) {
               // Yup, it is!
               if (err && err.response) {
-                const nextFlow = err.response?.data
-
+                nextFlow = err.response?.data
+                // const nextFlow = err.response?.data
                 const [message = { text: "" }] = nextFlow.ui.messages || []
                 if (
                   message.text.includes(
@@ -378,7 +378,7 @@ const Login: NextPage = (props : any) => {
     } catch (error) {
       const errors = handleYupErrors(error)
       if (flow) {
-        const nextFlow = cloneDeep(flow)
+        // const nextFlow = cloneDeep(flow)
         if (errors.identifier) {
           const message = {
             id: 4000002,
