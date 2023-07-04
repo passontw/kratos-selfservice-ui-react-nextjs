@@ -14,7 +14,10 @@ import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
 import { Component, FormEvent, MouseEvent } from "react"
 import { connect } from "react-redux"
 
-import { setIsInputChanging } from "../../state/store/slice/verificationSlice"
+import {
+  setIsInputChanging,
+  setIsSubmitting,
+} from "../../state/store/slice/verificationSlice"
 
 import { Messages } from "./Messages"
 import { Node } from "./Node"
@@ -48,6 +51,7 @@ export type Props<T> = {
   hideGlobalMessages?: boolean
   code?: string
   lang?: any
+  dispatch?: any
 }
 
 function emptyState<T>() {
@@ -116,12 +120,14 @@ class MyFlow<T extends Values> extends Component<Props<T>, State<T>> {
   }
 
   handleSubmit = (event: FormEvent<HTMLFormElement> | MouseEvent) => {
+    const { dispatch } = this.props
     // tell application that we are currently clearing "input is being changed" state
     // when we try submit the form
     console.log(
       "@validationDebug2 submitting, dispatch setIsInputChanging(false)",
     )
-    this.props.dispatch(setIsInputChanging(false))
+    dispatch(setIsInputChanging(false))
+    dispatch(setIsSubmitting(true))
     event.stopPropagation()
     event.preventDefault()
     const isResendCode = event.nativeEvent.submitter.id === "resendcode"

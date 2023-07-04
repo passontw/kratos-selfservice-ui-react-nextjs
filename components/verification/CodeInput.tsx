@@ -12,6 +12,7 @@ import styled from "styled-components"
 import { setSixDigitCode } from "../../state/store/slice/layoutSlice"
 import {
   selectIsInputChanging,
+  selectIsSubmitting,
   setIsInputChanging,
 } from "../../state/store/slice/verificationSlice"
 
@@ -100,6 +101,7 @@ const CodeInput: React.FC<CodeInput> = ({
 }) => {
   const isInputChanging = useSelector(selectIsInputChanging)
   const globalState = useSelector((state) => state)
+  const isSubmitting = useSelector(selectIsSubmitting)
   const { t } = useTranslation()
   const ref = useRef(null)
   const dispatch = useDispatch()
@@ -111,7 +113,10 @@ const CodeInput: React.FC<CodeInput> = ({
 
   useEffect(() => {
     const isEmpty = !code.filter((item) => item !== "").length
-    if (isEmpty && inputBlurred) {
+    console.log("@validationDebug2 useEffect isEmpty", isEmpty)
+    console.log("@validationDebug2 useEffect inputBlurred", inputBlurred)
+    console.log("@validationDebug2 useEffect isSubmitting", isSubmitting)
+    if ((isEmpty && inputBlurred) || (isEmpty && isSubmitting)) {
       setValidationError(
         t("error-field_required") ||
           "This field is required, please fill it out.",
@@ -119,7 +124,7 @@ const CodeInput: React.FC<CodeInput> = ({
     } else {
       setValidationError("")
     }
-  }, [code, inputBlurred])
+  }, [code, inputBlurred, isSubmitting])
 
   const handleInputChange = (e, index) => {
     // if inputs are still untouched set them to touched as inputs are being typed in
