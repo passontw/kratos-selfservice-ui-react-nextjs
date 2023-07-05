@@ -90,10 +90,15 @@ const Registration: NextPage = (props) => {
       return
     }
 
+    const locale = router.locale
+    let path = "/profile"
+    if (locale && locale !== "en") {
+      path = `/${locale}${path}`
+    }
     // Otherwise we initialize it
     ory
       .createBrowserRegistrationFlow({
-        returnTo: returnTo ? String(returnTo) : "/profile",
+        returnTo: returnTo ? String(returnTo) : path,
       })
       .then(({ data }) => {
         setFlow(data)

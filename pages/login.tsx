@@ -57,7 +57,6 @@ const validateLoginFlow = async (router, options) => {
       const { data } = await ory.createBrowserLoginFlow({
         refresh: Boolean(refresh),
         aal: aal ? String(aal) : undefined,
-        // returnTo: returnTo || "/profile",
         returnTo: returnTo || path,
       })
 

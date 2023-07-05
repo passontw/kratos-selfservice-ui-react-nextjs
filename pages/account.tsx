@@ -149,6 +149,8 @@ const Account: NextPage = (props) => {
                 return node.attributes.value === "apple"
               })
               const linkAttributesNames = JSON.parse(localStorage.getItem(linkAttributesNamesKey) || '{}');
+              const locale = localStorage.getItem('lang')
+              console.log('zzz1', locale)
               const googleAttributesName = googleNode?.attributes.name;
               const appleAttributesName = appleNode?.attributes.name;
               if (!isEmpty(linkAttributesNames)) {
@@ -265,10 +267,15 @@ const Account: NextPage = (props) => {
         })
     } else {
       // Otherwise we initialize it
+      const locale = router.locale
+      let path = '/account'
+      if (locale && locale !== 'en') {
+        path = `/${locale}${path}`
+      }
 
       return ory
         .createBrowserSettingsFlow({
-          returnTo: "/account",
+          returnTo: path,
         })
         .then(({ data }) => {
           const googleNode = data.ui.nodes.find(node => {
@@ -285,6 +292,8 @@ const Account: NextPage = (props) => {
             })
             const googleAttributesName = googleNode?.attributes.name;
             const appleAttributesName = appleNode?.attributes.name;
+            const locale = localStorage.getItem('lang')
+            console.log('zzz2', locale)
             if (!isEmpty(linkAttributesNames)) {
               if (linkAttributesNames.googleAttributesName !== googleAttributesName) {
                 if (googleAttributesName === "unlink") {

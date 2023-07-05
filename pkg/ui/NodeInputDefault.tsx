@@ -177,21 +177,35 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
 
   // routes where the old design of validation needs to be removed
   const isRouteAllowed =
-    !window.location.pathname.includes("/verification") && 
+    !window.location.pathname.includes("/verification") &&
     !window.location.pathname.includes("/account") &&
-    !window.location.pathname.includes("/recovery")
+    !window.location.pathname.includes("/recovery") &&
+    !window.location.pathname.includes("/login")
 
   const locale = router.locale
-  const inputPaddingLeft = locale === "ru"? 140 : 
-  (locale === "fr" || locale === "nl" || locale === "pl") && 
-    window.location.pathname.includes("/login")  ? 100 :
-  (locale === "fr" || locale === "nl" || locale === "pl" || locale === "pt_BR" || locale === "id") && 
-    window.location.pathname.includes("/registration") ? 140 :
-  window.location.pathname.includes("/registration") ? 100 : 82
+  const inputPaddingLeft =
+    locale === "ru"
+      ? 140
+      : (locale === "fr" || locale === "nl" || locale === "pl") &&
+        window.location.pathname.includes("/login")
+      ? 100
+      : (locale === "fr" ||
+          locale === "nl" ||
+          locale === "pl" ||
+          locale === "pt_BR" ||
+          locale === "id") &&
+        window.location.pathname.includes("/registration")
+      ? 140
+      : window.location.pathname.includes("/registration")
+      ? 100
+      : 82
 
-  const codeMargin = nav === Navs.ACCOUNT 
-    ? "24px 0 0 0" : nav === Navs.VERIFICATION || nav === Navs.RECOVERY
-    ? "0 0 38px 0" : "unset"
+  const codeMargin =
+    nav === Navs.ACCOUNT
+      ? "24px 0 0 0"
+      : nav === Navs.VERIFICATION || nav === Navs.RECOVERY
+      ? "0 0 38px 0"
+      : "unset"
 
   return (
     <>
@@ -221,7 +235,10 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
                 label === "Verify code" || attributes.name === "traits.gender"
                   ? "none"
                   : "unset",
-              border: isError || accountError ? "1px solid #F24867" : "8px solid #37374F",
+              border:
+                isError || accountError
+                  ? "1px solid #F24867"
+                  : "8px solid #37374F",
               backgroundColor: "#37374F",
               height: "44px",
               color: "#fff",
@@ -268,10 +285,12 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
                   {node.messages.map(({ type, text = "", id }, k) => {
                     let displayText = text
                     if (text.includes("is missing")) {
-                      displayText = "This field is required, please fill it out."
+                      displayText =
+                        "This field is required, please fill it out."
                     }
                     if (text.includes("is not valid")) {
-                      displayText = "Invalid email format, please check and try again."
+                      displayText =
+                        "Invalid email format, please check and try again."
                     }
                     return (
                       <span
