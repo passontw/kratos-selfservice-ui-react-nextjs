@@ -62,7 +62,8 @@ const getCityName = () => {
             const resultCity = cityJson.find(city => {
               return city['欄位2'] === key;
             })
-            const result = `${city},${country_code.toUpperCase()}`;
+            const cityName = city ? city : resultCity['欄位3'].split(',')[1];
+            const result = `${cityName},${country_code.toUpperCase()}`;
             resolve(result);
           }).catch(() => resolve('Unknow'));
       });
@@ -91,31 +92,31 @@ const Profile: NextPage = (props) => {
     })
 
     ory
-    .createBrowserSettingsFlow({
-      returnTo: returnTo ? String(returnTo) : undefined,
-    }).then(async ({data}) => {
-      const filteredNodes = data.ui.nodes.filter(node => {
-        if (node.attributes.name === 'link') return false;
-        if (node.attributes.name === 'unlink') return false;
-        if (node.attributes.name === 'method') return false;
-        if (node.attributes.name === 'password') return false;
-        return true;
-      });
-      const cityName = await getCityName();
-      const values = filteredNodes.reduce((result, node) => {
-        if (node.attributes.name === 'traits.location') {
-          result[node.attributes.name] = cityName;
-        } else {
-          result[node.attributes.name] = node.attributes.value;
-        }
-        return result;
-      }, {method: 'profile'})
-      
-      return ory.updateSettingsFlow({
-        flow: String(data?.id),
-        updateSettingsFlowBody: values,
-      });
-    })
+      .createBrowserSettingsFlow({
+        returnTo: returnTo ? String(returnTo) : undefined,
+      }).then(async ({ data }) => {
+        const filteredNodes = data.ui.nodes.filter(node => {
+          if (node.attributes.name === 'link') return false;
+          if (node.attributes.name === 'unlink') return false;
+          if (node.attributes.name === 'method') return false;
+          if (node.attributes.name === 'password') return false;
+          return true;
+        });
+        const cityName = await getCityName();
+        const values = filteredNodes.reduce((result, node) => {
+          if (node.attributes.name === 'traits.location') {
+            result[node.attributes.name] = cityName;
+          } else {
+            result[node.attributes.name] = node.attributes.value;
+          }
+          return result;
+        }, { method: 'profile' })
+
+        return ory.updateSettingsFlow({
+          flow: String(data?.id),
+          updateSettingsFlowBody: values,
+        });
+      })
   }, [])
 
   useEffect(() => {
@@ -148,63 +149,63 @@ const Profile: NextPage = (props) => {
 
   const onSubmit = (values: UpdateSettingsFlowBody) => {
     return router
-    // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
-    // his data when she/he reloads the page.
-    .push(`/profile?flow=${flow?.id}`, undefined, { shallow: true })
-    .then(() =>
-      ory
-        .updateSettingsFlow({
-          flow: String(flow?.id),
-          updateSettingsFlowBody: values,
-        })
-        .then(({ data }) => {
-          // The settings have been saved and the flow was updated. Let's show it to the user!
-          if (data.state === "success") {
-            showToast(lang?.profileUpdated || "Profile updated successfully")
-          }
-          setFlow(data)
-        })
-        .catch(handleFlowError(router, "profile", setFlow))
-        .catch(async (err: any) => {
-          // If the previous handler did not catch the error it's most likely a form validation error
-          if (err.response?.status === 400) {
-            // Yup, it is!
-            setFlow(err.response?.data)
-            return
-          }
+      // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
+      // his data when she/he reloads the page.
+      .push(`/profile?flow=${flow?.id}`, undefined, { shallow: true })
+      .then(() =>
+        ory
+          .updateSettingsFlow({
+            flow: String(flow?.id),
+            updateSettingsFlowBody: values,
+          })
+          .then(({ data }) => {
+            // The settings have been saved and the flow was updated. Let's show it to the user!
+            if (data.state === "success") {
+              showToast(lang?.profileUpdated || "Profile updated successfully")
+            }
+            setFlow(data)
+          })
+          .catch(handleFlowError(router, "profile", setFlow))
+          .catch(async (err: any) => {
+            // If the previous handler did not catch the error it's most likely a form validation error
+            if (err.response?.status === 400) {
+              // Yup, it is!
+              setFlow(err.response?.data)
+              return
+            }
 
-          return Promise.reject(err)
-        }),
-    );
+            return Promise.reject(err)
+          }),
+      );
   }
-    
+
 
   return (
     <AccountLayout lang={lang}>
-      {flow ? 
-      <StyledProfileArea paddingRight="0">
-        <SettingsCard only="profile" flow={flow}>
-          <Flow
-            hideGlobalMessages
-            onSubmit={onSubmit}
-            only="profile"
-            flow={flow}
-            lang={lang}
+      {flow ?
+        <StyledProfileArea paddingRight="0">
+          <SettingsCard only="profile" flow={flow}>
+            <Flow
+              hideGlobalMessages
+              onSubmit={onSubmit}
+              only="profile"
+              flow={flow}
+              lang={lang}
+            />
+          </SettingsCard>
+        </StyledProfileArea> :
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="50vh">
+          <Ring
+            size={40}
+            lineWeight={5}
+            speed={2}
+            color="#A62BC3"
           />
-        </SettingsCard>
-      </StyledProfileArea> :
-      <Box 
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="50vh">
-        <Ring 
-          size={40}
-          lineWeight={5}
-          speed={2} 
-          color="#A62BC3" 
-        />
-      </Box>}
+        </Box>}
     </AccountLayout>
   )
 }
