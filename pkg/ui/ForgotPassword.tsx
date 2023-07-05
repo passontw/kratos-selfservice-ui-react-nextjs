@@ -172,8 +172,18 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   // Handles form submission
   handleSubmit = (event: FormEvent<HTMLFormElement> | MouseEvent) => {
     const { dispatch } = this.props
-    console.log("@validationDebug2 onSubmit setIsInputChanging - false")
+    console.log("@validationDebug2 onSubmit ForgotPassword")
     dispatch(setIsInputChanging(false))
+    const url = new URL(window.location.href)
+    const params = new URLSearchParams(url.search)
+    // check if flow is on step 2 of the forgot password form
+    const onStepTwo = params.has("flow")
+    if (onStepTwo) {
+      console.log("@validationDebug2 onSubmit ForgotPassword STEPTWO")
+      // fire isSubmitting state change for validation on step two of form
+      dispatch(setIsSubmitting(true))
+    }
+
     // Prevent all native handlers
     event.stopPropagation()
     event.preventDefault()

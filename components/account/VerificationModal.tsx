@@ -17,7 +17,10 @@ import {
   selectSixDigitCode,
   setDialog,
 } from "../../state/store/slice/layoutSlice"
-import { setIsInputChanging } from "../../state/store/slice/verificationSlice"
+import {
+  setIsInputChanging,
+  setIsSubmitting,
+} from "../../state/store/slice/verificationSlice"
 import Text from "../Text"
 
 import DeleteAccConfirm from "./DeleteAccConfirm"
@@ -196,9 +199,9 @@ const Verification: NextPage = (props) => {
 
   const onSubmit = async (values: UpdateVerificationFlowBody, isResendCode) => {
     // set inputChanging to true in order show validation
-    console.log("@validationDebug2 onSubmit setIsInputChanging - false")
+    console.log("@validationDebug2 onSubmit VerificationModal")
     dispatch(setIsInputChanging(false))
-
+    // dispatch(setIsSubmitting(true))
     const { user } = router.query
     const { code = "", email, csrf_token, method } = values
 

@@ -221,22 +221,25 @@ const CodeInput: React.FC<CodeInput> = ({
     console.log("@validationDebug2 msg:", msg)
     switch (msg) {
       case "The verification code is invalid or has already been used. Please try again.": {
-        console.log("@validationDebug2 HERE 1")
         return (
           t("error-verif_code_incorrect") ||
           "Verification code is incorrect, please check and try again."
         )
       }
       case "6 word": {
-        console.log("@validationDebug2 HERE 2")
         return (
           t("error-verif_code_incorrect") ||
           "This field is required, please fill it out"
         )
       }
       case "": {
-        console.log("@validationDebug2 HERE 3")
-        return "This field is required, please fill it out"
+        return t("error-field_required")
+      }
+
+      case "This field is required, please fill it out.": {
+        if (code?.filter((item) => item.length > 0).length || 0 > 0) {
+          return t("error-verif_code_incorrect")
+        }
       }
       default: {
         return msg
@@ -274,7 +277,11 @@ const CodeInput: React.FC<CodeInput> = ({
               onChange={(e) => handleInputChange(e, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
               error={
-                validationError || (validationMsgs.length && !isInputChanging)
+                validationError ||
+                (validationMsgs.length && !isInputChanging) ||
+                (!validationMsgs.length &&
+                  code?.filter((item) => item !== "").length === 6 &&
+                  !isInputChanging)
               }
               // onBlur={() => setInputBlurred(true)}
             />
@@ -289,8 +296,16 @@ const CodeInput: React.FC<CodeInput> = ({
         }}
       >
         {validationError
-          ? validationError
-          : !isInputChanging &&
+          ? // custom required input validation
+            validationError
+          : // For handling exception of 6 digit submit where error code is wrong but
+          // there is missing validation message from props
+          !validationMsgs.length &&
+            code?.filter((item) => item !== "").length === 6 &&
+            !isInputChanging
+          ? t("error-verif_code_incorrect")
+          : // if there is actual validationMsgs recieved and input is currently not being typed in
+            !isInputChanging &&
             validationMsgs.map(
               (
                 msg: { context: {}; id: number; text: string; type: string },
