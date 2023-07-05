@@ -177,10 +177,15 @@ const Verification: NextPage = (props) => {
       return
     }
 
+    const locale = router.locale
+    let path = "/login"
+    if (locale && locale !== "en") {
+      path = `/${locale}${path}`
+    }
     // Otherwise we initialize it
     ory
       .createBrowserVerificationFlow({
-        returnTo: "/login",
+        returnTo: path,
       })
       .then(({ data }) => {
         setFlow(data)
