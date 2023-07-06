@@ -15,6 +15,9 @@ import {
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
 import React, { Component, FormEvent, MouseEvent } from "react"
 
+import Apple from "../../public/images/login_icons/Apple"
+import Google from "../../public/images/login_icons/Google"
+
 import { Messages } from "./Messages"
 import { Node } from "./Node"
 
@@ -63,6 +66,12 @@ function emptyState<T>() {
 type State<T> = {
   values: T
   isLoading: boolean
+  overlayStyles: {
+    padding: string
+    innerPadding: string
+    fontSize: string
+    lineHeight: string
+  }
 }
 
 export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
@@ -71,6 +80,44 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     this.state = {
       values: emptyState(),
       isLoading: false,
+      overlayStyles: {
+        padding: "30",
+        fontSize: "20",
+        lineHeight: "42",
+        innerPadding: "22",
+      },
+    }
+  }
+
+  componentDidMount() {
+    this.handleCalcPadding()
+    window.addEventListener("resize", this.handleCalcPadding)
+  }
+
+  componentWillUnmount() {
+    window.addEventListener("resize", this.handleCalcPadding)
+  }
+
+  handleCalcPadding = () => {
+    const vw = window.innerWidth
+    if (vw < 600) {
+      this.setState({
+        overlayStyles: {
+          padding: "10",
+          innerPadding: "18",
+          fontSize: "16",
+          lineHeight: "24",
+        },
+      })
+    } else {
+      this.setState({
+        overlayStyles: {
+          padding: "30",
+          innerPadding: "24",
+          fontSize: "20",
+          lineHeight: "42",
+        },
+      })
     }
   }
 
@@ -178,6 +225,8 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       return null
     }
 
+    const { overlayStyles } = this.state
+
     return (
       <form
         action={flow.ui.action}
@@ -193,6 +242,81 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
             {/* {!hideGlobalMessages ? (
               <Messages messages={flow.ui.messages} />
             ) : null} */}
+
+            <Grid item xs={12} sm={6} sx={{ position: "relative", zIndex: 3 }}>
+              <div
+                style={{
+                  boxSizing: "border-box",
+                  position: "absolute",
+                  backgroundColor: "rgb(39, 39, 53)",
+                  opacity: 1,
+                  fontFamily: "open sans",
+                  height: `90px`,
+                  marginTop: `30px`,
+                  width: `calc(100% - ${overlayStyles.padding}px)`,
+
+                  borderRadius: "12px",
+                  padding: `${overlayStyles.innerPadding}px`,
+                }}
+              >
+                <div style={{ display: "flex" }}>
+                  <Apple />
+                  {console.log("@accountDebug overlayStyles", overlayStyles)}
+                  {console.log(
+                    "@accountDebug overlayStyles.fontSize",
+                    overlayStyles.fontSize,
+                  )}
+                  <div
+                    style={{
+                      fontSize: `${overlayStyles.fontSize}px`,
+                      color: "#fff",
+                      marginLeft: "20px",
+                      lineHeight: `${overlayStyles.lineHeight}px`,
+                    }}
+                  >
+                    Apple
+                  </div>
+                </div>
+              </div>
+            </Grid>
+
+            <Grid item xs={12} sm={6} sx={{ position: "relative", zIndex: 3 }}>
+              <div
+                style={{
+                  boxSizing: "border-box",
+                  position: "absolute",
+                  backgroundColor: "rgb(39, 39, 53)",
+                  opacity: 1,
+                  fontFamily: "open sans",
+                  // height: `calc(100% - ${overlayStyles.padding}px)`,
+                  height: `90px`,
+                  marginTop: "30px",
+                  width: `calc(100% - ${overlayStyles.padding}px)`,
+                  borderRadius: "12px",
+                  padding: `${overlayStyles.innerPadding}px`,
+                }}
+              >
+                <div style={{ display: "flex" }}>
+                  <Google />
+                  {console.log("@accountDebug overlayStyles", overlayStyles)}
+                  {console.log(
+                    "@accountDebug overlayStyles.fontSize",
+                    overlayStyles.fontSize,
+                  )}
+                  <div
+                    style={{
+                      fontSize: `${overlayStyles.fontSize}px`,
+                      color: "#fff",
+                      marginLeft: "20px",
+                      lineHeight: `${overlayStyles.lineHeight}px`,
+                    }}
+                  >
+                    Google
+                  </div>
+                </div>
+              </div>
+            </Grid>
+
             {nodes.map((node, k) => {
               const excludedFields = {
                 account: ["email"],
@@ -230,29 +354,36 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 )
               } else {
                 return (
-                  <Grid item xs={12} sm={6}>
-                    <Node
-                      key={`${id}-${k}`}
-                      disabled={isLoading}
-                      node={node}
-                      value={values[id]}
-                      dispatchSubmit={this.handleSubmit}
-                      // handleToast={this.props?.handleToast}
-                      setValue={(value) =>
-                        new Promise((resolve) => {
-                          this.setState(
-                            (state) => ({
-                              ...state,
-                              values: {
-                                ...state.values,
-                                [getNodeId(node)]: value,
-                              },
-                            }),
-                            resolve,
-                          )
-                        })
-                      }
-                    />
+                  <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    sx={{ position: "relative", zIndex: 9 }}
+                  >
+                    <div style={{ position: "relative", zIndex: 4 }}>
+                      <Node
+                        key={`${id}-${k}`}
+                        disabled={isLoading}
+                        node={node}
+                        value={values[id]}
+                        dispatchSubmit={this.handleSubmit}
+                        // handleToast={this.props?.handleToast}
+                        setValue={(value) =>
+                          new Promise((resolve) => {
+                            this.setState(
+                              (state) => ({
+                                ...state,
+                                values: {
+                                  ...state.values,
+                                  [getNodeId(node)]: value,
+                                },
+                              }),
+                              resolve,
+                            )
+                          })
+                        }
+                      />
+                    </div>
                   </Grid>
                 )
               }
