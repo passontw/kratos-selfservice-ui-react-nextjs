@@ -272,7 +272,6 @@ const Login: NextPage = (props : any) => {
             const { verifiable_addresses = [] } = myResult.identity
 
             const [verifiable_address] = verifiable_addresses
-
             if (isEmpty(verifiable_address) || !verifiable_address.verified) {
               return ory
                 .createBrowserLogoutFlow()

@@ -1,7 +1,6 @@
-import { AxiosError } from "axios"
 import { NextRouter } from "next/router"
+import queryString from "query-string"
 import { Dispatch, SetStateAction } from "react"
-import { toast } from "react-toastify"
 import { showToast } from '../components/Toast'
 
 // A small function to help us deal with errors coming from fetching a flow.
@@ -63,9 +62,13 @@ export function handleGetFlowError<S>(
         await router.push("/" + flowType)
         return
       case "browser_location_change_required":
-        console.log("reached 8")
+        const query = queryString.parse(window.location.search.replace("?", ""));
         // Ory Kratos asked us to point the user to this URL.
         // alert("debug: stay on this page to read errors before redirecting")
+        if (query && query.return_to) {
+          window.location.href = query.return_to;
+          return;
+        }
         window.location.href = err.response.data.redirect_browser_to
         // console.log("", err.response.data)
         // setTimeout(() => {

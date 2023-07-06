@@ -99,7 +99,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
           }
         })
         .catch((err) => {
-          console.log(err)
           return res.status(err.status).json({ message: "error1 " + err.message })
         })
     } catch (error) {
