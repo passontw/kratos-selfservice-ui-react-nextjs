@@ -51,12 +51,15 @@ function SettingsCard({
 const getCityName = () => {
   return new Promise(resolve => {
     if (navigator.geolocation) {
+      console.log('@geo_navigator', navigator.geolocation)
       navigator.geolocation.getCurrentPosition((position) => {
+        console.log('@geo_position', position)
         const { latitude = null, longitude = null } = position?.coords || {};
-        if (isNull(latitude) || isNull(longitude)) return resolve('Unknow');
+        if (isNull(latitude) || isNull(longitude)) return resolve('Unknown_1');
 
         axios.get(`https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}`)
           .then(response => {
+            console.log('@geo_response', response)
             const { country_code, city, suburb } = response.data.address;
             const key = `${city}${suburb}`;
             const resultCity = cityJson.find(city => {
@@ -64,11 +67,12 @@ const getCityName = () => {
             })
             const cityName = city ? city : resultCity['欄位3'].split(',')[1];
             const result = `${cityName},${country_code.toUpperCase()}`;
+            console.log('@geo_result', result)
             resolve(result);
-          }).catch(() => resolve('Unknow'));
+          }).catch(() => resolve('Unknown_2'));
       });
     } else {
-      resolve('Unknow');
+      resolve('Unknown_3');
     }
   });
 }
