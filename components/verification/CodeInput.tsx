@@ -222,6 +222,12 @@ const CodeInput: React.FC<CodeInput> = ({
   const validationMsgMapping = (msg: string) => {
     console.log("@validationDebug2 msg:", msg)
     switch (msg) {
+      case "Verification code is incorrect, please check and try again.": {
+        return (
+          t("error-verif_code_incorrect") ||
+          "Verification code is incorrect, please check and try again."
+        )
+      }
       case "The verification code is invalid or has already been used. Please try again.": {
         return (
           t("error-verif_code_incorrect") ||
@@ -231,7 +237,7 @@ const CodeInput: React.FC<CodeInput> = ({
       case "6 word": {
         return (
           t("error-verif_code_incorrect") ||
-          "This field is required, please fill it out"
+          "Verification code is incorrect, please check and try again."
         )
       }
       case "": {
@@ -241,6 +247,8 @@ const CodeInput: React.FC<CodeInput> = ({
       case "This field is required, please fill it out.": {
         if (code?.filter((item) => item.length > 0).length || 0 > 0) {
           return t("error-verif_code_incorrect")
+        } else {
+          return t("error-field_required")
         }
       }
       default: {
