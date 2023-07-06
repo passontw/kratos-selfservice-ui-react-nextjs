@@ -14,6 +14,7 @@ import {
   selectIsInputChanging,
   selectIsSubmitting,
   setIsInputChanging,
+  setIsSubmitting,
 } from "../../state/store/slice/verificationSlice"
 
 const Container = styled.div`
@@ -108,6 +109,7 @@ const CodeInput: React.FC<CodeInput> = ({
   const firstInputRef = useRef(null)
 
   useEffect(() => {
+    dispatch(setIsSubmitting(false))
     firstInputRef.current?.focus()
   }, [])
 
