@@ -96,6 +96,9 @@ export function useI18nConfig() {
     deviceMgmt: t('device_mgmt'),
     exportUserData: t('export_user_data'),
     logout: t('log_out'),
+    // desc
+    masterIdSlogan: t('masterid_slogan'),
+    masterIdDesc: t('masterid-desc'),
   };
 
   return lang;

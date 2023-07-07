@@ -32,6 +32,7 @@ import { StyledMenuWrapper } from "./../styles/share"
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import LinkNav from '../components/LinkNav'
 import { loginFormSchema } from "../util/schemas"
+import Head from 'next/head'
 
 const localStorageKey = "!@#$%^&*()data"
 const linkAttributesNamesKey = "!@#$%^linkAttributesNamesKey";
@@ -431,16 +432,17 @@ const Login: NextPage = (props : any) => {
     <>
       <div className="mainWrapper">
         <StyledMenuWrapper>
-          <div>
-            <title>Sign in - Master ID</title>
-            <meta name="description" content="Master ID" />
-          </div>
+          <Head>
+            <title>{`${lang?.login} - Master ID`}</title>
+            <meta name="description" content={lang?.masterIdSlogan 
+              || "Access anywhere with Master ID"} />
+          </Head>
           <Box display="flex" justifyContent={{ xs: "center", sm: "left" }}>
             <CmidHead />
           </Box>
           <Box display="flex" justifyContent="center">
             <Box width={{ xs: "100%", sm: "480px"}}>
-              <Box fontFamily="Teko" fontSize="36px" color="#FFF" mt="62px">
+              <Box fontFamily="Teko" fontSize="36px" color="#FFF" mt={{ xs: "62px", sm: "87px"}}>
                 {lang.welcomeBack}
               </Box>
               {router.query.error && (

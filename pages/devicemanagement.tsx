@@ -19,6 +19,7 @@ import { setActiveNav, setDialog } from "../state/store/slice/layoutSlice"
 import { Navs } from "../types/enum"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import { Ring } from '@uiball/loaders'
+import Head from 'next/head'
 
 const dayjs = require("dayjs")
 var utc = require("dayjs/plugin/utc")
@@ -255,6 +256,10 @@ const DeviceManagement: NextPage = (props) => {
           xs: "24px",
         }}
       >
+        <Head>
+          <title>{`${lang?.deviceMgmt} - Master ID`}</title>
+          <meta name="description" content="Master ID" />
+        </Head>
         <SettingsCard only="profile" flow={flow}>
           <Box fontFamily="open sans">
             <Box color="#717197" fontSize="22px">

@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux"
 
 import { DocsButton, MarginCard, LogoutLink } from "../pkg"
 import ory from "../pkg/sdk"
+import { useTranslation } from 'next-i18next'
 
 const Home: NextPage = () => {
   const [session, setSession] = useState<string>(
@@ -17,6 +18,7 @@ const Home: NextPage = () => {
   const router = useRouter()
   const onLogout = LogoutLink()
   const dispatch = useDispatch()
+  const { t } = useTranslation()
 
   useEffect(() => {
     ory
@@ -66,7 +68,9 @@ const Home: NextPage = () => {
     <div className={"container-fluid"}>
       <Head>
         <title>Master ID</title>
-        <meta name="description" content="Master ID" />
+        <meta 
+          name="description"
+          content="Access anywhere with Master ID. One account is all you need. Start your virtual adventure." />
       </Head>
 
       {/* <MarginCard wide>

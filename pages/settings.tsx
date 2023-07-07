@@ -18,6 +18,7 @@ import { Navs, Stage } from "../types/enum"
 import { updateSettingsPasswordSchema } from "../util/schemas"
 import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import Head from 'next/head'
 
 interface Props {
   flow?: SettingsFlow
@@ -196,6 +197,10 @@ const Settings: NextPage = (props) => {
         padding={{ xs: "35px 0px 0px", sm: "48px 0px 0px 48px" }}
         zIndex={1}
       >
+        <Head>
+          <title>{`${lang?.changePw} - Master ID`}</title>
+          <meta name="description" content="Master ID" />
+        </Head>
         <Cmid />
         <Box
           fontFamily="Teko"

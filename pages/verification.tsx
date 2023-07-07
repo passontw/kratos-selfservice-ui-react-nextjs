@@ -21,6 +21,8 @@ import { Navs } from "../types/enum"
 import { StyledMenuWrapper } from "./../styles/share"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import LinkNav from '../components/LinkNav'
+import { Ring } from '@uiball/loaders'
+import Head from 'next/head'
 
 const dayjs = require("dayjs")
 const utc = require("dayjs/plugin/utc")
@@ -369,10 +371,10 @@ const Verification: NextPage = (props: any) => {
     <>
       <div className="mainWrapper">
         <StyledMenuWrapper>
-          <div>
-            <title>Verify your account - Master ID</title>
+          <Head>
+            <title>{`${lang?.verifyAccount} - Master ID`}</title>
             <meta name="description" content="Master ID" />
-          </div>
+          </Head>
           <CmidHead />
           <Box display="flex" justifyContent="center">
             <Box width={{ xs: "100%", sm: "400px"}}>
@@ -394,6 +396,7 @@ const Verification: NextPage = (props: any) => {
                   : lang?.verifyAcctDesc.replace("master123@gmail.com", `${!isEmpty(email) ? email : ''}`) || `Enter the 6-digit code we sent to ${!isEmpty(email) ? email : ''} to verify account.`}
               </span>
             </Box>
+            {flow ? 
             <Flow
               onSubmit={onSubmit}
               flow={flow}
@@ -402,7 +405,19 @@ const Verification: NextPage = (props: any) => {
               returnTo={returnTo}
               type={type}
               // hideGlobalMessages
-            />
+            /> : 
+            <Box 
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="90px">
+              <Ring 
+                size={40}
+                lineWeight={5}
+                speed={2} 
+                color="#A62BC3" 
+              />
+            </Box>}
             </Box>
           </Box>        
           <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />

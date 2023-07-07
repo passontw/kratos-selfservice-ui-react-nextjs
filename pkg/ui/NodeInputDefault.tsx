@@ -226,7 +226,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
         {isInputLabel && (
           <StyledDefaultLabel isError={isError}>{label}</StyledDefaultLabel>
         )}
-
+        {console.log(attributes.name)}
         {!isInputChanging && (
           <TextInput
             className="my-text-input"
@@ -255,7 +255,9 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
                 ? ""
                 : (nav === Navs.SETTINGS || nav === Navs.CHANGEPASSWORD) &&
                   attributes.name === "password"
-                ? "Enter new password"
+                ? lang?.enterNewPw || "Enter new password"
+                : attributes.name === "traits.phone"
+                ? lang?.phone || "phone"
                 : label
             }
             // title={node.meta.label?.text}

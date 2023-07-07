@@ -22,6 +22,7 @@ import { Navs, Stage } from "../types/enum"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import cityJson from "../city.json"
 import { Ring } from '@uiball/loaders'
+import Head from 'next/head'
 
 interface Props {
   flow?: SettingsFlow
@@ -186,6 +187,10 @@ const Profile: NextPage = (props) => {
 
   return (
     <AccountLayout lang={lang}>
+      <Head>
+        <title>{`${lang?.personalInfo} - Master ID`}</title>
+        <meta name="description" content="Master ID" />
+      </Head>
       {flow ?
         <StyledProfileArea paddingRight="0">
           <SettingsCard only="profile" flow={flow}>

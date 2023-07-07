@@ -26,6 +26,7 @@ import {
   setActiveStage,
 } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
+import Head from 'next/head'
 
 const linkAttributesNamesKey = "!@#$%^linkAttributesNamesKey"
 
@@ -352,6 +353,10 @@ const Account: NextPage = (props) => {
 
   return (
     <AccountLayout lang={lang}>
+      <Head>
+        <title>{`${lang?.acctSettings} - Master ID`}</title>
+        <meta name="description" content="Master ID" />
+      </Head>
       {flow ? (
         <Box display="flex" flexDirection="column">
           <SettingsCard only="oidc" flow={flow}>

@@ -26,6 +26,7 @@ import { handleYupSchema, handleYupErrors } from "../util/yupHelpers"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import Box from '@mui/material/Box'
 import { Ring } from '@uiball/loaders'
+import Head from 'next/head'
 
 interface Props {
   flow?: SettingsFlow
@@ -158,6 +159,10 @@ const ChangePassword: NextPage = (props) => {
 
   return (
     <AccountLayout lang={lang}>
+      <Head>
+        <title>{`${lang?.changePw} - Master ID`}</title>
+        <meta name="description" content="Master ID" />
+      </Head>
       {flow ? <>
         <StyledChangePasswordArea marginTop="48px">
           <StyledChangePasswordDeco src={"/images/change-password-deco.png"} />

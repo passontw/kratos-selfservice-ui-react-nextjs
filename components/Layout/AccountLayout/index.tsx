@@ -83,7 +83,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children, lang }) => {
         <StyledMenuWrapper>
           <StyledHeader>
             <Cmid />
-            <div>Master ID</div>
+            <Box mt="3px">Master ID</Box>
           </StyledHeader>
           <AccountMenu lang={lang} />
         </StyledMenuWrapper>
@@ -92,7 +92,7 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ children, lang }) => {
           <StyledMobieHeaderWrapper>
             <StyledHeader>
               <Cmid />
-              <div>Master ID</div>
+              <Box mt="3px">Master ID</Box>
             </StyledHeader>
             <Box
               sx={{

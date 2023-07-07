@@ -396,7 +396,7 @@ const Verification: NextPage = (props) => {
         }}
       >
         <Head>
-          <title>Verify your account - Master ID</title>
+          <title>{`${lang?.acctSettings} - Master ID`}</title>
           <meta name="description" content="Master ID" />
         </Head>
 

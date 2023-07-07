@@ -21,6 +21,7 @@ import { StyledMenuWrapper } from "../styles/share"
 import { Navs } from "../types/enum"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import LinkNav from '../components/LinkNav'
+import Head from 'next/head'
 
 const Recovery: NextPage = (props) => {
   const { lang } = props
@@ -81,10 +82,10 @@ const Recovery: NextPage = (props) => {
     <>
       <div className="mainWrapper">
         <StyledMenuWrapper>
-          <div>
-            <title>Sign in - Master ID</title>
+          <Head>
+            <title>{`${lang?.forgotPw} - Master ID`}</title>
             <meta name="description" content="Master ID" />
-          </div>
+          </Head>
           <CmidHead />
           <Box display="flex" justifyContent="center">
             <Box width={{ xs: "100%", sm: "480px"}}>
@@ -92,7 +93,7 @@ const Recovery: NextPage = (props) => {
               fontFamily="Teko"
               fontSize="36px"
               color="#717197"
-              mt="62px"
+              mt={{ xs: "62px", sm: "87px"}}
               mb="8px"
             >
               {lang?.welcomeBack}

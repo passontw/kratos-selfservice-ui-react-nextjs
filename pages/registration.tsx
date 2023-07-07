@@ -29,6 +29,7 @@ import queryString from "query-string"
 import LinkNav from '../components/LinkNav'
 import { Ring } from '@uiball/loaders'
 import Link from 'next/link'
+import Head from 'next/head'
 
 const localStorageKey = "!@#$%^&*()registedata"
 
@@ -304,10 +305,11 @@ const Registration: NextPage = (props) => {
     <>
       <div className="mainWrapper">
         <StyledMenuWrapper>
-          <div>
-            <title>Create account - Master ID</title>
-            <meta name="description" content="Master ID" />
-          </div>
+          <Head>
+            <title>{`${lang?.signUp} - Master ID`}</title>
+            <meta name="description" content={lang?.masterIdDesc 
+              || "One account is all you need. Start your virtual adventure."} />
+          </Head>
           {/* <MarginCard> */}
           {/* <CardTitle>Create account</CardTitle> */}
           <CmidHead />
