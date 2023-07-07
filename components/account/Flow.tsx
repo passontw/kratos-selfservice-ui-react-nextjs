@@ -239,6 +239,12 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
 
     const { overlayStyles } = this.state
 
+    const marginTop = nodes.find((node) => node.attributes.value === "google")
+      ? "0"
+      : "66px"
+
+    console.log("@debugAccountLink marginTop:", marginTop)
+
     return (
       <form
         action={flow.ui.action}
@@ -415,13 +421,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                     sx={{
                       position: "relative",
                       zIndex: 4,
-                      "& + &": { marginTop: { xs: "0px", sm: "0px" } },
-                      marginTop:
-                        nodes.length === 1
-                          ? "66px"
-                          : nodes.length === 2 && k === 0
-                          ? 0
-                          : 0,
+                      marginTop: { xs: marginTop, sm: 0 },
                     }}
                   >
                     <div style={{ position: "relative", zIndex: 4 }}>
