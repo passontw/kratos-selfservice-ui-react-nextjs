@@ -68,8 +68,9 @@ const Home: NextPage = () => {
     <div className={"container-fluid"}>
       <Head>
         <title>Master ID</title>
-        <meta name="description" content={t('masterid_slogan') + ' ' + t('masterid-desc')
-              || "Access anywhere with Master ID. One account is all you need. Start your virtual adventure."} />
+        <meta 
+          name="description"
+          content="Access anywhere with Master ID. One account is all you need. Start your virtual adventure." />
       </Head>
 
       {/* <MarginCard wide>
