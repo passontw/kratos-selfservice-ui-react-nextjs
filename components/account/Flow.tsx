@@ -71,6 +71,8 @@ type State<T> = {
     innerPadding: string
     fontSize: string
     lineHeight: string
+    height: string
+    marginTop: string
   }
 }
 
@@ -85,6 +87,8 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         fontSize: "20",
         lineHeight: "42",
         innerPadding: "22",
+        height: "90",
+        marginTop: "30",
       },
     }
   }
@@ -107,6 +111,8 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           innerPadding: "18",
           fontSize: "16",
           lineHeight: "24",
+          height: "60",
+          marginTop: "18",
         },
       })
     } else {
@@ -116,6 +122,8 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           innerPadding: "24",
           fontSize: "20",
           lineHeight: "42",
+          height: "90",
+          marginTop: "30",
         },
       })
     }
@@ -233,88 +241,110 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         method={flow.ui.method}
         onSubmit={this.handleSubmit}
       >
-        <Box>
+        <Box minHeight={"130px"}>
           <Grid
             container
             spacing={{ xs: 2, sm: 4 }}
             flexDirection={{ xs: "column-reverse", sm: "row-reverse" }}
+            position={"relative"}
           >
             {/* {!hideGlobalMessages ? (
               <Messages messages={flow.ui.messages} />
             ) : null} */}
 
-            <Grid item xs={12} sm={6} sx={{ position: "relative", zIndex: 3 }}>
-              <div
-                style={{
-                  boxSizing: "border-box",
-                  position: "absolute",
-                  backgroundColor: "rgb(39, 39, 53)",
-                  opacity: 1,
-                  fontFamily: "open sans",
-                  height: `90px`,
-                  marginTop: `30px`,
-                  width: `calc(100% - ${overlayStyles.padding}px)`,
-
-                  borderRadius: "12px",
-                  padding: `${overlayStyles.innerPadding}px`,
-                }}
+            <Grid
+              className="overlay-accounts"
+              container
+              style={{
+                position: "absolute",
+                top: 0,
+                left: `${overlayStyles.padding}px`,
+                width: "100%",
+              }}
+            >
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                sx={{ position: "relative", zIndex: 3 }}
               >
-                <div style={{ display: "flex" }}>
-                  <Apple />
-                  {console.log("@accountDebug overlayStyles", overlayStyles)}
-                  {console.log(
-                    "@accountDebug overlayStyles.fontSize",
-                    overlayStyles.fontSize,
-                  )}
-                  <div
-                    style={{
-                      fontSize: `${overlayStyles.fontSize}px`,
-                      color: "#fff",
-                      marginLeft: "20px",
-                      lineHeight: `${overlayStyles.lineHeight}px`,
-                    }}
-                  >
-                    Apple
+                <div
+                  style={{
+                    boxSizing: "border-box",
+                    // position: "absolute",
+                    backgroundColor: "rgb(39, 39, 53)",
+                    opacity: 1,
+                    fontFamily: "open sans",
+                    height: `${overlayStyles.height}px`,
+                    marginTop: `${overlayStyles.marginTop}px`,
+                    width: `calc(100% - ${overlayStyles.padding}px)`,
+
+                    borderRadius: "12px",
+                    padding: `${overlayStyles.innerPadding}px`,
+                  }}
+                >
+                  <div style={{ display: "flex" }}>
+                    <Google />
+                    {console.log("@accountDebug overlayStyles", overlayStyles)}
+                    {console.log(
+                      "@accountDebug overlayStyles.fontSize",
+                      overlayStyles.fontSize,
+                    )}
+                    <div
+                      style={{
+                        fontSize: `${overlayStyles.fontSize}px`,
+                        color: "#fff",
+                        marginLeft: "20px",
+                        lineHeight: `${overlayStyles.lineHeight}px`,
+                      }}
+                    >
+                      Google
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Grid>
+              </Grid>
 
-            <Grid item xs={12} sm={6} sx={{ position: "relative", zIndex: 3 }}>
-              <div
-                style={{
-                  boxSizing: "border-box",
-                  position: "absolute",
-                  backgroundColor: "rgb(39, 39, 53)",
-                  opacity: 1,
-                  fontFamily: "open sans",
-                  // height: `calc(100% - ${overlayStyles.padding}px)`,
-                  height: `90px`,
-                  marginTop: "30px",
-                  width: `calc(100% - ${overlayStyles.padding}px)`,
-                  borderRadius: "12px",
-                  padding: `${overlayStyles.innerPadding}px`,
-                }}
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                sx={{ position: "relative", zIndex: 3 }}
               >
-                <div style={{ display: "flex" }}>
-                  <Google />
-                  {console.log("@accountDebug overlayStyles", overlayStyles)}
-                  {console.log(
-                    "@accountDebug overlayStyles.fontSize",
-                    overlayStyles.fontSize,
-                  )}
-                  <div
-                    style={{
-                      fontSize: `${overlayStyles.fontSize}px`,
-                      color: "#fff",
-                      marginLeft: "20px",
-                      lineHeight: `${overlayStyles.lineHeight}px`,
-                    }}
-                  >
-                    Google
+                <div
+                  style={{
+                    boxSizing: "border-box",
+                    // position: "absolute",
+                    backgroundColor: "rgb(39, 39, 53)",
+                    opacity: 1,
+                    fontFamily: "open sans",
+                    // height: `calc(100% - ${overlayStyles.padding}px)`,
+                    height: `${overlayStyles.height}px`,
+                    marginTop: `${overlayStyles.marginTop}px`,
+                    width: `calc(100% - ${overlayStyles.padding}px)`,
+                    borderRadius: "12px",
+                    padding: `${overlayStyles.innerPadding}px`,
+                  }}
+                >
+                  <div style={{ display: "flex" }}>
+                    <Apple />
+                    {console.log("@accountDebug overlayStyles", overlayStyles)}
+                    {console.log(
+                      "@accountDebug overlayStyles.fontSize",
+                      overlayStyles.fontSize,
+                    )}
+                    <div
+                      style={{
+                        fontSize: `${overlayStyles.fontSize}px`,
+                        color: "#fff",
+                        marginLeft: "20px",
+                        lineHeight: `${overlayStyles.lineHeight}px`,
+                      }}
+                    >
+                      Apple
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Grid>
             </Grid>
 
             {nodes.map((node, k) => {
@@ -358,7 +388,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                     item
                     xs={12}
                     sm={6}
-                    sx={{ position: "relative", zIndex: 9 }}
+                    sx={{ position: "relative", zIndex: 4 }}
                   >
                     <div style={{ position: "relative", zIndex: 4 }}>
                       <Node
