@@ -415,8 +415,13 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                     sx={{
                       position: "relative",
                       zIndex: 4,
-
-                      "& + &": { marginTop: { xs: "66px", sm: "0px" } },
+                      "& + &": { marginTop: { xs: "0px", sm: "0px" } },
+                      marginTop:
+                        nodes.length === 1
+                          ? "66px"
+                          : nodes.length === 2 && k === 0
+                          ? 0
+                          : 0,
                     }}
                   >
                     <div style={{ position: "relative", zIndex: 4 }}>
