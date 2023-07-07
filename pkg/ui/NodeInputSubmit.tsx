@@ -2,7 +2,9 @@ import { Grid } from "@mui/material"
 import Box from "@mui/material/Box"
 import { getNodeLabel } from "@ory/integrations/ui"
 import { Button } from "@ory/themes"
+import { useTranslation } from "next-i18next"
 import { NodeNextResponse } from "next/dist/server/base-http/node"
+import { useRouter } from "next/router"
 import { useState, useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
@@ -23,14 +25,12 @@ import {
 import { Navs, Stage } from "../../types/enum"
 
 import { NodeInputProps } from "./helpers"
-import { useTranslation } from "next-i18next"
-import { useRouter } from 'next/router'
 
 export function NodeInputSubmit<T>({
   node,
   attributes,
   disabled,
-  lang
+  lang,
 }: NodeInputProps) {
   const dispatch = useDispatch()
   const router = useRouter()
@@ -44,8 +44,12 @@ export function NodeInputSubmit<T>({
   const resendLink = ["Resend code"].includes(getNodeLabel(node))
   const linkRelated =
     getNodeLabel(node).includes("Link") || getNodeLabel(node).includes("Unlink")
-  const deleteAccount = activeNav === Navs.ACCOUNT && activeStage === Stage.DELETE_ACCOUNT && !resendLink
-  const deleteAccountResend = activeNav === Navs.ACCOUNT && activeStage === Stage.DELETE_ACCOUNT
+  const deleteAccount =
+    activeNav === Navs.ACCOUNT &&
+    activeStage === Stage.DELETE_ACCOUNT &&
+    !resendLink
+  const deleteAccountResend =
+    activeNav === Navs.ACCOUNT && activeStage === Stage.DELETE_ACCOUNT
 
   const defaultStyle = {
     backgroundColor: "#A62BC3",
@@ -56,13 +60,13 @@ export function NodeInputSubmit<T>({
     fontFamily: "Open Sans",
     color: "#FFF",
     minWidth: "95px",
-    width:
-      deleteAccount ? "111px" :
-        activeNav === Navs.SETTINGS || linkRelated
-        ? "95px"
-        : activeStage === Stage.VERIFY_CODE 
-          ? "100%"
-          : "@media (max-width: 600px) {100%}",
+    width: deleteAccount
+      ? "111px"
+      : activeNav === Navs.SETTINGS || linkRelated
+      ? "95px"
+      : activeStage === Stage.VERIFY_CODE
+      ? "100%"
+      : "@media (max-width: 600px) {100%}",
     position: deleteAccount ? "absolute" : "unset",
     right:
       activeNav === Navs.SETTINGS
@@ -70,7 +74,13 @@ export function NodeInputSubmit<T>({
         : isDialogForgotPswd || deleteAccount
         ? "30px"
         : "unset",
-    marginTop: deleteAccount ? "50px" : isDialogForgotPswd ? "20px" : isSignINOUT ? "36px" : "unset",
+    marginTop: deleteAccount
+      ? "50px"
+      : isDialogForgotPswd
+      ? "20px"
+      : isSignINOUT
+      ? "36px"
+      : "unset",
     zIndex: 1,
   }
 
@@ -115,23 +125,22 @@ export function NodeInputSubmit<T>({
     showButton = false
   }
 
-  const buttonText =
-      deleteAccount
-      ? t('continue') || "Continue"
-      : (activeNav === Navs.RECOVERY) && activeStage === Stage.FORGOT_PASSWORD
-      ? lang?.submit
-      : (activeNav === Navs.VERIFICATION || activeNav === Navs.RECOVERY) &&
+  const buttonText = deleteAccount
+    ? t("continue") || "Continue"
+    : activeNav === Navs.RECOVERY && activeStage === Stage.FORGOT_PASSWORD
+    ? lang?.submit
+    : (activeNav === Navs.VERIFICATION || activeNav === Navs.RECOVERY) &&
       getNodeLabel(node) === "Submit"
-      ? lang?.verify
-      : getNodeLabel(node) === "Resend code"
-      ? lang?.resend || t('resend') || 'Resend'
-      : getNodeLabel(node) === "Sign in"
-      ? lang?.login
-      : getNodeLabel(node) === "Sign up"
-      ? lang?.signUp
-      : getNodeLabel(node) === "Save"
-      ? lang?.save || t('save') || "Save"
-      : getNodeLabel(node)
+    ? lang?.verify
+    : getNodeLabel(node) === "Resend code"
+    ? lang?.resend || t("resend") || "Resend"
+    : getNodeLabel(node) === "Sign in"
+    ? lang?.login
+    : getNodeLabel(node) === "Sign up"
+    ? lang?.signUp
+    : getNodeLabel(node) === "Save"
+    ? lang?.save || t("save") || "Save"
+    : getNodeLabel(node)
 
   const handleClick = () => {
     const clickAppleBtn = document.querySelector(".apple >button")
@@ -149,11 +158,17 @@ export function NodeInputSubmit<T>({
         <Box display="flex" justifyContent="center" alignItems="center">
           <Box style={resendStyle}>
             <Box fontFamily="open sans" color="#A5A5A9" fontSize="14px">
-              {`${lang?.didntReceive || t('didnt_receive') || "Didn't receive"} ?`}
+              {`${
+                lang?.didntReceive || t("didnt_receive") || "Didn't receive"
+              } ?`}
             </Box>
             <Button
               style={
-                showButton ? (resendLink ? linkStyle : defaultStyle) : hiddenStyle
+                showButton
+                  ? resendLink
+                    ? linkStyle
+                    : defaultStyle
+                  : hiddenStyle
               }
               id="resendcode"
               name={attributes.name}
@@ -176,78 +191,81 @@ export function NodeInputSubmit<T>({
         </Box>
       ) : (
         <>
-          {isDialogForgotPswd ? 
-          <Box display="flex" justifyContent="end" gap="12px">
-            <Box
-              zIndex={1}
-              mt="20px"
-              width="95px"
-              height="44px"
-              bgcolor="transparent"
-              border="1px solid #C0C0C0"
-              borderRadius="8px"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              color="#C0C0C0"
-              fontFamily="open sans"
-              fontSize="16px"
-              right="140px"
-              sx={{
-                cursor: "pointer",
-              }}
-              onClick={(e) => {
-                if (activeStage === Stage.FORGOT_PASSWORD) {
-                  router.push("/login")
+          {isDialogForgotPswd ? (
+            <Box display="flex" justifyContent="end" gap="12px">
+              <Box
+                zIndex={1}
+                mt="20px"
+                width="95px"
+                height="44px"
+                bgcolor="transparent"
+                border="1px solid #C0C0C0"
+                borderRadius="8px"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                color="#C0C0C0"
+                fontFamily="open sans"
+                fontSize="16px"
+                right="140px"
+                sx={{
+                  cursor: "pointer",
+                }}
+                onClick={(e) => {
+                  if (activeStage === Stage.FORGOT_PASSWORD) {
+                    router.push("/login")
+                  }
+                  // handleClose(e, "")
+                  dispatch(setActiveStage(Stage.NONE))
+                }}
+              >
+                {lang?.cancel}
+              </Box>
+              <Button
+                style={
+                  showButton
+                    ? resendLink
+                      ? linkStyle
+                      : defaultStyle
+                    : hiddenStyle
                 }
-                // handleClose(e, "")
-                dispatch(setActiveStage(Stage.NONE))
-              }}>
-              {lang?.cancel}
+                name={attributes.name}
+                value={attributes.value || ""}
+                disabled={attributes.disabled || disabled}
+                className={attributes.value}
+                // disabled={
+                //   buttonText === "Verify" && sixDigitCode.length !== 6
+                //     ? true
+                //     : attributes.disabled || disabled
+                // }
+              >
+                {buttonText}
+              </Button>
             </Box>
-            <Button
-              style={
-                showButton
-                  ? resendLink
-                    ? linkStyle
-                    : defaultStyle
-                  : hiddenStyle
-              }
-              name={attributes.name}
-              value={attributes.value || ""}
-              disabled={attributes.disabled || disabled}
-              className={attributes.value}
-              // disabled={
-              //   buttonText === "Verify" && sixDigitCode.length !== 6
-              //     ? true
-              //     : attributes.disabled || disabled
-              // }
-            >
-              {buttonText}
-            </Button>
-          </Box> : 
-          <Box>
-            <Button
-              style={
-                showButton
-                  ? resendLink
-                    ? linkStyle
-                    : defaultStyle
-                  : hiddenStyle
-              }
-              name={attributes.name}
-              value={attributes.value || ""}
-              disabled={attributes.disabled || disabled}
-              className={attributes.value}
-              // disabled={
-              //   buttonText === "Verify" && sixDigitCode.length !== 6
-              //     ? true
-              //     : attributes.disabled || disabled
-              // }
-            >
-              {buttonText}
-            </Button>
-          </Box>}
+          ) : (
+            <Box>
+              <Button
+                style={
+                  showButton
+                    ? resendLink
+                      ? linkStyle
+                      : defaultStyle
+                    : hiddenStyle
+                }
+                name={attributes.name}
+                value={attributes.value || ""}
+                disabled={attributes.disabled || disabled}
+                className={attributes.value}
+                // disabled={
+                //   buttonText === "Verify" && sixDigitCode.length !== 6
+                //     ? true
+                //     : attributes.disabled || disabled
+                // }
+              >
+                {buttonText}
+              </Button>
+            </Box>
+          )}
           {linkRelated && (
             <Box
               boxSizing="border-box"
@@ -262,10 +280,14 @@ export function NodeInputSubmit<T>({
               alignItems="center"
               justifyContent="space-between"
             >
-              <Box display="flex" gap={{
-                    sm: "20px",
-                    xs: "16px",
-                  }} alignItems="center">
+              <Box
+                display="flex"
+                gap={{
+                  sm: "20px",
+                  xs: "16px",
+                }}
+                alignItems="center"
+              >
                 <Box height="40px" display="flex" alignItems="center">
                   {getNodeLabel(node).includes("google") ? (
                     <Google />
@@ -273,10 +295,14 @@ export function NodeInputSubmit<T>({
                     <Apple />
                   ) : null}
                 </Box>
-                <Box fontFamily="open sans" fontSize={{
+                <Box
+                  fontFamily="open sans"
+                  fontSize={{
                     sm: "20px",
                     xs: "16px",
-                  }} color="#FFF">
+                  }}
+                  color="#FFF"
+                >
                   {getNodeLabel(node).split(" ")[1].charAt(0).toUpperCase() +
                     getNodeLabel(node).split(" ")[1].slice(1)}
                 </Box>

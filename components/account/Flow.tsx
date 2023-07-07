@@ -17,6 +17,7 @@ import React, { Component, FormEvent, MouseEvent } from "react"
 
 import Apple from "../../public/images/login_icons/Apple"
 import Google from "../../public/images/login_icons/Google"
+import Switch from "../Switch"
 
 import { Messages } from "./Messages"
 import { Node } from "./Node"
@@ -271,34 +272,43 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 <div
                   style={{
                     boxSizing: "border-box",
-                    // position: "absolute",
                     backgroundColor: "rgb(39, 39, 53)",
                     opacity: 1,
                     fontFamily: "open sans",
                     height: `${overlayStyles.height}px`,
                     marginTop: `${overlayStyles.marginTop}px`,
                     width: `calc(100% - ${overlayStyles.padding}px)`,
-
                     borderRadius: "12px",
                     padding: `${overlayStyles.innerPadding}px`,
                   }}
                 >
-                  <div style={{ display: "flex" }}>
-                    <Google />
-                    {console.log("@accountDebug overlayStyles", overlayStyles)}
-                    {console.log(
-                      "@accountDebug overlayStyles.fontSize",
-                      overlayStyles.fontSize,
-                    )}
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <div style={{ display: "flex" }}>
+                      <Google />
+                      <div
+                        style={{
+                          fontSize: `${overlayStyles.fontSize}px`,
+                          color: "#fff",
+                          marginLeft: "20px",
+                          lineHeight: `${overlayStyles.lineHeight}px`,
+                        }}
+                      >
+                        Google
+                      </div>
+                    </div>
                     <div
                       style={{
-                        fontSize: `${overlayStyles.fontSize}px`,
-                        color: "#fff",
-                        marginLeft: "20px",
-                        lineHeight: `${overlayStyles.lineHeight}px`,
+                        height: overlayStyles.padding,
+                        width: "40px",
+                        backgroundColor: "#272735",
+                        opacity: 0.3,
+                        display: "flex",
+                        alignItems: "center",
                       }}
                     >
-                      Google
+                      <Switch on={true} />
                     </div>
                   </div>
                 </div>
@@ -313,11 +323,9 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 <div
                   style={{
                     boxSizing: "border-box",
-                    // position: "absolute",
                     backgroundColor: "rgb(39, 39, 53)",
                     opacity: 1,
                     fontFamily: "open sans",
-                    // height: `calc(100% - ${overlayStyles.padding}px)`,
                     height: `${overlayStyles.height}px`,
                     marginTop: `${overlayStyles.marginTop}px`,
                     width: `calc(100% - ${overlayStyles.padding}px)`,
@@ -325,22 +333,34 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                     padding: `${overlayStyles.innerPadding}px`,
                   }}
                 >
-                  <div style={{ display: "flex" }}>
-                    <Apple />
-                    {console.log("@accountDebug overlayStyles", overlayStyles)}
-                    {console.log(
-                      "@accountDebug overlayStyles.fontSize",
-                      overlayStyles.fontSize,
-                    )}
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <div style={{ display: "flex" }}>
+                      <Apple />
+
+                      <div
+                        style={{
+                          fontSize: `${overlayStyles.fontSize}px`,
+                          color: "#fff",
+                          marginLeft: "20px",
+                          lineHeight: `${overlayStyles.lineHeight}px`,
+                        }}
+                      >
+                        Apple
+                      </div>
+                    </div>
                     <div
                       style={{
-                        fontSize: `${overlayStyles.fontSize}px`,
-                        color: "#fff",
-                        marginLeft: "20px",
-                        lineHeight: `${overlayStyles.lineHeight}px`,
+                        height: overlayStyles.padding,
+                        width: "40px",
+                        backgroundColor: "#272735",
+                        opacity: 0.3,
+                        display: "flex",
+                        alignItems: "center",
                       }}
                     >
-                      Apple
+                      <Switch on={true} />
                     </div>
                   </div>
                 </div>
@@ -383,6 +403,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                   />
                 )
               } else {
+                console.log("@debugAccountLink node:", node)
                 return (
                   <Grid
                     item
