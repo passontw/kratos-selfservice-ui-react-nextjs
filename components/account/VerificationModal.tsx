@@ -375,7 +375,7 @@ const Verification: NextPage = (props) => {
         top="25vh"
         left="50%"
         marginLeft="-250px"
-        zIndex={2}
+        zIndex={5}
         sx={{
           "@media screen and (max-width: 530px)": {
             left: "20px",

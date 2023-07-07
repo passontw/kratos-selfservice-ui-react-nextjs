@@ -95,11 +95,14 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   }
 
   componentDidMount() {
+    // init initial settings
     this.handleCalcPadding()
+    // adjust settings on window re-size
     window.addEventListener("resize", this.handleCalcPadding)
   }
 
   componentWillUnmount() {
+    // clear listener to prevent memory leak
     window.addEventListener("resize", this.handleCalcPadding)
   }
 
@@ -246,7 +249,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           <Grid
             container
             spacing={{ xs: 2, sm: 4 }}
-            flexDirection={{ xs: "column-reverse", sm: "row-reverse" }}
+            // flexDirection={{ xs: "column-reverse", sm: "row-reverse" }}
             position={"relative"}
           >
             {/* {!hideGlobalMessages ? (
@@ -367,7 +370,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
               </Grid>
             </Grid>
 
-            {nodes.map((node, k) => {
+            {nodes.reverse().map((node, k) => {
               const excludedFields = {
                 account: ["email"],
               }
@@ -409,7 +412,12 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                     item
                     xs={12}
                     sm={6}
-                    sx={{ position: "relative", zIndex: 4 }}
+                    sx={{
+                      position: "relative",
+                      zIndex: 4,
+
+                      "& + &": { marginTop: { xs: "66px", sm: "0px" } },
+                    }}
                   >
                     <div style={{ position: "relative", zIndex: 4 }}>
                       <Node
