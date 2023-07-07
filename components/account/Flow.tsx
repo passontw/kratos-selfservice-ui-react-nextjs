@@ -241,7 +241,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
 
     const marginTop = nodes.find((node) => node.attributes.value === "google")
       ? "0"
-      : "66px"
+      : "77px"
 
     console.log("@debugAccountLink marginTop:", marginTop)
 
@@ -255,7 +255,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           <Grid
             container
             spacing={{ xs: 2, sm: 4 }}
-            // flexDirection={{ xs: "column-reverse", sm: "row-reverse" }}
+            flexDirection={{ sm: "row-reverse" }}
             position={"relative"}
           >
             {/* {!hideGlobalMessages ? (
