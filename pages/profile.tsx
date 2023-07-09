@@ -29,6 +29,12 @@ interface Props {
   only?: Methods
 }
 
+const getCityName = (city, state, resultCity) => {
+  if (city) return city;
+  if (state) return state;
+  return resultCity['欄位3'].split(',')[1] || 'Unknow';
+}
+
 function SettingsCard({
   flow,
   only,
@@ -61,12 +67,13 @@ const getCityName = () => {
         axios.get(`https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}`)
           .then(response => {
             console.log('@geo_response', response)
-            const { country_code, city, suburb } = response.data.address;
+            const { country_code, city, state, suburb } = response.data.address;
             const key = `${city}${suburb}`;
             const resultCity = cityJson.find(city => {
               return city['欄位2'] === key;
             })
-            const cityName = city ? city : resultCity['欄位3'].split(',')[1];
+
+            const cityName = getCityName(city, state, resultCity);
             const result = `${cityName},${country_code.toUpperCase()}`;
             console.log('@geo_result', result)
             resolve(result);
