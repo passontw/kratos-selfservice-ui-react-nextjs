@@ -29,7 +29,7 @@ interface Props {
   only?: Methods
 }
 
-const getCityName = (city, state, resultCity) => {
+const getRealCityName = (city, state, resultCity) => {
   if (city) return city;
   if (state) return state;
   return resultCity['欄位3'].split(',')[1] || 'Unknow';
@@ -73,7 +73,7 @@ const getCityName = () => {
               return city['欄位2'] === key;
             })
 
-            const cityName = getCityName(city, state, resultCity);
+            const cityName = getRealCityName(city, state, resultCity);
             const result = `${cityName},${country_code.toUpperCase()}`;
             console.log('@geo_result', result)
             resolve(result);
