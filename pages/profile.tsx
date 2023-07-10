@@ -159,6 +159,12 @@ const Profile: NextPage = (props) => {
       .catch(handleFlowError(router, "profile", setFlow))
   }, [flowId, router, router.isReady, returnTo, flow])
 
+  useEffect(() => {
+    const locale = JSON.parse(localStorage.getItem("lang"))
+    console.log('#profile locale', locale)
+    if (locale) router.push(`${locale}/profile`)
+  }, []);
+
   const onSubmit = (values: UpdateSettingsFlowBody) => {
     return router
       // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
