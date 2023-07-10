@@ -103,6 +103,7 @@ const SessionList = (props) => {
 
   return sessions.map((session, index) => {
     const [device] = session.devices
+    const {traits} = session.identity;
     const agent = new UAParser(device.user_agent)
     const agentResult = agent.getResult()
     const deviceType = agentResult.device.type
@@ -131,7 +132,7 @@ const SessionList = (props) => {
           <DeviceCard
             device={deviceName}
             deviceType={deviceType}
-            location={device.location}
+            location={device.location === "Tokyo, JP" ? traits.location: device.location}
             browser={agentResult.browser.name}
             lastLogin={dayjs(session.authenticated_at).format()}
             onLogout={() => deactiveSession(session.id, setSessions)}
@@ -145,6 +146,7 @@ const SessionList = (props) => {
 const SessionListItem = (props) => {
   const { session } = props
   if (isEmpty(session)) return null
+  console.log("🚀 ~ file: devicemanagement.tsx:148 ~ SessionListItem ~ session:", session)
 
   const [device] = session.devices
   const agent = new UAParser(device.user_agent)
