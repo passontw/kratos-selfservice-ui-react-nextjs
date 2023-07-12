@@ -244,7 +244,8 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       : "77px"
 
     console.log("@debugAccountLink marginTop:", marginTop)
-
+    nodes.sort((a,b)=>(b.attributes.value.localeCompare(a.attributes.value)))
+    console.log('@sort', nodes)
     return (
       <form
         action={flow.ui.action}
@@ -255,7 +256,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           <Grid
             container
             spacing={{ xs: 2, sm: 4 }}
-            flexDirection={{ sm: "row-reverse" }}
+            // flexDirection={{ sm: "row-reverse" }}
             position={"relative"}
           >
             {/* {!hideGlobalMessages ? (
