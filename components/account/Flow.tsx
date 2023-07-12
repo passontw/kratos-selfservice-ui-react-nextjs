@@ -376,7 +376,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
               </Grid>
             </Grid>
 
-            {nodes.reverse().map((node, k) => {
+            {nodes.sort((a,b)=>(b.attributes.value.localeCompare(a.attributes.value))).map((node, k) => {
               const excludedFields = {
                 account: ["email"],
               }
