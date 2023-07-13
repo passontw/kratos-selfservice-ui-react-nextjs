@@ -320,6 +320,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                         opacity: 0.3,
                         display: "flex",
                         alignItems: "center",
+                        justifyContent: "flex-end",
                       }}
                     >
                       <Switch on={true} />
