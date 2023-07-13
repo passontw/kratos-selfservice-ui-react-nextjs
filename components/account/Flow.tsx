@@ -261,6 +261,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
             spacing={{ xs: 2, sm: 4 }}
             // flexDirection={{ sm: "row-reverse" }}
             position={"relative"}
+            justifyContent={ hasGoogle ? 'unset' : 'flex-end' }
           >
             {/* {!hideGlobalMessages ? (
               <Messages messages={flow.ui.messages} />
@@ -274,7 +275,6 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 top: 0,
                 left: `${overlayStyles.padding}px`,
                 width: "100%",
-                justifyContent: hasGoogle ? 'unset' : 'flex-end',
               }}
             >
               <Grid
