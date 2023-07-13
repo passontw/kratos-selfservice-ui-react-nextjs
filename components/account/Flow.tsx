@@ -299,13 +299,13 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                   <div
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <div style={{ display: "flex" }}>
+                    <div style={{ display: "flex", paddingLeft: "8px" }}>
                       <Google />
                       <div
                         style={{
                           fontSize: `${overlayStyles.fontSize}px`,
                           color: "#fff",
-                          marginLeft: "20px",
+                          marginLeft: "15px",
                           lineHeight: `${overlayStyles.lineHeight}px`,
                         }}
                       >
