@@ -248,6 +248,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     console.log("@debugAccountLink marginTop:", marginTop)
     nodes.sort((a,b)=>(b.attributes.value.localeCompare(a.attributes.value)))
     console.log('@sort', nodes)
+    console.log('@hasGoogle', hasGoogle)
     return (
       <form
         action={flow.ui.action}
