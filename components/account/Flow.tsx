@@ -239,7 +239,9 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
 
     const { overlayStyles } = this.state
 
-    const marginTop = nodes.find((node) => node.attributes.value === "google")
+    const hasGoogle = nodes.find((node) => node.attributes.value === "google")
+
+    const marginTop = hasGoogle
       ? "0"
       : "77px"
 
@@ -271,6 +273,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 top: 0,
                 left: `${overlayStyles.padding}px`,
                 width: "100%",
+                justifyContent: hasGoogle ? 'flex-end' : 'unset',
               }}
             >
               <Grid
