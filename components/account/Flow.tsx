@@ -351,14 +351,14 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                   <div
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <div style={{ display: "flex" }}>
+                    <div style={{ display: "flex", paddingLeft: "8px"  }}>
                       <Apple />
 
                       <div
                         style={{
                           fontSize: `${overlayStyles.fontSize}px`,
                           color: "#fff",
-                          marginLeft: "20px",
+                          marginLeft: "15px",
                           lineHeight: `${overlayStyles.lineHeight}px`,
                         }}
                       >
@@ -373,6 +373,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                         opacity: 0.3,
                         display: "flex",
                         alignItems: "center",
+                        justifyContent: "flex-end",
                       }}
                     >
                       <Switch on={true} />
