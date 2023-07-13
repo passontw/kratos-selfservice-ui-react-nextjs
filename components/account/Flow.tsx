@@ -273,7 +273,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                 top: 0,
                 left: `${overlayStyles.padding}px`,
                 width: "100%",
-                justifyContent: hasGoogle ? 'flex-end' : 'unset',
+                justifyContent: hasGoogle ? 'unset' : 'flex-end',
               }}
             >
               <Grid
