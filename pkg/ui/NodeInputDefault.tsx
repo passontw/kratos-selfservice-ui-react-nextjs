@@ -177,10 +177,10 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
 
   // routes where the old design of validation needs to be removed
   const isRouteAllowed =
-    !window.location.pathname.includes("/verification") &&
-    !window.location.pathname.includes("/account") &&
-    !window.location.pathname.includes("/recovery") &&
-    !window.location.pathname.includes("/login")
+    !window.location.href.includes("verification?") &&
+    !window.location.href.includes("account?") &&
+    !window.location.href.includes("recovery?")
+  // && !window.location.pathname.includes("/login")
 
   const locale = router.locale
   const inputPaddingLeft =
