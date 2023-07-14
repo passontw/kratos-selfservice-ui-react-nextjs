@@ -28,7 +28,7 @@ import {
 import { Navs, Stage } from "../types/enum"
 import Head from 'next/head'
 
-const linkAttributesNamesKey = "!@#$%^linkAttributesNamesKey"
+export const linkAttributesNamesKey = "!@#$%^linkAttributesNamesKey"
 
 interface Props {
   flow?: SettingsFlow
@@ -302,6 +302,7 @@ const Account: NextPage = (props) => {
             const linkAttributesNames = JSON.parse(
               localStorage.getItem(linkAttributesNamesKey) || "{}",
             )
+
             const googleNode = data.ui.nodes.find((node) => {
               return node.attributes.value === "google"
             })

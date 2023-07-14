@@ -36,6 +36,21 @@ export type Values = Partial<
 //   noEmail: boolean
 // }
 
+const getBody = (isAppleButton, body = {}, method = {}) => {
+  if (!isAppleButton && method.value === 'apple') {
+    return {
+      ...body,
+      method: "password",
+    };
+  } else {
+    return {
+      ...body,
+      ...{ [method.name]: method.value },
+    }
+
+  }
+}
+
 export type Methods =
   | "oidc"
   | "password"
@@ -48,11 +63,11 @@ export type Methods =
 export type Props<T> = {
   // The flow
   flow?:
-    | LoginFlow
-    | RegistrationFlow
-    | SettingsFlow
-    | VerificationFlow
-    | RecoveryFlow
+  | LoginFlow
+  | RegistrationFlow
+  | SettingsFlow
+  | VerificationFlow
+  | RecoveryFlow
   // Only show certain nodes. We will always render the default nodes for CSRF tokens.
   only?: Methods
   // Is triggered on submission
@@ -194,12 +209,10 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       // We need the method specified from the name and value of the submit button.
       // when multiple submit buttons are present, the clicked one's value is used.
       if (hasSubmitter(event.nativeEvent)) {
+        const isAppleButton = event.nativeEvent.submitter.id === "appleButton";
         const method = event.nativeEvent.submitter
-        // alert(method.value)
-        body = {
-          ...body,
-          ...{ [method.name]: method.value },
-        }
+
+        body = getBody(isAppleButton, body, method)
       }
     }
 
@@ -431,6 +444,8 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
               <Google />
             </Button>
             <Button
+              id="appleButton"
+              data-id="appleButton"
               name="provider"
               value="apple"
               disabled={false}

@@ -3,6 +3,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import React, { useEffect } from "react"
 import { useDispatch } from "react-redux"
+import { linkAttributesNamesKey } from "../../pages/account"
 
 import { LogoutLink } from "../../pkg"
 import Export from "../../public/images/Menu/Export"
@@ -97,6 +98,7 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ lang }) => {
 
       <StyledMobile
         onClick={() => {
+          localStorage.removeItem(linkAttributesNamesKey);
           onLogout()
         }}
       >

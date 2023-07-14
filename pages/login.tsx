@@ -131,6 +131,7 @@ const Login: NextPage = (props : any) => {
 
   useEffect(() => {
     localStorage.removeItem(localStorageKey)
+    localStorage.removeItem(linkAttributesNamesKey)
     hydraLoginService()
     // If the router is not ready yet, or we already have a flow, do nothing.
     if (!router.isReady || flow) {

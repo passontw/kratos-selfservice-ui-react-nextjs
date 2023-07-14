@@ -239,12 +239,13 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
 
     const { overlayStyles } = this.state
 
-    const marginTop = nodes.find((node) => node.attributes.value === "google")
+    const hasGoogle = nodes.find((node) => node.attributes.value === "google")
+
+    const marginTop = hasGoogle
       ? "0"
       : "77px"
 
     console.log("@debugAccountLink marginTop:", marginTop)
-
     return (
       <form
         action={flow.ui.action}
@@ -255,8 +256,9 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           <Grid
             container
             spacing={{ xs: 2, sm: 4 }}
-            flexDirection={{ sm: "row-reverse" }}
+            // flexDirection={{ sm: "row-reverse" }}
             position={"relative"}
+            justifyContent={ hasGoogle ? 'unset' : 'flex-end' }
           >
             {/* {!hideGlobalMessages ? (
               <Messages messages={flow.ui.messages} />
@@ -294,13 +296,13 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                   <div
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <div style={{ display: "flex" }}>
+                    <div style={{ display: "flex", paddingLeft: "8px" }}>
                       <Google />
                       <div
                         style={{
                           fontSize: `${overlayStyles.fontSize}px`,
                           color: "#fff",
-                          marginLeft: "20px",
+                          marginLeft: "15px",
                           lineHeight: `${overlayStyles.lineHeight}px`,
                         }}
                       >
@@ -315,6 +317,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                         opacity: 0.3,
                         display: "flex",
                         alignItems: "center",
+                        justifyContent: "flex-end",
                       }}
                     >
                       <Switch on={true} />
@@ -345,14 +348,14 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                   <div
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <div style={{ display: "flex" }}>
+                    <div style={{ display: "flex", paddingLeft: "8px"  }}>
                       <Apple />
 
                       <div
                         style={{
                           fontSize: `${overlayStyles.fontSize}px`,
                           color: "#fff",
-                          marginLeft: "20px",
+                          marginLeft: "15px",
                           lineHeight: `${overlayStyles.lineHeight}px`,
                         }}
                       >
@@ -367,6 +370,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                         opacity: 0.3,
                         display: "flex",
                         alignItems: "center",
+                        justifyContent: "flex-end",
                       }}
                     >
                       <Switch on={true} />
@@ -376,7 +380,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
               </Grid>
             </Grid>
 
-            {nodes.reverse().map((node, k) => {
+            {nodes.sort((a,b)=>(b.attributes.value.localeCompare(a.attributes.value))).map((node, k) => {
               const excludedFields = {
                 account: ["email"],
               }
