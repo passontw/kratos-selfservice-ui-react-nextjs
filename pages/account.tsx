@@ -311,8 +311,6 @@ const Account: NextPage = (props) => {
             })
             const googleAttributesName = googleNode?.attributes.name
             const appleAttributesName = appleNode?.attributes.name
-            const locale = localStorage.getItem("lang")
-            console.log("zzz2", locale)
             if (!isEmpty(linkAttributesNames)) {
               if (
                 linkAttributesNames.googleAttributesName !==
@@ -442,6 +440,9 @@ const Account: NextPage = (props) => {
             </Box>
             <Box
               mt="12px"
+              mb={{
+                xs: "60px",
+              }}
               height={{ xs: "64px", md: "74px" }}
               bgcolor="#272735"
               borderRadius="12px"

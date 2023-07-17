@@ -161,8 +161,7 @@ const Profile: NextPage = (props) => {
 
   useEffect(() => {
     const locale = JSON.parse(localStorage.getItem("lang"))
-    console.log('#profile locale', locale)
-    if (locale) router.push(`${locale}/profile`)
+    if (locale) router.push(`${locale === 'en' ? '' : locale}/profile`)
   }, []);
 
   const onSubmit = (values: UpdateSettingsFlowBody) => {
