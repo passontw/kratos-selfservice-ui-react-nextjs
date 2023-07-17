@@ -331,9 +331,6 @@ const Account: NextPage = (props) => {
                 if (appleAttributesName === "unlink") {
                   // alert("apple linked");
                   showToast(`Apple ${lang?.linked}`)
-                } else if (appleAttributesName === undefined) {
-                  console.log('AttributesName app id')
-                  return
                 } else {
                   // alert("apple unlinked");
                   showToast(`Apple ${lang?.unlinked}`)
