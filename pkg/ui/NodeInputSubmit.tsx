@@ -147,8 +147,10 @@ export function NodeInputSubmit<T>({
     const clickGoogleBtn = document.querySelector(".google >button")
     if (attributes.value === "apple") {
       clickAppleBtn.click()
+      console.log('test....1', getNodeLabel(node))
     } else {
       clickGoogleBtn.click()
+      console.log('test....', getNodeLabel(node))
     }
   }
   return (
@@ -310,7 +312,6 @@ export function NodeInputSubmit<T>({
                   on={getNodeLabel(node).split(" ")[0] === "Unlink"}
                   change={handleClick}
                   handleToast={() => {
-                    console.log('test....', getNodeLabel(node))
                     showToast(`${getNodeLabel(node)}`)
                   }}
                 />
