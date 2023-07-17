@@ -307,6 +307,7 @@ const Account: NextPage = (props) => {
               return node.attributes.value === "google"
             })
             const appleNode = data.ui.nodes.find((node) => {
+              console.log('AttributesName', node.attributes.value)
               return node.attributes.value === "apple"
             })
             const googleAttributesName = googleNode?.attributes.name
