@@ -311,6 +311,7 @@ const Account: NextPage = (props) => {
             })
             const googleAttributesName = googleNode?.attributes.name
             const appleAttributesName = appleNode?.attributes.name
+            console.log('AttributesName', linkAttributesNames, googleAttributesName, appleAttributesName)
             if (!isEmpty(linkAttributesNames)) {
               if (
                 linkAttributesNames.googleAttributesName !==
@@ -390,7 +391,7 @@ const Account: NextPage = (props) => {
               only="oidc"
               flow={flow}
               lang={lang}
-              // handleToast={handleToast}
+            // handleToast={handleToast}
             />
           </SettingsCard>
           <SettingsCard only="profile" flow={flow}>

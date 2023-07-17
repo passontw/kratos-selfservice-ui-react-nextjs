@@ -147,10 +147,8 @@ export function NodeInputSubmit<T>({
     const clickGoogleBtn = document.querySelector(".google >button")
     if (attributes.value === "apple") {
       clickAppleBtn.click()
-      console.log('test....1', getNodeLabel(node))
     } else {
       clickGoogleBtn.click()
-      console.log('test....', getNodeLabel(node))
     }
   }
   return (
