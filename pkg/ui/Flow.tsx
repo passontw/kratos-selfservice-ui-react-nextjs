@@ -239,6 +239,9 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     const { hideGlobalMessages, flow, router, lang } = this.props
     const { values, isLoading } = this.state
 
+    // log flow
+    console.log('LOG FLOW:', flow)
+
     // Filter the nodes - only show the ones we want
     let nodes = this.filterNodes()
 
