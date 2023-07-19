@@ -85,17 +85,10 @@ const Title = styled.h3`
   font-weight: 400;
   font-size: 13px;
   color: #717197;
-  margin: 0;
+  margin: 0 0 10px 0;
 `
 
-const TitleText = styled.span`
-  @media only screen and (max-width: 400px) {
-    margin-left: -12px;
-  }
-  @media only screen and (max-width: 380px) {
-    margin-left: -18px;
-  }
-`
+const TitleText = styled.span``
 
 interface CodeInput {
   show?: string
@@ -298,10 +291,10 @@ const CodeInput: React.FC<CodeInput> = ({
 
   return show !== "email" ? (
     <Container>
-      <Title>
-        <TitleText>{t("verif_code") || "Verification Code"}</TitleText>
-      </Title>
       <span className="verification-inputs">
+        <Title>
+          <TitleText>{t("verif_code") || "Verification Code"}</TitleText>
+        </Title>
         <InputsWrapper onClick={() => !isTouched && setIsTouched(true)}>
           {code.map((digit, index) => (
             <Input

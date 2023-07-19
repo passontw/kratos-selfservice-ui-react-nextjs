@@ -155,10 +155,10 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
   }, [value])
 
   const accountError =
-  validationMsgs &&
-  (validationMsgs[0]?.text.includes("Email account") ||
-  validationMsgs[0]?.text.includes("The provided credentials are invalid"))
-  
+    validationMsgs &&
+    (validationMsgs[0]?.text.includes("Email account") ||
+      validationMsgs[0]?.text.includes("The provided credentials are invalid"))
+
   const getVerifyCodeConditions = () => {
     if (
       nav === Navs.VERIFICATION &&
@@ -227,12 +227,14 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
           <StyledDefaultLabel isError={isError}>{label}</StyledDefaultLabel>
         )}
         {console.log(attributes.name)}
+        {console.log(label)}
         {!isInputChanging && (
           <TextInput
             className="my-text-input"
             style={{
               display:
-                label === "Verify code" || attributes.name === "traits.gender"
+                attributes.name === "code" ||
+                attributes.name === "traits.gender"
                   ? "none"
                   : "unset",
               border:
@@ -288,11 +290,11 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
                     let displayText = text
                     if (text.includes("is missing")) {
                       displayText =
-                      "This field is required, please fill it out."
+                        "This field is required, please fill it out."
                     }
                     if (text.includes("is not valid")) {
                       displayText =
-                      "Invalid email format, please check and try again."
+                        "Invalid email format, please check and try again."
                     }
                     return (
                       <span
