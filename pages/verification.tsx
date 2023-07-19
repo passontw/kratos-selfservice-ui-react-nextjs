@@ -377,7 +377,7 @@ const Verification: NextPage = (props: any) => {
           </Head>
           <CmidHead />
           <Box display="flex" justifyContent="center">
-            <Box width={{ xs: "100%", sm: "400px"}}>
+            <Box width={{ xs: "80%", sm: "400px"}}>
               <Box mt="62px" display="flex" flexDirection="column">
               <span style={{ color: "#FFF", fontSize: "36px", fontFamily: "Teko" }}>
                 {verifySuccess ? lang?.verifySucess || "Verified Success" : 
