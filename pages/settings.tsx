@@ -77,9 +77,22 @@ const Settings: NextPage = (props) => {
     axios.get("/api/.ory/sessions/whoami", {
       headers: { withCredentials: true },
     }).then(resp => {
-      console.log("🚀 ~ file: settings.tsx:80 ~ useEffect ~ resp:", resp)
-      const {identity, authentication_methods} = resp.data;
-    }).catch(error => ({data: {}}))
+      const { authentication_methods } = resp.data;
+
+      const [authenticationMethod] = authentication_methods;
+
+      if (authenticationMethod.method !== "code_recovery") {
+        ory
+          .createBrowserLogoutFlow()
+          .then(({ data }) => {
+            return ory
+              .updateLogoutFlow({ token: data.logout_token })
+              .then(() => router.push("/login"))
+              .then(() => router.reload())
+          }).catch(error => router.push("/login"))
+      }
+      return Promise.resolve();
+    }).catch(error => router.replace("/login"))
   }, [])
 
   useEffect(() => {
@@ -96,6 +109,7 @@ const Settings: NextPage = (props) => {
           setFlow(data)
         })
         .catch(handleFlowError(router, "settings", setFlow))
+        .catch(error => false)
       return
     }
 
@@ -108,13 +122,14 @@ const Settings: NextPage = (props) => {
         setFlow(data)
       })
       .catch(handleFlowError(router, "settings", setFlow))
+      .catch(error => false)
   }, [flowId, router, router.isReady, returnTo, flow])
 
   const onSubmit = async (values: UpdateSettingsFlowBody, confirmPassword) => {
     try {
       await handleYupSchema(updateSettingsPasswordSchema, {
         confirmPassword,
-        password: values.password === "" ? undefined: values.password,
+        password: values.password === "" ? undefined : values.password,
       })
 
       const locale = router.locale
@@ -254,8 +269,8 @@ const Settings: NextPage = (props) => {
 
 export default Settings
 
-export async function getStaticProps({ locale } : any) {
+export async function getStaticProps({ locale }: any) {
   return {
-    props: {...(await serverSideTranslations(locale, ['common']))},
+    props: { ...(await serverSideTranslations(locale, ['common'])) },
   }
 }

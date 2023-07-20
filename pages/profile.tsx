@@ -39,7 +39,7 @@ const getRealCityName = (city, state, resultCity) => {
 const deleteAccount = async (router) => {
   const { data } = await axios.get("/api/.ory/sessions/whoami", {
     headers: { withCredentials: true },
-  }).catch(error => ({data: {}}))
+  }).catch(error => ({ data: {} }))
 
   return axios
     .delete(
@@ -120,7 +120,6 @@ const Profile: NextPage = (props) => {
   const dispatch = useDispatch()
   const [flow, setFlow] = useState<RegistrationFlow>()
   const router = useRouter()
-  const onLogout = LogoutLink()
 
   const { flow: flowId, return_to: returnTo } = router.query
 
@@ -131,8 +130,8 @@ const Profile: NextPage = (props) => {
     axios.get("/api/.ory/sessions/whoami", {
       headers: { withCredentials: true },
     }).then(resp => {
-      const {identity, authentication_methods} = resp.data;
-      const {traits, verifiable_addresses} = identity;
+      const { identity, authentication_methods } = resp.data;
+      const { traits, verifiable_addresses } = identity;
 
       if (traits.source === '0') {
         const [verifiableAddress] = verifiable_addresses;
@@ -142,14 +141,16 @@ const Profile: NextPage = (props) => {
       }
 
       const [authenticationMethod] = authentication_methods;
-      console.log("🚀 ~ file: profile.tsx:146 ~ useEffect ~ authenticationMethod.method:", authenticationMethod.method)
+
       if (authenticationMethod.method === "code_recovery") {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            
-            onLogout();
-          }, 4000)
-        })
+        ory
+          .createBrowserLogoutFlow()
+          .then(({ data }) => {
+            return ory
+              .updateLogoutFlow({ token: data.logout_token })
+              .then(() => router.push("/login"))
+              .then(() => router.reload())
+          }).catch(error => false)
       }
       return Promise.resolve();
     }).catch(() => {
@@ -181,7 +182,7 @@ const Profile: NextPage = (props) => {
           flow: String(data?.id),
           updateSettingsFlowBody: values,
         });
-      })
+      }).catch(error => false)
   }, [])
 
   useEffect(() => {
@@ -198,6 +199,7 @@ const Profile: NextPage = (props) => {
           setFlow(data)
         })
         .catch(handleFlowError(router, "profile", setFlow))
+        .catch(error => false)
       return
     }
 
@@ -210,6 +212,7 @@ const Profile: NextPage = (props) => {
         setFlow(data)
       })
       .catch(handleFlowError(router, "profile", setFlow))
+      .catch(error => false)
   }, [flowId, router, router.isReady, returnTo, flow])
 
   useEffect(() => {
@@ -246,7 +249,7 @@ const Profile: NextPage = (props) => {
 
             return Promise.reject(err)
           }),
-      );
+      ).catch(error => false);
   }
 
 
