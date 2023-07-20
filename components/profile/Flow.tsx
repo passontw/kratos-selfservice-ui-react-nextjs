@@ -215,6 +215,12 @@ export default class Flow<T extends Values> extends Component<
     const nodes = this.filterNodes()
     // console.log("@profile nodes:", nodes)
 
+    // acquire sourceNode
+    const { node: sourceNode, nodeId: sourceNodeId } = this.spliceNode(
+      "traits.source",
+      nodes,
+    )
+
     // acquire profileNode
     const { node: profileNode, nodeId: profileNodeId } = this.spliceNode(
       "traits.avatar",
