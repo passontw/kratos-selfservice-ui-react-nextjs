@@ -294,6 +294,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
               "traits.birthdayYear",
               "traits.birthdayMonth",
               "traits.gender",
+              "traits.source",
             ],
           }
 
