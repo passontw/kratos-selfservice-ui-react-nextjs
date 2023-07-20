@@ -16,6 +16,7 @@ import AccountLayout from "../components/Layout/AccountLayout"
 import { showToast } from "../components/Toast"
 import Flow from "../components/profile/Flow"
 import { handleFlowError } from "../pkg/errors"
+import { Methods, LogoutLink } from "../pkg"
 import ory from "../pkg/sdk"
 import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
@@ -26,7 +27,7 @@ import Head from 'next/head'
 
 interface Props {
   flow?: SettingsFlow
-  only?: Methods
+  only?: Methods,
 }
 
 const getRealCityName = (city, state, resultCity) => {
@@ -119,6 +120,7 @@ const Profile: NextPage = (props) => {
   const dispatch = useDispatch()
   const [flow, setFlow] = useState<RegistrationFlow>()
   const router = useRouter()
+  const onLogout = LogoutLink()
 
   const { flow: flowId, return_to: returnTo } = router.query
 
@@ -129,13 +131,25 @@ const Profile: NextPage = (props) => {
     axios.get("/api/.ory/sessions/whoami", {
       headers: { withCredentials: true },
     }).then(resp => {
-      const {traits, verifiable_addresses} = resp.data.identity;
+      const {identity, authentication_methods} = resp.data;
+      const {traits, verifiable_addresses} = identity;
 
       if (traits.source === '0') {
         const [verifiableAddress] = verifiable_addresses;
         if (!verifiableAddress.verified) {
           return deleteAccount(router);
         }
+      }
+
+      const [authenticationMethod] = authentication_methods;
+      console.log("🚀 ~ file: profile.tsx:146 ~ useEffect ~ authenticationMethod.method:", authenticationMethod.method)
+      if (authenticationMethod.method === "code_recovery") {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            
+            onLogout();
+          }, 4000)
+        })
       }
       return Promise.resolve();
     }).catch(() => {

@@ -1,3 +1,4 @@
+import axios from "axios"
 import Box from "@mui/material/Box"
 import { SettingsFlow, UpdateSettingsFlowBody } from "@ory/client"
 import cloneDeep from "lodash/cloneDeep"
@@ -9,7 +10,7 @@ import { useDispatch } from "react-redux"
 import LinkNav from "../components/LinkNav"
 import MenuFooter from "../components/MenuFooter"
 import Flow from "../components/changepassword/Flow"
-import { ActionCard, Messages, Methods, LogoutLink } from "../pkg"
+import { Methods, LogoutLink } from "../pkg"
 import { handleFlowError } from "../pkg/errors"
 import ory from "../pkg/sdk"
 import Cmid from "../public/images/app_icons/Cmid"
@@ -73,9 +74,12 @@ const Settings: NextPage = (props) => {
   useEffect(() => {
     dispatch(setActiveNav(Navs.SETTINGS))
     dispatch(setActiveStage(Stage.NONE))
-    return () => {
-      onLogout()
-    }
+    axios.get("/api/.ory/sessions/whoami", {
+      headers: { withCredentials: true },
+    }).then(resp => {
+      console.log("🚀 ~ file: settings.tsx:80 ~ useEffect ~ resp:", resp)
+      const {identity, authentication_methods} = resp.data;
+    }).catch(error => ({data: {}}))
   }, [])
 
   useEffect(() => {
