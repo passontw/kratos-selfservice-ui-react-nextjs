@@ -33,6 +33,12 @@ import Head from 'next/head'
 
 const localStorageKey = "!@#$%^&*()registedata"
 
+const getTraitsSource = (method: string, provider: string) =>  {
+  if (method === "password") return 0;
+  if (provider === "google") return 1;
+  return 2;
+}
+
 const getNextFlow = (flow) => {
   if (!flow) return flow
   if (!flow?.ui?.nodes) return flow
@@ -107,11 +113,14 @@ const Registration: NextPage = (props) => {
       .catch(handleFlowError(router, "registration", setFlow))
   }, [flowId, router, router.isReady, returnTo, flow])
 
+  
   const onSubmit = async (values: any) => {
     try {
       if (!values.provider) {
         await handleYupSchema(registrationFormSchema, values)
       }
+
+      values["traits.source"] = getTraitsSource(values.method, values.provider);
 
       return (
         router

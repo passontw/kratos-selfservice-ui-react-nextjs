@@ -35,6 +35,35 @@ const getRealCityName = (city, state, resultCity) => {
   return resultCity['欄位3'].split(',')[1] || 'Unknow';
 }
 
+const deleteAccount = async (router) => {
+  const { data } = await axios.get("/api/.ory/sessions/whoami", {
+    headers: { withCredentials: true },
+  }).catch(error => ({data: {}}))
+
+  return axios
+    .delete(
+      `${process.env.ORY_CUSTOM_DOMAIN}/admin/identities/${data.identity.id}`,
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${process.env.ORY_PAT}`,
+        },
+      },
+    )
+    .then(() => {
+      const locale = router.locale
+      let path = "/login"
+      if (locale && locale !== "en") {
+        path = `/${locale}${path}`
+      }
+      // router.push("/login")
+      router.push(path)
+    })
+    .catch((error) => {
+      showToast(error.message, false)
+    })
+}
+
 function SettingsCard({
   flow,
   only,
@@ -99,6 +128,16 @@ const Profile: NextPage = (props) => {
 
     axios.get("/api/.ory/sessions/whoami", {
       headers: { withCredentials: true },
+    }).then(resp => {
+      const {traits, verifiable_addresses} = resp.data.identity;
+
+      if (traits.source === '0') {
+        const [verifiableAddress] = verifiable_addresses;
+        if (!verifiableAddress.verified) {
+          return deleteAccount(router);
+        }
+      }
+      return Promise.resolve();
     }).catch(() => {
       window.location.replace("/login");
     })

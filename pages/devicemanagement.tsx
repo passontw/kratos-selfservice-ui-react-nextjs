@@ -146,7 +146,6 @@ const SessionList = (props) => {
 const SessionListItem = (props) => {
   const { session } = props
   if (isEmpty(session)) return null
-  console.log("🚀 ~ file: devicemanagement.tsx:148 ~ SessionListItem ~ session:", session)
 
   const [device] = session.devices
   const agent = new UAParser(device.user_agent)
