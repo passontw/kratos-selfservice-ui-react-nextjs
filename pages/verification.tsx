@@ -207,9 +207,10 @@ const Verification: NextPage = (props: any) => {
   }
   
   const onSubmit = async (values: UpdateVerificationFlowBody, isResendCode) => {
+    const emailValue = router.query.user || router.query.email as string
     const {
       code,
-      email,
+      email = emailValue,
       csrf_token,
       method,
     } = values;
@@ -264,7 +265,8 @@ const Verification: NextPage = (props: any) => {
       setIssuedAt(nextIssuedAt)
     }
 
-    await router
+    if (!isResendCode) {
+      await router
       // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
       // their data when they reload the page.
       .push(
@@ -275,8 +277,10 @@ const Verification: NextPage = (props: any) => {
         undefined,
         { shallow: true },
       )
+    }
 
-    return  await ory
+      console.log("🚀 ~ file: verification.tsx:283 ~ onSubmit ~ nextValues:", nextValues)
+    return ory
       .updateVerificationFlow({
         flow: String(flow?.id),
         updateVerificationFlowBody: nextValues,
@@ -337,7 +341,7 @@ const Verification: NextPage = (props: any) => {
           }
           
         }).catch(error => {
-          console.log(error)
+          console.log("🚀 ~ file: verification.tsx:341 ~ .then ~ error:", error)
         })
         return;
         }
