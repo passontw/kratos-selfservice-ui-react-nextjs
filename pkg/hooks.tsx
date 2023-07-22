@@ -14,10 +14,8 @@ export function LogoutLink(deps?: DependencyList) {
       .createBrowserLogoutFlow()
       .then(({ data }) => {
         setLogoutToken(data.logout_token)
-        console.log("🚀 ~ file: hooks.tsx:17 ~ .then ~ data.logout_token:", data.logout_token)
       })
       .catch((err: AxiosError) => {
-        console.log("🚀 ~ file: hooks.tsx:19 ~ useEffect ~ err:", err)
         switch (err.response?.status) {
           case 401:
             // do nothing, the user is not logged in
