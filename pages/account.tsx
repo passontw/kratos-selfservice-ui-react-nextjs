@@ -307,12 +307,12 @@ const Account: NextPage = (props) => {
               return node.attributes.value === "google"
             })
             const appleNode = data.ui.nodes.find((node) => {
+              console.log('AttributesName', node.attributes.value)
               return node.attributes.value === "apple"
             })
             const googleAttributesName = googleNode?.attributes.name
             const appleAttributesName = appleNode?.attributes.name
-            const locale = localStorage.getItem("lang")
-            console.log("zzz2", locale)
+            console.log('AttributesName', linkAttributesNames, googleAttributesName, appleAttributesName)
             if (!isEmpty(linkAttributesNames)) {
               if (
                 linkAttributesNames.googleAttributesName !==
@@ -335,6 +335,7 @@ const Account: NextPage = (props) => {
                   // alert("apple unlinked");
                   showToast(`Apple ${lang?.unlinked}`)
                 }
+
               }
             }
 
@@ -392,7 +393,7 @@ const Account: NextPage = (props) => {
               only="oidc"
               flow={flow}
               lang={lang}
-              // handleToast={handleToast}
+            // handleToast={handleToast}
             />
           </SettingsCard>
           <SettingsCard only="profile" flow={flow}>
@@ -442,6 +443,9 @@ const Account: NextPage = (props) => {
             </Box>
             <Box
               mt="12px"
+              mb={{
+                xs: "60px",
+              }}
               height={{ xs: "64px", md: "74px" }}
               bgcolor="#272735"
               borderRadius="12px"

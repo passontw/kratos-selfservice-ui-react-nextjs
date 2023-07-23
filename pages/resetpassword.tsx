@@ -39,7 +39,7 @@ const ResetPassword: NextPage = () => {
     // Otherwise we initialize it
     ory
       .createBrowserRecoveryFlow({
-        returnTo: "https://cmid-admin.passon.tw/changepassword",
+        returnTo: "/changepassword",
       })
       .then(({ data }) => {
         setFlow(data)

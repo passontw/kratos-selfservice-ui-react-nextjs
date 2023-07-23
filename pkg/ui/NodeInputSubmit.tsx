@@ -63,24 +63,24 @@ export function NodeInputSubmit<T>({
     width: deleteAccount
       ? "111px"
       : activeNav === Navs.SETTINGS || linkRelated
-      ? "95px"
-      : activeStage === Stage.VERIFY_CODE
-      ? "100%"
-      : "@media (max-width: 600px) {100%}",
+        ? "95px"
+        : activeStage === Stage.VERIFY_CODE
+          ? "100%"
+          : "@media (max-width: 600px) {100%}",
     position: deleteAccount ? "absolute" : "unset",
     right:
       activeNav === Navs.SETTINGS
         ? "0px"
         : isDialogForgotPswd || deleteAccount
-        ? "30px"
-        : "unset",
+          ? "30px"
+          : "unset",
     marginTop: deleteAccount
       ? "50px"
       : isDialogForgotPswd
-      ? "20px"
-      : isSignINOUT
-      ? "36px"
-      : "unset",
+        ? "20px"
+        : isSignINOUT
+          ? "36px"
+          : "unset",
     zIndex: 1,
   }
 
@@ -128,19 +128,19 @@ export function NodeInputSubmit<T>({
   const buttonText = deleteAccount
     ? t("continue") || "Continue"
     : activeNav === Navs.RECOVERY && activeStage === Stage.FORGOT_PASSWORD
-    ? lang?.submit
-    : (activeNav === Navs.VERIFICATION || activeNav === Navs.RECOVERY) &&
-      getNodeLabel(node) === "Submit"
-    ? lang?.verify
-    : getNodeLabel(node) === "Resend code"
-    ? lang?.resend || t("resend") || "Resend"
-    : getNodeLabel(node) === "Sign in"
-    ? lang?.login
-    : getNodeLabel(node) === "Sign up"
-    ? lang?.signUp
-    : getNodeLabel(node) === "Save"
-    ? lang?.save || t("save") || "Save"
-    : getNodeLabel(node)
+      ? lang?.submit
+      : (activeNav === Navs.VERIFICATION || activeNav === Navs.RECOVERY) &&
+        getNodeLabel(node) === "Submit"
+        ? lang?.verify
+        : getNodeLabel(node) === "Resend code"
+          ? lang?.resend || t("resend") || "Resend"
+          : getNodeLabel(node) === "Sign in"
+            ? lang?.login
+            : getNodeLabel(node) === "Sign up"
+              ? lang?.signUp
+              : getNodeLabel(node) === "Save"
+                ? lang?.save || t("save") || "Save"
+                : getNodeLabel(node)
 
   const handleClick = () => {
     const clickAppleBtn = document.querySelector(".apple >button")
@@ -151,16 +151,14 @@ export function NodeInputSubmit<T>({
       clickGoogleBtn.click()
     }
   }
-
   return (
     <>
       {getNodeLabel(node) === "Resend code" ? (
         <Box display="flex" justifyContent="center" alignItems="center">
           <Box style={resendStyle}>
             <Box fontFamily="open sans" color="#A5A5A9" fontSize="14px">
-              {`${
-                lang?.didntReceive || t("didnt_receive") || "Didn't receive"
-              } ?`}
+              {`${lang?.didntReceive || t("didnt_receive") || "Didn't receive"
+                } ?`}
             </Box>
             <Button
               style={
@@ -185,7 +183,6 @@ export function NodeInputSubmit<T>({
             >
               {buttonText}
             </Button>
-
             <Box>{codeLocked && <Timer />}</Box>
           </Box>
         </Box>
@@ -233,11 +230,11 @@ export function NodeInputSubmit<T>({
                 value={attributes.value || ""}
                 disabled={attributes.disabled || disabled}
                 className={attributes.value}
-                // disabled={
-                //   buttonText === "Verify" && sixDigitCode.length !== 6
-                //     ? true
-                //     : attributes.disabled || disabled
-                // }
+              // disabled={
+              //   buttonText === "Verify" && sixDigitCode.length !== 6
+              //     ? true
+              //     : attributes.disabled || disabled
+              // }
               >
                 {buttonText}
               </Button>
@@ -256,11 +253,11 @@ export function NodeInputSubmit<T>({
                 value={attributes.value || ""}
                 disabled={attributes.disabled || disabled}
                 className={attributes.value}
-                // disabled={
-                //   buttonText === "Verify" && sixDigitCode.length !== 6
-                //     ? true
-                //     : attributes.disabled || disabled
-                // }
+              // disabled={
+              //   buttonText === "Verify" && sixDigitCode.length !== 6
+              //     ? true
+              //     : attributes.disabled || disabled
+              // }
               >
                 {buttonText}
               </Button>
@@ -312,7 +309,9 @@ export function NodeInputSubmit<T>({
                   origin="ACC_LINK"
                   on={getNodeLabel(node).split(" ")[0] === "Unlink"}
                   change={handleClick}
-                  handleToast={() => showToast(`${getNodeLabel(node)}`)}
+                  handleToast={() => {
+                    showToast(`${getNodeLabel(node)}`)
+                  }}
                 />
               </Box>
             </Box>

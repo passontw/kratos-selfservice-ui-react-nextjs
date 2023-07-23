@@ -20,7 +20,7 @@ import {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
   margin-bottom: 10px;
 `
@@ -34,8 +34,11 @@ const InputsWrapper = styled.div`
     justify-content: space-between;
     width: 100%;
   }
+  @media only screen and (max-width: 500px) {
+    gap: 10px;
+  }
   @media only screen and (max-width: 435px) {
-    gap: 6px;
+    gap: 8px;
   }
 `
 
@@ -53,9 +56,17 @@ const Input = styled.input<InputProps>`
   text-align: center;
   font-size: 20px;
   color: #fff;
+  @media only screen and (max-width: 475px) {
+    width: 42px;
+    height: 48px;
+  }
   @media only screen and (max-width: 435px) {
+    width: 40px;
+    height: 46px;
+  }
+  @media only screen and (max-width: 415px) {
     width: 36px;
-    height: 50px;
+    height: 42px;
   }
 
   &:focus {
@@ -68,12 +79,16 @@ const Input = styled.input<InputProps>`
 `
 
 const Title = styled.h3`
+  position: relative;
+  align-self: baseline;
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
   font-size: 13px;
   color: #717197;
-  margin: 0;
+  margin: 0 0 10px 0;
 `
+
+const TitleText = styled.span``
 
 interface CodeInput {
   show?: string
@@ -240,6 +255,12 @@ const CodeInput: React.FC<CodeInput> = ({
           "Verification code is incorrect, please check and try again."
         )
       }
+      case "Verification code is no longer valid, please try again.": {
+        return (
+          t("error-verif_code_valid") ||
+          "Verification code is no longer valid, please try again."
+        )
+      }
       case "": {
         return t("error-field_required")
       }
@@ -270,8 +291,10 @@ const CodeInput: React.FC<CodeInput> = ({
 
   return show !== "email" ? (
     <Container>
-      <Title>{t("verif_code") || "Verification Code"}</Title>
       <span className="verification-inputs">
+        <Title>
+          <TitleText>{t("verif_code") || "Verification Code"}</TitleText>
+        </Title>
         <InputsWrapper onClick={() => !isTouched && setIsTouched(true)}>
           {code.map((digit, index) => (
             <Input
@@ -303,6 +326,8 @@ const CodeInput: React.FC<CodeInput> = ({
           color: "rgb(242, 72, 103)",
           fontSize: "13px",
           fontFamily: "Open Sans",
+          alignSelf: "baseline",
+          marginLeft: "10px",
         }}
       >
         {validationError

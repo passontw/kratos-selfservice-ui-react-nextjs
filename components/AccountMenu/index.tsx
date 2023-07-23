@@ -99,7 +99,10 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ lang }) => {
       <StyledMobile
         onClick={() => {
           localStorage.removeItem(linkAttributesNamesKey);
-          onLogout()
+          setTimeout(() => {
+            onLogout()
+
+          }, 3000)
         }}
       >
         <StyledLine />

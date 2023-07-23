@@ -16,6 +16,7 @@ import AccountLayout from "../components/Layout/AccountLayout"
 import { showToast } from "../components/Toast"
 import Flow from "../components/profile/Flow"
 import { handleFlowError } from "../pkg/errors"
+import { Methods, LogoutLink } from "../pkg"
 import ory from "../pkg/sdk"
 import { setActiveNav, setActiveStage } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
@@ -26,7 +27,7 @@ import Head from 'next/head'
 
 interface Props {
   flow?: SettingsFlow
-  only?: Methods
+  only?: Methods,
 }
 
 const getRealCityName = (city, state, resultCity) => {
@@ -99,6 +100,23 @@ const Profile: NextPage = (props) => {
 
     axios.get("/api/.ory/sessions/whoami", {
       headers: { withCredentials: true },
+    }).then(resp => {
+      const { identity, authentication_methods } = resp.data;
+      const { traits, verifiable_addresses } = identity;
+
+      const [authenticationMethod] = authentication_methods;
+
+      if (authenticationMethod.method === "code_recovery") {
+        ory
+          .createBrowserLogoutFlow()
+          .then(({ data }) => {
+            return ory
+              .updateLogoutFlow({ token: data.logout_token })
+              .then(() => router.push("/login"))
+              .then(() => router.reload())
+          }).catch(error => false)
+      }
+      return Promise.resolve();
     }).catch(() => {
       window.location.replace("/login");
     })
@@ -128,7 +146,7 @@ const Profile: NextPage = (props) => {
           flow: String(data?.id),
           updateSettingsFlowBody: values,
         });
-      })
+      }).catch(error => false)
   }, [])
 
   useEffect(() => {
@@ -145,6 +163,7 @@ const Profile: NextPage = (props) => {
           setFlow(data)
         })
         .catch(handleFlowError(router, "profile", setFlow))
+        .catch(error => false)
       return
     }
 
@@ -157,12 +176,12 @@ const Profile: NextPage = (props) => {
         setFlow(data)
       })
       .catch(handleFlowError(router, "profile", setFlow))
+      .catch(error => false)
   }, [flowId, router, router.isReady, returnTo, flow])
 
   useEffect(() => {
     const locale = JSON.parse(localStorage.getItem("lang"))
-    console.log('#profile locale', locale)
-    if (locale) router.push(`${locale}/profile`)
+    if (locale) router.push(`${locale === 'en' ? '' : locale}/profile`)
   }, []);
 
   const onSubmit = (values: UpdateSettingsFlowBody) => {
@@ -194,7 +213,7 @@ const Profile: NextPage = (props) => {
 
             return Promise.reject(err)
           }),
-      );
+      ).catch(error => false);
   }
 
 

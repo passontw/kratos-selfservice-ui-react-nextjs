@@ -1,7 +1,30 @@
+import axios from 'axios'
 import { NextRouter } from "next/router"
 import queryString from "query-string"
 import { Dispatch, SetStateAction } from "react"
 import { showToast } from '../components/Toast'
+
+const deleteAccount = async (router, data) => {
+  return axios
+    .delete(
+      `${process.env.ORY_CUSTOM_DOMAIN}/admin/identities/${data.identity.id}`,
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${process.env.ORY_PAT}`,
+        },
+      },
+    )
+    .then(() => {
+      const locale = router.locale
+      let path = "/registration"
+      if (locale && locale !== "en") {
+        path = `/${locale}${path}`
+      }
+      router.push(path)
+    })
+    .catch((error) => false)
+}
 
 // A small function to help us deal with errors coming from fetching a flow.
 export function handleGetFlowError<S>(
@@ -21,8 +44,25 @@ export function handleGetFlowError<S>(
         return
       case "session_already_available":
         console.log("reached 2")
+        try {
+          const resp = await axios.get("/api/.ory/sessions/whoami", {
+            headers: { withCredentials: true },
+          })
+          const { identity } = resp.data;
+          const { traits, verifiable_addresses } = identity;
+    
+          if (traits.source === '0') {
+            const [verifiableAddress] = verifiable_addresses;
+            if (!verifiableAddress.verified) {
+              await deleteAccount(router, resp.data);
+              return;
+            }
+          }
+        } catch(error) {}
+        
+    
         // User is already signed in, let's redirect them home!
-        await router.push("/profile")
+        // await router.push("/profile")
         return
       case "session_refresh_required":
         console.log("reached 3")

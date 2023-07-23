@@ -7,9 +7,6 @@ import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import parse from 'html-react-parser';
 
-import AppItem from "../components/AppItem"
-import { StyledAppItemWrap } from "../components/AppItem/styles"
-import AppsList from "../components/AppsList"
 import CmidHead from "../components/CmidHead"
 import MenuFooter from "../components/MenuFooter"
 import { Flow } from "../pkg"
@@ -28,10 +25,15 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import queryString from "query-string"
 import LinkNav from '../components/LinkNav'
 import { Ring } from '@uiball/loaders'
-import Link from 'next/link'
 import Head from 'next/head'
 
 const localStorageKey = "!@#$%^&*()registedata"
+
+const getTraitsSource = (method: string, provider: string) =>  {
+  if (method === "password") return 0;
+  if (provider === "google") return 1;
+  return 2;
+}
 
 const getNextFlow = (flow) => {
   if (!flow) return flow
@@ -96,6 +98,7 @@ const Registration: NextPage = (props) => {
     if (locale && locale !== "en") {
       path = `/${locale}${path}`
     }
+
     // Otherwise we initialize it
     ory
       .createBrowserRegistrationFlow({
@@ -107,11 +110,14 @@ const Registration: NextPage = (props) => {
       .catch(handleFlowError(router, "registration", setFlow))
   }, [flowId, router, router.isReady, returnTo, flow])
 
+  
   const onSubmit = async (values: any) => {
     try {
       if (!values.provider) {
         await handleYupSchema(registrationFormSchema, values)
       }
+
+      values["traits.source"] = getTraitsSource(values.method, values.provider);
 
       return (
         router
