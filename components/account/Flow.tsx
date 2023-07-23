@@ -241,9 +241,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
 
     const hasGoogle = nodes.find((node) => node.attributes.value === "google")
 
-    const marginTop = hasGoogle
-      ? "0"
-      : "77px"
+    const marginTop = hasGoogle ? "0" : "77px"
 
     console.log("@debugAccountLink marginTop:", marginTop)
     return (
@@ -258,7 +256,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
             spacing={{ xs: 2, sm: 4 }}
             // flexDirection={{ sm: "row-reverse" }}
             position={"relative"}
-            justifyContent={ hasGoogle ? 'unset' : 'flex-end' }
+            justifyContent={hasGoogle ? "unset" : "flex-end"}
           >
             {/* {!hideGlobalMessages ? (
               <Messages messages={flow.ui.messages} />
@@ -348,7 +346,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
                   <div
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <div style={{ display: "flex", paddingLeft: "8px"  }}>
+                    <div style={{ display: "flex", paddingLeft: "8px" }}>
                       <Apple />
 
                       <div
@@ -380,84 +378,88 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
               </Grid>
             </Grid>
 
-            {nodes.sort((a,b)=>(b.attributes.value.localeCompare(a.attributes.value))).map((node, k) => {
-              const excludedFields = {
-                account: ["email"],
-              }
-              // const pathname = window.location.pathname.slice(
-              //   1,
-              // ) as keyof typeof excludedFields
+            {nodes
+              .sort((a, b) =>
+                b.attributes.value.localeCompare(a.attributes.value),
+              )
+              .map((node, k) => {
+                const excludedFields = {
+                  account: ["email"],
+                }
+                // const pathname = window.location.pathname.slice(
+                //   1,
+                // ) as keyof typeof excludedFields
 
-              if (node.attributes.name.includes("email")) return
-              const id = getNodeId(node) as keyof Values
-              if (node.attributes.type == "hidden") {
-                return (
-                  <Node
-                    key={`${id}-${k}`}
-                    disabled={isLoading}
-                    node={node}
-                    value={values[id]}
-                    dispatchSubmit={this.handleSubmit}
-                    lang={lang}
-                    setValue={(value) =>
-                      new Promise((resolve) => {
-                        this.setState(
-                          (state) => ({
-                            ...state,
-                            values: {
-                              ...state.values,
-                              [getNodeId(node)]: value,
-                            },
-                          }),
-                          resolve,
-                        )
-                      })
-                    }
-                  />
-                )
-              } else {
-                console.log("@debugAccountLink node:", node)
-                return (
-                  <Grid
-                    item
-                    xs={12}
-                    sm={6}
-                    sx={{
-                      position: "relative",
-                      zIndex: 4,
-                      marginTop: { xs: marginTop, sm: 0 },
-                    }}
-                  >
-                    <div style={{ position: "relative", zIndex: 4 }}>
-                      <Node
-                        key={`${id}-${k}`}
-                        disabled={isLoading}
-                        node={node}
-                        value={values[id]}
-                        dispatchSubmit={this.handleSubmit}
-                        // handleToast={this.props?.handleToast}
-                        setValue={(value) =>
-                          new Promise((resolve) => {
-                            this.setState(
-                              (state) => ({
-                                ...state,
-                                values: {
-                                  ...state.values,
-                                  [getNodeId(node)]: value,
-                                },
-                              }),
-                              resolve,
-                            )
-                          })
-                        }
-                      />
-                    </div>
-                  </Grid>
-                )
-              }
-              // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
-              // if (node.meta.label?.text === "E-Mail") return
-            })}
+                if (node.attributes.name.includes("email")) return
+                const id = getNodeId(node) as keyof Values
+                if (node.attributes.type == "hidden") {
+                  return (
+                    <Node
+                      key={`${id}-${k}`}
+                      disabled={isLoading}
+                      node={node}
+                      value={values[id]}
+                      dispatchSubmit={this.handleSubmit}
+                      lang={lang}
+                      setValue={(value) =>
+                        new Promise((resolve) => {
+                          this.setState(
+                            (state) => ({
+                              ...state,
+                              values: {
+                                ...state.values,
+                                [getNodeId(node)]: value,
+                              },
+                            }),
+                            resolve,
+                          )
+                        })
+                      }
+                    />
+                  )
+                } else {
+                  console.log("@debugAccountLink node:", node)
+                  return (
+                    <Grid
+                      item
+                      xs={12}
+                      sm={6}
+                      sx={{
+                        position: "relative",
+                        zIndex: 4,
+                        marginTop: { xs: marginTop, sm: 0 },
+                      }}
+                    >
+                      <div style={{ position: "relative", zIndex: 4 }}>
+                        <Node
+                          key={`${id}-${k}`}
+                          disabled={isLoading}
+                          node={node}
+                          value={values[id]}
+                          dispatchSubmit={this.handleSubmit}
+                          // handleToast={this.props?.handleToast}
+                          setValue={(value) =>
+                            new Promise((resolve) => {
+                              this.setState(
+                                (state) => ({
+                                  ...state,
+                                  values: {
+                                    ...state.values,
+                                    [getNodeId(node)]: value,
+                                  },
+                                }),
+                                resolve,
+                              )
+                            })
+                          }
+                        />
+                      </div>
+                    </Grid>
+                  )
+                }
+                // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
+                // if (node.meta.label?.text === "E-Mail") return
+              })}
           </Grid>
         </Box>
       </form>

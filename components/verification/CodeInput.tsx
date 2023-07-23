@@ -9,7 +9,10 @@ import React, {
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 
-import { setSixDigitCode } from "../../state/store/slice/layoutSlice"
+import {
+  selectLockCodeResend,
+  setSixDigitCode,
+} from "../../state/store/slice/layoutSlice"
 import {
   selectIsInputChanging,
   selectIsSubmitting,
@@ -118,6 +121,7 @@ const CodeInput: React.FC<CodeInput> = ({
   const isInputChanging = useSelector(selectIsInputChanging)
   const globalState = useSelector((state) => state)
   const isSubmitting = useSelector(selectIsSubmitting)
+  const isCodeResent = useSelector(selectLockCodeResend)
   const { t } = useTranslation()
   const ref = useRef(null)
   const dispatch = useDispatch()
@@ -132,8 +136,15 @@ const CodeInput: React.FC<CodeInput> = ({
     const isEmpty = !code.filter((item) => item !== "").length
     console.log("@validationDebug2 useEffect isEmpty", isEmpty)
     console.log("@validationDebug2 useEffect inputBlurred", inputBlurred)
+    console.log(
+      "@validationDebug2 useEffect isSubmitting isCodeResent",
+      isCodeResent,
+    )
     console.log("@validationDebug2 useEffect isSubmitting", isSubmitting)
-    if ((isEmpty && inputBlurred) || (isEmpty && isSubmitting)) {
+    if (
+      (isEmpty && inputBlurred && !isCodeResent) ||
+      (isEmpty && isSubmitting && !isCodeResent)
+    ) {
       setValidationError(
         t("error-field_required") ||
           "This field is required, please fill it out.",
