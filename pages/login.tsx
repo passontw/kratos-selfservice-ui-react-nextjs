@@ -151,7 +151,7 @@ const Login: NextPage = (props : any) => {
             console.log('@debug queryObj', queryObj)
             router.replace(`/login?${queryString.stringify({
               flow: flowId,
-              return_to: queryObj,
+              return_to: queryStr,
             })}`)
           }
           setFlow(data)
