@@ -11,10 +11,42 @@ interface LaunchProps {}
 
 const Launch: React.FC<LaunchProps> = () => {
   const router = useRouter()
+
+  const platform = "desktop"
+  const refresh_token = "refresh_token"
+  const access_token = "access_token"
+  const name = "name"
+  const email = "email"
+
   useEffect(() => {
     router.push("dana://token=login")
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const handleOpenClient = () => {
+    switch (platform) {
+      case "desktop": {
+        router.push(
+          `mastercontrol://refresh_token=${refresh_token}:access_token=${access_token}:name=${name}:email=${email}`,
+        )
+      }
+      case "app": {
+        // TODO open IOS / Android app
+        return
+      }
+    }
+  }
+
+  const renderClientName = (platform: string) => {
+    switch (platform) {
+      case "desktop": {
+        return "MasterControl"
+      }
+      case "mobile": {
+        return "App"
+      }
+    }
+  }
 
   return (
     <>
@@ -94,9 +126,7 @@ const Launch: React.FC<LaunchProps> = () => {
             color="#FFFFFF"
             fontFamily="open sans"
             fontSize="16px"
-            onClick={() => {
-              router.push("dana://token=login")
-            }}
+            onClick={handleOpenClient}
             sx={{
               cursor: "pointer",
               "&:hover": {
@@ -104,7 +134,7 @@ const Launch: React.FC<LaunchProps> = () => {
               },
             }}
           >
-            Open MasterControl
+            Open {renderClientName(platform)}
           </Box>
         </Box>
       </div>

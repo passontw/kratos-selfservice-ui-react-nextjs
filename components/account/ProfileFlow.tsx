@@ -94,8 +94,9 @@ export default class Flow<T extends Values> extends Component<
     if (this.props.modalOpen) {
       this.props.dispatch(
         setDialog({
-          title: this.props.mfaState ? 
-            this.props.lang?.turnOnTwoStepVerify : this.props.lang?.turnOffTwoStepVerify,
+          title: this.props.mfaState
+            ? this.props.lang?.turnOnTwoStepVerify
+            : this.props.lang?.turnOffTwoStepVerify,
           titleHeight: "58px",
           width: 480,
           center: true,
