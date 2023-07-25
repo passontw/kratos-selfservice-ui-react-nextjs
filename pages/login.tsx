@@ -145,7 +145,7 @@ const Login: NextPage = (props : any) => {
         .then(({ data }) => {
           const requestUrl = data?.oauth2_login_request?.request_url;
           if (requestUrl) {
-            const queryStr = requestUrl.split('return_to=')[1];
+            const queryStr = requestUrl.split('return_to=')[1].split('?')[1];
             const queryObj = queryString.parse(queryStr);
             console.log('@debug queryStr', queryStr)
             console.log('@debug queryObj', queryObj)
