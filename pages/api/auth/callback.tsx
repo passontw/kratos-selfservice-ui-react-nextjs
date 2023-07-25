@@ -15,7 +15,7 @@ return res.status(200).json({
 //   const clientID = process.env.ORY_CLIENT_ID as string
 //   const clientSecret = process.env.ORY_CLIENT_SECRET as string
 
-  console.log('@auth code',code)
+//   console.log('@auth code',code)
 //   console.log('@auth clientID', clientID)
 //   console.log('@auth clientSecret', clientSecret)
 
