@@ -8,10 +8,7 @@ export default async function handler(
 ) {
 //   console.log('hello from callback.js', req.url);
 //   const { code } = req.query
-return res.status(200).json({
-    status: 200,
-    data: req.query,
-});
+return res.status(200).redirect(307, '/launch');
 //   const clientID = process.env.ORY_CLIENT_ID as string
 //   const clientSecret = process.env.ORY_CLIENT_SECRET as string
 
