@@ -7,10 +7,10 @@ export default async function handler(
     res: NextApiResponse
 ) {
 //   console.log('hello from callback.js', req.url);
-  const { code } = req.body
+//   const { code } = req.query
 return res.status(200).json({
     status: 200,
-    data: req.body,
+    data: req.query,
 });
 //   const clientID = process.env.ORY_CLIENT_ID as string
 //   const clientSecret = process.env.ORY_CLIENT_SECRET as string
