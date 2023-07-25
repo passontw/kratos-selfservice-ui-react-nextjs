@@ -145,7 +145,7 @@ const Login: NextPage = (props : any) => {
         .then(({ data }) => {
           const requestUrl = data?.oauth2_login_request?.request_url;
           if (requestUrl) {
-            const queryStr = requestUrl.split('?').slice(1).join('');
+            const queryStr = requestUrl.split('?').slice(1).join('?');
             const queryObj = queryString.parse(queryStr);
             router.replace(`/login?${queryString.stringify({
               flow: flowId,
