@@ -11,12 +11,21 @@ interface LaunchProps {}
 
 const Launch: React.FC<LaunchProps> = () => {
   const router = useRouter()
+  const query = router.query
+  const { platform, refresh_token, access_token, name, email } = query
 
-  const platform = "desktop"
-  const refresh_token = "refresh_token"
-  const access_token = "access_token"
-  const name = "name"
-  const email = "email"
+  console.log(
+    "@launch\nplatform",
+    platform,
+    "refresh_token",
+    refresh_token,
+    "access_token",
+    access_token,
+    "name",
+    name,
+    "email",
+    email,
+  )
 
   useEffect(() => {
     router.push("dana://token=login")
