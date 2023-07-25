@@ -55,10 +55,10 @@ const Verification: NextPage = (props: any) => {
   // Get ?flow=... from the URL
   const router = useRouter()
   const locale = router.locale
-  let path ='/profile'
+  let path = '/profile'
 
   if (locale && locale !== 'en') {
-    path =`/${locale}${path}`
+    path = `/${locale}${path}`
   }
   const {
     login_challenge,
@@ -166,7 +166,7 @@ const Verification: NextPage = (props: any) => {
       return
     }
 
-    
+
     // Otherwise we initialize it
     ory
       .createBrowserVerificationFlow({
@@ -205,7 +205,7 @@ const Verification: NextPage = (props: any) => {
     setFlow(nextFlow)
     return false;
   }
-  
+
   const onSubmit = async (values: UpdateVerificationFlowBody, isResendCode) => {
     const emailValue = router.query.user || router.query.email as string
     const {
@@ -231,7 +231,7 @@ const Verification: NextPage = (props: any) => {
     if (!isResendCode) {
       const createdTimeDayObject = dayjs(issuedAt)
       const diffMinute = dayjs().diff(createdTimeDayObject, "minute")
-      
+
       const isValidate = validateDiffMinute(setFlow, flow, diffMinute);
       if (!isValidate) {
         const nextFlow = cloneDeep(flow);
@@ -246,8 +246,8 @@ const Verification: NextPage = (props: any) => {
             type: "error",
           }]
           setFlow(nextFlow)
-          return;
         }
+        return;
       } else {
         const nextFlow = cloneDeep(flow);
         const identifierIndex = nextFlow.ui.nodes.findIndex(
@@ -259,6 +259,7 @@ const Verification: NextPage = (props: any) => {
           setFlow(nextFlow)
         }
       }
+
     } else {
       const time = dayjs(new Date());
       const nextIssuedAt = time.utc().format();
@@ -267,19 +268,18 @@ const Verification: NextPage = (props: any) => {
 
     if (!isResendCode) {
       await router
-      // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
-      // their data when they reload the page.
-      .push(
-        `/verification?${queryString.stringify({
-          ...router.query,
-          flow: flow?.id,
-        })}`,
-        undefined,
-        { shallow: true },
-      )
+        // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
+        // their data when they reload the page.
+        .push(
+          `/verification?${queryString.stringify({
+            ...router.query,
+            flow: flow?.id,
+          })}`,
+          undefined,
+          { shallow: true },
+        )
     }
 
-      console.log("🚀 ~ file: verification.tsx:283 ~ onSubmit ~ nextValues:", nextValues)
     return ory
       .updateVerificationFlow({
         flow: String(flow?.id),
@@ -289,11 +289,11 @@ const Verification: NextPage = (props: any) => {
         // Form submission was successful, show the message to the user!
         setVerifySuccess(data.state === "passed_challenge")
 
-        const [message = {text: ''}] = data.ui.messages;
+        const [message = { text: '' }] = data.ui.messages;
         const nextFlow = cloneDeep(data);
 
         if (message.text.includes("The verification code is invalid or has already been used")) {
-          
+
           const identifierIndex = nextFlow.ui.nodes.findIndex(
             (node) => node.attributes.name === "code",
           )
@@ -304,14 +304,9 @@ const Verification: NextPage = (props: any) => {
           }
         }
         setFlow(nextFlow)
-        
-        if (type === 'registe') {
-          setTimeout(() => router.replace(returnToUrl), 2000)
-          return;
-        }
 
         if (data.state === "passed_challenge" && ['login'].includes(type)) {
-          const key = type === 'registe' ? registeLocalStorageKey: localStorageKey
+          const key = type === 'registe' ? registeLocalStorageKey : localStorageKey
           const values = JSON.parse(localStorage.getItem(key))
 
           return ory.createBrowserLoginFlow({
@@ -323,27 +318,26 @@ const Verification: NextPage = (props: any) => {
           }).then(({ data }) => {
             const csrfNode = data.ui.nodes.find(node => node.attributes.name === "csrf_token")
             const nextValues = type === 'registe'
-            ? {
-              identifier: values['traits.email'],
-              method: 'password',
-              password: values.password,
-            }
-            : values
+              ? {
+                identifier: values['traits.email'],
+                method: 'password',
+                password: values.password,
+              }
+              : values
             return ory
               .updateLoginFlow({
                 flow: String(data?.id),
                 updateLoginFlowBody: { ...nextValues, csrf_token: csrfNode?.attributes.value },
               }).then(() => flow)
           }).then(flow => {
-          if (type !== 'registe') {
-            router.replace(returnToUrl)
-            return;
-          }
-          
-        }).catch(error => {
-          console.log("🚀 ~ file: verification.tsx:341 ~ .then ~ error:", error)
-        })
-        return;
+            if (type !== 'registe') {
+              router.replace(returnToUrl)
+              return;
+            } else {
+              setTimeout(() => router.replace(returnToUrl), 2000)
+              return;
+            }
+          }).catch(error => false)
         }
       })
       .catch((err: any) => {
@@ -357,7 +351,7 @@ const Verification: NextPage = (props: any) => {
             router
               // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
               // their data when they reload the page.
-              .push(`/verification?${queryString.stringify({flow: newFlowID})}`, undefined, {
+              .push(`/verification?${queryString.stringify({ flow: newFlowID })}`, undefined, {
                 shallow: true,
               })
 
@@ -381,49 +375,49 @@ const Verification: NextPage = (props: any) => {
           </Head>
           <CmidHead />
           <Box display="flex" justifyContent="center">
-            <Box width={{ xs: "80%", sm: "400px"}}>
+            <Box width={{ xs: "80%", sm: "400px" }}>
               <Box mt="62px" display="flex" flexDirection="column">
-              <span style={{ color: "#FFF", fontSize: "36px", fontFamily: "Teko" }}>
-                {verifySuccess ? lang?.verifySucess || "Verified Success" : 
-                  lang?.verifyAccount || "Verify Account"}
-              </span>
-              <span
-                style={{
-                  color: "#A5A5A9",
-                  marginBottom: "48px",
-                  fontFamily: "open sans",
-                  fontSize: "14px",
-                }}
-              >
-                {verifySuccess
-                  ? lang?.verifySucessDesc || "Congratulation, your account is approved. You will be automatically redirected to %service% in 5 seconds."
-                  : lang?.verifyAcctDesc.replace("master123@gmail.com", `${!isEmpty(email) ? email : ''}`) || `Enter the 6-digit code we sent to ${!isEmpty(email) ? email : ''} to verify account.`}
-              </span>
+                <span style={{ color: "#FFF", fontSize: "36px", fontFamily: "Teko" }}>
+                  {verifySuccess ? lang?.verifySucess || "Verified Success" :
+                    lang?.verifyAccount || "Verify Account"}
+                </span>
+                <span
+                  style={{
+                    color: "#A5A5A9",
+                    marginBottom: "48px",
+                    fontFamily: "open sans",
+                    fontSize: "14px",
+                  }}
+                >
+                  {verifySuccess
+                    ? lang?.verifySucessDesc || "Congratulation, your account is approved. You will be automatically redirected to %service% in 5 seconds."
+                    : lang?.verifyAcctDesc.replace("master123@gmail.com", `${!isEmpty(email) ? email : ''}`) || `Enter the 6-digit code we sent to ${!isEmpty(email) ? email : ''} to verify account.`}
+                </span>
+              </Box>
+              {flow ?
+                <Flow
+                  onSubmit={onSubmit}
+                  flow={flow}
+                  code={sixDigitCode}
+                  lang={lang}
+                  returnTo={returnTo}
+                  type={type}
+                // hideGlobalMessages
+                /> :
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  height="90px">
+                  <Ring
+                    size={40}
+                    lineWeight={5}
+                    speed={2}
+                    color="#A62BC3"
+                  />
+                </Box>}
             </Box>
-            {flow ? 
-            <Flow
-              onSubmit={onSubmit}
-              flow={flow}
-              code={sixDigitCode}
-              lang={lang}
-              returnTo={returnTo}
-              type={type}
-              // hideGlobalMessages
-            /> : 
-            <Box 
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              height="90px">
-              <Ring 
-                size={40}
-                lineWeight={5}
-                speed={2} 
-                color="#A62BC3" 
-              />
-            </Box>}
-            </Box>
-          </Box>        
+          </Box>
           <MenuFooter Copyright="Copyright© 2023 Cooler Master Inc. All rights reserved." />
           <LinkNav />
         </StyledMenuWrapper>
@@ -435,8 +429,8 @@ const Verification: NextPage = (props: any) => {
 
 export default Verification
 
-export async function getStaticProps({ locale } : any) {
+export async function getStaticProps({ locale }: any) {
   return {
-    props: {...(await serverSideTranslations(locale, ['common']))},
+    props: { ...(await serverSideTranslations(locale, ['common'])) },
   }
 }
