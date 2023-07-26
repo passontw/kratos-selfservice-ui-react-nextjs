@@ -112,7 +112,6 @@ const Login: NextPage = (props : any) => {
     // to perform two-factor authentication/verification.
     aal,
   } = router.query
-
   // This might be confusing, but we want to show the user an option
   // to sign out if they are performing two-factor authentication!
   const onLogout = LogoutLink([aal, refresh])
@@ -257,6 +256,7 @@ const Login: NextPage = (props : any) => {
 
           // We logged in successfully! Let's bring the user home.
           .then((loginResult) => {
+            console.log('@debug loginResult',loginResult)
             localStorage.setItem(linkAttributesNamesKey, '{}');
             return axios
               .get("/api/.ory/sessions/whoami", {
