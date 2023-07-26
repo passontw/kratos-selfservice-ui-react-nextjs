@@ -21,9 +21,17 @@ export default async function handler(
         name: 'name',
         email: 'email'
         };
-    
-    const queryString = new URLSearchParams(queryObj).toString();
-    return res.status(200).redirect(307, `/launch?${queryString}`);
+        
+    const response = await fetch(
+      process.env.HYDRA_ADMIN_URL + '/sessions/whoami',
+      { method: 'GET' },
+    );
+    // console.log('response', response)
+    // const queryString = new URLSearchParams(queryObj).toString();
+    return res.status(200).json({
+            data: response
+    });
+    // return res.status(200).redirect(307, `/launch?${queryString}`);
 //   const clientID = process.env.ORY_CLIENT_ID as string
 //   const clientSecret = process.env.ORY_CLIENT_SECRET as string
 
