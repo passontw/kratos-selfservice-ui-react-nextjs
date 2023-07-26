@@ -23,7 +23,7 @@ export default async function handler(
         };
         
         try {
-            const response = await axios.get(`/api/.ory/sessions/whoami`,
+            const response = await axios.get(`https://cmid-admin.passon.tw/api/.ory/sessions/whoami`,
             {
               headers: { withCredentials: true },
             }
