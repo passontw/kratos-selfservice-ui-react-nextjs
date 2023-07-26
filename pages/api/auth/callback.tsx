@@ -23,7 +23,7 @@ export default async function handler(
         };
         
     const response = await axios.get(
-      process.env.HYDRA_ADMIN_URL + '/sessions/whoami',
+      process.env.HYDRA_ADMIN_URL + '/api/.ory/sessions/whoami',
       {
         headers: { withCredentials: true },
       }
