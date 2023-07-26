@@ -105,10 +105,10 @@ export function handleGetFlowError<S>(
         const query = queryString.parse(window.location.search.replace("?", ""));
         // Ory Kratos asked us to point the user to this URL.
         // alert("debug: stay on this page to read errors before redirecting")
-        // if (query && query.return_to) {
-        //   window.location.href = query.return_to;
-        //   return;
-        // }
+        if (query && query.return_to) {
+          window.location.href = query.return_to;
+          return;
+        }
         window.location.href = err.response.data.redirect_browser_to
         // console.log("", err.response.data)
         // setTimeout(() => {
