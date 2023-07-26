@@ -259,7 +259,7 @@ const Login: NextPage = (props : any) => {
             console.log('@debug loginResult',loginResult)
             localStorage.setItem(linkAttributesNamesKey, '{}');
             return axios
-              .get(`${process.env.ORY_SDK_URL}/api/.ory/sessions/whoami`, {
+              .get("/api/.ory/sessions/whoami", {
                 headers: { withCredentials: true },
               })
               .then((result) => {
