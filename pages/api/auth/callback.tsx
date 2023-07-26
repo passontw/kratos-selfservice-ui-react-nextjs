@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import { NextApiRequest, NextApiResponse } from "next"
 // import { getCookie, setCookie } from 'cookies-next';
-
+import axios from 'axios';
 export default async function handler(  
     req: NextApiRequest,
     res: NextApiResponse
@@ -22,9 +22,11 @@ export default async function handler(
         email: 'email'
         };
         
-    const response = await fetch(
+    const response = await axios.get(
       process.env.HYDRA_ADMIN_URL + '/sessions/whoami',
-      { method: 'GET' },
+      {
+        headers: { withCredentials: true },
+      }
     );
     // console.log('response', response)
     // const queryString = new URLSearchParams(queryObj).toString();
