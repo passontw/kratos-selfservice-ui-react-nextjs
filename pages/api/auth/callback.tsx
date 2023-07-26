@@ -22,11 +22,20 @@ export default async function handler(
         email: 'email'
         };
         
-    const response = await axios.get(`${process.env.ORY_SDK_URL}/api/.ory/sessions/whoami`,
-      {
-        headers: { withCredentials: true },
-      }
-    );
+        try {
+            const response = await axios.get(`/api/.ory/sessions/whoami`,
+            {
+              headers: { withCredentials: true },
+            }
+            );
+            return res.status(200).json({
+                data: response
+        });
+        } catch (error) {
+            return res.status(200).json({
+                error
+        });
+        }
     // console.log('response', response)
     // const queryString = new URLSearchParams(queryObj).toString();
     return res.status(200).json({
