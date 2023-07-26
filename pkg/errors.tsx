@@ -109,7 +109,7 @@ export function handleGetFlowError<S>(
         //   window.location.href = 'https://google.com';
         //   return;
         // }
-        window.location.href = err.response.data.redirect_browser_to
+        // window.location.href = err.response.data.redirect_browser_to
         // console.log("", err.response.data)
         // setTimeout(() => {
         //   window.location.href = err.response.data.redirect_browser_to
