@@ -2,6 +2,12 @@ import fetch from 'node-fetch';
 import { NextApiRequest, NextApiResponse } from "next"
 // import { getCookie, setCookie } from 'cookies-next';
 import axios from 'axios';
+
+const axiosapi = axios.create({baseURL: ''});
+axiosapi.interceptors.request.use((config) => {
+    console.log('@interceptors', config);
+    return config;
+})
 export default async function handler(  
     req: NextApiRequest,
     res: NextApiResponse
@@ -23,14 +29,10 @@ export default async function handler(
         };
         
         try {
-            const response = await axios.get(`https://cmid-admin.passon.tw/api/.ory/sessions/whoami`,
-            {
-              headers: { withCredentials: true },
-            }
-            );
+            const response = await axiosapi.get(`https://cmid-admin.passon.tw/api/.ory/sessions/whoami`);
             return res.status(200).json({
                 data: response
-        });
+            });
         } catch (error) {
             return res.status(200).json({
                 error
