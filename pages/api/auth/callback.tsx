@@ -28,20 +28,20 @@ export default async function handler(
         email: 'email'
         };
         
-        try {
-            const response = await axiosapi.get(`https://cmid-admin.passon.tw/api/.ory/sessions/whoami`);
-            return res.status(200).json({
-                data: response
-            });
-        } catch (error) {
-            return res.status(200).json({
-                error
-        });
-        }
+        // try {
+        //     const response = await axiosapi.get(`https://cmid-admin.passon.tw/api/.ory/sessions/whoami`);
+        //     return res.status(200).json({
+        //         data: response
+        //     });
+        // } catch (error) {
+        //     return res.status(200).json({
+        //         error
+        // });
+        // }
     // console.log('response', response)
-    // const queryString = new URLSearchParams(queryObj).toString();
+    const queryString = new URLSearchParams(queryObj).toString();
     return res.status(200).json({
-            data: response
+            data: queryString
     });
     // return res.status(200).redirect(307, `/launch?${queryString}`);
 //   const clientID = process.env.ORY_CLIENT_ID as string

@@ -148,10 +148,21 @@ const Login: NextPage = (props : any) => {
             // const queryObj = queryString.parse(queryStr);
             console.log('@debug queryStr', queryStr)
             // console.log('@debug queryObj', queryObj)
-            router.replace(`/login?${queryString.stringify({
-              flow: flowId,
-              // return_to: queryStr,
-            })}`)
+
+            axios
+              .get("/api/.ory/sessions/whoami", {
+                headers: { withCredentials: true },
+              })
+              .then((result) => {
+                console.log('result', result)
+                router.replace(`/login?${queryString.stringify({
+                  flow: flowId,
+                  return_to: queryStr,
+                })}`)
+                // return [loginResult, result.data]
+              })
+
+           
           }
           setFlow(data)
         })
