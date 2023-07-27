@@ -97,7 +97,9 @@ const Account: NextPage = (props) => {
         router.push(path)
       })
       .catch((error) => {
-        showToast(error.message, false)
+        if (error.code !== 'ERR_BAD_REQUEST') {
+          showToast(error.message, false)
+        }
       })
   }
 
