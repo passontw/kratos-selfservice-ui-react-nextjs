@@ -112,8 +112,9 @@ export function handleGetFlowError<S>(
           })
           .then((result) => {
             // return [loginResult, result.data]
-            console.log('result', result)
-            // window.location.href =`${ query.return_to}&`;
+            console.log('result', result.data.identity.traits)
+            const { email, name } = result?.data?.identity?.traits
+            window.location.href =`${ query.return_to}&email=${email}name=${name}`;
           })
 
           return;
