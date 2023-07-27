@@ -229,13 +229,13 @@ const Login: NextPage = (props : any) => {
       const isEmailSignin = isEmpty(values.provider)
       
       if (isEmailSignin) {
-        alert('@debug error 5');
+        
         await handleYupSchema(loginFormSchema, values)
         const response = await axios.get(
           `/api/hydra/validateIdentity?email=${values.identifier}`,
         )
         if (isEmpty(response.data.data)) {
-          alert('@debug error 6');
+          
           const nextFlow = {
             ...flow,
             ui: {
@@ -253,7 +253,7 @@ const Login: NextPage = (props : any) => {
           return
         }
       }
-      alert('@debug error 7');
+      
       return (
         ory
           .updateLoginFlow({
@@ -263,7 +263,7 @@ const Login: NextPage = (props : any) => {
 
           // We logged in successfully! Let's bring the user home.
           .then((loginResult) => {
-            alert('@debug error 1');
+            
             console.log('@debug loginResult',loginResult)
             localStorage.setItem(linkAttributesNamesKey, '{}');
             return axios
@@ -275,7 +275,7 @@ const Login: NextPage = (props : any) => {
               })
           })
           .then(([loginResult, myResult]) => {
-            alert('@debug error 2');
+            
             // if (myResult.identity.traits.email === "cmctc.sw@gmail.com") {
             //   router.push("/launch")
             //   return
@@ -354,13 +354,9 @@ const Login: NextPage = (props : any) => {
               // router.push("/profile")
             }
           })
-          .catch((err)=> {
-            
-            alert('@debug error 8');
-            handleFlowError(router, "login", setFlow)}
-          )
+          .catch(handleFlowError(router, "login", setFlow))
           .catch((err: any) => {
-            alert('@debug error 3');
+            
             // If the previous handler did not catch the error it's most likely a form validation error
             if (err.response?.status === 400) {
               // Yup, it is!
@@ -392,8 +388,7 @@ const Login: NextPage = (props : any) => {
           })
       )
     } catch (error) {
-      alert('@debug error 4')
-      console.log('@debug error', error)
+            console.log('@debug error', error)
       const errors = handleYupErrors(error)
       if (flow) {
         // const nextFlow = cloneDeep(flow)
