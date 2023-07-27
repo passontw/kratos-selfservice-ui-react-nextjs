@@ -34,9 +34,9 @@ export default async function handler(
         // }
     // console.log('response', response)
     const queryString = new URLSearchParams(queryObj).toString();
-    return res.status(200).json({
-            data: queryString
-    });
+    // return res.status(200).json({
+    //         data: queryString
+    // });
     return res.status(200).redirect(307, `/launch?${queryString}`);
 //   const clientID = process.env.ORY_CLIENT_ID as string
 //   const clientSecret = process.env.ORY_CLIENT_SECRET as string
