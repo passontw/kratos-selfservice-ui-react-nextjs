@@ -235,6 +235,7 @@ const Login: NextPage = (props : any) => {
           `/api/hydra/validateIdentity?email=${values.identifier}`,
         )
         if (isEmpty(response.data.data)) {
+          alert('@debug error 6');
           const nextFlow = {
             ...flow,
             ui: {
@@ -252,6 +253,7 @@ const Login: NextPage = (props : any) => {
           return
         }
       }
+      alert('@debug error 7');
       return (
         ory
           .updateLoginFlow({
