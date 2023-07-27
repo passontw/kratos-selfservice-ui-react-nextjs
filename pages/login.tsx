@@ -142,17 +142,17 @@ const Login: NextPage = (props : any) => {
       ory
         .getLoginFlow({ id: String(flowId) })
         .then(({ data }) => {
-          // const requestUrl = data?.oauth2_login_request?.request_url;
-          // if (requestUrl) {
-          //   const queryStr = requestUrl.split('return_to=')[1];
-          //   // const queryObj = queryString.parse(queryStr);
-          //   console.log('@debug queryStr', queryStr)
-          //   // console.log('@debug queryObj', queryObj)
-          //   router.replace(`/login?${queryString.stringify({
-          //     flow: flowId,
-          //     return_to: queryStr,
-          //   })}`)
-          // }
+          const requestUrl = data?.oauth2_login_request?.request_url;
+          if (requestUrl) {
+            const queryStr = requestUrl.split('return_to=')[1];
+            // const queryObj = queryString.parse(queryStr);
+            console.log('@debug queryStr', queryStr)
+            // console.log('@debug queryObj', queryObj)
+            router.replace(`/login?${queryString.stringify({
+              flow: flowId,
+              // return_to: queryStr,
+            })}`)
+          }
           setFlow(data)
         })
         .catch(handleGetFlowError(router, "login", setFlow, lang))
