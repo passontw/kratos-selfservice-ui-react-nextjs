@@ -354,7 +354,11 @@ const Login: NextPage = (props : any) => {
               // router.push("/profile")
             }
           })
-          .catch(handleFlowError(router, "login", setFlow))
+          .catch((err)=> {
+            
+            alert('@debug error 8');
+            handleFlowError(router, "login", setFlow)}
+          )
           .catch((err: any) => {
             alert('@debug error 3');
             // If the previous handler did not catch the error it's most likely a form validation error
