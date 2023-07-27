@@ -390,6 +390,7 @@ const Login: NextPage = (props : any) => {
           })
       )
     } catch (error) {
+      console.log('@debug error', error)
       const errors = handleYupErrors(error)
       if (flow) {
         // const nextFlow = cloneDeep(flow)
