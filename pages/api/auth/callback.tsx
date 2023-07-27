@@ -13,19 +13,13 @@ export default async function handler(
     res: NextApiResponse
 ) {
     console.log('hello from callback.js', req.url);
-    const { platform } = req.query
-    const queryObj: {
-        platform: string | string[];
-        refresh_token: string;
-        access_token: string;
-        name: string;
-        email: string;
-    } = {
-        platform: platform,
-        refresh_token: 'refresh_token',
-        access_token: 'access_token',
-        name: 'name',
-        email: 'email'
+    const { platform, name, email } = req.query
+    const queryObj= {
+        platform,
+        // refresh_token: 'refresh_token',
+        // access_token: 'access_token',
+        name,
+        email,
         };
         
         // try {
@@ -43,7 +37,7 @@ export default async function handler(
     return res.status(200).json({
             data: queryString
     });
-    // return res.status(200).redirect(307, `/launch?${queryString}`);
+    return res.status(200).redirect(307, `/launch?${queryString}`);
 //   const clientID = process.env.ORY_CLIENT_ID as string
 //   const clientSecret = process.env.ORY_CLIENT_SECRET as string
 
