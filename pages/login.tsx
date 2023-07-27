@@ -229,6 +229,7 @@ const Login: NextPage = (props : any) => {
       const isEmailSignin = isEmpty(values.provider)
       
       if (isEmailSignin) {
+        alert('@debug error 5');
         await handleYupSchema(loginFormSchema, values)
         const response = await axios.get(
           `/api/hydra/validateIdentity?email=${values.identifier}`,
