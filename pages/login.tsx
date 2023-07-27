@@ -166,6 +166,7 @@ const Login: NextPage = (props : any) => {
       setFlow,
     }
 
+    console.log('options returnTo',returnTo);
     validateLoginFlow(router, options)
 
     // Otherwise we initialize it
