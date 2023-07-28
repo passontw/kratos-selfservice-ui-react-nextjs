@@ -196,7 +196,7 @@ export function NodeInputSubmit<T>({
                   zIndex={1}
                   mt="20px"
                   width="95px"
-                  height="44px"
+                  height="42px"
                   bgcolor="transparent"
                   border="1px solid #C0C0C0"
                   borderRadius="8px"
