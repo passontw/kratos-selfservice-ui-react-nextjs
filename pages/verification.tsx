@@ -305,7 +305,7 @@ const Verification: NextPage = (props: any) => {
         }
         setFlow(nextFlow)
 
-        if (data.state === "passed_challenge" && ['login'].includes(type)) {
+        if (data.state === "passed_challenge" && ['login', 'continueregiste'].includes(type)) {
           const key = type === 'registe' ? registeLocalStorageKey : localStorageKey
           const values = JSON.parse(localStorage.getItem(key))
 
