@@ -60,11 +60,11 @@ export type Methods =
 export type Props<T> = {
   // The flow
   flow?:
-    | LoginFlow
-    | RegistrationFlow
-    | SettingsFlow
-    | VerificationFlow
-    | RecoveryFlow
+  | LoginFlow
+  | RegistrationFlow
+  | SettingsFlow
+  | VerificationFlow
+  | RecoveryFlow
   // Only show certain nodes. We will always render the default nodes for CSRF tokens.
   only?: Methods
   // Is triggered on submission
@@ -213,6 +213,7 @@ export default class Flow<T extends Values> extends Component<
 
     // Filter the nodes - only show the ones we want
     const nodes = this.filterNodes()
+    console.log("🚀 ~ file: Flow.tsx:216 ~ render ~ nodes:", nodes)
     // console.log("@profile nodes:", nodes)
 
     // acquire sourceNode
@@ -235,7 +236,7 @@ export default class Flow<T extends Values> extends Component<
 
     // acquire loginVerificationNode
     const { node: loginVerificationNode, nodeId: loginVerificationNodeId } =
-      this.spliceNode("traits.loginVerification", nodes)
+      this.spliceNode("traits.loginVerification", flow.ui.nodes)
 
     // acquire genderNode
     const { node: genderNode, nodeId: genderNodeId } = this.spliceNode(
@@ -254,7 +255,7 @@ export default class Flow<T extends Values> extends Component<
     // acquire method (submit button)
     const { node: methodNode, nodeId: methodNodeId } = this.spliceNode(
       "method",
-      nodes,
+      flow.ui.nodes,
     )
 
     if (!flow) {
@@ -341,8 +342,8 @@ export default class Flow<T extends Values> extends Component<
                       {node.attributes.name === "traits.name"
                         ? lang?.username
                         : node.attributes.name === "traits.phone"
-                        ? lang?.phone
-                        : ""}
+                          ? lang?.phone
+                          : ""}
                     </StyledFieldTitle>
                     <Node
                       key={`${id}-${k}`}
@@ -351,19 +352,24 @@ export default class Flow<T extends Values> extends Component<
                       value={values[id]}
                       dispatchSubmit={this.handleSubmit}
                       lang={lang}
-                      setValue={(value) =>
-                        new Promise((resolve) => {
+                      setValue={(value) => {
+                        return new Promise((resolve) => {
                           this.setState(
-                            (state) => ({
-                              ...state,
-                              values: {
-                                ...state.values,
-                                [getNodeId(node)]: value,
-                              },
-                            }),
+                            (state) => {
+                              console.log("🚀 ~ file: Flow.tsx:359 ~ returnnewPromise ~ state:", state)
+                              return {
+                                ...state,
+                                values: {
+                                  ...state.values,
+                                  [getNodeId(node)]: value,
+                                },
+                              };
+                            },
                             resolve,
                           )
-                        })
+                        });
+                      }
+
                       }
                     />
                   </>
