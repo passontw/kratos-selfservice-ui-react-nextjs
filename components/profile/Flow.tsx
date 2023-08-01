@@ -213,7 +213,6 @@ export default class Flow<T extends Values> extends Component<
 
     // Filter the nodes - only show the ones we want
     const nodes = this.filterNodes()
-    console.log("🚀 ~ file: Flow.tsx:216 ~ render ~ nodes:", nodes)
     // console.log("@profile nodes:", nodes)
 
     // acquire sourceNode
@@ -356,7 +355,6 @@ export default class Flow<T extends Values> extends Component<
                         return new Promise((resolve) => {
                           this.setState(
                             (state) => {
-                              console.log("🚀 ~ file: Flow.tsx:359 ~ returnnewPromise ~ state:", state)
                               return {
                                 ...state,
                                 values: {

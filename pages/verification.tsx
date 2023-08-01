@@ -214,7 +214,8 @@ const Verification: NextPage = (props: any) => {
       csrf_token,
       method,
     } = values;
-    if (flow.state === "sent_email" && isEmpty(values.code) && isEmpty(values.email)) {
+
+    if (!isResendCode && flow.state === "sent_email" && isEmpty(values.code) && isEmpty(values.email) && isEmpty(router.query.user)) {
       return null;
     }
 
