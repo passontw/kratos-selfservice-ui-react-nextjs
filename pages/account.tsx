@@ -159,6 +159,7 @@ const Account: NextPage = (props) => {
               console.log("zzz1", locale)
               const googleAttributesName = googleNode?.attributes.name
               const appleAttributesName = appleNode?.attributes.name
+              
               if (!isEmpty(linkAttributesNames)) {
                 if (
                   linkAttributesNames.googleAttributesName !==
@@ -167,7 +168,7 @@ const Account: NextPage = (props) => {
                   if (googleAttributesName === "unlink") {
                     // alert("google linked");
                     showToast(`Google ${lang?.linked}`)
-                  } else {
+                  } else if (googleAttributesName === "link") {
                     // alert("google unlinked");
                     showToast(`Google ${lang?.unlinked}`)
                   }
@@ -180,7 +181,7 @@ const Account: NextPage = (props) => {
                   if (appleAttributesName === "unlink") {
                     // alert("apple linked");
                     showToast(`Apple ${lang?.linked}`)
-                  } else {
+                  } else if (appleAttributesName === "link") {
                     // alert("apple unlinked");
                     showToast(`Apple ${lang?.unlinked}`)
                   }
