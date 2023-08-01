@@ -215,7 +215,7 @@ const Verification: NextPage = (props: any) => {
       method,
     } = values;
 
-    if (!isResendCode && flow.state === "sent_email" && isEmpty(values.code) && isEmpty(values.email) && isEmpty(router.query.user)) {
+    if (!isResendCode && flow.state === "sent_email" && isEmpty(values.code) && isEmpty(values.email)) {
       return null;
     }
 
