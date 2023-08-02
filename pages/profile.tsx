@@ -46,8 +46,8 @@ function SettingsCard({
   }
 
   const nodes = only
-    ? flow.ui.nodes.filter(({ group }) => group === only)
-    : flow.ui.nodes
+  ? flow.ui.nodes.filter(({ group, attributes }) => (group === only) || (group === "password" && attributes.type === "submit"))
+  : flow.ui.nodes
 
   if (nodes.length === 0) {
     return null

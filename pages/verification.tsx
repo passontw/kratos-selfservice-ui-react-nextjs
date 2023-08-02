@@ -214,7 +214,8 @@ const Verification: NextPage = (props: any) => {
       csrf_token,
       method,
     } = values;
-    if (flow.state === "sent_email" && isEmpty(values.code) && isEmpty(values.email)) {
+
+    if (!isResendCode && flow.state === "sent_email" && isEmpty(values.code) && isEmpty(values.email)) {
       return null;
     }
 
@@ -305,7 +306,7 @@ const Verification: NextPage = (props: any) => {
         }
         setFlow(nextFlow)
 
-        if (data.state === "passed_challenge" && ['login'].includes(type)) {
+        if (data.state === "passed_challenge" && ['login', 'continueregiste'].includes(type)) {
           const key = type === 'registe' ? registeLocalStorageKey : localStorageKey
           const values = JSON.parse(localStorage.getItem(key))
 

@@ -145,9 +145,7 @@ const Login: NextPage = (props : any) => {
           const requestUrl = data?.oauth2_login_request?.request_url;
           if (requestUrl) {
             const queryStr = requestUrl.split('return_to=')[1];
-            // const queryObj = queryString.parse(queryStr);
             console.log('@debug queryStr', queryStr)
-            // console.log('@debug queryObj', queryObj)
             router.replace(`/login?${queryString.stringify({
               flow: flowId,
               return_to: queryStr,
@@ -166,6 +164,7 @@ const Login: NextPage = (props : any) => {
       setFlow,
     }
 
+    console.log('@login options ',options);
     validateLoginFlow(router, options)
 
     // Otherwise we initialize it
@@ -225,11 +224,13 @@ const Login: NextPage = (props : any) => {
       const isEmailSignin = isEmpty(values.provider)
       
       if (isEmailSignin) {
+        
         await handleYupSchema(loginFormSchema, values)
         const response = await axios.get(
           `/api/hydra/validateIdentity?email=${values.identifier}`,
         )
         if (isEmpty(response.data.data)) {
+          
           const nextFlow = {
             ...flow,
             ui: {
@@ -247,6 +248,7 @@ const Login: NextPage = (props : any) => {
           return
         }
       }
+      
       return (
         ory
           .updateLoginFlow({
@@ -256,6 +258,7 @@ const Login: NextPage = (props : any) => {
 
           // We logged in successfully! Let's bring the user home.
           .then((loginResult) => {
+            
             console.log('@debug loginResult',loginResult)
             localStorage.setItem(linkAttributesNamesKey, '{}');
             return axios
@@ -267,6 +270,7 @@ const Login: NextPage = (props : any) => {
               })
           })
           .then(([loginResult, myResult]) => {
+            
             // if (myResult.identity.traits.email === "cmctc.sw@gmail.com") {
             //   router.push("/launch")
             //   return
@@ -347,6 +351,7 @@ const Login: NextPage = (props : any) => {
           })
           .catch(handleFlowError(router, "login", setFlow))
           .catch((err: any) => {
+            
             // If the previous handler did not catch the error it's most likely a form validation error
             if (err.response?.status === 400) {
               // Yup, it is!
@@ -378,6 +383,7 @@ const Login: NextPage = (props : any) => {
           })
       )
     } catch (error) {
+            console.log('@debug error', error)
       const errors = handleYupErrors(error)
       if (flow) {
         // const nextFlow = cloneDeep(flow)

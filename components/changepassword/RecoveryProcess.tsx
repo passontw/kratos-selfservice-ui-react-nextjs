@@ -81,6 +81,17 @@ const RecoveryProcess: NextPage = (props) => {
         targetErrorMsg.style.display = "none"
       }
     }
+
+    if (flow?.state === "passed_challenge") {
+      ory
+          .createBrowserLogoutFlow()
+          .then(({ data }) => {
+            return ory
+              .updateLogoutFlow({ token: data.logout_token })
+              .then(() => router.push("/login"))
+              .then(() => router.reload())
+          }).catch(error => false)
+    }
   }, [flow])
 
   useEffect(() => {

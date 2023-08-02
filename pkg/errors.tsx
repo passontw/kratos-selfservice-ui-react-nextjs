@@ -106,7 +106,17 @@ export function handleGetFlowError<S>(
         // Ory Kratos asked us to point the user to this URL.
         // alert("debug: stay on this page to read errors before redirecting")
         if (query && query.return_to) {
-          window.location.href = query.return_to;
+          axios
+          .get("/api/.ory/sessions/whoami", {
+            headers: { withCredentials: true },
+          })
+          .then((result) => {
+            // return [loginResult, result.data]
+            console.log('result', result.data.identity.traits)
+            const { email, name } = result?.data?.identity?.traits
+            window.location.href =`${ query.return_to}&email=${email}&name=${name}`;
+          })
+
           return;
         }
         window.location.href = err.response.data.redirect_browser_to

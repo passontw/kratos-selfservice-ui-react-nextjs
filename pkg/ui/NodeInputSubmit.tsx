@@ -63,24 +63,24 @@ export function NodeInputSubmit<T>({
     width: deleteAccount
       ? "111px"
       : activeNav === Navs.SETTINGS || linkRelated
-        ? "95px"
-        : activeStage === Stage.VERIFY_CODE
-          ? "100%"
-          : "@media (max-width: 600px) {100%}",
+      ? "95px"
+      : activeStage === Stage.VERIFY_CODE
+      ? "100%"
+      : "@media (max-width: 600px) {100%}",
     position: deleteAccount ? "absolute" : "unset",
     right:
       activeNav === Navs.SETTINGS
         ? "0px"
         : isDialogForgotPswd || deleteAccount
-          ? "30px"
-          : "unset",
+        ? "30px"
+        : "unset",
     marginTop: deleteAccount
       ? "50px"
       : isDialogForgotPswd
-        ? "20px"
-        : isSignINOUT
-          ? "36px"
-          : "unset",
+      ? "20px"
+      : isSignINOUT
+      ? "36px"
+      : "unset",
     zIndex: 1,
   }
 
@@ -128,19 +128,19 @@ export function NodeInputSubmit<T>({
   const buttonText = deleteAccount
     ? t("continue") || "Continue"
     : activeNav === Navs.RECOVERY && activeStage === Stage.FORGOT_PASSWORD
-      ? lang?.submit
-      : (activeNav === Navs.VERIFICATION || activeNav === Navs.RECOVERY) &&
-        getNodeLabel(node) === "Submit"
-        ? lang?.verify
-        : getNodeLabel(node) === "Resend code"
-          ? lang?.resend || t("resend") || "Resend"
-          : getNodeLabel(node) === "Sign in"
-            ? lang?.login
-            : getNodeLabel(node) === "Sign up"
-              ? lang?.signUp
-              : getNodeLabel(node) === "Save"
-                ? lang?.save || t("save") || "Save"
-                : getNodeLabel(node)
+    ? lang?.submit
+    : (activeNav === Navs.VERIFICATION || activeNav === Navs.RECOVERY) &&
+      getNodeLabel(node) === "Submit"
+    ? lang?.verify
+    : getNodeLabel(node) === "Resend code"
+    ? lang?.resend || t("resend") || "Resend"
+    : getNodeLabel(node) === "Sign in"
+    ? lang?.login
+    : getNodeLabel(node) === "Sign up"
+    ? lang?.signUp
+    : getNodeLabel(node) === "Save"
+    ? lang?.save || t("save") || "Save"
+    : getNodeLabel(node)
 
   const handleClick = () => {
     const clickAppleBtn = document.querySelector(".apple >button")
@@ -157,8 +157,9 @@ export function NodeInputSubmit<T>({
         <Box display="flex" justifyContent="center" alignItems="center">
           <Box style={resendStyle}>
             <Box fontFamily="open sans" color="#A5A5A9" fontSize="14px">
-              {`${lang?.didntReceive || t("didnt_receive") || "Didn't receive"
-                } ?`}
+              {`${
+                lang?.didntReceive || t("didnt_receive") || "Didn't receive"
+              } ?`}
             </Box>
             <Button
               style={
@@ -190,33 +191,35 @@ export function NodeInputSubmit<T>({
         <>
           {isDialogForgotPswd ? (
             <Box display="flex" justifyContent="end" gap="12px">
-              <Box
-                zIndex={1}
-                mt="20px"
-                width="95px"
-                height="44px"
-                bgcolor="transparent"
-                border="1px solid #C0C0C0"
-                borderRadius="8px"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                color="#C0C0C0"
-                fontFamily="open sans"
-                fontSize="16px"
-                right="140px"
-                sx={{
-                  cursor: "pointer",
-                }}
-                onClick={(e) => {
-                  if (activeStage === Stage.FORGOT_PASSWORD) {
-                    router.push("/login")
-                  }
-                  // handleClose(e, "")
-                  dispatch(setActiveStage(Stage.NONE))
-                }}
-              >
-                {lang?.cancel}
+              <Box display="flex" alignItems="end">
+                <Box
+                  zIndex={1}
+                  mt="20px"
+                  width="95px"
+                  height="42px"
+                  bgcolor="transparent"
+                  border="1px solid #C0C0C0"
+                  borderRadius="8px"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  color="#C0C0C0"
+                  fontFamily="open sans"
+                  fontSize="16px"
+                  right="140px"
+                  sx={{
+                    cursor: "pointer",
+                  }}
+                  onClick={(e) => {
+                    if (activeStage === Stage.FORGOT_PASSWORD) {
+                      router.push("/login")
+                    }
+                    // handleClose(e, "")
+                    dispatch(setActiveStage(Stage.NONE))
+                  }}
+                >
+                  {lang?.cancel}
+                </Box>
               </Box>
               <Button
                 style={
@@ -230,11 +233,11 @@ export function NodeInputSubmit<T>({
                 value={attributes.value || ""}
                 disabled={attributes.disabled || disabled}
                 className={attributes.value}
-              // disabled={
-              //   buttonText === "Verify" && sixDigitCode.length !== 6
-              //     ? true
-              //     : attributes.disabled || disabled
-              // }
+                // disabled={
+                //   buttonText === "Verify" && sixDigitCode.length !== 6
+                //     ? true
+                //     : attributes.disabled || disabled
+                // }
               >
                 {buttonText}
               </Button>
@@ -253,11 +256,11 @@ export function NodeInputSubmit<T>({
                 value={attributes.value || ""}
                 disabled={attributes.disabled || disabled}
                 className={attributes.value}
-              // disabled={
-              //   buttonText === "Verify" && sixDigitCode.length !== 6
-              //     ? true
-              //     : attributes.disabled || disabled
-              // }
+                // disabled={
+                //   buttonText === "Verify" && sixDigitCode.length !== 6
+                //     ? true
+                //     : attributes.disabled || disabled
+                // }
               >
                 {buttonText}
               </Button>
