@@ -330,9 +330,7 @@ export default class Flow<T extends Values> extends Component<
               {nodes.map((node, k) => {
                 // console.log(node)
                 const id = getNodeId(node) as keyof Values
-                // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
-                // if (node.meta.label?.text === "E-Mail") return
-
+                if (node.attributes.type === "submit") return null;
                 return (
                   <>
                     <StyledFieldTitle
@@ -373,7 +371,7 @@ export default class Flow<T extends Values> extends Component<
                   </>
                 )
               })}
-
+              
               {/* gender node */}
               <StyledFieldSpacer>
                 {/* <StyledFieldTitle>Gender</StyledFieldTitle> */}
