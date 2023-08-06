@@ -24,6 +24,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import cityJson from "../city.json"
 import { Ring } from '@uiball/loaders'
 import Head from 'next/head'
+import { linkAttributesNamesKey } from "./account"
 
 interface Props {
   flow?: SettingsFlow
@@ -125,6 +126,24 @@ const Profile: NextPage = (props) => {
       .createBrowserSettingsFlow({
         returnTo: returnTo ? String(returnTo) : undefined,
       }).then(async ({ data }) => {
+        const googleNode = data.ui.nodes.find((node) => {
+          return node.attributes.value === "google"
+        })
+        const appleNode = data.ui.nodes.find((node) => {
+          return node.attributes.value === "apple"
+        })
+
+        const googleAttributesName = googleNode?.attributes.name
+        const appleAttributesName = appleNode?.attributes.name
+
+        localStorage.setItem(
+          linkAttributesNamesKey,
+          JSON.stringify({
+            googleAttributesName: googleAttributesName,
+            appleAttributesName: appleAttributesName,
+          }),
+        )
+
         const filteredNodes = data.ui.nodes.filter(node => {
           if (node.attributes.name === 'link') return false;
           if (node.attributes.name === 'unlink') return false;
