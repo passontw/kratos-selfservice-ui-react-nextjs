@@ -236,6 +236,7 @@ export default class Flow<T extends Values> extends Component<
     // acquire loginVerificationNode
     const { node: loginVerificationNode, nodeId: loginVerificationNodeId } =
       this.spliceNode("traits.loginVerification", flow.ui.nodes)
+      console.log("🚀 ~ file: Flow.tsx:239 ~ render ~ flow.ui.nodes:", flow.ui.nodes)
 
     // acquire genderNode
     const { node: genderNode, nodeId: genderNodeId } = this.spliceNode(
@@ -331,6 +332,9 @@ export default class Flow<T extends Values> extends Component<
                 // console.log(node)
                 const id = getNodeId(node) as keyof Values
                 if (node.attributes.type === "submit") return null;
+                if (node.attributes.name === "traits.loginVerification") return null;
+                console.log("🚀 ~ file: Flow.tsx:335 ~ {nodes.map ~ node.attributes:", node.attributes)
+                
                 return (
                   <>
                     <StyledFieldTitle

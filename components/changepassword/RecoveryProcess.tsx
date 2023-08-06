@@ -112,7 +112,7 @@ const RecoveryProcess: NextPage = (props) => {
           setFlow(data)
           setIssuedAt(data.issued_at)
         })
-        .catch(handleFlowError(router, "recovery", setFlow))
+        .catch(handleFlowError(router, "login", setFlow))
       return
     }
 
