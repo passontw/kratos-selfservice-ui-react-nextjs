@@ -245,7 +245,6 @@ const Login: NextPage = (props : any) => {
               ],
             },
           }
-          console.log("🚀 ~ file: login.tsx:235 ~ onSubmit ~ nextFlow:", nextFlow)
           setFlow(nextFlow)
           return
         }
