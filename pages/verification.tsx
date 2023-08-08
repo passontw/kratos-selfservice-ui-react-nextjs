@@ -391,7 +391,7 @@ const Verification: NextPage = (props: any) => {
                   }}
                 >
                   {verifySuccess
-                    ? lang?.verifySucessDesc || "Congratulation, your account is approved. You will be automatically redirected to %service% in 5 seconds."
+                    ? lang?.verifySucessDesc || "Congratulation, your account is approved. You will be automatically redirected to My Profile in 5 seconds."
                     : lang?.verifyAcctDesc.replace("master123@gmail.com", `${!isEmpty(email) ? email : ''}`) || `Enter the 6-digit code we sent to ${!isEmpty(email) ? email : ''} to verify account.`}
                 </span>
               </Box>
