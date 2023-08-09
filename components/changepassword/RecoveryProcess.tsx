@@ -370,7 +370,7 @@ const RecoveryProcess: NextPage = (props) => {
     )
   }
 
-  if (loading) {
+  if (loading || flow?.state === "passed_challenge") {
     return (
       <Box
         display="flex"
