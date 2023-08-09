@@ -1,19 +1,15 @@
 import Box from "@mui/material/Box"
-import { LoginFlow } from "@ory/client"
 import type { NextPage } from "next"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useEffect } from "react"
+import { useDispatch } from "react-redux"
 import styled from "styled-components"
-
-import AppsList from "../components/AppsList"
 import CmidHead from "../components/CmidHead"
 import MenuFooter from "../components/MenuFooter"
 import RecoveryProcess from "../components/changepassword/RecoveryProcess"
 import Apple from "../public/images/login_icons/Apple"
 import Google from "../public/images/login_icons/Google"
 import {
-  selectDialog,
   setActiveNav,
   setDialog,
 } from "../state/store/slice/layoutSlice"
