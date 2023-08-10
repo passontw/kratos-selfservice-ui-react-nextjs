@@ -306,16 +306,14 @@ const Verification: NextPage = (props: any) => {
         }
         setFlow(nextFlow)
 
-        if (data.state === "passed_challenge" && ['login', 'continueregiste'].includes(type)) {
+        if (data.state === "passed_challenge" && ['login', 'continueregiste', "registe"].includes(type)) {
           const key = type === 'registe' ? registeLocalStorageKey : localStorageKey
           const values = JSON.parse(localStorage.getItem(key))
 
           return ory.createBrowserLoginFlow({
             refresh: Boolean(refresh),
             aal: aal ? String(aal) : undefined,
-            returnTo: Boolean(login_challenge)
-              ? NEXT_PUBLIC_REDIRECT_URI
-              : returnToUrl,
+            returnTo: returnToUrl,
           }).then(({ data }) => {
             const csrfNode = data.ui.nodes.find(node => node.attributes.name === "csrf_token")
             const nextValues = type === 'registe'
@@ -333,19 +331,23 @@ const Verification: NextPage = (props: any) => {
           }).then(flow => {
             if (type !== 'registe') {
               router.replace(returnToUrl)
-              return;
+              return flow;
             } else {
               setTimeout(() => router.replace(returnToUrl), 2000)
-              return;
+              return flow;
             }
-          }).catch(error => false)
+          }).catch(error => {
+            router.replace(returnToUrl)
+          })
         }
       })
       .catch((err: any) => {
         switch (err.response?.status) {
           case 400:
             // Status code 400 implies the form validation had an error
-            setFlow(err.response?.data)
+            if (err.response?.data) {
+              setFlow(err.response?.data)
+            }
             return
           case 410:
             const newFlowID = err.response.data.use_flow_id

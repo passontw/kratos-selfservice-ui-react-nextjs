@@ -228,8 +228,7 @@ const Login: NextPage = (props : any) => {
         const response = await axios.get(
           `/api/hydra/validateIdentity?email=${values.identifier}`,
         )
-        console.log("🚀 ~ file: login.tsx:233 ~ onSubmit ~ response.data.data:", response.data.data)
-
+        
         if (isEmpty(response.data.data)) {
           const nextFlow = {
             ...flow,
