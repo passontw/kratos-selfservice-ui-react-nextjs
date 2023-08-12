@@ -294,7 +294,7 @@ const Verification: NextPage = (props: any) => {
         const nextFlow = cloneDeep(data);
 
         if (message.text.includes("The verification code is invalid or has already been used")) {
-
+          
           const identifierIndex = nextFlow.ui.nodes.findIndex(
             (node) => node.attributes.name === "code",
           )
@@ -362,11 +362,12 @@ const Verification: NextPage = (props: any) => {
               .getVerificationFlow({ id: newFlowID })
               .then(({ data }) => setFlow(data))
             return
-        }
-
-        throw err
-      })
-  }
+          }
+          
+          throw err
+        })
+      }
+      console.log("🚀 ~ file: verification.tsx:401 ~ flow:", flow)
 
   return (
     <>

@@ -89,7 +89,7 @@ const Registration: NextPage = (props) => {
           // We received the flow - let's use its data and render the form!
           setFlow(data)
         })
-        .catch(handleFlowError(router, "registration", setFlow))
+        .catch(handleFlowError(router, "login", setFlow))
       return
     }
 
