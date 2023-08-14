@@ -1,26 +1,32 @@
-import { useState, useEffect } from 'react';
-import { Navs } from '../../../types/enum';
-import { useSelector } from 'react-redux';
-import { selectActiveNav } from '../../../state/store/slice/layoutSlice';
-import { Box } from '@mui/material';
+import { Box } from "@mui/material"
+import { useState, useEffect } from "react"
+import { useSelector } from "react-redux"
+
+import { selectActiveNav } from "../../../state/store/slice/layoutSlice"
+import { Navs } from "../../../types/enum"
 
 interface CmidProps {
   color?: string
 }
 
 const Cmid: React.FC<CmidProps> = ({ color = "#FFF" }) => {
-  const currentNav = useSelector(selectActiveNav);
-  const fixedSize = currentNav === Navs.LOGIN || currentNav === Navs.REGISTER ||
-    currentNav === Navs.RECOVERY || currentNav === Navs.SETTINGS || currentNav === Navs.VERIFICATION
+  const currentNav = useSelector(selectActiveNav)
+  const fixedSize =
+    currentNav === Navs.LOGIN ||
+    currentNav === Navs.REGISTER ||
+    currentNav === Navs.RECOVERY ||
+    currentNav === Navs.SETTINGS ||
+    currentNav === Navs.VERIFICATION
 
-  const [fixed] = useState(fixedSize);
+  const [fixed] = useState(fixedSize)
 
   return (
     <Box
       width={{ xs: fixed ? "61px" : "32px", sm: "61px" }}
       height={{ xs: fixed ? "52px" : "26px", sm: "52px" }}
       display="flex"
-      alignItems="center">
+      alignItems="center"
+    >
       <svg
         width="100%"
         height="100%"

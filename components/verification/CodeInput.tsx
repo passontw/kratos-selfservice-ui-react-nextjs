@@ -295,10 +295,10 @@ const CodeInput: React.FC<CodeInput> = ({
     window.location.pathname.includes("/recovery")
 
   console.log("@validationDebug2 validationError:", validationError)
-  console.log("@validationDebug2 validationMsgs (inner):", validationMsgs)
   console.log("@validationDebug2 redux isInputChanging:", isInputChanging)
   console.log("@validationDebug2 redux globalState:", globalState)
   console.log("@validationDebug2 code:", code)
+  console.log("@validationDebug3 validationMsgs (inner):", validationMsgs)
 
   return show !== "email" ? (
     <Container>
@@ -321,11 +321,11 @@ const CodeInput: React.FC<CodeInput> = ({
               onChange={(e) => handleInputChange(e, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
               error={
-                validationError ||
-                (validationMsgs.length && !isInputChanging) ||
-                (!validationMsgs.length &&
-                  code?.filter((item) => item !== "").length === 6 &&
-                  !isInputChanging)
+                validationError || (validationMsgs.length && !isInputChanging)
+                //||
+                // (!validationMsgs.length &&
+                //   code?.filter((item) => item !== "").length === 6 &&
+                //   !isInputChanging)
               }
               // onBlur={() => setInputBlurred(true)}
             />
@@ -345,12 +345,12 @@ const CodeInput: React.FC<CodeInput> = ({
           ? // custom required input validation
             validationError
           : // For handling exception of 6 digit submit where error code is wrong but
-          // there is missing validation message from props
-          !validationMsgs.length &&
-            code?.filter((item) => item !== "").length === 6 &&
-            !isInputChanging
-          ? t("error-verif_code_incorrect")
-          : // if there is actual validationMsgs recieved and input is currently not being typed in
+            // there is missing validation message from props
+            // !validationMsgs.length &&
+            //   code?.filter((item) => item !== "").length === 6 &&
+            //   !isInputChanging
+            // ? t("error-verif_code_incorrect")
+            // : // if there is actual validationMsgs recieved and input is currently not being typed in
             !isInputChanging &&
             validationMsgs.map(
               (

@@ -307,6 +307,8 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
 
           const id = getNodeId(node) as keyof Values
           // return <div>Test</div>
+
+          console.log("@debugValidationPosition node:", node)
           return (
             <span
               key={`${id}-${k}`}

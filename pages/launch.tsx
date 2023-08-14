@@ -12,7 +12,13 @@ interface LaunchProps {}
 const Launch: React.FC<LaunchProps> = () => {
   const router = useRouter()
   const query = router.query
-  const { platform, refresh_token, access_token, name, email } = query
+  const { platform, refresh_token, access_token, name, email } = query as {
+    platform: string
+    refresh_token: string
+    access_token: string
+    name: string
+    email: string
+  }
 
   console.log(
     "@launch\nplatform",
@@ -28,7 +34,17 @@ const Launch: React.FC<LaunchProps> = () => {
   )
 
   useEffect(() => {
-    router.push("dana://token=login")
+    switch (platform) {
+      case "desktop": {
+        router.push(
+          `mastercontrol://refresh_token=${refresh_token}:access_token=${access_token}:name=${name}:email=${email}`,
+        )
+      }
+      case "app": {
+        // TODO open IOS / Android app
+        return
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
