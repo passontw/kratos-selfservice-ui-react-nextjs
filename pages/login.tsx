@@ -223,18 +223,18 @@ const Login: NextPage = (props : any) => {
     try {
       const isEmailSignin = isEmpty(values.provider)
       
-      if (isEmailSignin) {
-        
+      if (isEmailSignin) {   
         await handleYupSchema(loginFormSchema, values)
         const response = await axios.get(
           `/api/hydra/validateIdentity?email=${values.identifier}`,
         )
+        
         if (isEmpty(response.data.data)) {
-          
           const nextFlow = {
             ...flow,
             ui: {
               ...flow.ui,
+              nodes: flow.ui.nodes.map(node => ({...node, messages: []})),
               messages: [
                 {
                   id: 400001,

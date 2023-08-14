@@ -33,21 +33,22 @@ const getNextValues = (flow, values) => {
   const { isResendCode, code, csrf_token, email, method } = values
   return isResendCode
     ? {
-        email,
-        csrf_token,
-        method,
-      }
+      email,
+      csrf_token,
+      method,
+    }
     : {
-        code,
-        csrf_token,
-        method,
-      }
+      code,
+      csrf_token,
+      method,
+    }
 }
 
 const RecoveryProcess: NextPage = (props) => {
   const { lang } = props
   const [flow, setFlow] = useState<RecoveryFlow>()
   const [dialogMsg, setDialogMsg] = useState<string>(lang?.forgotPwDesc)
+  const [loading, setLoading] = useState<boolean>(true)
   const [issuedAt, setIssuedAt] = useState("")
   const dispatch = useDispatch()
   const activeStage = useSelector(selectActiveStage)
@@ -83,14 +84,19 @@ const RecoveryProcess: NextPage = (props) => {
     }
 
     if (flow?.state === "passed_challenge") {
+      setLoading(true)
+
       ory
-          .createBrowserLogoutFlow()
-          .then(({ data }) => {
-            return ory
-              .updateLogoutFlow({ token: data.logout_token })
-              .then(() => router.push("/login"))
-              .then(() => router.reload())
-          }).catch(error => false)
+        .createBrowserLogoutFlow()
+        .then(({ data }) => {
+          return ory
+            .updateLogoutFlow({ token: data.logout_token })
+            .then(() => {
+              setLoading(false)
+              return router.push("/login")
+            })
+            .then(() => router.reload())
+        }).catch(error => setLoading(false))
     }
   }, [flow])
 
@@ -106,25 +112,34 @@ const RecoveryProcess: NextPage = (props) => {
 
     // If ?flow=.. was in the URL, we fetch it
     if (flowId) {
+      setLoading(true);
+
       ory
         .getRecoveryFlow({ id: String(flowId) })
         .then(({ data }) => {
           setFlow(data)
           setIssuedAt(data.issued_at)
+          setLoading(false)
         })
-        .catch(handleFlowError(router, "recovery", setFlow))
+        .catch(error => {
+          setLoading(false)
+          handleFlowError(router, "login", setFlow)(error)
+        })
       return
     }
 
+    setLoading(true)
     // Otherwise we initialize it
     ory
       .createBrowserRecoveryFlow()
       .then(({ data }) => {
         setFlow(data)
+        setLoading(false)
         setIssuedAt(data.issued_at)
       })
       .catch(handleFlowError(router, "recovery", setFlow))
       .catch((err: any) => {
+        setLoading(false)
         // If the previous handler did not catch the error it's most likely a form validation error
         if (err.response?.status === 400) {
           // Yup, it is!
@@ -355,6 +370,22 @@ const RecoveryProcess: NextPage = (props) => {
     )
   }
 
+  if (loading || flow?.state === "passed_challenge") {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="50vh">
+        <Ring
+          size={40}
+          lineWeight={5}
+          speed={2}
+          color="#A62BC3"
+        />
+      </Box>
+    )
+  }
   return (
     <>
       <Box className="targetParent">

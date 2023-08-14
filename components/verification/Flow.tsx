@@ -108,7 +108,7 @@ class MyFlow<T extends Values> extends Component<Props<T>, State<T>> {
 
   filterNodes = (): Array<UiNode> => {
     const { flow, only } = this.props
-    if (!flow) {
+    if (!flow || !flow.ui || !flow.ui.nodes) {
       return []
     }
     return flow.ui.nodes.filter(({ group }) => {

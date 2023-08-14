@@ -305,43 +305,43 @@ const Account: NextPage = (props) => {
             const linkAttributesNames = JSON.parse(
               localStorage.getItem(linkAttributesNamesKey) || "{}",
             )
-
+            
             const googleNode = data.ui.nodes.find((node) => {
               return node.attributes.value === "google"
             })
             const appleNode = data.ui.nodes.find((node) => {
-              console.log('AttributesName', node.attributes.value)
               return node.attributes.value === "apple"
             })
             const googleAttributesName = googleNode?.attributes.name
             const appleAttributesName = appleNode?.attributes.name
-            console.log('AttributesName', linkAttributesNames, googleAttributesName, appleAttributesName)
             if (!isEmpty(linkAttributesNames)) {
               if (
                 linkAttributesNames.googleAttributesName !==
                 googleAttributesName
               ) {
-                if (googleAttributesName === "unlink") {
-                  showToast(`Google ${lang?.linked}`)
-                } else {
-                  showToast(`Google ${lang?.unlinked}`)
+                if (!isEmpty(linkAttributesNames.googleAttributesName)) {
+                  if (googleAttributesName === "unlink") {
+                    showToast(`Google ${lang?.linked}`)
+                  } else if (googleAttributesName === "link") {
+                    showToast(`Google ${lang?.unlinked}`)
+                  }
                 }
               }
 
               if (
                 linkAttributesNames.appleAttributesName !== appleAttributesName
               ) {
-                if (appleAttributesName === "unlink") {
-                  // alert("apple linked");
-                  showToast(`Apple ${lang?.linked}`)
-                } else {
-                  // alert("apple unlinked");
-                  showToast(`Apple ${lang?.unlinked}`)
+                if (!isEmpty(linkAttributesNames.appleAttributesName)) {
+                  if (appleAttributesName === "unlink") {
+                    // alert("apple linked");
+                    showToast(`Apple ${lang?.linked}`)
+                  } else if (appleAttributesName === "link") {
+                    // alert("apple unlinked");
+                    showToast(`Apple ${lang?.unlinked}`)
+                  }
                 }
-
               }
             }
-
             localStorage.setItem(
               linkAttributesNamesKey,
               JSON.stringify({

@@ -203,7 +203,7 @@ export default class Flow<T extends Values> extends Component<
     console.log(`@profile ${name} node:`, node, " from:", nodes)
     const nodeId = node && (getNodeId(node) as keyof Values)
     // remove it from the other nodes to sperate its view from the rest of the form
-    nodes.splice(nodes.indexOf(node), 1)
+    // nodes.splice(nodes.indexOf(node), 1)
     return { node, nodeId }
   }
 
@@ -213,29 +213,6 @@ export default class Flow<T extends Values> extends Component<
 
     // Filter the nodes - only show the ones we want
     const nodes = this.filterNodes()
-    // console.log("@profile nodes:", nodes)
-
-    // acquire sourceNode
-    const { node: sourceNode, nodeId: sourceNodeId } = this.spliceNode(
-      "traits.source",
-      nodes,
-    )
-
-    // acquire profileNode
-    const { node: profileNode, nodeId: profileNodeId } = this.spliceNode(
-      "traits.avatar",
-      nodes,
-    )
-
-    // acquire emailNode
-    const { node: emailNode, nodeId: emailNodeId } = this.spliceNode(
-      "traits.email",
-      nodes,
-    )
-
-    // acquire loginVerificationNode
-    const { node: loginVerificationNode, nodeId: loginVerificationNodeId } =
-      this.spliceNode("traits.loginVerification", flow.ui.nodes)
 
     // acquire genderNode
     const { node: genderNode, nodeId: genderNodeId } = this.spliceNode(
@@ -330,8 +307,18 @@ export default class Flow<T extends Values> extends Component<
               {nodes.map((node, k) => {
                 // console.log(node)
                 const id = getNodeId(node) as keyof Values
-                // if (this.props.noEmail && node.meta.label?.text === "E-Mail") return
-                // if (node.meta.label?.text === "E-Mail") return
+                if (node.attributes.type === "submit") return null;
+                if ([
+                  "traits.loginVerification",
+                  "traits.source",
+                  "traits.avatar",
+                  "traits.email",
+                  "traits.gender",
+                  "traits.birthdayMonth",
+                  "traits.birthdayYear",
+                ].includes(node.attributes.name)) {
+                  return null;
+                }
 
                 return (
                   <>
@@ -373,7 +360,7 @@ export default class Flow<T extends Values> extends Component<
                   </>
                 )
               })}
-
+              
               {/* gender node */}
               <StyledFieldSpacer>
                 {/* <StyledFieldTitle>Gender</StyledFieldTitle> */}
