@@ -338,7 +338,7 @@ const CodeInput: React.FC<CodeInput> = ({
           fontSize: "13px",
           fontFamily: "Open Sans",
           alignSelf: "baseline",
-          marginLeft: window.location.href.includes("recovery") ? "8px" : "0",
+          marginLeft: window.location.href.includes("recovery") ? "7px" : "0",
         }}
       >
         {validationError
