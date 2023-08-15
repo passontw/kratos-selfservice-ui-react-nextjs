@@ -36,19 +36,20 @@ const Sso: NextPage = () => {
   if (loading && isEmpty(user)) {
     return (<p>載入中........</p>)
   }
-
+  
   if (!loading && isEmpty(user)) {
     const nextUri = isEmpty(qs)
-     ? '/login'
-     : `/login?${qs}`
+    ? '/login'
+    : `/login?${qs}`
     return (<a href={nextUri}>登入</a>)
   }
+
   return (
     <>
       <img src={user.avatar} />
       <button onClick={() => {
         router.push(NEXT_PUBLIC_REDIRECT_URI);
-      }}>是否要以 {user.name} 繼續登入？</button>
+      }}>是否要以 {user.name} 繼續登入？ Email: {user.email}</button>
       <button onClick={() => {
         deactiveSession(qs, router, onLogout);
       }}>以其他帳號登入</button>
