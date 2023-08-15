@@ -207,7 +207,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
       ? "0 0 38px 0"
       : "unset"
 
-  console.log("@resend test")
+  console.log("@marginAdjust")
 
   return (
     <>
