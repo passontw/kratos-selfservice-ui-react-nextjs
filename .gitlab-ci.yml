@@ -1,0 +1,251 @@
+# Runner 只有 10.1.1.75 那台可以跑
+# TODO ansible shell not working
+# 
+
+stages:
+  - build
+
+.job_build_sit:
+  # image: docker:19.03.12
+  stage: build
+  script:
+    - id
+    - df -h | grep -E "(ubuntu--vg-ubuntu--lv|Filesystem)"
+    - set -x
+    - export PROJECT_PWD=$(pwd)
+    - cd /home/gitlab-runner/ci-vault ; git fetch ; git checkout origin/master -f ; # export $(cat /home/gitlab-runner/ci-vault/env/coolermaster/ory/env.sit | xargs)
+    - cd $PROJECT_PWD
+    - cp /home/gitlab-runner/devoops/reverse-proxy/nginx/default-ssl.conf default.conf
+    - sed -i "s|<HOST>|coolermaster-sit.cloud-interactive.com|g" default.conf
+    - sed -i "s|<PROXY_PASS>|http://127.0.0.1:3000|g" default.conf
+    - cp -r /home/gitlab-runner/ci-vault/ssl/_.cloud-interactive.com/* ./ssl
+    #    -  --build-arg DOMAIN=${DOMAIN} --build-arg ENV=${ENV} --build-arg PORT=${PORT} --build-arg FE_HTTPS_PORT=${FE_HTTPS_PORT} --build-arg FE_HTTP_PORT=${FE_HTTP_PORT} --build-arg BE_HTTPS_PORT=${BE_HTTPS_PORT} --build-arg BE_HTTP_PORT=${BE_HTTP_PORT} --build-arg DB_USER=${DB_USER} --build-arg DB_PASSWORD=${DB_PASSWORD} --build-arg DB_NAME=${DB_NAME} --build-arg DB_HOST=${DB_HOST} --build-arg DB_PORT=${DB_PORT} --build-arg JWT_SECRET=${JWT_SECRET} --build-arg JWT_TOKEN_AUDIENCE=${JWT_TOKEN_AUDIENCE} --build-arg JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER} --build-arg JWT_ACCESS_TOKEN_TTL=${JWT_ACCESS_TOKEN_TTL} --build-arg JWT_REFRESH_TOKEN_TTL=${JWT_REFRESH_TOKEN_TTL} --build-arg REDIS_HOST=${REDIS_HOST} --build-arg REDIS_PORT=${REDIS_PORT} --build-arg REDIS_PASSWORD=${REDIS_PASSWORD} --build-arg CLOUD_INSTANCE=${CLOUD_INSTANCE} --build-arg TENANT_ID=${TENANT_ID} --build-arg CLIENT_ID=${CLIENT_ID} --build-arg CLIENT_SECRET=${CLIENT_SECRET} --build-arg REDIRECT_URI=${REDIRECT_URI} --build-arg POST_LOGOUT_REDIRECT_URI=${POST_LOGOUT_REDIRECT_URI} --build-arg GRAPH_API_ENDPOINT=${GRAPH_API_ENDPOINT} --build-arg EXPRESS_SESSION_SECRET=${EXPRESS_SESSION_SECRET} --build-arg NEXT_PUBLIC_TOKEN=${NEXT_PUBLIC_TOKEN} --build-arg NEXT_PUBLIC_USER=${NEXT_PUBLIC_USER} --build-arg NEXT_PUBLIC_DOMAIN=${NEXT_PUBLIC_DOMAIN} --build-arg PUBLIC_FRONT_DOMAIN=${PUBLIC_FRONT_DOMAIN} --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} --build-arg AWS_S3_BUCKET=${AWS_S3_BUCKET} --build-arg AWS_REGION=${AWS_REGION}
+    - cp /home/gitlab-runner/ci-vault/env/coolermaster/ory/env.sit .env
+    - docker build -t dockerhub.cloud-interactive.com/coolermaster-ory-sit:latest --no-cache .
+    - docker logout
+    - docker login dockerhub.cloud-interactive.com -u cloud -p 7=EdUKxUfMg3Tu!
+    - docker push dockerhub.cloud-interactive.com/coolermaster-ory-sit:latest
+    - export CI_VAULT=/home/coolermaster/ci-vault ; export CI_ORCH=/home/coolermaster/pj-devops ;
+    - chmod 600 /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/dev
+    - ssh -i /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/dev coolermaster@10.1.1.80 -T 'export CI_VAULT=/home/coolermaster/ci-vault ; export CI_ORCH=/home/coolermaster/pj-devops ; cd /home/coolermaster/ci-vault ; git fetch ; git checkout origin/master -f ; cd /home/coolermaster/pj-devops ; git fetch ; git checkout origin/master -f'
+    - ssh -i /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/dev coolermaster@10.1.1.80 -T 'docker kill be-ory ; docker system prune -fa'
+    - ssh -i /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/dev coolermaster@10.1.1.80 -T 'cd ~/pj-devops/coolermaster && git fetch ; git checkout origin/master -f ; docker logout ; docker login dockerhub.cloud-interactive.com -u cloud -p 7=EdUKxUfMg3Tu! ; docker network create storage_net ; export CI_VAULT=/home/coolermaster/ci-vault ; export CI_ORCH=/home/coolermaster/pj-devops ; export ENV=sit ; export $(cat $CI_VAULT/env/coolermaster/ory/env.sit | xargs) ; cd $CI_ORCH/coolermaster/sit ; docker-compose up -d ory'
+
+.job_build_uat:
+  # image: docker:19.03.12
+  stage: build
+  script:
+    - id
+    - df -h | grep -E "(ubuntu--vg-ubuntu--lv|Filesystem)"
+    - set -x
+    - export PROJECT_PWD=$(pwd)
+    - cd /home/gitlab-runner/ci-vault ; git fetch ; git checkout origin/master -f ; # export $(cat /home/gitlab-runner/ci-vault/env/coolermaster/ory/env.uat | xargs)
+    - cd $PROJECT_PWD
+    - cp /home/gitlab-runner/devoops/reverse-proxy/nginx/default-ssl.conf default.conf
+    - sed -i "s|<HOST>|coolermaster-uat.cloud-interactive.com|g" default.conf
+    - sed -i "s|<PROXY_PASS>|http://127.0.0.1:3000|g" default.conf
+    - cp -r /home/gitlab-runner/ci-vault/ssl/_.cloud-interactive.com/* ./ssl
+    - cp /home/gitlab-runner/ci-vault/env/coolermaster/ory/env.uat .env
+    #   --build-arg DOMAIN=${DOMAIN} --build-arg ENV=${ENV} --build-arg PORT=${PORT} --build-arg FE_HTTPS_PORT=${FE_HTTPS_PORT} --build-arg FE_HTTP_PORT=${FE_HTTP_PORT} --build-arg BE_HTTPS_PORT=${BE_HTTPS_PORT} --build-arg BE_HTTP_PORT=${BE_HTTP_PORT} --build-arg DB_USER=${DB_USER} --build-arg DB_PASSWORD=${DB_PASSWORD} --build-arg DB_NAME=${DB_NAME} --build-arg DB_HOST=${DB_HOST} --build-arg DB_PORT=${DB_PORT} --build-arg JWT_SECRET=${JWT_SECRET} --build-arg JWT_TOKEN_AUDIENCE=${JWT_TOKEN_AUDIENCE} --build-arg JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER} --build-arg JWT_ACCESS_TOKEN_TTL=${JWT_ACCESS_TOKEN_TTL} --build-arg JWT_REFRESH_TOKEN_TTL=${JWT_REFRESH_TOKEN_TTL} --build-arg REDIS_HOST=${REDIS_HOST} --build-arg REDIS_PORT=${REDIS_PORT} --build-arg REDIS_PASSWORD=${REDIS_PASSWORD} --build-arg CLOUD_INSTANCE=${CLOUD_INSTANCE} --build-arg TENANT_ID=${TENANT_ID} --build-arg CLIENT_ID=${CLIENT_ID} --build-arg CLIENT_SECRET=${CLIENT_SECRET} --build-arg REDIRECT_URI=${REDIRECT_URI} --build-arg POST_LOGOUT_REDIRECT_URI=${POST_LOGOUT_REDIRECT_URI} --build-arg GRAPH_API_ENDPOINT=${GRAPH_API_ENDPOINT} --build-arg EXPRESS_SESSION_SECRET=${EXPRESS_SESSION_SECRET} --build-arg NEXT_PUBLIC_TOKEN=${NEXT_PUBLIC_TOKEN} --build-arg NEXT_PUBLIC_USER=${NEXT_PUBLIC_USER} --build-arg NEXT_PUBLIC_DOMAIN=${NEXT_PUBLIC_DOMAIN} --build-arg PUBLIC_FRONT_DOMAIN=${PUBLIC_FRONT_DOMAIN} --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} --build-arg AWS_S3_BUCKET=${AWS_S3_BUCKET} --build-arg AWS_REGION=${AWS_REGION}
+    - docker build -t dockerhub.cloud-interactive.com/coolermaster-ory-uat:latest --no-cache .
+    - docker logout
+    - docker login dockerhub.cloud-interactive.com -u cloud -p 7=EdUKxUfMg3Tu!
+    - docker push dockerhub.cloud-interactive.com/coolermaster-ory-uat:latest
+    - export CI_VAULT=/home/coolermaster/ci-vault ; export CI_ORCH=/home/coolermaster/pj-devops ;
+    - chmod 600 /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/dev
+    - ssh -i /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/dev coolermaster@10.1.1.65 -T 'export CI_VAULT=/home/coolermaster/ci-vault ; export CI_ORCH=/home/coolermaster/pj-devops ; cd /home/coolermaster/ci-vault ; git fetch ; git checkout origin/master -f ; cd /home/coolermaster/pj-devops ; git fetch ; git checkout origin/master -f'
+    - ssh -i /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/dev -T 'docker kill be-ory ; docker system prune -fa'
+    - ssh -i /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/dev-T 'cd ~/pj-devops/coolermaster && git fetch ; git checkout origin/master -f ; docker logout ; docker login dockerhub.cloud-interactive.com -u cloud -p 7=EdUKxUfMg3Tu! ; docker network create storage_net ; export CI_VAULT=/home/coolermaster/ci-vault ; export CI_ORCH=/home/coolermaster/pj-devops ; export ENV=uat ; export $(cat $CI_VAULT/env/coolermaster/ory/env.uat | xargs) ; cd $CI_ORCH/coolermaster/uat ; docker-compose up -d ory'
+
+.job_build_staging:
+  # image: docker:19.03.12
+  stage: build
+#  before_script:
+#    - |
+#      aws configure set region ap-northeast-1
+#      aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+#      aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+  script:
+    - id
+    - df -h | grep -E "(ubuntu--vg-ubuntu--lv|Filesystem)"
+    - set -ux
+    - export PROJECT_PWD=$(pwd)
+    - cd /home/gitlab-runner/ci-vault ; git fetch ; git checkout origin/master -f ; # export $(cat /home/gitlab-runner/ci-vault/env/coolermaster/ory/env.${ENV} | xargs)
+    - cd $PROJECT_PWD
+    - cp /home/gitlab-runner/ci-vault/env/coolermaster/ory/env.staging .env
+    #    - cp -r /home/gitlab-runner/ci-vault/ssl/_.cloud-interactive.com ./ssl
+    - sed -i "s|<HOST>|coolermaster-id-staging.cloud-interactive.com|g" default.conf
+    - sed -i "s|<PROXY_PASS>|http://127.0.0.1:3000|g" default.conf
+    # --build-arg ENV=${ENV} --build-arg PORT=${PORT} --build-arg DB_USER=${DB_USER} --build-arg DB_PASSWORD=${DB_PASSWORD} --build-arg DB_NAME=${DB_NAME} --build-arg DB_HOST=${DB_HOST} --build-arg DB_PORT=${DB_PORT} --build-arg JWT_SECRET=${JWT_SECRET} --build-arg JWT_TOKEN_AUDIENCE=${JWT_TOKEN_AUDIENCE} --build-arg JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER} --build-arg JWT_ACCESS_TOKEN_TTL=${JWT_ACCESS_TOKEN_TTL} --build-arg JWT_REFRESH_TOKEN_TTL=${JWT_REFRESH_TOKEN_TTL} --build-arg REDIS_HOST=${REDIS_HOST} --build-arg REDIS_PORT=${REDIS_PORT} --build-arg REDIS_PASSWORD=${REDIS_PASSWORD} --build-arg CLOUD_INSTANCE=${CLOUD_INSTANCE} --build-arg TENANT_ID=${TENANT_ID} --build-arg CLIENT_ID=${CLIENT_ID} --build-arg CLIENT_SECRET=${CLIENT_SECRET} --build-arg REDIRECT_URI=${REDIRECT_URI} --build-arg POST_LOGOUT_REDIRECT_URI=${POST_LOGOUT_REDIRECT_URI} --build-arg GRAPH_API_ENDPOINT=${GRAPH_API_ENDPOINT} --build-arg EXPRESS_SESSION_SECRET=${EXPRESS_SESSION_SECRET} --build-arg NEXT_PUBLIC_TOKEN=${NEXT_PUBLIC_TOKEN} --build-arg NEXT_PUBLIC_USER=${NEXT_PUBLIC_USER} --build-arg NEXT_PUBLIC_DOMAIN=${NEXT_PUBLIC_DOMAIN} --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} --build-arg AWS_S3_BUCKET=${AWS_S3_BUCKET} --build-arg AWS_REGION=${AWS_REGION}
+    - docker build -t dockerhub.cloud-interactive.com/coolermaster-ory-staging:latest -t 713812444237.dkr.ecr.ap-northeast-1.amazonaws.com/coolermaster/staging/ory:latest --no-cache .
+#    - cat docker-compose.yml | envsubst | docker-compose -f - build --no-cache
+    - docker logout
+    - docker login dockerhub.cloud-interactive.com -u cloud -p 7=EdUKxUfMg3Tu!
+    - docker push dockerhub.cloud-interactive.com/coolermaster-ory-staging:latest
+    - docker logout
+    - eval $(cat /home/gitlab-runner/ci-vault/cloud-aws/coolermaster/staging/aws_access)
+    - aws configure list
+    - aws ecr get-login-password | docker login --username AWS --password-stdin 713812444237.dkr.ecr.ap-northeast-1.amazonaws.com
+    - docker push 713812444237.dkr.ecr.ap-northeast-1.amazonaws.com/coolermaster/staging/ory:latest
+    - export CI_VAULT=/home/coolermaster/ci-vault ; export CI_ORCH=/home/coolermaster/pj-devops ;
+    - chmod 600 /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/coolermaster-staging
+    - ssh -i /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/coolermaster-staging ubuntu@52.68.18.182 -T "ssh -i coolermaster-staging ubuntu@172.31.2.218 -T \"export CI_ORCH=/home/ubuntu/pj-devops ; export ENV=staging ; cd /home/ubuntu/pj-devops ; git fetch ; git checkout origin/master -f\""
+    - ssh -i /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/coolermaster-staging ubuntu@52.68.18.182 -T "ssh -i coolermaster-staging ubuntu@172.31.2.218 -T \"sudo docker kill be-ory ; sudo docker system prune -fa\""
+    - ssh -i /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/coolermaster-staging ubuntu@52.68.18.182 -T "ssh -i coolermaster-staging ubuntu@172.31.2.218 -T \"sh /home/ubuntu/aws_access ; cd /home/ubuntu/pj-devops/coolermaster/staging && git fetch ; git checkout origin/master -f ; docker logout ; aws ecr get-login-password | docker login --username AWS --password-stdin 713812444237.dkr.ecr.ap-northeast-1.amazonaws.com ; docker-compose up -d ory\""
+
+.job_build_cm_uat:
+  # image: docker:19.03.12
+  stage: build
+  #  before_script:
+  #    - |
+  #      aws configure set region ap-northeast-1
+  #      aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+  #      aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+  script:
+    - id
+    - df -h | grep -E "(ubuntu--vg-ubuntu--lv|Filesystem)"
+    - set -ux
+    - export PROJECT_PWD=$(pwd)
+    - cd /home/gitlab-runner/ci-vault ; git fetch ; git checkout origin/master -f
+    - cd $PROJECT_PWD
+    - cp /home/gitlab-runner/ci-vault/env/coolermaster/ory/env.cmuat .env
+#    - cp -r /home/gitlab-runner/ci-vault/ssl/_.cloud-interactive.com ./ssl
+    - sed -i "s|<HOST>|*.coolermaster.com|g" default.conf
+    - sed -i "s|<PROXY_PASS>|http://127.0.0.1:3000|g" default.conf
+    # --build-arg ENV=${ENV} --build-arg PORT=${PORT} --build-arg DB_USER=${DB_USER} --build-arg DB_PASSWORD=${DB_PASSWORD} --build-arg DB_NAME=${DB_NAME} --build-arg DB_HOST=${DB_HOST} --build-arg DB_PORT=${DB_PORT} --build-arg JWT_SECRET=${JWT_SECRET} --build-arg JWT_TOKEN_AUDIENCE=${JWT_TOKEN_AUDIENCE} --build-arg JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER} --build-arg JWT_ACCESS_TOKEN_TTL=${JWT_ACCESS_TOKEN_TTL} --build-arg JWT_REFRESH_TOKEN_TTL=${JWT_REFRESH_TOKEN_TTL} --build-arg REDIS_HOST=${REDIS_HOST} --build-arg REDIS_PORT=${REDIS_PORT} --build-arg REDIS_PASSWORD=${REDIS_PASSWORD} --build-arg CLOUD_INSTANCE=${CLOUD_INSTANCE} --build-arg TENANT_ID=${TENANT_ID} --build-arg CLIENT_ID=${CLIENT_ID} --build-arg CLIENT_SECRET=${CLIENT_SECRET} --build-arg REDIRECT_URI=${REDIRECT_URI} --build-arg POST_LOGOUT_REDIRECT_URI=${POST_LOGOUT_REDIRECT_URI} --build-arg GRAPH_API_ENDPOINT=${GRAPH_API_ENDPOINT} --build-arg EXPRESS_SESSION_SECRET=${EXPRESS_SESSION_SECRET} --build-arg NEXT_PUBLIC_TOKEN=${NEXT_PUBLIC_TOKEN} --build-arg NEXT_PUBLIC_USER=${NEXT_PUBLIC_USER} --build-arg NEXT_PUBLIC_DOMAIN=${NEXT_PUBLIC_DOMAIN} --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} --build-arg AWS_S3_BUCKET=${AWS_S3_BUCKET} --build-arg AWS_REGION=${AWS_REGION}
+    - docker build -t dockerhub.cloud-interactive.com/coolermaster-ory-staging:latest -t 466701563864.dkr.ecr.us-west-1.amazonaws.com/coolermaster/cm-uat/ory:latest --no-cache .
+    #    - cat docker-compose.yml | envsubst | docker-compose -f - build --no-cache
+    - docker logout
+    - docker login dockerhub.cloud-interactive.com -u cloud -p 7=EdUKxUfMg3Tu!
+    - docker push dockerhub.cloud-interactive.com/coolermaster-ory-staging:latest
+    - docker logout
+    - eval $(cat /home/gitlab-runner/ci-vault/cloud-aws/coolermaster/cm-uat/aws_access)
+    - aws configure list
+    - aws ecr get-login-password | docker login --username AWS --password-stdin 466701563864.dkr.ecr.us-west-1.amazonaws.com
+    - docker push 466701563864.dkr.ecr.us-west-1.amazonaws.com/coolermaster/cm-uat/ory:latest
+    - export CI_VAULT=/home/coolermaster/ci-vault ; export CI_ORCH=/home/coolermaster/pj-devops ;
+    - chmod 600 /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/coolermaster-notprod
+    - uuidgen # packer
+    - uuidgen # terraform apply
+#    - ssh -i /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/coolermaster-staging ubuntu@52.68.18.182 -T "ssh -i coolermaster-staging ubuntu@172.31.2.218 -T \"export CI_ORCH=/home/ubuntu/pj-devops ; export ENV=staging ; cd /home/ubuntu/pj-devops ; git fetch ; git checkout origin/master -f\""
+#    - ssh -i /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/coolermaster-staging ubuntu@52.68.18.182 -T "ssh -i coolermaster-staging ubuntu@172.31.2.218 -T \"sudo docker kill be-ory ; sudo docker system prune -fa\""
+#    - ssh -i /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/coolermaster-staging ubuntu@52.68.18.182 -T "ssh -i coolermaster-staging ubuntu@172.31.2.218 -T \"sh /home/ubuntu/aws_access ; cd /home/ubuntu/pj-devops/coolermaster/cm-uat && git fetch ; git checkout origin/master -f ; docker logout ; aws ecr get-login-password | docker login --username AWS --password-stdin 466701563864.dkr.ecr.us-west-1.amazonaws.com ; docker-compose up -d ory\""
+
+.job_build_prod:
+  stage: build
+  script:
+    - id
+    - df -h | grep -E "(ubuntu--vg-ubuntu--lv|Filesystem)"
+    - set -x
+    - export PROJECT_PWD=$(pwd)
+    - cd /home/gitlab-runner/ci-vault ; git fetch ; git checkout origin/master -f ; # export $(cat /home/gitlab-runner/ci-vault/env/coolermaster/ory/env.${ENV} | xargs)
+    - cd $PROJECT_PWD
+    - docker build -t dockerhub.cloud-interactive.com/coolermaster-ory-${ENV}:latest -t 713812444237.dkr.ecr.ap-northeast-1.amazonaws.com/coolermaster/staging/ory:latest --build-arg ENV=${ENV} --build-arg PORT=${PORT} --build-arg DB_USER=${DB_USER} --build-arg DB_PASSWORD=${DB_PASSWORD} --build-arg DB_NAME=${DB_NAME} --build-arg DB_HOST=${DB_HOST} --build-arg DB_PORT=${DB_PORT} --build-arg JWT_SECRET=${JWT_SECRET} --build-arg JWT_TOKEN_AUDIENCE=${JWT_TOKEN_AUDIENCE} --build-arg JWT_TOKEN_ISSUER=${JWT_TOKEN_ISSUER} --build-arg JWT_ACCESS_TOKEN_TTL=${JWT_ACCESS_TOKEN_TTL} --build-arg JWT_REFRESH_TOKEN_TTL=${JWT_REFRESH_TOKEN_TTL} --build-arg REDIS_HOST=${REDIS_HOST} --build-arg REDIS_PORT=${REDIS_PORT} --build-arg REDIS_PASSWORD=${REDIS_PASSWORD} --build-arg CLOUD_INSTANCE=${CLOUD_INSTANCE} --build-arg TENANT_ID=${TENANT_ID} --build-arg CLIENT_ID=${CLIENT_ID} --build-arg CLIENT_SECRET=${CLIENT_SECRET} --build-arg REDIRECT_URI=${REDIRECT_URI} --build-arg POST_LOGOUT_REDIRECT_URI=${POST_LOGOUT_REDIRECT_URI} --build-arg GRAPH_API_ENDPOINT=${GRAPH_API_ENDPOINT} --build-arg EXPRESS_SESSION_SECRET=${EXPRESS_SESSION_SECRET} --build-arg NEXT_PUBLIC_TOKEN=${NEXT_PUBLIC_TOKEN} --build-arg NEXT_PUBLIC_USER=${NEXT_PUBLIC_USER} --build-arg NEXT_PUBLIC_DOMAIN=${NEXT_PUBLIC_DOMAIN} --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} --build-arg AWS_S3_BUCKET=${AWS_S3_BUCKET} --build-arg AWS_REGION=${AWS_REGION} --no-cache .
+#    - cat docker-compose.yml | envsubst | docker-compose -f - build --no-cache
+#    - docker logout
+#    - docker login dockerhub.cloud-interactive.com -u cloud -p 7=EdUKxUfMg3Tu!
+#    - docker push dockerhub.cloud-interactive.com/coolermaster-ory-${ENV}:latest
+    - docker logout
+    - aws configure set region ap-northeast-1
+    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+    - aws configure list
+    - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 713812444237.dkr.ecr.ap-northeast-1.amazonaws.com
+    - docker push 713812444237.dkr.ecr.ap-northeast-1.amazonaws.com/coolermaster/staging/ory:latest
+    - cd /home/gitlab-runner/pj-devops ; git fetch ; git checkout origin/master -f 
+    - cat /home/gitlab-runner/pj-devops/coolermaster/prod/statefulset-and-service-ory.yaml | envsubst | kubectl apply -f -
+
+sit-build:
+  extends: .job_build_sit
+  stage: build
+  environment:
+    name: sit
+  variables:
+    ENV: sit
+  only:
+    - develop
+    - dev
+    - feature-devops
+  tags:
+    - apollo-shell
+
+uat-build:
+  extends: .job_build_uat
+  stage: build
+  environment:
+    name: uat
+  variables:
+    ENV: uat
+  only:
+    - master
+  tags:
+    - apollo-shell
+
+staging-build:
+  extends: .job_build_staging
+  stage: build
+  environment:
+    name: staging
+  variables:
+    ENV: staging
+  only:
+    - develop
+    - staging
+    - master
+    - feature-devops
+  tags:
+    - apollo-shell
+
+cm-uat-build:
+  extends: .job_build_cm_uat
+  stage: build
+  environment:
+    name: cm-uat
+  variables:
+    ENV: cm-uat
+  only:
+    - develop
+    - staging
+    - master
+    - feature-devops
+  tags:
+    - apollo-shell
+
+#sit-deploy:
+#  extends: .job_build_sit
+#  stage: build
+#  environment:
+#    name: sit
+#  variables:
+#    ENV: sit
+#  only:
+#    - develop
+#    - dev
+#  tags:
+#    - apollo-shell
+#
+#uat-deploy:
+#  extends: .job_build_uat
+#  stage: build
+#  environment:
+#    name: uat
+#  variables:
+#    ENV: uat
+#  only:
+#    - master
+#  tags:
+#    - apollo-shell
+#
+#staging-deploy:
+#  extends: .job_build_staging
+#  stage: build
+#  environment:
+#    name: staging
+#  variables:
+#    ENV: staging
+#  only:
+#    - develop
+#    - staging
+#    - master
+#  tags:
+#    - apollo-shell
