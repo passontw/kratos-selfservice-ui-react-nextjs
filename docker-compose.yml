@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+  scope:
+    container_name: scope
+    image: weaveworks/scope:1.12.0
+    # networks:
+    #   - storage_net
+    pid: "host"
+    ports:
+      - "4040:4040"
+    privileged: true
+    labels:
+      - "works.weave.role=system"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:rw"
+    command:
+      - "--probe.docker=true"
+  ory:
+    # image: ${registry_host}/react-template-${env}:latest
+    restart: always
+    container_name: ory
+#    image: dockerhub.cloud-interactive.com/coolermaster-ory
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - '3000:80'
+      - '3443:443'
+
