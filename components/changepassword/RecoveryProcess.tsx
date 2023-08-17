@@ -33,15 +33,15 @@ const getNextValues = (flow, values) => {
   const { isResendCode, code, csrf_token, email, method } = values
   return isResendCode
     ? {
-      email,
-      csrf_token,
-      method,
-    }
+        email,
+        csrf_token,
+        method,
+      }
     : {
-      code,
-      csrf_token,
-      method,
-    }
+        code,
+        csrf_token,
+        method,
+      }
 }
 
 const RecoveryProcess: NextPage = (props) => {
@@ -59,29 +59,29 @@ const RecoveryProcess: NextPage = (props) => {
 
   // relocate the validation to fit design
   useEffect(() => {
-    const targetDestination = document.querySelector(".targetDestination")
-    const targetErrorMsg = document.querySelector("h3")
-    const submitBtn = document.querySelector(".targetDestination button")
-    // move only when error msg appeared, submit button is visible,
-    // and there is no query string which indicates that the flow is still on step 1
-    if (
-      targetErrorMsg &&
-      targetDestination?.parentNode &&
-      submitBtn &&
-      !window.location.search
-    ) {
-      targetDestination.parentNode.insertBefore(
-        targetErrorMsg,
-        targetDestination,
-      )
-      // style the button to fit new ui
-      submitBtn.style.margin = "33px 0px 0px"
-    } else {
-      // else if error msg is not present style message to fit original ui
-      if (targetErrorMsg) {
-        targetErrorMsg.style.display = "none"
-      }
-    }
+    // const targetDestination = document.querySelector(".targetDestination")
+    // const targetErrorMsg = document.querySelector("h3")
+    // const submitBtn = document.querySelector(".targetDestination button")
+    // // move only when error msg appeared, submit button is visible,
+    // // and there is no query string which indicates that the flow is still on step 1
+    // if (
+    //   targetErrorMsg &&
+    //   targetDestination?.parentNode &&
+    //   submitBtn &&
+    //   !window.location.search
+    // ) {
+    //   targetDestination.parentNode.insertBefore(
+    //     targetErrorMsg,
+    //     targetDestination,
+    //   )
+    //   // style the button to fit new ui
+    //   submitBtn.style.margin = "33px 0px 0px"
+    // } else {
+    //   // else if error msg is not present style message to fit original ui
+    //   if (targetErrorMsg) {
+    //     targetErrorMsg.style.display = "none"
+    //   }
+    // }
 
     if (flow?.state === "passed_challenge") {
       setLoading(true)
@@ -96,7 +96,8 @@ const RecoveryProcess: NextPage = (props) => {
               return router.push("/login")
             })
             .then(() => router.reload())
-        }).catch(error => setLoading(false))
+        })
+        .catch((error) => setLoading(false))
     }
   }, [flow])
 
@@ -112,7 +113,7 @@ const RecoveryProcess: NextPage = (props) => {
 
     // If ?flow=.. was in the URL, we fetch it
     if (flowId) {
-      setLoading(true);
+      setLoading(true)
 
       ory
         .getRecoveryFlow({ id: String(flowId) })
@@ -121,7 +122,7 @@ const RecoveryProcess: NextPage = (props) => {
           setIssuedAt(data.issued_at)
           setLoading(false)
         })
-        .catch(error => {
+        .catch((error) => {
           setLoading(false)
           handleFlowError(router, "login", setFlow)(error)
         })
@@ -376,13 +377,9 @@ const RecoveryProcess: NextPage = (props) => {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        height="50vh">
-        <Ring
-          size={40}
-          lineWeight={5}
-          speed={2}
-          color="#A62BC3"
-        />
+        height="50vh"
+      >
+        <Ring size={40} lineWeight={5} speed={2} color="#A62BC3" />
       </Box>
     )
   }

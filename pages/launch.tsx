@@ -5,7 +5,7 @@ import { useEffect } from "react"
 import LinkNav from "../components/LinkNav"
 import MenuFooter from "../components/MenuFooter"
 import Cmid from "../public/images/app_icons/Cmid"
-import Dana from "../public/images/app_icons/Dana"
+import MasterCTRLLogo from "../public/images/app_icons/MasterCTRLLogo"
 
 interface LaunchProps {}
 
@@ -34,17 +34,7 @@ const Launch: React.FC<LaunchProps> = () => {
   )
 
   useEffect(() => {
-    switch (platform) {
-      case "desktop": {
-        router.push(
-          `mastercontrol://refresh_token=${refresh_token}:access_token=${access_token}:name=${name}:email=${email}`,
-        )
-      }
-      case "app": {
-        // TODO open IOS / Android app
-        return
-      }
-    }
+    handleOpenClient()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -65,7 +55,7 @@ const Launch: React.FC<LaunchProps> = () => {
   const renderClientName = (platform: string) => {
     switch (platform) {
       case "desktop": {
-        return "MasterControl"
+        return "MasterCTRL"
       }
       case "mobile": {
         return "App"
@@ -114,7 +104,7 @@ const Launch: React.FC<LaunchProps> = () => {
         >
           <Box display="flex" gap="26px">
             <Box display="flex" alignItems="center">
-              <Dana />
+              <MasterCTRLLogo />
             </Box>
           </Box>
           <Box
