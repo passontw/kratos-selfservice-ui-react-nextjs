@@ -9,5 +9,5 @@ export default configureStore({
     layout: layoutReducer,
     verification: verificationReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+  // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 })

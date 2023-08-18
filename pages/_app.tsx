@@ -34,6 +34,15 @@ const theme = createTheme({
   },
 })
 
+if (process.env.NODE_ENV === "production") {
+  console = {
+    log: () => {},
+    warn: () => {},
+    error: () => {},
+    info: () => {},
+  }
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   const lang = useI18nConfig()
   const PagePropsWithI18n = { ...pageProps, lang }
