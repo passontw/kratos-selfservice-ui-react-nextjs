@@ -111,5 +111,6 @@
     "ory_errormsg_interaction_expired": "操作已过期，请重新填写表单",
     "ory_errormsg_route_address_no_allowed": "不允许使用 %page_route% 网址",
     "log_out_all_device_desc": "这将删除您所有设备上Master ID的访问权限",
-    "account_deleted": "账户已删除"
+    "account_deleted": "账户已删除",
+    "error-verify_account": "请通过确认是您本人来确认此操作。"
 }

@@ -111,5 +111,6 @@
     "ory_errormsg_interaction_expired": "Срок взаимодействия истек, пожалуйста, заполните форму еще раз.",
     "ory_errormsg_route_address_no_allowed": "Адрес %page_route% не разрешен.",
     "log_out_all_device_desc": "Это удалит доступ к вашей учетной записи Master ID со всех устройств.",
-    "account_deleted": "Аккаунт удален"
+    "account_deleted": "Аккаунт удален",
+    "error-verify_account": "Пожалуйста, подтвердите это действие, убедившись, что это вы."
 }

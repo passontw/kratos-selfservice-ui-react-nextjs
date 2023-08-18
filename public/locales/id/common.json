@@ -111,5 +111,6 @@
     "ory_errormsg_interaction_expired": "Interaksi Anda telah kedaluwarsa, silakan isi formulir lagi.",
     "ory_errormsg_route_address_no_allowed": "%page_route% tidak diperbolehkan.",
     "log_out_all_device_desc": "Ini akan menghapus akses ke akun Master ID Anda dari semua perangkat.",
-    "account_deleted": "Akun dihapus"
+    "account_deleted": "Akun dihapus",
+    "error-verify_account": "Harap konfirmasi tindakan ini dengan memverifikasi bahwa itu adalah Anda."
 }

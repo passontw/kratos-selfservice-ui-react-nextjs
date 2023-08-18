@@ -111,5 +111,6 @@
     "ory_errormsg_interaction_expired": "การตอบรับของคุณหมดอายุแล้ว โปรดกรอกแบบฟอร์มอีกครั้ง",
     "ory_errormsg_route_address_no_allowed": "%page_route% ไม่สารถอนุญาตเข้าถึงได้",
     "log_out_all_device_desc": "การดำเนินการนี้จะลบการเข้าถึงบัญชี Master ID ของคุณออกจากอุปกรณ์ทั้งหมด",
-    "account_deleted": "บัญชีของคุณได้ถูกลบแล้ว"
+    "account_deleted": "บัญชีของคุณได้ถูกลบแล้ว",
+    "error-verify_account": "โปรดยืนยันการดำเนินการนี้โดยตรวจสอบว่ามันคือคุณ"
 }

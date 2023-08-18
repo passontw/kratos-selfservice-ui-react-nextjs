@@ -111,5 +111,6 @@
     "ory_errormsg_interaction_expired": "La tua interazione è scaduta, compila nuovamente il modulo.",
     "ory_errormsg_route_address_no_allowed": "L'indirizzo %page_route% non è consentito.",
     "log_out_all_device_desc": "In questo modo si rimuove l'accesso all'account Master ID da tutti i dispositivi.",
-    "account_deleted": "Account cancellato"
+    "account_deleted": "Account cancellato",
+    "error-verify_account": "Conferma questa azione verificando che sei tu."
 }
