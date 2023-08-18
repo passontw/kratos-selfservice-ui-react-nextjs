@@ -111,5 +111,6 @@
     "ory_errormsg_interaction_expired": "Etkileşiminizin süresi doldu, lütfen formu tekrar doldurun.",
     "ory_errormsg_route_address_no_allowed": "%page_route% adresine izin verilmiyor.",
     "log_out_all_device_desc": "Bu işlem Master ID hesabınıza erişimi tüm cihazlardan kaldıracaktır.",
-    "account_deleted": "Hesap silindi"
+    "account_deleted": "Hesap silindi",
+    "error-verify_account": "Lütfen bu işlemi gerçekten siz olduğunuzu doğrulayarak onaylayın."
 }

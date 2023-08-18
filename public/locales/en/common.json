@@ -111,5 +111,6 @@
     "ory_errormsg_interaction_expired": "Your interaction expired, please fill out the form again.",
     "ory_errormsg_route_address_no_allowed": "The %page_route% address is not allowed.",
     "log_out_all_device_desc": "This will remove access to your Master ID account from all devices.",
-    "account_deleted": "Account deleted"
+    "account_deleted": "Account deleted",
+    "error-verify_account": "Please confirm this action by verifying that it is you."
 }

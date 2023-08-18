@@ -111,5 +111,6 @@
   "ory_errormsg_interaction_expired": "Tương tác của bạn đã hết hạn, vui lòng điền lại biểu mẫu.",
   "ory_errormsg_route_address_no_allowed": "Địa chỉ %page_route% không được cấp phép.",
   "log_out_all_device_desc": "Thao tác này sẽ xóa quyền truy cập vào tài khoản Master ID của bạn khỏi tất cả các thiết bị.",
-  "account_deleted": "Tài khoản đã bị xóa"
+  "account_deleted": "Tài khoản đã bị xóa",
+  "error-verify_account": "Vui lòng xác nhận hành động này bằng cách xác minh rằng đó là bạn."
 }

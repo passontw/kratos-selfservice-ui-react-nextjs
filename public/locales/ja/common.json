@@ -111,5 +111,6 @@
     "ory_errormsg_interaction_expired": "入力が無効となりましたので、再度入力してください。",
     "ory_errormsg_route_address_no_allowed": "%page_route% アドレスは使用できません。",
     "log_out_all_device_desc": "これにより、すべてのデバイスからMaster IDアカウントへのアクセスが削除されます。",
-    "account_deleted": "アカウントが削除されました"
+    "account_deleted": "アカウントが削除されました",
+    "error-verify_account": "あなた自身であることを確認して、この操作を確認してください。"
 }

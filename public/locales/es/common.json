@@ -111,5 +111,6 @@
     "ory_errormsg_interaction_expired": "Su interacción ha caducado, por favor rellene el formulario de nuevo.",
     "ory_errormsg_route_address_no_allowed": "La dirección %page_route% no está permitida.",
     "log_out_all_device_desc": "Esto eliminará el acceso a su cuenta de Master ID desde todos los dispositivos.",
-    "account_deleted": "Cuenta borrada"
+    "account_deleted": "Cuenta borrada",
+    "error-verify_account": "Por favor confirma esta acción verificando que eres tú."
 }

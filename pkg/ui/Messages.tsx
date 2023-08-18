@@ -1,30 +1,37 @@
 import Box from "@mui/material/Box"
 import { UiText } from "@ory/client"
 import { Alert, AlertContent } from "@ory/themes"
+import { useTranslation } from "next-i18next"
 
 import ErrorIcon from "../../public/images/ErrorIcon"
 import SuccessIcon from "../../public/images/SuccessIcon"
-import { useTranslation } from 'next-i18next'
 
 interface MessageProps {
   message: UiText
 }
 
 const getDisplayMessage = (displayMessage = "", t: any) => {
-
   if (
     displayMessage.includes(
       "check for spelling mistakes in your password or username, email address, or phone number.",
     )
   ) {
-    return t('error-email_or_pw_incorrect')
+    return t("error-email_or_pw_incorrect")
   }
   if (displayMessage.includes("The provided credentials are invalid")) {
-    return t('error-email_or_pw_incorrect')
+    return t("error-email_or_pw_incorrect")
   }
 
   if (displayMessage.includes("An account with the same identifier")) {
-    return t('error-email_existed')
+    return t("error-email_existed")
+  }
+
+  if (
+    displayMessage.includes(
+      "Please confirm this action by verifying that it is you",
+    )
+  ) {
+    return t("error-verify_account")
   }
 
   return displayMessage

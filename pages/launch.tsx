@@ -1,4 +1,6 @@
 import Box from "@mui/material/Box"
+import { useTranslation } from "next-i18next"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 
@@ -10,6 +12,7 @@ import MasterCTRLLogo from "../public/images/app_icons/MasterCTRLLogo"
 interface LaunchProps {}
 
 const Launch: React.FC<LaunchProps> = () => {
+  const { t } = useTranslation()
   const router = useRouter()
   const query = router.query
   const { platform, refresh_token, access_token, name, email } = query as {
@@ -137,7 +140,7 @@ const Launch: React.FC<LaunchProps> = () => {
             width="450px"
             textAlign="center"
           >
-            Launching...
+            {t("launching") || "Launching..."}
           </Box>
           <Box
             color="#A5A5A9"
@@ -146,10 +149,8 @@ const Launch: React.FC<LaunchProps> = () => {
             width="450px"
             textAlign="center"
           >
-            <Box>Click “Open” on browser alert to continue using.</Box>
-            <Box>
-              If your application didn’t response, please click below button.
-            </Box>
+            <Box>{t("launch-hint-click_open")}</Box>
+            <Box>{t("launch-hint-no_response")}</Box>
           </Box>
           <Box
             mt="48px"
@@ -171,7 +172,8 @@ const Launch: React.FC<LaunchProps> = () => {
               },
             }}
           >
-            Open {renderClientName(platform)}
+            {t("launch-open")}
+            {/* {renderClientName(platform)} */}
           </Box>
         </Box>
       </div>
@@ -185,3 +187,9 @@ const Launch: React.FC<LaunchProps> = () => {
 }
 
 export default Launch
+
+export async function getStaticProps({ locale }: any) {
+  return {
+    props: { ...(await serverSideTranslations(locale, ["common"])) },
+  }
+}
