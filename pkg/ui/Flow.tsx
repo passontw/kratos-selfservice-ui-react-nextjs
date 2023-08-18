@@ -150,6 +150,14 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
     nodes.forEach((node) => {
       // This only makes sense for text nodes
       if (isUiNodeInputAttributes(node.attributes)) {
+        // @TODO add back when Google + Apple are needed again
+        // console.log("@tempRemoval node:", node)
+        // if (
+        //   node.attributes.value === "apple" ||
+        //   node.attributes.value === "google"
+        // ) {
+        //   return
+        // }
         if (
           node.attributes.type === "button" ||
           node.attributes.type === "submit"

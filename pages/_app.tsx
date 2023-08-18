@@ -3,16 +3,16 @@ import "@fontsource/open-sans"
 import "@fontsource/teko"
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles"
 import { globalStyles, ThemeProps } from "@ory/themes"
+import { appWithTranslation } from "next-i18next"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import type { AppProps } from "next/app"
 import { Provider } from "react-redux"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { createGlobalStyle } from "styled-components"
-import { appWithTranslation } from "next-i18next"
 
 import PopupLayout from "../components/Layout/PopupLayout"
 import store from "../state/store"
-import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import { useI18nConfig } from "../util/i18n-config"
 
 const GlobalStyle = createGlobalStyle((props: ThemeProps) =>
@@ -35,8 +35,8 @@ const theme = createTheme({
 })
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const lang = useI18nConfig();
-  const PagePropsWithI18n = { ...pageProps, lang };
+  const lang = useI18nConfig()
+  const PagePropsWithI18n = { ...pageProps, lang }
   return (
     <div data-testid="app-react">
       <Provider store={store}>
@@ -58,8 +58,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 export default appWithTranslation(MyApp)
 
-export async function getStaticProps({ locale } : any) {
+export async function getStaticProps({ locale }: any) {
   return {
-    props: {...(await serverSideTranslations(locale, ['common']))},
+    props: { ...(await serverSideTranslations(locale, ["common"])) },
   }
 }

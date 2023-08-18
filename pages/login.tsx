@@ -5,6 +5,8 @@ import { AxiosError } from "axios"
 import cloneDeep from "lodash/cloneDeep"
 import isEmpty from "lodash/isEmpty"
 import type { NextPage } from "next"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import Head from "next/head"
 import { useRouter } from "next/router"
 import queryString from "query-string"
 import { useEffect, useState } from "react"
@@ -12,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux"
 
 import { api } from "../axios/api"
 import CmidHead from "../components/CmidHead"
+import LinkNav from "../components/LinkNav"
 import MenuFooter from "../components/MenuFooter"
 import { showToast } from "../components/Toast"
 import { LogoutLink, Flow } from "../pkg"
@@ -26,16 +29,13 @@ import {
   setLockCodeResend,
 } from "../state/store/slice/layoutSlice"
 import { Navs, Stage } from "../types/enum"
+import { loginFormSchema } from "../util/schemas"
 import { handleYupErrors, handleYupSchema } from "../util/yupHelpers"
 
 import { StyledMenuWrapper } from "./../styles/share"
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import LinkNav from '../components/LinkNav'
-import { loginFormSchema } from "../util/schemas"
-import Head from 'next/head'
 
 const localStorageKey = "!@#$%^&*()data"
-const linkAttributesNamesKey = "!@#$%^linkAttributesNamesKey";
+const linkAttributesNamesKey = "!@#$%^linkAttributesNamesKey"
 
 const getSessionData = async () => {
   try {
@@ -48,13 +48,13 @@ const getSessionData = async () => {
 const validateLoginFlow = async (router, options) => {
   const { login_challenge, refresh, aal, returnTo, setFlow } = options
   const locale = router.locale
-  let path = '/profile'
-  if (locale && locale !== 'en') {
+  let path = "/profile"
+  if (locale && locale !== "en") {
     path = `/${locale}${path}`
   }
   try {
     const sessionData = await getSessionData()
-    if (isEmpty(sessionData) ) {
+    if (isEmpty(sessionData)) {
       const { data } = await ory.createBrowserLoginFlow({
         refresh: Boolean(refresh),
         aal: aal ? String(aal) : undefined,
@@ -76,7 +76,7 @@ const validateLoginFlow = async (router, options) => {
   }
 }
 
-const Login: NextPage = (props : any) => {
+const Login: NextPage = (props: any) => {
   const { lang } = props
   const [flow, setFlow] = useState<LoginFlow>()
   const dispatch = useDispatch()
@@ -93,8 +93,8 @@ const Login: NextPage = (props : any) => {
     dispatch(setAccountDeleted(false))
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
-        console.log(position)        
-        return 
+        console.log(position)
+        return
       })
     }
   }, [])
@@ -142,14 +142,16 @@ const Login: NextPage = (props : any) => {
       ory
         .getLoginFlow({ id: String(flowId) })
         .then(({ data }) => {
-          const requestUrl = data?.oauth2_login_request?.request_url;
+          const requestUrl = data?.oauth2_login_request?.request_url
           if (requestUrl) {
-            const queryStr = requestUrl.split('return_to=')[1];
-            console.log('@debug queryStr', queryStr)
-            router.replace(`/login?${queryString.stringify({
-              flow: flowId,
-              return_to: queryStr,
-            })}`)
+            const queryStr = requestUrl.split("return_to=")[1]
+            console.log("@debug queryStr", queryStr)
+            router.replace(
+              `/login?${queryString.stringify({
+                flow: flowId,
+                return_to: queryStr,
+              })}`,
+            )
           }
           setFlow(data)
         })
@@ -164,7 +166,7 @@ const Login: NextPage = (props : any) => {
       setFlow,
     }
 
-    console.log('@login options ',options);
+    console.log("@login options ", options)
     validateLoginFlow(router, options)
 
     // Otherwise we initialize it
@@ -204,14 +206,14 @@ const Login: NextPage = (props : any) => {
 
   // const onSubmit = async (values: UpdateLoginFlowBody) => {
   const onSubmit = async (values: any) => {
-    let nextFlow = cloneDeep(flow);
+    let nextFlow = cloneDeep(flow)
     if (!isEmpty(flow)) {
-      nextFlow.ui.messages = [];
-      nextFlow.ui.nodes = nextFlow?.ui.nodes.map(node => {
-        node.messages = [];
-        return node;
+      nextFlow.ui.messages = []
+      nextFlow.ui.nodes = nextFlow?.ui.nodes.map((node) => {
+        node.messages = []
+        return node
       })
-      setFlow(nextFlow);
+      setFlow(nextFlow)
     }
     const login_challenge = router.query.login_challenge
     // TODO - this is temp method to add subject, need to get subject from account
@@ -222,23 +224,25 @@ const Login: NextPage = (props : any) => {
 
     try {
       const isEmailSignin = isEmpty(values.provider)
-      
-      if (isEmailSignin) {   
+
+      if (isEmailSignin) {
         await handleYupSchema(loginFormSchema, values)
         const response = await axios.get(
           `/api/hydra/validateIdentity?email=${values.identifier}`,
         )
-        
+
         if (isEmpty(response.data.data)) {
           const nextFlow = {
             ...flow,
             ui: {
               ...flow.ui,
-              nodes: flow.ui.nodes.map(node => ({...node, messages: []})),
+              nodes: flow.ui.nodes.map((node) => ({ ...node, messages: [] })),
               messages: [
                 {
                   id: 400001,
-                  text: lang?.emailDoesNotExist || "Email account doesn’t exist. Please try again or sign up",
+                  text:
+                    lang?.emailDoesNotExist ||
+                    "Email account doesn’t exist. Please try again or sign up",
                   type: "error",
                 },
               ],
@@ -248,7 +252,7 @@ const Login: NextPage = (props : any) => {
           return
         }
       }
-      
+
       return (
         ory
           .updateLoginFlow({
@@ -258,9 +262,8 @@ const Login: NextPage = (props : any) => {
 
           // We logged in successfully! Let's bring the user home.
           .then((loginResult) => {
-            
-            console.log('@debug loginResult',loginResult)
-            localStorage.setItem(linkAttributesNamesKey, '{}');
+            console.log("@debug loginResult", loginResult)
+            localStorage.setItem(linkAttributesNamesKey, "{}")
             return axios
               .get("/api/.ory/sessions/whoami", {
                 headers: { withCredentials: true },
@@ -270,7 +273,6 @@ const Login: NextPage = (props : any) => {
               })
           })
           .then(([loginResult, myResult]) => {
-            
             // if (myResult.identity.traits.email === "cmctc.sw@gmail.com") {
             //   router.push("/launch")
             //   return
@@ -292,14 +294,14 @@ const Login: NextPage = (props : any) => {
                   // alert("please continue registe flow")
                   localStorage.setItem(localStorageKey, JSON.stringify(values))
                   const locale = router.locale
-                  let path = '/verification'
-                  if (locale && locale !== 'en') {
+                  let path = "/verification"
+                  if (locale && locale !== "en") {
                     path = `/${locale}${path}`
                   }
                   window.location.href = `${path}?${queryString.stringify({
                     return_to: returnTo,
                     user: values.identifier,
-                    type: 'continueregiste',
+                    type: "continueregiste",
                   })}`
                   return
                 })
@@ -316,17 +318,17 @@ const Login: NextPage = (props : any) => {
                 .then(() => {
                   localStorage.setItem(localStorageKey, JSON.stringify(values))
                   const locale = router.locale
-                  let path = '/verification'
+                  let path = "/verification"
 
-                  if (locale && locale !== 'en') {
+                  if (locale && locale !== "en") {
                     path = `/${locale}${path}`
                   }
                   // window.location.href = `/verification?${queryString.stringify(
                   //   router.query,
                   // )}&user=${traits.email}&csrf=${values.csrf_token}&type=login`
                   window.location.href = `${path}?${queryString.stringify(
-                    router.query
-                  )}&user=${traits.email}&csrf=${values.csrf_token}&type=login`;
+                    router.query,
+                  )}&user=${traits.email}&csrf=${values.csrf_token}&type=login`
                   return
                 })
             }
@@ -341,8 +343,8 @@ const Login: NextPage = (props : any) => {
                 return
               }
               const locale = router.locale
-              let path = '/profile'
-              if (locale && locale !== 'en') {
+              let path = "/profile"
+              if (locale && locale !== "en") {
                 path = `/${locale}${path}`
               }
               router.push(path)
@@ -351,7 +353,6 @@ const Login: NextPage = (props : any) => {
           })
           .catch(handleFlowError(router, "login", setFlow))
           .catch((err: any) => {
-            
             // If the previous handler did not catch the error it's most likely a form validation error
             if (err.response?.status === 400) {
               // Yup, it is!
@@ -383,7 +384,7 @@ const Login: NextPage = (props : any) => {
           })
       )
     } catch (error) {
-            console.log('@debug error', error)
+      console.log("@debug error", error)
       const errors = handleYupErrors(error)
       if (flow) {
         // const nextFlow = cloneDeep(flow)
@@ -443,21 +444,34 @@ const Login: NextPage = (props : any) => {
         <StyledMenuWrapper>
           <Head>
             <title>{`${lang?.login} - Master ID`}</title>
-            <meta name="description" content={lang?.masterIdSlogan 
-              || "Access anywhere with Master ID"} />
+            <meta
+              name="description"
+              content={lang?.masterIdSlogan || "Access anywhere with Master ID"}
+            />
           </Head>
           <Box display="flex" justifyContent={{ xs: "center", sm: "left" }}>
             <CmidHead />
           </Box>
           <Box display="flex" justifyContent="center">
-            <Box width={{ xs: "100%", sm: "480px"}}>
-              <Box fontFamily="Teko" fontSize="36px" color="#FFF" mt={{ xs: "62px", sm: "87px"}}>
+            <Box width={{ xs: "100%", sm: "480px" }}>
+              <Box
+                fontFamily="Teko"
+                fontSize="36px"
+                color="#FFF"
+                mt={{ xs: "62px", sm: "87px" }}
+              >
                 {lang.welcomeBack}
               </Box>
               {router.query.error && (
                 <p style={{ color: "red" }}>{router.query.error}</p>
               )}
-              <Flow onSubmit={onSubmit} flow={flow} router={router} lang={lang}/>
+              <Flow
+                onSubmit={onSubmit}
+                flow={flow}
+                router={router}
+                lang={lang}
+                hideSocialLogin
+              />
             </Box>
           </Box>
           {/* <MenuTag /> */}
@@ -472,8 +486,8 @@ const Login: NextPage = (props : any) => {
 
 export default Login
 
-export async function getStaticProps({ locale } : any) {
+export async function getStaticProps({ locale }: any) {
   return {
-    props: {...(await serverSideTranslations(locale, ['common']))},
+    props: { ...(await serverSideTranslations(locale, ["common"])) },
   }
 }
