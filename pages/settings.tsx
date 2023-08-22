@@ -31,23 +31,7 @@ function SettingsCard({
   only,
   children
 }: Props & { children: ReactNode }) {
-  console.log("🚀 ~ file: settings.tsx:35 ~ global?.window?.history:", global?.window?.history)
-  useEffect(() => {
 
-    global.window.addEventListener('popstate', env => {
-      console.log("🚀 ~ file: settings.tsx:40 ~ unlisten ~ action:")
-    })
-    // const unlisten = global.window.history.listen((location, action) => {
-    //   if (action === 'POP') {
-    //     console.log("🚀 ~ file: settings.tsx:40 ~ unlisten ~ action:", action)
-    //     // do something when the user clicks the back button
-    //   }
-    // });
-    return () => {
-      global.window.removeEventListener('popstate', () => false);
-    }
-  }, [global?.window?.history]);
-  
   if (!flow) {
     return null
   }
@@ -74,10 +58,6 @@ function SettingsCard({
       {children}
     </Box>
   )
-}
-
-const handleRouteChange = (url) => {
-  console.log("🚀 ~ file: settings.tsx:80 ~ handleRouteChange ~ url:", url)
 }
 
 const Settings: NextPage = (props) => {
@@ -114,14 +94,6 @@ const Settings: NextPage = (props) => {
       }
       return Promise.resolve();
     }).catch(error => router.replace("/login"))
-
-    router.events.on('routeChangeStart', handleRouteChange)
-
-    // If the component is unmounted, unsubscribe
-    // from the event with the `off` method:
-    return () => {
-      router.events.off('routeChangeStart', handleRouteChange)
-    }
   }, [])
 
   useEffect(() => {

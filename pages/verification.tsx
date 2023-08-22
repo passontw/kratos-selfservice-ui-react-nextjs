@@ -367,7 +367,6 @@ const Verification: NextPage = (props: any) => {
           throw err
         })
       }
-      console.log("🚀 ~ file: verification.tsx:401 ~ flow:", flow)
 
   return (
     <>
