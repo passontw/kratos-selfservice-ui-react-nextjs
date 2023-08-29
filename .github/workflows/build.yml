@@ -1,0 +1,80 @@
+name: CI/CD Workflow
+
+on:
+  push:
+    branches:
+      - feature-devops
+      - develop
+      - staging
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      CI_VAULT: /home/runner/work/cmid-devops-ci/cmid-devops-ci/terraform-aws-cm-uat/ci-vault
+      CI_ORCH: /home/runner/work/cmid-devops-ci/cmid-devops-ci/terraform-aws-cm-uat/pj-devops
+      CI_OOPS: /home/runner/work/cmid-devops-ci/cmid-devops-ci/terraform-aws-cm-uat/devoops
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build and Push Docker Image
+        env:
+          ENV: cm-uat
+        run: |
+          id;
+          df -h;
+          pwd;
+          docker version;
+          docker-compose version;
+          packer version;
+          terraform version;
+          git version;
+          printenv | sort ;
+          echo "${{ secrets.ALL_ENV }}";
+          echo "${{ secrets.AWS_ACCESS }}";
+          echo "${{ secrets.CICD_ACCESS }}";
+          set -x;
+          echo "${{ secrets.PEM }}" > coolermaster-github;
+          chmod 600 coolermaster-github;
+          eval $(ssh-agent -s);
+          ssh-add coolermaster-github;
+          ssh-add -l;
+          git clone git@github.com:cm-ctc-sw/cmid-devops-ci.git terraform-aws-cm-uat;
+          echo "${{ secrets.AWS_ACCESS }}" > terraform-aws-cm-uat/ci-vault/cloud-aws/coolermaster/cm-uat/aws_access;
+          echo "為空我會壞掉" > terraform-aws-cm-uat/ci-vault/ssh/coolermaster-cmid/coolermaster-notprod;
+          echo "${{ secrets.ALL_ENV }}" > .env;
+          cp -r terraform-aws-cm-uat/devoops/reverse-proxy/default.conf default.conf;
+          sed -i "s|<HOST>|*.coolermaster.com|g" default.conf;
+          sed -i "s|<PROXY_PASS>|http://127.0.0.1:3000|g" default.conf;
+          pwd;
+          ls;
+          sed -in '/ssl/d' Dockerfile;
+          docker build -t dockerhub.cloud-interactive.com/coolermaster-ory-${ENV}:latest -t 466701563864.dkr.ecr.us-west-1.amazonaws.com/coolermaster/cm-uat/ory:latest --no-cache .;
+          echo "${{ secrets.AWS_ACCESS }}" > ./aws_access;
+          eval $(cat ./aws_access);
+          aws configure list;
+          docker logout;
+          aws ecr get-login-password | docker login --username AWS --password-stdin 466701563864.dkr.ecr.us-west-1.amazonaws.com;
+          docker push 466701563864.dkr.ecr.us-west-1.amazonaws.com/coolermaster/cm-uat/ory:latest;
+          echo "${{ secrets.CICD_ACCESS }}" > ./cicd;
+          eval $(cat ./cicd);
+          eval $(cat ./aws_access);
+          export AWS_ACCOUNT_ID=466701563864;
+          export AWS_SESSION_TOKEN=;
+          export AWS_REGION=us-west-1;
+          eval $(cat terraform-aws-cm-uat/set.sh) && cat terraform-aws-cm-uat/ami-pj-coolermaster.pkr.hcl | envsubst > ./packerfile.pkr.hcl;
+          echo "pwding";
+          pwd;
+          echo "${{ secrets.PEM_NOTPROD }}" > /home/runner/work/cmid-devops-ci/cmid-devops-ci/terraform-aws-cm-uat/ci-vault/ssh/coolermaster-cmid/coolermaster-notprod;
+          packer init ./;
+          packer validate packerfile.pkr.hcl && packer fmt packerfile.pkr.hcl && packer build -on-error=cleanup packerfile.pkr.hcl;
+          cd terraform-aws-cm-uat;
+          git config --global user.name cloud-interactive-devops;
+          git config --global user.email devops@cloud-interactive.com;
+          cat ~/.gitconfig;
+          echo "${{ secrets.CREDENTIALS }}" > ~/.aws/credentials
+#          terraform init;
+#          terraform fmt && terraform validate && terraform apply -auto-approve ; git add terraform.tfstate terraform.tfstate.backup ; git commit -m "terraform apply, state change save" ; git push origin master ;
