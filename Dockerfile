@@ -38,7 +38,7 @@ RUN apt update && apt install less vim net-tools iputils-ping -y
 # CMD ["node", "/usr/share/nginx/html/main.js", "&", "nginx"]
 # CMD ["nginx", "-g", "daemon off;"]
 # CMD ["/usr/local/bin/nest", "start", "&", "/usr/sbin/nginx ", "-g", "'daemon off;'"]
-CMD ["sh", "-c", "export $(cat .env | grep -vE \"^#\" | /usr/bin/xargs) && nginx && npm run start"]
+CMD ["sh", "-c", "export $(cat .env | grep -vE \"^#\" | /usr/bin/xargs) && nginx && npm run dev"]
 # CMD ["{ nest start & }" ,";" ,"nginx;"]
 # CMD ["/bin/sh", "/app/docker-entrypoint.sh", ";", "/usr/bin/watch", "/bin/ss", "-nltp"]
 # CMD ["/bin/sh", "/app/start.sh"]
