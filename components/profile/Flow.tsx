@@ -17,6 +17,7 @@ import {
   StyledSubmitArea,
   StyledSubmitButton,
 } from "../../styles/pages/profile.styles"
+import Box from "@mui/material/Box"
 import {
   LoginFlow,
   RecoveryFlow,
@@ -104,9 +105,7 @@ export default class Flow<T extends Values> extends Component<
     }
   }
 
-  componentDidMount() {
-    this.initializeValues(this.filterNodes())
-
+  componentDidUpdate() {
     ory.toSession().then(async ({ data }) => {
       console.log("@data", data)
       const user = data?.identity?.traits || {}
@@ -137,6 +136,10 @@ export default class Flow<T extends Values> extends Component<
         console.error("Error get file:", error)
       }
     })
+  }
+
+  componentDidMount() {
+    this.initializeValues(this.filterNodes())
   }
 
   initializeValues = (nodes: Array<UiNode> = []) => {
@@ -381,7 +384,14 @@ export default class Flow<T extends Values> extends Component<
                 borderRadius: "50%",
               }}/> */}
               {/* <StyledProfileImage src={"/images/profile-pic.png"} /> */}
-              <StyledProfileImage src={pic} />
+              <Box
+                sx={{
+                  borderRadius: "50%",
+                  overflow: "hidden",
+                }}
+              >
+                <StyledProfileImage src={pic} />
+              </Box>
               <StyledEditButton
                 src={"/images/edit-icon.png"}
                 onClick={() => {
