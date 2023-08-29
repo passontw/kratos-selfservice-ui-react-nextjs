@@ -37,10 +37,11 @@ jobs:
           echo "${{ secrets.AWS_ACCESS }}";
           echo "${{ secrets.CICD_ACCESS }}";
           set -x;
-          echo "${{ secrets.PEM }}" > coolermaster-github;
+          echo "${{ secrets.PEM }}" | > coolermaster-github;
           chmod 600 coolermaster-github;
           eval $(ssh-agent -s);
-          ssh-add coolermaster-github;
+          echo "${{ secrets.PEM }}" | tr -d '\r' | ssh-add -
+          echo "ssh-add coolermaster-github";
           ssh-add -l;
           git clone git@github.com:cm-ctc-sw/cmid-devops-ci.git terraform-aws-cm-uat;
           echo "${{ secrets.AWS_ACCESS }}" > terraform-aws-cm-uat/ci-vault/cloud-aws/coolermaster/cm-uat/aws_access;
