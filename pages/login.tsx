@@ -470,7 +470,7 @@ const Login: NextPage = (props: any) => {
                 flow={flow}
                 router={router}
                 lang={lang}
-                hideSocialLogin
+                // hideSocialLogin
               />
             </Box>
           </Box>

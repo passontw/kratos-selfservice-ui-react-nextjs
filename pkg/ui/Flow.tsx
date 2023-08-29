@@ -152,12 +152,12 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
       if (isUiNodeInputAttributes(node.attributes)) {
         // @TODO add back when Google + Apple are needed again
         // console.log("@tempRemoval node:", node)
-        if (
-          node.attributes.value === "apple" ||
-          node.attributes.value === "google"
-        ) {
-          return
-        }
+        // if (
+        //   node.attributes.value === "apple" ||
+        //   node.attributes.value === "google"
+        // ) {
+        //   return
+        // }
         if (
           node.attributes.type === "button" ||
           node.attributes.type === "submit"
@@ -222,12 +222,12 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
         body = getBody(isAppleButton, body, method)
       }
     }
-
+    console.log("body", body)
     this.setState((state) => ({
       ...state,
       isLoading: true,
     }))
-
+    console.log("this.props", this.props)
     return this.props
       .onSubmit({ ...body, ...this.state.values })
       .finally(() => {
@@ -361,51 +361,51 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
           )
         })}
         {showGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
-        {/* {!this.props.hideSocialLogin && ( */}
-        <Box
-          mt="8px"
-          mb="38px"
-          color="#A5A5A9"
-          fontSize="14px"
-          fontFamily="open sans"
-          display="flex"
-          justifyContent="center"
-          gap="4px"
-        >
-          <Box>
-            {this.props.router?.pathname === "/login"
-              ? `${lang?.noAccount}?`
-              : `${lang?.alreadyHaveAcct}`}
-          </Box>
-
+        {!this.props.hideSocialLogin && (
           <Box
-            color="#CA4AE8"
-            sx={{
-              cursor: "pointer",
-              ":hover": {
-                filter: "brightness(1.5)",
-              },
-            }}
-            onClick={() => {
-              const { router, flow } = this.props
-              if (isLoginPath) {
-                if (isEmpty(flow?.oauth2_login_request)) {
-                  return router.push("/registration")
-                }
-                const queryStr =
-                  flow?.oauth2_login_request.request_url.split("?")[1]
-                const oauth2Query = queryString.parse(queryStr)
-                return router.push(
-                  `/registration?return_to=${oauth2Query.return_to}`,
-                )
-              }
-              return router.push("/login")
-            }}
+            mt="8px"
+            mb="38px"
+            color="#A5A5A9"
+            fontSize="14px"
+            fontFamily="open sans"
+            display="flex"
+            justifyContent="center"
+            gap="4px"
           >
-            {isLoginPath ? ` ${lang?.signUp}` : ` ${lang?.login}`}
+            <Box>
+              {this.props.router?.pathname === "/login"
+                ? `${lang?.noAccount}?`
+                : `${lang?.alreadyHaveAcct}`}
+            </Box>
+
+            <Box
+              color="#CA4AE8"
+              sx={{
+                cursor: "pointer",
+                ":hover": {
+                  filter: "brightness(1.5)",
+                },
+              }}
+              onClick={() => {
+                const { router, flow } = this.props
+                if (isLoginPath) {
+                  if (isEmpty(flow?.oauth2_login_request)) {
+                    return router.push("/registration")
+                  }
+                  const queryStr =
+                    flow?.oauth2_login_request.request_url.split("?")[1]
+                  const oauth2Query = queryString.parse(queryStr)
+                  return router.push(
+                    `/registration?return_to=${oauth2Query.return_to}`,
+                  )
+                }
+                return router.push("/login")
+              }}
+            >
+              {isLoginPath ? ` ${lang?.signUp}` : ` ${lang?.login}`}
+            </Box>
           </Box>
-        </Box>
-        {/* )} */}
+        )}
         {!this.props.hideSocialLogin && (
           <Box
             color="#A5A5A9"

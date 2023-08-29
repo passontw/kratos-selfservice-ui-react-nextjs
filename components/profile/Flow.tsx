@@ -32,6 +32,8 @@ import {
 import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
 import { Component, FormEvent, MouseEvent } from "react"
 
+import CropImageModal from "../../components/Modal/CropImageModal"
+import ory from "../../pkg/sdk"
 import { convertDateString } from "../../util/formatter"
 
 import { Node } from "./Node"
@@ -60,17 +62,18 @@ export type Methods =
 export type Props<T> = {
   // The flow
   flow?:
-  | LoginFlow
-  | RegistrationFlow
-  | SettingsFlow
-  | VerificationFlow
-  | RecoveryFlow
+    | LoginFlow
+    | RegistrationFlow
+    | SettingsFlow
+    | VerificationFlow
+    | RecoveryFlow
   // Only show certain nodes. We will always render the default nodes for CSRF tokens.
   only?: Methods
   // Is triggered on submission
   onSubmit: (values: T) => Promise<void>
   // Do not show the global messages. Useful when rendering them elsewhere.
   hideGlobalMessages?: boolean
+
   lang?: any
 }
 
@@ -81,6 +84,9 @@ function emptyState<T>() {
 type State<T> = {
   values: T
   isLoading: boolean
+  cropImageOpen: boolean
+  imageSrc: string
+  pic: string
 }
 
 export default class Flow<T extends Values> extends Component<
@@ -92,11 +98,45 @@ export default class Flow<T extends Values> extends Component<
     this.state = {
       values: emptyState(),
       isLoading: false,
+      cropImageOpen: false,
+      imageSrc: "",
+      pic: "",
     }
   }
 
   componentDidMount() {
     this.initializeValues(this.filterNodes())
+
+    ory.toSession().then(async ({ data }) => {
+      console.log("@data", data)
+      const user = data?.identity?.traits || {}
+
+      try {
+        if (!user) return
+        const responseJson = await fetch("/api/image/get", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: user.name,
+            email: user.email,
+          }),
+        })
+        const response = await responseJson.json()
+        if (response) {
+          console.log("File get successfully", response)
+          this.setState((state) => ({
+            ...state,
+            pic: response.file,
+          }))
+        } else {
+          console.error("File get failed")
+        }
+      } catch (error) {
+        console.error("Error get file:", error)
+      }
+    })
   }
 
   initializeValues = (nodes: Array<UiNode> = []) => {
@@ -207,9 +247,58 @@ export default class Flow<T extends Values> extends Component<
     return { node, nodeId }
   }
 
+  handleOpenCropImage = () => {
+    this.setState((state) => ({ ...state, cropImageOpen: true }))
+  }
+  handleCloseCropImage = () => {
+    this.setState((state) => ({ ...state, cropImageOpen: false, imageSrc: "" }))
+  }
+
+  handleOpenFile = () => {
+    const fileInput = document.createElement("input")
+    fileInput.type = "file"
+
+    // 觸發檔案選擇對話框
+    fileInput.click()
+
+    const handleFileChange = (event: any) => {
+      const self = this
+      const fileObj = event.target.files && event.target.files[0]
+      if (!fileObj) {
+        return
+      }
+      const reader = new FileReader()
+      reader.addEventListener("load", (f) => {
+        // check image natural size
+        const image = new Image()
+        image.src = reader.result?.toString() ?? ""
+        image.onload = function () {
+          if (image.naturalWidth < 150 || image.naturalHeight < 150) {
+            alert("wrong size")
+            return
+          }
+          self.setState((state) => ({
+            ...state,
+            imageSrc: reader.result?.toString() ?? "",
+          }))
+          // setImageSrc(reader.result?.toString() ?? '');
+          self.handleOpenCropImage()
+          // event.target.value = ""
+        }
+      })
+      reader.readAsDataURL(fileObj)
+    }
+    // 監聽選擇檔案事件
+    fileInput.addEventListener("change", (event) => {
+      const selectedFile = event.target.files[0] // 取得選擇的檔案
+      handleFileChange(event)
+      console.log("Selected file:", selectedFile)
+    })
+  }
+
   render() {
     const { hideGlobalMessages, flow, lang } = this.props
-    const { values, isLoading } = this.state
+    const { values, isLoading, cropImageOpen, imageSrc, pic } = this.state
 
     // Filter the nodes - only show the ones we want
     const nodes = this.filterNodes()
@@ -242,6 +331,7 @@ export default class Flow<T extends Values> extends Component<
       return null
     }
 
+    console.log("pic", pic)
     return (
       <form
         action={flow.ui.action}
@@ -290,10 +380,25 @@ export default class Flow<T extends Values> extends Component<
                 width: "168px",
                 borderRadius: "50%",
               }}/> */}
-              <StyledProfileImage src={"/images/profile-pic.png"} />
-              <StyledEditButton src={"/images/edit-icon.png"} />
+              {/* <StyledProfileImage src={"/images/profile-pic.png"} /> */}
+              <StyledProfileImage src={pic} />
+              <StyledEditButton
+                src={"/images/edit-icon.png"}
+                onClick={() => {
+                  this.handleOpenFile()
+                  // this.handleOpenCropImage
+                }}
+              />
             </StyledProfileImageWrap>
-
+            <CropImageModal
+              open={cropImageOpen}
+              handleClose={this.handleCloseCropImage}
+              imageSrc={imageSrc}
+              aspect={1 / 1}
+              radius="50%"
+              minWidth={150}
+              maxWidth={480}
+            />
             <StyledImageTitle>{flow?.identity.traits.email}</StyledImageTitle>
             <StyledImageText>
               {`${lang?.joinedSince} `}
@@ -307,17 +412,19 @@ export default class Flow<T extends Values> extends Component<
               {nodes.map((node, k) => {
                 // console.log(node)
                 const id = getNodeId(node) as keyof Values
-                if (node.attributes.type === "submit") return null;
-                if ([
-                  "traits.loginVerification",
-                  "traits.source",
-                  "traits.avatar",
-                  "traits.email",
-                  "traits.gender",
-                  "traits.birthdayMonth",
-                  "traits.birthdayYear",
-                ].includes(node.attributes.name)) {
-                  return null;
+                if (node.attributes.type === "submit") return null
+                if (
+                  [
+                    "traits.loginVerification",
+                    "traits.source",
+                    "traits.avatar",
+                    "traits.email",
+                    "traits.gender",
+                    "traits.birthdayMonth",
+                    "traits.birthdayYear",
+                  ].includes(node.attributes.name)
+                ) {
+                  return null
                 }
 
                 return (
@@ -328,8 +435,8 @@ export default class Flow<T extends Values> extends Component<
                       {node.attributes.name === "traits.name"
                         ? lang?.username
                         : node.attributes.name === "traits.phone"
-                          ? lang?.phone
-                          : ""}
+                        ? lang?.phone
+                        : ""}
                     </StyledFieldTitle>
                     <Node
                       key={`${id}-${k}`}
@@ -340,27 +447,22 @@ export default class Flow<T extends Values> extends Component<
                       lang={lang}
                       setValue={(value) => {
                         return new Promise((resolve) => {
-                          this.setState(
-                            (state) => {
-                              return {
-                                ...state,
-                                values: {
-                                  ...state.values,
-                                  [getNodeId(node)]: value,
-                                },
-                              };
-                            },
-                            resolve,
-                          )
-                        });
-                      }
-
-                      }
+                          this.setState((state) => {
+                            return {
+                              ...state,
+                              values: {
+                                ...state.values,
+                                [getNodeId(node)]: value,
+                              },
+                            }
+                          }, resolve)
+                        })
+                      }}
                     />
                   </>
                 )
               })}
-              
+
               {/* gender node */}
               <StyledFieldSpacer>
                 {/* <StyledFieldTitle>Gender</StyledFieldTitle> */}
