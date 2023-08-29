@@ -28,7 +28,7 @@ RUN apt update && apt install nginx watch -y
 
 # 覆蓋image裡的設定檔
 COPY ./default.conf /etc/nginx/conf.d/default.conf
-COPY ./nginx.conf /etc/nginx/nginx.conf
+#COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY ./ssl/* /etc/nginx/ssl/
 
 RUN apt update && apt install less vim net-tools iputils-ping -y 
