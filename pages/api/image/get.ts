@@ -1,5 +1,6 @@
 import * as fs from "fs"
 import { NextApiRequest, NextApiResponse } from "next"
+import NextCors from "nextjs-cors"
 
 import { getFileCode } from "./create"
 
@@ -7,6 +8,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  await NextCors(req, res, {
+    // Options
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    origin: "*",
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  })
+
   const { name, email } = req.body
 
   // create file code which will be included in the file name

@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-const { i18n } = require('./next-i18next.config')
+const { i18n } = require("./next-i18next.config")
 module.exports = {
   i18n,
   reactStrictMode: true,
@@ -10,11 +10,11 @@ module.exports = {
     ORY_CUSTOM_DOMAIN: process.env.ORY_CUSTOM_DOMAIN,
     NEXT_PUBLIC_REDIRECT_URI: process.env.NEXT_PUBLIC_REDIRECT_URI,
   },
-  typescript: { 
+  typescript: {
     ignoreBuildErrors: true,
   },
   compiler: {
     // Enables the styled-components SWC transform
-    styledComponents: true
-  }
+    styledComponents: true,
+  },
 }
