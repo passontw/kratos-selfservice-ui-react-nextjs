@@ -14,9 +14,15 @@ export default async function handler(
 
   console.log("request body fileName:", fileName)
 
+  // check if the user folder exists
+  const userFolderExists = fs.existsSync(STORAGE_PATH)
+  if (!userFolderExists) {
+    fs.mkdirSync(STORAGE_PATH)
+  }
+
   fs.writeFile(fileName, file, (err) => {
     if (err) {
-      console.log(err)
+      console.log("Error caught while writing file:", err)
     } else {
       console.log("Image saved")
     }
