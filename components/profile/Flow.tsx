@@ -127,7 +127,7 @@ export default class Flow<T extends Values> extends Component<
         })
         const response = await responseJson.json()
         if (response) {
-          console.log("File get successfully", response)
+          // console.log("File get successfully", response)
           if (response.file === nextState.pic) return
           this.setState((state) => ({
             ...state,
@@ -346,7 +346,6 @@ export default class Flow<T extends Values> extends Component<
       return null
     }
 
-    console.log("pic", pic)
     return (
       <form
         action={flow.ui.action}

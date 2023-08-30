@@ -3,8 +3,8 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import React, { useEffect } from "react"
 import { useDispatch } from "react-redux"
-import { linkAttributesNamesKey } from "../../pages/account"
 
+import { linkAttributesNamesKey } from "../../pages/account"
 import { LogoutLink } from "../../pkg"
 import Export from "../../public/images/Menu/Export"
 import Lock from "../../public/images/Menu/Lock"
@@ -24,7 +24,7 @@ import {
 } from "./styles"
 
 interface AccountMenuProps {
-  lang?: any;
+  lang?: any
 }
 
 const AccountMenu: React.FC<AccountMenuProps> = ({ lang }) => {
@@ -33,9 +33,21 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ lang }) => {
   const onLogout = LogoutLink()
 
   const accountMenuData = [
-    { name: lang?.personalInfo || "Personal Info", path: "/profile", icon: "User" },
-    { name: lang?.acctSettings || "Account Settings", path: "/account", icon: "Tool" },
-    { name: lang?.changePw || "Change Password", path: "/changepassword", icon: "Lock" },
+    {
+      name: lang?.personalInfo || "Personal Info",
+      path: "/profile",
+      icon: "User",
+    },
+    {
+      name: lang?.acctSettings || "Account Settings",
+      path: "/account",
+      icon: "Tool",
+    },
+    {
+      name: lang?.changePw || "Change Password",
+      path: "/changepassword",
+      icon: "Lock",
+    },
     {
       name: lang?.deviceMgmt || "Device Management",
       path: "/devicemanagement",
@@ -98,10 +110,9 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ lang }) => {
 
       <StyledMobile
         onClick={() => {
-          localStorage.removeItem(linkAttributesNamesKey);
+          localStorage.removeItem(linkAttributesNamesKey)
           setTimeout(() => {
             onLogout()
-
           }, 3000)
         }}
       >
