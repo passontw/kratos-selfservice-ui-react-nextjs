@@ -36,6 +36,6 @@ const createFileName = (name: string, email: string) => {
 }
 
 export const getFileCode = (name: string, email: string) => {
-  const fileCode = `${name.slice(0, 4)}.${email.slice(0, 4)}`
+  const fileCode = `${name.slice(0, 4)}.${email}`
   return fileCode
 }
