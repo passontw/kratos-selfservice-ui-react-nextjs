@@ -10,7 +10,7 @@ export default async function handler(
 ) {
   const { file, name, email } = req.body
 
-  const fileName = createFileName(file, name, email)
+  const fileName = createFileName(name, email)
 
   console.log("request body fileName:", fileName)
 
@@ -28,12 +28,9 @@ export default async function handler(
   })
 }
 
-const createFileName = (file: string, name: string, email: string) => {
+const createFileName = (name: string, email: string) => {
   const fileCode = getFileCode(name, email)
-  const fileName = path.join(
-    STORAGE_PATH,
-    `${fileCode}.${file.slice(99, 104)}${file.slice(-69, -64)}.txt`,
-  )
+  const fileName = path.join(STORAGE_PATH, `${fileCode}.txt`)
 
   return fileName
 }

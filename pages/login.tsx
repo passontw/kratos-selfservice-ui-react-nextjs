@@ -103,6 +103,7 @@ const Login: NextPage = (props: any) => {
   const router = useRouter()
   const {
     login_challenge,
+
     return_to: returnTo,
     flow: flowId,
     // Refresh means we want to refresh the session. This is needed, for example, when we want to update the password
