@@ -1,4 +1,5 @@
-import * as fs from "fs"
+import crypto from "crypto"
+import fs from "fs"
 import { NextApiRequest, NextApiResponse } from "next"
 import path from "path"
 
@@ -43,5 +44,9 @@ const createFileName = (name: string, email: string) => {
 
 export const getFileCode = (name: string, email: string) => {
   const fileCode = `${name.slice(0, 4)}.${email}`
-  return fileCode
+  const hashedFileCode = crypto
+    .createHash("sha256")
+    .update(fileCode)
+    .digest("hex")
+  return hashedFileCode
 }
