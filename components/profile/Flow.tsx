@@ -105,7 +105,10 @@ export default class Flow<T extends Values> extends Component<
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(nextProps, nextState) {
+    // console.log("nextProps", nextProps)
+    // console.log("nextState", nextState)
+
     ory.toSession().then(async ({ data }) => {
       console.log("@data", data)
       const user = data?.identity?.traits || {}
@@ -125,6 +128,7 @@ export default class Flow<T extends Values> extends Component<
         const response = await responseJson.json()
         if (response) {
           console.log("File get successfully", response)
+          if (response.file === nextState.pic) return
           this.setState((state) => ({
             ...state,
             pic: response.file,
@@ -260,7 +264,7 @@ export default class Flow<T extends Values> extends Component<
   handleOpenFile = () => {
     const fileInput = document.createElement("input")
     fileInput.type = "file"
-
+    fileInput.accept = ".png,.jpg,.jpeg"
     // 觸發檔案選擇對話框
     fileInput.click()
 
@@ -270,16 +274,24 @@ export default class Flow<T extends Values> extends Component<
       if (!fileObj) {
         return
       }
+
+      const acceptList = ["png", "jpg", "jpeg"]
+      const extension = fileObj.type.split("/")[1]
+      if (!acceptList.includes(extension)) {
+        alert("wrong filename extension")
+        return
+      }
+
       const reader = new FileReader()
       reader.addEventListener("load", (f) => {
         // check image natural size
         const image = new Image()
         image.src = reader.result?.toString() ?? ""
         image.onload = function () {
-          if (image.naturalWidth < 150 || image.naturalHeight < 150) {
-            alert("wrong size")
-            return
-          }
+          // if (image.naturalWidth < 150 || image.naturalHeight < 150) {
+          //   alert("wrong size")
+          //   return
+          // }
           self.setState((state) => ({
             ...state,
             imageSrc: reader.result?.toString() ?? "",

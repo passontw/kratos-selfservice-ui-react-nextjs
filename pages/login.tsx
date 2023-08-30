@@ -140,8 +140,7 @@ const Login: NextPage = (props: any) => {
 
     // If ?flow=.. was in the URL, we fetch it
     if (flowId) {
-      ory
-        .getLoginFlow({ id: String(flowId) })
+      ory.getLoginFlow({ id: String(flowId) })
         .then(({ data }) => {
           const requestUrl = data?.oauth2_login_request?.request_url
           if (requestUrl) {
