@@ -395,15 +395,19 @@ export default class Flow<T extends Values> extends Component<
                 width: "168px",
                 borderRadius: "50%",
               }}/> */}
-              {/* <StyledProfileImage src={"/images/profile-pic.png"} /> */}
-              <Box
-                sx={{
-                  borderRadius: "50%",
-                  overflow: "hidden",
-                }}
-              >
-                <StyledProfileImage src={pic} />
-              </Box>
+              {pic ? (
+                <Box
+                  sx={{
+                    borderRadius: "50%",
+                    overflow: "hidden",
+                  }}
+                >
+                  <StyledProfileImage src={pic} />
+                </Box>
+              ) : (
+                <StyledProfileImage src={"/images/profile-pic.png"} />
+              )}
+
               <StyledEditButton
                 src={"/images/edit-icon.png"}
                 onClick={() => {
