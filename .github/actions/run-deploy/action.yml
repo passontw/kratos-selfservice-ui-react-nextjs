@@ -37,6 +37,7 @@ runs:
           git checkout origin/${{ inputs.branch-name }}
           echo "${{ inputs.env-value }}" > .env
           npm install
+          rm -rf ./.next;
           node_modules/next/dist/bin/next build
           pm2 restart ecosystem.config.js
         host: ${{ inputs.host-name }}
