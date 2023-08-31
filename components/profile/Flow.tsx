@@ -76,6 +76,9 @@ export type Props<T> = {
   hideGlobalMessages?: boolean
 
   lang?: any
+
+  pic?: string
+  savePic: (value: string) => void
 }
 
 function emptyState<T>() {
@@ -87,7 +90,6 @@ type State<T> = {
   isLoading: boolean
   cropImageOpen: boolean
   imageSrc: string
-  pic: string
 }
 
 export default class Flow<T extends Values> extends Component<
@@ -101,45 +103,7 @@ export default class Flow<T extends Values> extends Component<
       isLoading: false,
       cropImageOpen: false,
       imageSrc: "",
-      pic: "",
     }
-  }
-
-  componentDidUpdate(nextProps, nextState) {
-    // console.log("nextProps", nextProps)
-    // console.log("nextState", nextState)
-
-    ory.toSession().then(async ({ data }) => {
-      console.log("@data", data)
-      const user = data?.identity?.traits || {}
-
-      try {
-        if (!user) return
-        const responseJson = await fetch("/api/image/get", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: user.name,
-            email: user.email,
-          }),
-        })
-        const response = await responseJson.json()
-        if (response) {
-          // console.log("File get successfully", response)
-          if (response.file === nextState.pic) return
-          this.setState((state) => ({
-            ...state,
-            pic: response.file,
-          }))
-        } else {
-          console.error("File get failed")
-        }
-      } catch (error) {
-        console.error("Error get file:", error)
-      }
-    })
   }
 
   componentDidMount() {
@@ -312,8 +276,8 @@ export default class Flow<T extends Values> extends Component<
   }
 
   render() {
-    const { hideGlobalMessages, flow, lang } = this.props
-    const { values, isLoading, cropImageOpen, imageSrc, pic } = this.state
+    const { hideGlobalMessages, flow, lang, pic } = this.props
+    const { values, isLoading, cropImageOpen, imageSrc } = this.state
 
     // Filter the nodes - only show the ones we want
     const nodes = this.filterNodes()
@@ -423,6 +387,7 @@ export default class Flow<T extends Values> extends Component<
               radius="50%"
               minWidth={150}
               maxWidth={480}
+              savePic={this.props.savePic}
             />
             <StyledImageTitle>{flow?.identity.traits.email}</StyledImageTitle>
             <StyledImageText>

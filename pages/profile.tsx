@@ -221,6 +221,45 @@ const Profile: NextPage = (props) => {
     if (locale) router.push(`${locale === "en" ? "" : locale}/profile`)
   }, [])
 
+  const savePic = (value: string) => {
+    setPic(value)
+  }
+  const [pic, setPic] = useState<string | null>(null)
+
+  const getPic = () => {
+    ory.toSession().then(async ({ data }) => {
+      console.log("@data", data)
+      const user = data?.identity?.traits || {}
+
+      try {
+        if (!user) return
+        const responseJson = await fetch("/api/image/get", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: user.name,
+            email: user.email,
+          }),
+        })
+        const response = await responseJson.json()
+        if (response) {
+          // console.log("File get successfully", response)
+          // if (response.file === nextState.pic) return
+          setPic(response.file)
+        } else {
+          console.error("File get failed")
+        }
+      } catch (error) {
+        console.error("Error get file:", error)
+      }
+    })
+  }
+  useEffect(() => {
+    getPic()
+  }, [])
+
   const onSubmit = (values: UpdateSettingsFlowBody) => {
     return (
       router
@@ -264,7 +303,7 @@ const Profile: NextPage = (props) => {
         <title>{`${lang?.personalInfo} - Master ID`}</title>
         <meta name="description" content="Master ID" />
       </Head>
-      {flow ? (
+      {flow && pic !== null ? (
         <StyledProfileArea paddingRight="0">
           <SettingsCard only="profile" flow={flow}>
             <Flow
@@ -273,6 +312,8 @@ const Profile: NextPage = (props) => {
               only="profile"
               flow={flow}
               lang={lang}
+              pic={pic}
+              savePic={savePic}
             />
           </SettingsCard>
         </StyledProfileArea>

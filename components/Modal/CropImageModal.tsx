@@ -39,6 +39,7 @@ interface CropImageModalProps {
   radius?: string
   minWidth?: number
   maxWidth?: number
+  savePic: (value: string) => void
 }
 
 type IAxis = "vertical" | "horizontal"
@@ -212,6 +213,7 @@ const CropImageModal: React.FC<CropImageModalProps> = ({
   radius = "0",
   minWidth,
   maxWidth,
+  savePic,
 }) => {
   const previewCanvasRef = useRef<HTMLCanvasElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
@@ -290,8 +292,30 @@ const CropImageModal: React.FC<CropImageModalProps> = ({
     })
   }, [])
 
-  const handleBase64ImageUpload = (base64: string, extension: string) => {
-    // DeviceProvider.uploadDisplayImageBase64(base64, extension);
+  const handleBase64ImageUpload = async (
+    base64: string,
+    extension: string,
+    user: {
+      email: string
+      location: string
+      name: string
+      loginVerification: boolean
+      source: string
+    },
+  ) => {
+    console.log("user", user)
+    const response = await fetch("/api/image/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: user.name,
+        email: user.email,
+        file: base64,
+      }),
+    })
+
     setIsProcessing(false)
   }
 
@@ -316,7 +340,8 @@ const CropImageModal: React.FC<CropImageModalProps> = ({
           fps: 60,
           onExport: async (blob: Blob) => {
             const data = (await blobToBase64(blob)) as string
-            if (data) handleBase64ImageUpload(data.split(";base64,")[1], "gif")
+            if (!user) return
+            if (data) handleBase64ImageUpload(data, "gif", user)
             handleClose()
             // export blob and download
             // handleSaveCapture(blob) // to download
@@ -336,20 +361,10 @@ const CropImageModal: React.FC<CropImageModalProps> = ({
     console.log("baseData", baseData)
 
     if (!user) return
-    console.log("user", user)
-    const response = await fetch("/api/image/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: user.name,
-        email: user.email,
-        file: baseData,
-      }),
-    })
-    console.log("response", response)
-    handleBase64ImageUpload(baseData.split(";base64,")[1], "png")
+
+    // console.log("response", response)
+    savePic(baseData)
+    handleBase64ImageUpload(baseData, "png", user)
     handleClose()
 
     // export blob and download
