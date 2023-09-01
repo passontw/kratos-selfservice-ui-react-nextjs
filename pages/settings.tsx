@@ -170,11 +170,10 @@ const Settings: NextPage = (props) => {
         loginPath = `/${locale}${loginPath}`
       }
 
-      router
-        // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
-        // his data when she/he reloads the page.
-        // .push(`/settings?flow=${flow?.id}`, undefined, { shallow: true })
-        .push(`${settingsPath}?flow=${flow?.id}`, undefined, { shallow: true })
+      // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
+      // his data when she/he reloads the page.
+      // .push(`/settings?flow=${flow?.id}`, undefined, { shallow: true })
+      router.push(`${settingsPath}?flow=${flow?.id}`, undefined, { shallow: true })
         .then(() =>
           ory
             .updateSettingsFlow({

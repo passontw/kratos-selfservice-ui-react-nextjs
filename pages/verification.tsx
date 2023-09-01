@@ -116,15 +116,13 @@ const Verification: NextPage = (props: any) => {
                 flow: newFlowID,
                 return_to: returnTo,
               };
-              router
-                // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
-                // their data when they reload the page.
-                .push(`/verification?${queryString.stringify(nextQuery)}`, undefined, {
+              // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
+              // their data when they reload the page.
+              router.push(`/verification?${queryString.stringify(nextQuery)}`, undefined, {
                   shallow: true,
                 })
 
-              ory
-                .getVerificationFlow({ id: newFlowID })
+              ory.getVerificationFlow({ id: newFlowID })
                 .then(({ data }) => setFlow(data))
               return
           }
@@ -268,10 +266,9 @@ const Verification: NextPage = (props: any) => {
     }
 
     if (!isResendCode) {
-      await router
-        // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
-        // their data when they reload the page.
-        .push(
+      // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
+      // their data when they reload the page.
+      await router.push(
           `/verification?${queryString.stringify({
             ...router.query,
             flow: flow?.id,
@@ -351,10 +348,9 @@ const Verification: NextPage = (props: any) => {
             return
           case 410:
             const newFlowID = err.response.data.use_flow_id
-            router
-              // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
-              // their data when they reload the page.
-              .push(`/verification?${queryString.stringify({ flow: newFlowID })}`, undefined, {
+            // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
+            // their data when they reload the page.
+            router.push(`/verification?${queryString.stringify({ flow: newFlowID })}`, undefined, {
                 shallow: true,
               })
 

@@ -120,13 +120,11 @@ const Registration: NextPage = (props) => {
       values["traits.source"] = getTraitsSource(values.method, values.provider);
 
       return (
-        router
-          // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
-          // his data when she/he reloads the page.
-          .push(`/registration?flow=${flow?.id}`, undefined, { shallow: true })
+        // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
+        // his data when she/he reloads the page.
+        router.push(`/registration?flow=${flow?.id}`, undefined, { shallow: true })
           .then(() =>
-            ory
-              .updateRegistrationFlow({
+            ory.updateRegistrationFlow({
                 flow: String(flow?.id),
                 updateRegistrationFlowBody: values,
               })
