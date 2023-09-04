@@ -125,6 +125,11 @@ export function handleGetFlowError<S>(
         //   window.location.href = err.response.data.redirect_browser_to
         // }, 30000)
         return
+
+      default:
+        console.log(`handleGetFlowError=${err.response?.data.error?.id}`)
+        //statements;
+        break;
     }
 
     // original Kratos handling flow expiry
