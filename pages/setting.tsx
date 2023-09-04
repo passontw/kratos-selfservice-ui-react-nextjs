@@ -30,8 +30,7 @@ const Settings: NextPage = () => {
 
   useEffect(() => {
     if (flowId) {
-      ory
-        .getSettingsFlow({ id: String(flowId) })
+      ory.getSettingsFlow({ id: String(flowId) })
         .then(({ data }) => {
           const locale = router.locale;
           let accountPath = '/account';

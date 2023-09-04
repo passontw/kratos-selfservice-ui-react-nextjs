@@ -119,11 +119,9 @@ const Profile: NextPage = (props) => {
         const [authenticationMethod] = authentication_methods
 
         if (authenticationMethod.method === "code_recovery") {
-          ory
-            .createBrowserLogoutFlow()
+          ory.createBrowserLogoutFlow()
             .then(({ data }) => {
-              return ory
-                .updateLogoutFlow({ token: data.logout_token })
+              return ory.updateLogoutFlow({ token: data.logout_token })
                 .then(() => router.push("/login"))
                 .then(() => router.reload())
             })
@@ -135,8 +133,7 @@ const Profile: NextPage = (props) => {
         window.location.replace("/login")
       })
 
-    ory
-      .createBrowserSettingsFlow({
+    ory.createBrowserSettingsFlow({
         returnTo: returnTo ? String(returnTo) : undefined,
       })
       .then(async ({ data }) => {
@@ -194,8 +191,7 @@ const Profile: NextPage = (props) => {
 
     // If ?flow=.. was in the URL, we fetch it
     if (flowId) {
-      ory
-        .getSettingsFlow({ id: String(flowId) })
+      ory.getSettingsFlow({ id: String(flowId) })
         .then(({ data }) => {
           setFlow(data)
         })
@@ -205,8 +201,7 @@ const Profile: NextPage = (props) => {
     }
 
     // Otherwise we initialize it
-    ory
-      .createBrowserSettingsFlow({
+    ory.createBrowserSettingsFlow({
         returnTo: returnTo ? String(returnTo) : undefined,
       })
       .then(({ data }) => {
@@ -267,8 +262,7 @@ const Profile: NextPage = (props) => {
         // his data when she/he reloads the page.
         .push(`/profile?flow=${flow?.id}`, undefined, { shallow: true })
         .then(() =>
-          ory
-            .updateSettingsFlow({
+          ory.updateSettingsFlow({
               flow: String(flow?.id),
               updateSettingsFlowBody: values,
             })

@@ -90,8 +90,7 @@ const Verification: NextPage = (props: any) => {
     const csrf_token = csrf?.value
     // if user email was attached then this followed from the correct previous step
     if (user && flow) {
-      ory
-        .updateVerificationFlow({
+      ory.updateVerificationFlow({
           flow: String(flow?.id),
           updateVerificationFlowBody: {
             csrf_token: csrf_token,
@@ -140,8 +139,7 @@ const Verification: NextPage = (props: any) => {
 
     // If ?flow=.. was in the URL, we fetch it
     if (flowId) {
-      ory
-        .getVerificationFlow({ id: String(flowId) })
+      ory.getVerificationFlow({ id: String(flowId) })
         .then(({ data }) => {
           setFlow(data)
           setIssuedAt(data.issued_at);
@@ -166,8 +164,7 @@ const Verification: NextPage = (props: any) => {
 
 
     // Otherwise we initialize it
-    ory
-      .createBrowserVerificationFlow({
+    ory.createBrowserVerificationFlow({
         returnTo: returnToUrl,
       })
       .then(({ data }) => {
@@ -278,8 +275,7 @@ const Verification: NextPage = (props: any) => {
         )
     }
 
-    return ory
-      .updateVerificationFlow({
+    return ory.updateVerificationFlow({
         flow: String(flow?.id),
         updateVerificationFlowBody: nextValues,
       })
@@ -320,8 +316,7 @@ const Verification: NextPage = (props: any) => {
                 password: values.password,
               }
               : values
-            return ory
-              .updateLoginFlow({
+            return ory.updateLoginFlow({
                 flow: String(data?.id),
                 updateLoginFlowBody: { ...nextValues, csrf_token: csrfNode?.attributes.value },
               }).then(() => flow)
@@ -354,8 +349,7 @@ const Verification: NextPage = (props: any) => {
                 shallow: true,
               })
 
-            ory
-              .getVerificationFlow({ id: newFlowID })
+            ory.getVerificationFlow({ id: newFlowID })
               .then(({ data }) => setFlow(data))
             return
           }

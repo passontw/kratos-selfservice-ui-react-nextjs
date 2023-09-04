@@ -170,8 +170,7 @@ const Login: NextPage = (props: any) => {
     validateLoginFlow(router, options)
 
     // Otherwise we initialize it
-    ory
-      .createBrowserLoginFlow({
+    ory.createBrowserLoginFlow({
         refresh: Boolean(refresh),
         aal: aal ? String(aal) : undefined,
         returnTo: returnTo ? String(returnTo) : undefined,
@@ -254,8 +253,7 @@ const Login: NextPage = (props: any) => {
       }
 
       return (
-        ory
-          .updateLoginFlow({
+        ory.updateLoginFlow({
             flow: String(flow?.id),
             updateLoginFlowBody: values,
           })
@@ -283,8 +281,7 @@ const Login: NextPage = (props: any) => {
 
             const [verifiable_address] = verifiable_addresses
             if (isEmpty(verifiable_address) || !verifiable_address.verified) {
-              return ory
-                .createBrowserLogoutFlow()
+              return ory.createBrowserLogoutFlow()
                 .then(({ data: logoutFlow }) => {
                   return ory.updateLogoutFlow({
                     token: logoutFlow.logout_token,
@@ -308,8 +305,7 @@ const Login: NextPage = (props: any) => {
             }
 
             if (isEmailSignin && traits.loginVerification) {
-              return ory
-                .createBrowserLogoutFlow()
+              return ory.createBrowserLogoutFlow()
                 .then(({ data: logoutFlow }) => {
                   return ory.updateLogoutFlow({
                     token: logoutFlow.logout_token,

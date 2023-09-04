@@ -83,8 +83,7 @@ const Registration: NextPage = (props) => {
 
     // If ?flow=.. was in the URL, we fetch it
     if (flowId) {
-      ory
-        .getRegistrationFlow({ id: String(flowId) })
+      ory.getRegistrationFlow({ id: String(flowId) })
         .then(({ data }) => {
           // We received the flow - let's use its data and render the form!
           setFlow(data)
@@ -100,8 +99,7 @@ const Registration: NextPage = (props) => {
     }
 
     // Otherwise we initialize it
-    ory
-      .createBrowserRegistrationFlow({
+    ory.createBrowserRegistrationFlow({
         returnTo: returnTo ? String(returnTo) : path,
       })
       .then(({ data }) => {

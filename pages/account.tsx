@@ -258,8 +258,7 @@ const Account: NextPage = (props) => {
 
     // If ?flow=.. was in the URL, we fetch it
     if (flowId) {
-      return ory
-        .getSettingsFlow({ id: String(flowId) })
+      return ory.getSettingsFlow({ id: String(flowId) })
         .then(({ data }) => {
           setFlow(data)
         })
@@ -290,8 +289,7 @@ const Account: NextPage = (props) => {
         path = `/${locale}${path}`
       }
 
-      return ory
-        .createBrowserSettingsFlow({
+      return ory.createBrowserSettingsFlow({
           returnTo: path,
         })
         .then(({ data }) => {

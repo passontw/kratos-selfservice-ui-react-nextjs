@@ -47,8 +47,7 @@ const Sso: NextPage = () => {
   const onLogout = LogoutLink()
 
   useEffect(() => {
-    ory
-      .toSession()
+    ory.toSession()
       .then(({ data }) => {
         setUser(data?.identity?.traits || {})
         setLoading(false)
