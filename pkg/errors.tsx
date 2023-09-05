@@ -34,7 +34,9 @@ export function handleGetFlowError<S>(
   lang?: any
 ) {
   console.log("error handler init")
+  console.log("error handler flag outer")
   return async (err: any) => {
+    console.log("error handler flag inner")
     console.log("error handler within", JSON.stringify(err.response?.data))
     switch (err.response?.data.error?.id) {
       case "session_aal2_required":
