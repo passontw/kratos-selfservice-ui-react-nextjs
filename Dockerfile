@@ -14,7 +14,7 @@ COPY . .
 
 # Creates a "dist" folder with the production build
 #RUN npm i -g nest @nestjs/cli && npm run build
-RUN export $(cat .env | grep -vE "^#" | /usr/bin/xargs) ; npm i -g next ; npm run build
+RUN rm -rf .next ; export $(cat .env | grep -vE "^#" | /usr/bin/xargs) ; npm i -g next ; npm run build
 
 # Start the server using the production build
 # CMD [ "npm", "run" ,"start:prod"]
