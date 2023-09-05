@@ -114,9 +114,9 @@ const Registration: NextPage = (props) => {
       if (!values.provider) {
         await handleYupSchema(registrationFormSchema, values)
       }
-
+      console.log("handleYupSchema success")
       values["traits.source"] = getTraitsSource(values.method, values.provider);
-
+      console.log("getTraitsSource success")
       return (
         // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
         // his data when she/he reloads the page.
