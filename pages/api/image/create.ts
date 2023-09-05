@@ -42,6 +42,7 @@ const createFileName = (name: string, email: string) => {
   return fileName
 }
 
+// TODO Cannot read properties of undefined (reading 'slice')
 export const getFileCode = (name: string, email: string) => {
   const fileCode = `${name.slice(0, 4)}.${email}`
   const hashedFileCode = crypto

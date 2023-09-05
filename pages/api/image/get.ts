@@ -25,7 +25,7 @@ export default async function handler(
   const targetfileName = fileNames.find((file) => file.includes(fileCode))
 
   let file: string
-
+  // TODO Error: ENOENT: no such file or directory, scandir './users'
   try {
     file = fs.readFileSync(`./users/${targetfileName}`, "utf8")
     console.log("file:", file)
