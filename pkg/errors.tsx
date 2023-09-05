@@ -102,6 +102,7 @@ export function handleGetFlowError<S>(
         await router.push("/" + flowType)
         return
       case "browser_location_change_required":
+        console.log("reached 8")
         const query = queryString.parse(window.location.search.replace("?", ""));
         // Ory Kratos asked us to point the user to this URL.
         // alert("debug: stay on this page to read errors before redirecting")
