@@ -243,6 +243,7 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   }
 
   render() {
+    console.log("@render")
     const { hideGlobalMessages, flow, router, lang } = this.props
     const { values, isLoading } = this.state
 
