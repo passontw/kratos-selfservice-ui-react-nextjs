@@ -208,7 +208,10 @@ const Registration: NextPage = (props) => {
       const errors = handleYupErrors(error)
       const nextFlow = cloneDeep(flow)
       nextFlow.ui.messages = []
-      console.log("handleYupErrors", JSON.stringify(error))
+      console.log("handleYupErrors", JSON.stringify({
+        "error":error,
+        "errors":errors,
+      }))
 
       if (errors['["traits.name"]']) {
         const message = {
