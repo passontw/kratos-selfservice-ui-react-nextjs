@@ -54,8 +54,8 @@ stages:
     - export CI_VAULT=/home/coolermaster/ci-vault ; export CI_ORCH=/home/coolermaster/pj-devops ;
     - chmod 600 /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/dev
     - ssh -i /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/dev coolermaster@10.1.1.65 -T 'export CI_VAULT=/home/coolermaster/ci-vault ; export CI_ORCH=/home/coolermaster/pj-devops ; cd /home/coolermaster/ci-vault ; git fetch ; git checkout origin/master -f ; cd /home/coolermaster/pj-devops ; git fetch ; git checkout origin/master -f'
-    - ssh -i /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/dev -T 'docker kill be-ory ; docker system prune -fa'
-    - ssh -i /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/dev-T 'cd ~/pj-devops/coolermaster && git fetch ; git checkout origin/master -f ; docker logout ; docker login dockerhub.cloud-interactive.com -u cloud -p 7=EdUKxUfMg3Tu! ; docker network create storage_net ; export CI_VAULT=/home/coolermaster/ci-vault ; export CI_ORCH=/home/coolermaster/pj-devops ; export ENV=uat ; export $(cat $CI_VAULT/env/coolermaster/ory/env.uat | xargs) ; cd $CI_ORCH/coolermaster/uat ; docker-compose up -d ory'
+    - ssh -i /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/dev coolermaster@10.1.1.65 -T 'docker kill be-ory ; docker system prune -fa'
+    - ssh -i /home/gitlab-runner/ci-vault/ssh/coolermaster-cmid/dev coolermaster@10.1.1.65 -T 'cd ~/pj-devops/coolermaster && git fetch ; git checkout origin/master -f ; docker logout ; docker login dockerhub.cloud-interactive.com -u cloud -p 7=EdUKxUfMg3Tu! ; docker network create storage_net ; export CI_VAULT=/home/coolermaster/ci-vault ; export CI_ORCH=/home/coolermaster/pj-devops ; export ENV=uat ; export $(cat $CI_VAULT/env/coolermaster/ory/env.uat | xargs) ; cd $CI_ORCH/coolermaster/uat ; docker-compose up -d ory'
 
 .job_build_staging:
   # image: docker:19.03.12
