@@ -1,11 +1,8 @@
-name: CI/CD Workflow
+name: cmid-ui-prod
 
 on:
   push:
     branches:
-      - feature-devops
-      - develop
-      - staging
       - master
 
 jobs:
