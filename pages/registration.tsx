@@ -208,7 +208,7 @@ const Registration: NextPage = (props) => {
       const errors = handleYupErrors(error)
       const nextFlow = cloneDeep(flow)
       nextFlow.ui.messages = []
-      console.log("handleYupErrors", JSON.stringify(errors))
+      console.log("handleYupErrors", JSON.stringify(error))
 
       if (errors['["traits.name"]']) {
         const message = {
@@ -219,6 +219,7 @@ const Registration: NextPage = (props) => {
         const identifierIndex = nextFlow.ui.nodes.findIndex(
           (node) => node.attributes.name === "traits.name",
         )
+
 
         const errorMessage = nextFlow.ui.nodes[identifierIndex].messages.find(
           (msg) => msg.id === message.id,
@@ -241,9 +242,7 @@ const Registration: NextPage = (props) => {
         nextFlow.ui.nodes[identifierIndex].messages = nextMessages
       }
 
-      const emailKey = errors['["traits.email"]']
-        ? '["traits.email"]'
-        : "[traits.email]"
+      const emailKey = errors['["traits.email"]'] ? '["traits.email"]' : "[traits.email]"
       if (errors[emailKey]) {
         const message = {
           id: 4000002,
