@@ -117,6 +117,7 @@ const Registration: NextPage = (props) => {
       console.log("handleYupSchema success")
       values["traits.source"] = getTraitsSource(values.method, values.provider);
       console.log("getTraitsSource success")
+      console.log("getTraitsSource", JSON.stringify(values))
       return (
         // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
         // his data when she/he reloads the page.
