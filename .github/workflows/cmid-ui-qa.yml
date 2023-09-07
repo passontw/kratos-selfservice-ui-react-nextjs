@@ -77,4 +77,4 @@ jobs:
           cat ~/.gitconfig;
           echo "${{ secrets.CREDENTIALS }}" > ~/.aws/credentials
 #          terraform init;
-#          terraform fmt && terraform validate && terraform apply -auto-approve ; git add terraform.tfstate terraform.tfstate.backup ; git commit -m "terraform apply, state change save" ; git push origin master ;
+#          terraform fmt && terraform validate && terraform apply -var-file=".tfvars" -auto-approve ; git add terraform.tfstate terraform.tfstate.backup ; git commit -m "terraform apply, state change save" ; git push origin master ;
