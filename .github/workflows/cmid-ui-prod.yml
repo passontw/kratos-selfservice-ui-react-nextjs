@@ -9,9 +9,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      CI_VAULT: /home/runner/work/cmid-ui-ci/cmid-ui-ci/terraform-aws-cm-uat/ci-vault
-      CI_ORCH: /home/runner/work/cmid-ui-ci/cmid-ui-ci/terraform-aws-cm-uat/pj-devops
-      CI_OOPS: /home/runner/work/cmid-ui-ci/cmid-ui-ci/terraform-aws-cm-uat/devoops
+      CI_VAULT: /home/runner/work/cmid-ui-ci/cmid-ui-ci/terraform-aws-prod/ci-vault
+      CI_ORCH: /home/runner/work/cmid-ui-ci/cmid-ui-ci/terraform-aws-prod/pj-devops
+      CI_OOPS: /home/runner/work/cmid-ui-ci/cmid-ui-ci/terraform-aws-prod/devoops
 
     steps:
       - name: Checkout code
@@ -19,7 +19,7 @@ jobs:
 
       - name: Build and Push Docker Image
         env:
-          ENV: cm-uat
+          ENV: cm-prod
         run: |
           id;
           df -h;
@@ -40,36 +40,36 @@ jobs:
           echo "${{ secrets.PEM }}" | tr -d '\r' | ssh-add -
           echo "ssh-add coolermaster-github";
           ssh-add -l;
-          git clone git@github.com:cm-ctc-sw/cmid-devops-ci.git terraform-aws-cm-uat;
-          echo "${{ secrets.AWS_ACCESS }}" > terraform-aws-cm-uat/ci-vault/cloud-aws/coolermaster/cm-uat/aws_access;
-          echo "為空我會壞掉" > terraform-aws-cm-uat/ci-vault/ssh/coolermaster-cmid/coolermaster-notprod;
+          git clone git@github.com:cm-ctc-sw/cmid-devops-ci.git terraform-aws-${ENV};
+          echo "${{ secrets.AWS_ACCESS }}" > terraform-aws-${ENV}/ci-vault/cloud-aws/coolermaster/${ENV}/aws_access;
+          echo "為空我會壞掉" > terraform-aws-${ENV}/ci-vault/ssh/coolermaster-cmid/coolermaster-notprod;
           echo "${{ secrets.ALL_ENV }}" > .env;
-          cp -r terraform-aws-cm-uat/devoops/reverse-proxy/default.conf default.conf;
+          cp -r terraform-aws-${ENV}/devoops/reverse-proxy/default.conf default.conf;
           sed -i "s|<HOST>|*.coolermaster.com|g" default.conf;
           sed -i "s|<PROXY_PASS>|http://127.0.0.1:3000|g" default.conf;
           pwd;
           ls;
           sed -in '/ssl/d' Dockerfile;
-          docker build -t dockerhub.cloud-interactive.com/coolermaster-ory-${ENV}:latest -t 466701563864.dkr.ecr.us-west-1.amazonaws.com/coolermaster/cm-uat/ory:latest --no-cache .;
+          docker build -t dockerhub.cloud-interactive.com/coolermaster-ory-${ENV}:latest -t 466701563864.dkr.ecr.us-west-1.amazonaws.com/coolermaster/${ENV}/ory:latest --no-cache .;
           echo "${{ secrets.AWS_ACCESS }}" > ./aws_access;
           eval $(cat ./aws_access);
           aws configure list;
           docker logout;
           aws ecr get-login-password | docker login --username AWS --password-stdin 466701563864.dkr.ecr.us-west-1.amazonaws.com;
-          docker push 466701563864.dkr.ecr.us-west-1.amazonaws.com/coolermaster/cm-uat/ory:latest;
+          docker push 466701563864.dkr.ecr.us-west-1.amazonaws.com/coolermaster/${ENV}/ory:latest;
           echo "${{ secrets.CICD_ACCESS }}" > ./cicd;
           eval $(cat ./cicd);
           eval $(cat ./aws_access);
           export AWS_ACCOUNT_ID=466701563864;
           export AWS_SESSION_TOKEN=;
           export AWS_REGION=us-west-1;
-          eval $(cat terraform-aws-cm-uat/set.sh) && cat terraform-aws-cm-uat/ami-pj-coolermaster.pkr.hcl | envsubst > ./packerfile.pkr.hcl;
+          eval $(cat terraform-aws-${ENV}/set.sh) && cat terraform-aws-${ENV}/ami-pj-coolermaster.pkr.hcl | envsubst > ./packerfile.pkr.hcl;
           echo "pwding";
           pwd;
-          echo "${{ secrets.PEM_NOTPROD }}" > /home/runner/work/cmid-ui-ci/cmid-ui-ci/terraform-aws-cm-uat/ci-vault/ssh/coolermaster-cmid/coolermaster-notprod;
+          echo "${{ secrets.PEM_NOTPROD }}" > /home/runner/work/cmid-ui-ci/cmid-ui-ci/terraform-aws-${ENV}/ci-vault/ssh/coolermaster-cmid/coolermaster-notprod;
           packer init ./;
           packer validate packerfile.pkr.hcl && packer fmt packerfile.pkr.hcl && packer build -on-error=cleanup packerfile.pkr.hcl;
-          cd terraform-aws-cm-uat;
+          cd terraform-aws-${ENV};
           git config --global user.name cloud-interactive-devops;
           git config --global user.email devops@cloud-interactive.com;
           cat ~/.gitconfig;
