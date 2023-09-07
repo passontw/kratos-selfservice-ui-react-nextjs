@@ -26,6 +26,7 @@ jobs:
           pwd;
           docker version;
           docker-compose version;
+          aws --version;
           packer version;
           terraform version;
           git version;
