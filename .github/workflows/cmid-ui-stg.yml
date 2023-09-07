@@ -42,6 +42,7 @@ jobs:
           echo "ssh-add coolermaster-github";
           ssh-add -l;
           git clone git@github.com:cm-ctc-sw/cmid-devops-ci.git terraform-aws;
+          cd terraform-aws && git checkout staging && git status && cd ..;
           echo "${{ secrets.AWS_ACCESS }}" > terraform-aws/ci-vault/cloud-aws/coolermaster/${ENV}/aws_access;
           echo "為空我會壞掉" > terraform-aws/ci-vault/ssh/coolermaster-cmid/coolermaster-notprod;
           echo "${{ secrets.ALL_{ENV} }}" > .env;
@@ -64,7 +65,8 @@ jobs:
           export AWS_ACCOUNT_ID=466701563864;
           export AWS_SESSION_TOKEN=;
           export AWS_REGION=us-west-1;
-          eval $(cat terraform-aws/set.sh) && cat terraform-aws/ami-pj-coolermaster.pkr.hcl | envsubst > ./packerfile.pkr.hcl;
+          export ENV=${ENV};
+          eval $(cat terraform-aws/set.sh) && cat terraform-aws/pj-devops/coolermaster/${ENV}/packer/ami-pj-coolermaster.pkr.hcl | envsubst > ./packerfile.pkr.hcl;
           echo "pwding";
           pwd;
           echo "${{ secrets.PEM_NOTPROD }}" > /home/runner/work/cmid-ui-ci/cmid-ui-ci/terraform-aws/ci-vault/ssh/coolermaster-cmid/coolermaster-notprod;
