@@ -32,6 +32,9 @@ runs:
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh    
           cd ./${{ inputs.folder-name }}
+          eval $(ssh-agent -s);
+          cat ~/coolermaster-github | tr -d '\r' | ssh-add -;
+          ssh-add -l;
           git fetch
           git reset --hard
           git checkout origin/${{ inputs.branch-name }}
