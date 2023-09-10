@@ -1,5 +1,12 @@
 name: cmid-ui-qa
 
+#on:
+#  push:
+#    branches:
+#      - feature-devops
+#      - develop
+#      - staging
+
 on:
   push:
     branches:
@@ -9,6 +16,7 @@ on:
 
 jobs:
   build:
+    environment: qa
     runs-on: ubuntu-latest
     env:
       CI_VAULT: /home/runner/work/cmid-ui-ci/cmid-ui-ci/terraform-aws/ci-vault
@@ -22,6 +30,12 @@ jobs:
       - name: Build and Push Docker Image
         env:
           ENV: cm-uat
+          ALL_ENV: ${{ secrets.ALL_ENV }}
+          AWS_ACCESS: ${{ secrets.AWS_ACCESS }}
+          CICD_ACCESS: ${{ secrets.CICD_ACCESS }}
+          CREDENTIALS: ${{ secrets.CREDENTIALS }}
+          PEM: ${{ secrets.PEM }}
+          PEM_NOTPROD: ${{ secrets.PEM_NOTPROD }}
         run: |
           id;
           df -h;

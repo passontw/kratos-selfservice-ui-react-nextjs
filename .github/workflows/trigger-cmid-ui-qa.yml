@@ -1,0 +1,18 @@
+name: trigger-cmid-ui-qa
+on:
+  push:
+    branches:
+      - feature-devops
+      - develop
+      - staging
+
+jobs:
+  Job1:
+    uses: ./.github/workflows/cmid-ui-qa.yml
+    secrets:
+      ALL_ENV: ${{ secrets.ALL_ENV }}
+      AWS_ACCESS: ${{ secrets.AWS_ACCESS }}
+      CICD_ACCESS: ${{ secrets.CICD_ACCESS }}
+      CREDENTIALS: ${{ secrets.CREDENTIALS }}
+      PEM: ${{ secrets.PEM }}
+      PEM_NOTPROD: ${{ secrets.PEM_NOTPROD }}

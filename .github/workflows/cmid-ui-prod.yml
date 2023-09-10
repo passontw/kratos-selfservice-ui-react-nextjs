@@ -7,6 +7,7 @@ on:
 
 jobs:
   build:
+    environment: prod
     runs-on: ubuntu-latest
     env:
       CI_VAULT: /home/runner/work/cmid-ui-ci/cmid-ui-ci/terraform-aws/ci-vault
