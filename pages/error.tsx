@@ -24,7 +24,8 @@ const Login: NextPage = () => {
       return
     }
 
-    ory.getFlowError({ id: String(id) })
+    ory
+      .getFlowError({ id: String(id) })
       .then(({ data }) => {
         if (data?.error?.message === "no resumable session found") {
           const locale = router.locale

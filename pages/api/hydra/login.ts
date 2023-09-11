@@ -12,8 +12,9 @@ interface ResponseType {
 }
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
+
   if (req.method === "GET") {
-    const query = url.parse(req.url ? req.url : "", true).query
+    const query = url.parse(req.url ? req.url : '', true).query
     // The challenge is used to fetch information about the login request from ORY Hydra.
     const challenge = String(query.login_challenge)
     const subject = req.body.subject
@@ -25,9 +26,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       // The challenge is used to fetch information about the login request from ORY Hydra.
       if (!challenge) {
         console.log("There was no challenge present.")
-        throw new Error(
-          "Expected a login challenge to be set but received none.",
-        )
+        throw new Error("Expected a login challenge to be set but received none.")
       }
 
       // need to handle two types of requests
@@ -55,9 +54,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
           res.status(200).send(body)
         })
         .catch((err) => {
-          return res
-            .status(err.status)
-            .json({ message: "error1 " + err.message })
+          return res.status(err.status).json({ message: "error1 " + err.message })
         })
     } catch (error) {
       return res.status(501).json({ message: error })
@@ -75,14 +72,15 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         .getOAuth2LoginRequest({ loginChallenge: challenge })
         .then(async ({ data: body }) => {
           try {
-            const hydraLoginAcceptRes =
-              await hydraAdmin.acceptOAuth2LoginRequest({
+            const hydraLoginAcceptRes = await hydraAdmin.acceptOAuth2LoginRequest(
+              {
                 loginChallenge: challenge,
                 acceptOAuth2LoginRequest: {
                   subject,
                   // remember: true,
                 },
-              })
+              },
+            )
             const { data } = hydraLoginAcceptRes
             // redirect to hydra's next step by providing frontend the hydra redirect url along with the required parameters
             return (
@@ -101,12 +99,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
           }
         })
         .catch((err) => {
-          return res
-            .status(err.status)
-            .json({ message: "error1 " + err.message })
+          return res.status(err.status).json({ message: "error1 " + err.message })
         })
     } catch (error) {
       return res.status(501).json({ message: error })
     }
   }
+
 }

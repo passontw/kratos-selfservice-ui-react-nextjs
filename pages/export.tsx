@@ -57,7 +57,8 @@ const Export: NextPage = (props) => {
 
     // If ?flow=.. was in the URL, we fetch it
     if (flowId) {
-      ory.getSettingsFlow({ id: String(flowId) })
+      ory
+        .getSettingsFlow({ id: String(flowId) })
         .then(({ data }) => {
           setFlow(data)
         })
@@ -66,7 +67,8 @@ const Export: NextPage = (props) => {
     }
 
     // Otherwise we initialize it
-    ory.createBrowserSettingsFlow({
+    ory
+      .createBrowserSettingsFlow({
         returnTo: "/account",
       })
       .then(({ data }) => {

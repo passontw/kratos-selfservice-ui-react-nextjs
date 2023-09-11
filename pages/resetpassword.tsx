@@ -27,7 +27,8 @@ const ResetPassword: NextPage = () => {
 
     // If ?flow=.. was in the URL, we fetch it
     if (flowId) {
-      ory.getRecoveryFlow({ id: String(flowId) })
+      ory
+        .getRecoveryFlow({ id: String(flowId) })
         .then(({ data }) => {
           setFlow(data)
         })
@@ -36,7 +37,8 @@ const ResetPassword: NextPage = () => {
     }
 
     // Otherwise we initialize it
-    ory.createBrowserRecoveryFlow({
+    ory
+      .createBrowserRecoveryFlow({
         returnTo: "/changepassword",
       })
       .then(({ data }) => {
@@ -63,7 +65,8 @@ const ResetPassword: NextPage = () => {
       // his data when she/he reloads the page.
       .push(`/resetpassword?flow=${flow?.id}`, undefined, { shallow: true })
       .then(() =>
-        ory.updateRecoveryFlow({
+        ory
+          .updateRecoveryFlow({
             flow: String(flow?.id),
             updateRecoveryFlowBody: values,
           })

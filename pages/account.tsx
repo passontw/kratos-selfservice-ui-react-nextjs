@@ -134,12 +134,14 @@ const Account: NextPage = (props) => {
       path = `/${locale}${path}`
     }
     return (
-      // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
-      // his data when she/he reloads the page.
-      // .push(`/account?flow=${flow?.id}`, undefined, { shallow: true })
-      router.push(`${path}?flow=${flow?.id}`, undefined, { shallow: true })
+      router
+        // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
+        // his data when she/he reloads the page.
+        // .push(`/account?flow=${flow?.id}`, undefined, { shallow: true })
+        .push(`${path}?flow=${flow?.id}`, undefined, { shallow: true })
         .then(() =>
-          ory.updateSettingsFlow({
+          ory
+            .updateSettingsFlow({
               flow: String(flow?.id),
               updateSettingsFlowBody: values,
             })
@@ -258,7 +260,8 @@ const Account: NextPage = (props) => {
 
     // If ?flow=.. was in the URL, we fetch it
     if (flowId) {
-      return ory.getSettingsFlow({ id: String(flowId) })
+      return ory
+        .getSettingsFlow({ id: String(flowId) })
         .then(({ data }) => {
           setFlow(data)
         })
@@ -289,7 +292,8 @@ const Account: NextPage = (props) => {
         path = `/${locale}${path}`
       }
 
-      return ory.createBrowserSettingsFlow({
+      return ory
+        .createBrowserSettingsFlow({
           returnTo: path,
         })
         .then(({ data }) => {

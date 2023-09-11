@@ -80,7 +80,6 @@ const StyledProfileImageWrap = styled("div")(({ theme }) => ({
 
 const StyledProfileImage = styled("img")(() => ({
   width: "100%",
-  verticalAlign: "bottom",
 }))
 
 const StyledEditButton = styled("img")(() => ({

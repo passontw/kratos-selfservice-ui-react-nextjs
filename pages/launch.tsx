@@ -66,6 +66,28 @@ const Launch: React.FC<LaunchProps> = () => {
     }
   }
 
+  const func2 = async (callback: () => Promise<boolean>) => {
+    console.log("@callback 3")
+    const done = await callback()
+
+    console.log("@callback 4 done:", done)
+    if (done) {
+      console.log("@callback func2 done!")
+    }
+  }
+  const func1 = () => {
+    console.log("@callback 1")
+    return new Promise(() => {
+      setTimeout(() => {
+        return true
+      }, 5000)
+    })
+    console.log("@callback 2")
+    return false
+  }
+
+  func2(func1)
+
   return (
     <>
       <Box

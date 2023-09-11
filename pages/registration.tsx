@@ -83,7 +83,8 @@ const Registration: NextPage = (props) => {
 
     // If ?flow=.. was in the URL, we fetch it
     if (flowId) {
-      ory.getRegistrationFlow({ id: String(flowId) })
+      ory
+        .getRegistrationFlow({ id: String(flowId) })
         .then(({ data }) => {
           // We received the flow - let's use its data and render the form!
           setFlow(data)
@@ -99,7 +100,8 @@ const Registration: NextPage = (props) => {
     }
 
     // Otherwise we initialize it
-    ory.createBrowserRegistrationFlow({
+    ory
+      .createBrowserRegistrationFlow({
         returnTo: returnTo ? String(returnTo) : path,
       })
       .then(({ data }) => {
@@ -114,16 +116,17 @@ const Registration: NextPage = (props) => {
       if (!values.provider) {
         await handleYupSchema(registrationFormSchema, values)
       }
-      console.log("handleYupSchema success")
+
       values["traits.source"] = getTraitsSource(values.method, values.provider);
-      console.log("getTraitsSource success")
-      console.log("getTraitsSource", JSON.stringify(values))
+
       return (
-        // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
-        // his data when she/he reloads the page.
-        router.push(`/registration?flow=${flow?.id}`, undefined, { shallow: true })
+        router
+          // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
+          // his data when she/he reloads the page.
+          .push(`/registration?flow=${flow?.id}`, undefined, { shallow: true })
           .then(() =>
-            ory.updateRegistrationFlow({
+            ory
+              .updateRegistrationFlow({
                 flow: String(flow?.id),
                 updateRegistrationFlowBody: values,
               })
@@ -208,10 +211,6 @@ const Registration: NextPage = (props) => {
       const errors = handleYupErrors(error)
       const nextFlow = cloneDeep(flow)
       nextFlow.ui.messages = []
-      console.log("handleYupErrors", JSON.stringify({
-        "error":error,
-        "errors":errors,
-      }))
 
       if (errors['["traits.name"]']) {
         const message = {
@@ -222,7 +221,6 @@ const Registration: NextPage = (props) => {
         const identifierIndex = nextFlow.ui.nodes.findIndex(
           (node) => node.attributes.name === "traits.name",
         )
-
 
         const errorMessage = nextFlow.ui.nodes[identifierIndex].messages.find(
           (msg) => msg.id === message.id,
@@ -245,7 +243,9 @@ const Registration: NextPage = (props) => {
         nextFlow.ui.nodes[identifierIndex].messages = nextMessages
       }
 
-      const emailKey = errors['["traits.email"]'] ? '["traits.email"]' : "[traits.email]"
+      const emailKey = errors['["traits.email"]']
+        ? '["traits.email"]'
+        : "[traits.email]"
       if (errors[emailKey]) {
         const message = {
           id: 4000002,

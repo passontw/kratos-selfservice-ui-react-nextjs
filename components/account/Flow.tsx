@@ -71,7 +71,7 @@ type State<T> = {
     padding: string
     innerPadding: string
     fontSize: string
-    lineHeight: strings
+    lineHeight: string
     height: string
     marginTop: string
   }

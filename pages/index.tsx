@@ -21,7 +21,8 @@ const Home: NextPage = () => {
   const { t } = useTranslation()
 
   useEffect(() => {
-    ory.toSession()
+    ory
+      .toSession()
       .then(({ data }) => {
         setSession(JSON.stringify(data, null, 2))
         setHasSession(true)

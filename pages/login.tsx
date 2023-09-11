@@ -46,9 +46,9 @@ const getSessionData = async () => {
 }
 
 const validateLoginFlow = async (router, options) => {
-  const { login_challenge, refresh, aal, returnTo, setFlow } = options
+  const { refresh, aal, returnTo, setFlow } = options
   const locale = router.locale
-  let path = "/profile"
+  let path = "/sso"
   if (locale && locale !== "en") {
     path = `/${locale}${path}`
   }
@@ -97,13 +97,14 @@ const Login: NextPage = (props: any) => {
         return
       })
     }
+
+
   }, [])
 
   // Get ?flow=... from the URL
   const router = useRouter()
   const {
     login_challenge,
-
     return_to: returnTo,
     flow: flowId,
     // Refresh means we want to refresh the session. This is needed, for example, when we want to update the password
@@ -140,7 +141,8 @@ const Login: NextPage = (props: any) => {
 
     // If ?flow=.. was in the URL, we fetch it
     if (flowId) {
-      ory.getLoginFlow({ id: String(flowId) })
+      ory
+        .getLoginFlow({ id: String(flowId) })
         .then(({ data }) => {
           const requestUrl = data?.oauth2_login_request?.request_url
           if (requestUrl) {
@@ -170,7 +172,8 @@ const Login: NextPage = (props: any) => {
     validateLoginFlow(router, options)
 
     // Otherwise we initialize it
-    ory.createBrowserLoginFlow({
+    ory
+      .createBrowserLoginFlow({
         refresh: Boolean(refresh),
         aal: aal ? String(aal) : undefined,
         returnTo: returnTo ? String(returnTo) : undefined,
@@ -253,7 +256,8 @@ const Login: NextPage = (props: any) => {
       }
 
       return (
-        ory.updateLoginFlow({
+        ory
+          .updateLoginFlow({
             flow: String(flow?.id),
             updateLoginFlowBody: values,
           })
@@ -281,7 +285,8 @@ const Login: NextPage = (props: any) => {
 
             const [verifiable_address] = verifiable_addresses
             if (isEmpty(verifiable_address) || !verifiable_address.verified) {
-              return ory.createBrowserLogoutFlow()
+              return ory
+                .createBrowserLogoutFlow()
                 .then(({ data: logoutFlow }) => {
                   return ory.updateLogoutFlow({
                     token: logoutFlow.logout_token,
@@ -305,7 +310,8 @@ const Login: NextPage = (props: any) => {
             }
 
             if (isEmailSignin && traits.loginVerification) {
-              return ory.createBrowserLogoutFlow()
+              return ory
+                .createBrowserLogoutFlow()
                 .then(({ data: logoutFlow }) => {
                   return ory.updateLogoutFlow({
                     token: logoutFlow.logout_token,
@@ -466,7 +472,7 @@ const Login: NextPage = (props: any) => {
                 flow={flow}
                 router={router}
                 lang={lang}
-                // hideSocialLogin
+                hideSocialLogin
               />
             </Box>
           </Box>

@@ -31,23 +31,7 @@ function SettingsCard({
   only,
   children
 }: Props & { children: ReactNode }) {
-  console.log("🚀 ~ file: settings.tsx:35 ~ global?.window?.history:", global?.window?.history)
-  useEffect(() => {
 
-    global.window.addEventListener('popstate', env => {
-      console.log("🚀 ~ file: settings.tsx:40 ~ unlisten ~ action:")
-    })
-    // const unlisten = global.window.history.listen((location, action) => {
-    //   if (action === 'POP') {
-    //     console.log("🚀 ~ file: settings.tsx:40 ~ unlisten ~ action:", action)
-    //     // do something when the user clicks the back button
-    //   }
-    // });
-    return () => {
-      global.window.removeEventListener('popstate', () => false);
-    }
-  }, [global?.window?.history]);
-  
   if (!flow) {
     return null
   }
@@ -76,10 +60,6 @@ function SettingsCard({
   )
 }
 
-const handleRouteChange = (url) => {
-  console.log("🚀 ~ file: settings.tsx:80 ~ handleRouteChange ~ url:", url)
-}
-
 const Settings: NextPage = (props) => {
   const { lang } = props
   const dispatch = useDispatch()
@@ -103,23 +83,17 @@ const Settings: NextPage = (props) => {
       const [authenticationMethod] = authentication_methods;
 
       if (authenticationMethod.method !== "code_recovery") {
-        ory.createBrowserLogoutFlow()
+        ory
+          .createBrowserLogoutFlow()
           .then(({ data }) => {
-            return ory.updateLogoutFlow({ token: data.logout_token })
+            return ory
+              .updateLogoutFlow({ token: data.logout_token })
               .then(() => router.push("/login"))
               .then(() => router.reload())
           }).catch(error => router.push("/login"))
       }
       return Promise.resolve();
     }).catch(error => router.replace("/login"))
-
-    router.events.on('routeChangeStart', handleRouteChange)
-
-    // If the component is unmounted, unsubscribe
-    // from the event with the `off` method:
-    return () => {
-      router.events.off('routeChangeStart', handleRouteChange)
-    }
   }, [])
 
   useEffect(() => {
@@ -130,7 +104,8 @@ const Settings: NextPage = (props) => {
 
     // If ?flow=.. was in the URL, we fetch it
     if (flowId) {
-      ory.getSettingsFlow({ id: String(flowId) })
+      ory
+        .getSettingsFlow({ id: String(flowId) })
         .then(({ data }) => {
           setFlow(data)
         })
@@ -140,7 +115,8 @@ const Settings: NextPage = (props) => {
     }
 
     // Otherwise we initialize it
-    ory.createBrowserSettingsFlow({
+    ory
+      .createBrowserSettingsFlow({
         returnTo: returnTo ? String(returnTo) : undefined,
       })
       .then(({ data }) => {
@@ -166,12 +142,14 @@ const Settings: NextPage = (props) => {
         loginPath = `/${locale}${loginPath}`
       }
 
-      // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
-      // his data when she/he reloads the page.
-      // .push(`/settings?flow=${flow?.id}`, undefined, { shallow: true })
-      router.push(`${settingsPath}?flow=${flow?.id}`, undefined, { shallow: true })
+      router
+        // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
+        // his data when she/he reloads the page.
+        // .push(`/settings?flow=${flow?.id}`, undefined, { shallow: true })
+        .push(`${settingsPath}?flow=${flow?.id}`, undefined, { shallow: true })
         .then(() =>
-          ory.updateSettingsFlow({
+          ory
+            .updateSettingsFlow({
               flow: String(flow?.id),
               updateSettingsFlowBody: values,
             })

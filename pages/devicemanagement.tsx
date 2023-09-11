@@ -209,7 +209,8 @@ const DeviceManagement: NextPage = (props) => {
 
     // If ?flow=.. was in the URL, we fetch it
     if (flowId) {
-      ory.getSettingsFlow({ id: String(flowId) })
+      ory
+        .getSettingsFlow({ id: String(flowId) })
         .then(({ data }) => {
           setFlow(data)
         })
@@ -225,7 +226,8 @@ const DeviceManagement: NextPage = (props) => {
         setSelfSession(data)
       })
     // Otherwise we initialize it
-    ory.createBrowserSettingsFlow({
+    ory
+      .createBrowserSettingsFlow({
         returnTo: returnTo ? String(returnTo) : undefined,
       })
       .then(({ data }) => {

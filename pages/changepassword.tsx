@@ -70,7 +70,8 @@ const ChangePassword: NextPage = (props) => {
       return
     }
 
-    ory.createBrowserSettingsFlow({
+    ory
+      .createBrowserSettingsFlow({
         returnTo: returnTo ? String(returnTo) : undefined,
       })
       .then(({ data }) => {
@@ -101,7 +102,8 @@ const ChangePassword: NextPage = (props) => {
         // his data when she/he reloads the page.
         .push(`/changepassword?flow=${flow?.id}`, undefined, { shallow: true })
         .then(() =>
-          ory.updateSettingsFlow({
+          ory
+            .updateSettingsFlow({
               flow: String(flow?.id),
               updateSettingsFlowBody: values,
             })
