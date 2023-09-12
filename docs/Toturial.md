@@ -26,6 +26,12 @@ NEXT_PUBLIC_REDIRECT_URI=https://${customDomain}/api/auth/callback
 * ORY_PAT: API Key copied from the Ory Console, 'ory_pat' prefix include
 * HYDRA_ADMIN_URL: Ory SDK Domain
 
+### Ory Custom Domain
+
+[ory custom domain](./images/custom_domain.png)
+
+[ory custom domain detail](./images/custom_domain_detail.png)
+
 ### Ory Client
 
 ![Ory Client](./images/ory_client_setting.png)
