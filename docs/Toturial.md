@@ -1,3 +1,6 @@
+# Ory 資源
+
+
 # Ory 架設
 
 ## kratos next service
@@ -41,8 +44,17 @@ NEXT_PUBLIC_REDIRECT_URI=https://${customDomain}/api/auth/callback
 
 建立 Google Sign in 的設定
 
+[google SSO console setting](https://www.ory.sh/docs/kratos/social-signin/google)
 ### Apple Configure
 
 ![Apple Configure](./images/appleconfigure.png)
 
 建立 Apple Sign in 的設定
+
+[apple SSO console setting](https://www.ory.sh/docs/kratos/social-signin/apple)
+
+### Set data Mapping
+
+[Ory data Mapping](https://www.ory.sh/docs/kratos/social-signin/data-mapping)
+
+[Ory check session status](https://www.ory.sh/docs/identities/sign-in/check-session-token-cookie-api)
