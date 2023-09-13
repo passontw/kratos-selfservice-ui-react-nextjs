@@ -34,18 +34,6 @@ const Recovery: NextPage = (props) => {
         children: <RecoveryProcess lang={lang} />,
       }),
     )
-
-    const handleRouteChange = (url) => {
-      console.log("🚀 ~ file: recovery.tsx:39 ~ handleRouteChange ~ url:", url)
-    }
-    
-    router.events.on('routeChangeStart', handleRouteChange)
-
-    // If the component is unmounted, unsubscribe
-    // from the event with the `off` method:
-    return () => {
-      router.events.off('routeChangeStart', handleRouteChange)
-    }
   }, [])
   // Get ?flow=... from the URL
   const router = useRouter()

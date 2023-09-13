@@ -46,9 +46,9 @@ const getSessionData = async () => {
 }
 
 const validateLoginFlow = async (router, options) => {
-  const { login_challenge, refresh, aal, returnTo, setFlow } = options
+  const { refresh, aal, returnTo, setFlow } = options
   const locale = router.locale
-  let path = "/profile"
+  let path = "/sso"
   if (locale && locale !== "en") {
     path = `/${locale}${path}`
   }
@@ -97,6 +97,8 @@ const Login: NextPage = (props: any) => {
         return
       })
     }
+
+
   }, [])
 
   // Get ?flow=... from the URL
