@@ -34,7 +34,9 @@ export function handleGetFlowError<S>(
   lang?: any
 ) {
   console.log("error handler init")
+  console.log("error handler flag outer")
   return async (err: any) => {
+    console.log("error handler flag inner")
     console.log("error handler within", JSON.stringify(err.response?.data))
     switch (err.response?.data.error?.id) {
       case "session_aal2_required":
@@ -102,6 +104,7 @@ export function handleGetFlowError<S>(
         await router.push("/" + flowType)
         return
       case "browser_location_change_required":
+        console.log("reached 8")
         const query = queryString.parse(window.location.search.replace("?", ""));
         // Ory Kratos asked us to point the user to this URL.
         // alert("debug: stay on this page to read errors before redirecting")
@@ -125,6 +128,13 @@ export function handleGetFlowError<S>(
         //   window.location.href = err.response.data.redirect_browser_to
         // }, 30000)
         return
+
+      default:
+        let ggg=JSON.stringify(err);
+        console.log(`handleGetFlowError=${ggg}`)
+        console.log(`handleGetFlowError=${err.response?.data.error?.id}`)
+        //statements;
+        break;
     }
 
     // original Kratos handling flow expiry

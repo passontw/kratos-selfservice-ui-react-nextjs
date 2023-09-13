@@ -1,61 +1,61 @@
-import fetch from 'node-fetch';
-import { NextApiRequest, NextApiResponse } from "next"
 // import { getCookie, setCookie } from 'cookies-next';
-import axios from 'axios';
+import axios from "axios"
+import { NextApiRequest, NextApiResponse } from "next"
+import fetch from "node-fetch"
 
-const axiosapi = axios.create({baseURL: ''});
+const axiosapi = axios.create({ baseURL: "" })
 axiosapi.interceptors.request.use((config) => {
-    console.log('@interceptors', config);
-    return config;
+  console.log("@interceptors", config)
+  return config
 })
-export default async function handler(  
-    req: NextApiRequest,
-    res: NextApiResponse
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
 ) {
-    console.log('hello from callback.js', req.url);
-    const { platform, name, email } = req.query
-    const queryObj= {
-        platform,
-        // refresh_token: 'refresh_token',
-        // access_token: 'access_token',
-        name,
-        email,
-        };
-        
-        // try {
-        //     const response = await axiosapi.get(`https://cmid-admin.passon.tw/api/.ory/sessions/whoami`);
-        //     return res.status(200).json({
-        //         data: response
-        //     });
-        // } catch (error) {
-        //     return res.status(200).json({
-        //         error
-        // });
-        // }
-    // console.log('response', response)
-    const queryString = new URLSearchParams(queryObj).toString();
-    // return res.status(200).json({
-    //         data: queryString
-    // });
-    return res.status(200).redirect(307, `/launch?${queryString}`);
-//   const clientID = process.env.ORY_CLIENT_ID as string
-//   const clientSecret = process.env.ORY_CLIENT_SECRET as string
+  const { platform, name, email } = req.query
+  const queryObj = {
+    platform,
+    // refresh_token: 'refresh_token',
+    // access_token: 'access_token',
+    name,
+    email,
+  }
 
-//   console.log('@auth code',code)
-//   console.log('@auth clientID', clientID)
-//   console.log('@auth clientSecret', clientSecret)
+  // try {
+  //     const response = await axiosapi.get(`https://cmid-admin.passon.tw/api/.ory/sessions/whoami`);
+  //     return res.status(200).json({
+  //         data: response
+  //     });
+  // } catch (error) {
+  //     return res.status(200).json({
+  //         error
+  // });
+  // }
+  // console.log('response', response)
+  const queryString = new URLSearchParams(queryObj).toString()
+  // return res.status(200).json({
+  //         data: queryString
+  // });
+  return res.status(200).redirect(307, `/launch?${queryString}`)
+  //   const clientID = process.env.ORY_CLIENT_ID as string
+  //   const clientSecret = process.env.ORY_CLIENT_SECRET as string
 
-//   const code = req.url.substring(
-//     req.url.lastIndexOf('=') + 1,
-//     // req.url.indexOf('&'),
-//   );
+  //   console.log('@auth code',code)
+  //   console.log('@auth clientID', clientID)
+  //   console.log('@auth clientSecret', clientSecret)
+
+  //   const code = req.url.substring(
+  //     req.url.lastIndexOf('=') + 1,
+  //     // req.url.indexOf('&'),
+  //   );
   // const { code } = req.body;
-//   console.log('code', code);
-//   const clientID = process.env.NEXT_PUBLIC_CLIENT_ID;
-//   const clientSecret = process.env.ORY_CLIENT_SECRET;
+  //   console.log('code', code);
+  //   const clientID = process.env.NEXT_PUBLIC_CLIENT_ID;
+  //   const clientSecret = process.env.ORY_CLIENT_SECRET;
+  //   const redirectUri = process.env.NEXT_PUBLIC_REDIRECT_URI;
 
   try {
-    const params = new URLSearchParams();
+    const params = new URLSearchParams()
     // params.append('userName', 'aa');
     // params.append("code", code)
     // params.append("client_id", clientID)
@@ -77,7 +77,7 @@ export default async function handler(
     // const data = await response.json();
     // console.log('data', data);
     // if (data && data.access_token && data.refresh_token) {
-        
+
     //   const userinfoResponse = await fetch(
     //     process.env.ORY_SDK_URL + '/userinfo',
     //     {
@@ -99,14 +99,14 @@ export default async function handler(
     //   // });
     // }
   } catch (err: any) {
-    console.log('swapOAuth2Token error:', err);
-   
+    console.log("swapOAuth2Token error:", err)
+
     return res.status(err.response.status).json({
-        status: err.response.status,
-        msg: err.response.data.error_description,
-      })
+      status: err.response.status,
+      msg: err.response.data.error_description,
+    })
   }
-  return res.status(200).json({});
-//   return res.status(200).redirect(307, '/launch');
+  return res.status(200).json({})
+  //   return res.status(200).redirect(307, '/launch');
   // return res.redirect(200, 'http://localhost:3000');
 }

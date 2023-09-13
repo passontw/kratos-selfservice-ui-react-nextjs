@@ -102,25 +102,6 @@ const RecoveryProcess: NextPage = (props) => {
   }, [flow])
 
   useEffect(() => {
-    if (flow?.state === "passed_challenge") {
-      setLoading(true)
-
-      ory
-        .createBrowserLogoutFlow()
-        .then(({ data }) => {
-          return ory
-            .updateLogoutFlow({ token: data.logout_token })
-            .then(() => {
-              setLoading(false)
-              return router.push("/login")
-            })
-            .then(() => router.reload())
-        })
-        .catch((error) => setLoading(false))
-    }
-  }, [flowId])
-
-  useEffect(() => {
     dispatch(setActiveStage(Stage.FORGOT_PASSWORD))
   }, [])
 
