@@ -1,18 +1,20 @@
 name: cmid-ui-qa
 
-#on:
-#  push:
-#    branches:
-#      - feature-devops
-#      - develop
-#      - staging
-
 on:
-  push:
-    branches:
-      - feature-devops
-      - develop
-      - staging
+  workflow_call:
+    secrets:
+      ALL_ENV:
+        required: true
+      AWS_ACCESS:
+        required: true
+      CICD_ACCESS:
+        required: true
+      CREDENTIALS:
+        required: true
+      PEM:
+        required: true
+      PEM_NOTPROD:
+        required: true
 
 jobs:
   build:
