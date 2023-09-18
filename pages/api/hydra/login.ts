@@ -20,6 +20,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     // console.log("[@GET login.ts req.body]", req.body)
     // console.log("[@GET login.ts challenge]", challenge)
     // console.log("[@GET login.ts subject]", subject)
+    console.log("hydra get")
     try {
       // Parses the URL query
       // The challenge is used to fetch information about the login request from ORY Hydra.
@@ -39,6 +40,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
           // the user.
           if (body.skip) {
             // 2) authorize the very last step via hydra if skip was true
+            console.log("hydra get challenge" + challenge)
+            console.log("hydra get subject" + subject)
             return hydraAdmin
               .acceptOAuth2LoginRequest({
                 loginChallenge: challenge,
