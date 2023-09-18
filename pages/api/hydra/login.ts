@@ -60,7 +60,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
             .json({ message: "error1 " + err.message })
         })
     } catch (error) {
-      return res.status(501).json({ message: error })
+      return res.status(501).json({ message: error.message })
     }
   }
 
@@ -106,7 +106,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
             .json({ message: "error1 " + err.message })
         })
     } catch (error) {
-      return res.status(501).json({ message: error })
+      return res.status(501).json({ message: error.message })
     }
   }
 }
