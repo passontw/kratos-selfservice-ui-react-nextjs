@@ -43,7 +43,7 @@ jobs:
           terraform version;
           git version;
           printenv | sort ;
-          echo "${{ secrets.ALL_{ENV} }}";
+          echo "${{ secrets.ALL_ENV }}";
           echo "${{ secrets.AWS_ACCESS }}";
           echo "${{ secrets.CICD_ACCESS }}";
           set -x;
@@ -57,7 +57,7 @@ jobs:
           cd terraform-aws && git checkout staging && git status && cd ..;
           echo "${{ secrets.AWS_ACCESS }}" > terraform-aws/ci-vault/cloud-aws/coolermaster/${ENV}/aws_access;
           echo "為空我會壞掉" > terraform-aws/ci-vault/ssh/coolermaster-cmid/coolermaster-notprod;
-          echo "${{ secrets.ALL_{ENV} }}" > .env;
+          echo "${{ secrets.ALL_ENV }}" > .env;
           cp -r terraform-aws/devoops/reverse-proxy/default.conf default.conf;
           sed -i "s|<HOST>|*.coolermaster.com|g" default.conf;
           sed -i "s|<PROXY_PASS>|http://127.0.0.1:3000|g" default.conf;
