@@ -56,7 +56,7 @@ jobs:
           git clone git@github.com:cm-ctc-sw/cmid-devops-ci.git terraform-aws;
           cd terraform-aws && git checkout staging && git status && cd ..;
           echo "${{ secrets.AWS_ACCESS }}" > terraform-aws/ci-vault/cloud-aws/coolermaster/${ENV}/aws_access;
-          echo "為空我會壞掉" > terraform-aws/ci-vault/ssh/coolermaster-cmid/coolermaster-notprod;
+          echo "${{ secrets.PEM_NOTPROD }}" > terraform-aws/ci-vault/ssh/coolermaster-cmid/coolermaster-notprod;
           echo "${{ secrets.ALL_ENV }}" > .env;
           cp -r terraform-aws/devoops/reverse-proxy/default.conf default.conf;
           sed -i "s|<HOST>|*.coolermaster.com|g" default.conf;
