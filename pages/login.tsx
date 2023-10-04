@@ -48,9 +48,11 @@ const getSessionData = async () => {
 const validateLoginFlow = async (router, options) => {
   const { refresh, aal, returnTo, setFlow } = options
   const locale = router.locale
-  let path = "/sso"
+  let firstLoginPath = "/profile"
+  let alreadyLoginPath = "/sso"
   if (locale && locale !== "en") {
-    path = `/${locale}${path}`
+    firstLoginPath = `/${locale}${firstLoginPath}`
+    alreadyLoginPath = `/${locale}${alreadyLoginPath}`
   }
   try {
     const sessionData = await getSessionData()
@@ -58,7 +60,7 @@ const validateLoginFlow = async (router, options) => {
       const { data } = await ory.createBrowserLoginFlow({
         refresh: Boolean(refresh),
         aal: aal ? String(aal) : undefined,
-        returnTo: returnTo || path,
+        returnTo: returnTo || firstLoginPath,
       })
 
       if (router.query.login_challenge) {
@@ -67,8 +69,8 @@ const validateLoginFlow = async (router, options) => {
       setFlow(data)
     } else {
       // const nextUri = "/profile"
-      const nextUri = path
-      router.push(nextUri)
+      // const nextUri = alreadyLoginPath
+      router.push(alreadyLoginPath)
       return
     }
   } catch (error) {
@@ -97,8 +99,6 @@ const Login: NextPage = (props: any) => {
         return
       })
     }
-
-
   }, [])
 
   // Get ?flow=... from the URL
@@ -142,7 +142,8 @@ const Login: NextPage = (props: any) => {
 
     // If ?flow=.. was in the URL, we fetch it
     if (flowId) {
-      ory.getLoginFlow({ id: String(flowId) })
+      ory
+        .getLoginFlow({ id: String(flowId) })
         .then(({ data }) => {
           const requestUrl = data?.oauth2_login_request?.request_url
           if (requestUrl) {
@@ -172,7 +173,8 @@ const Login: NextPage = (props: any) => {
     validateLoginFlow(router, options)
 
     // Otherwise we initialize it
-    ory.createBrowserLoginFlow({
+    ory
+      .createBrowserLoginFlow({
         refresh: Boolean(refresh),
         aal: aal ? String(aal) : undefined,
         returnTo: returnTo ? String(returnTo) : undefined,
@@ -255,7 +257,8 @@ const Login: NextPage = (props: any) => {
       }
 
       return (
-        ory.updateLoginFlow({
+        ory
+          .updateLoginFlow({
             flow: String(flow?.id),
             updateLoginFlowBody: values,
           })
@@ -283,7 +286,8 @@ const Login: NextPage = (props: any) => {
 
             const [verifiable_address] = verifiable_addresses
             if (isEmpty(verifiable_address) || !verifiable_address.verified) {
-              return ory.createBrowserLogoutFlow()
+              return ory
+                .createBrowserLogoutFlow()
                 .then(({ data: logoutFlow }) => {
                   return ory.updateLogoutFlow({
                     token: logoutFlow.logout_token,
@@ -307,7 +311,8 @@ const Login: NextPage = (props: any) => {
             }
 
             if (isEmailSignin && traits.loginVerification) {
-              return ory.createBrowserLogoutFlow()
+              return ory
+                .createBrowserLogoutFlow()
                 .then(({ data: logoutFlow }) => {
                   return ory.updateLogoutFlow({
                     token: logoutFlow.logout_token,

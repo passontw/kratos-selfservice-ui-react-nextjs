@@ -87,7 +87,7 @@ const StyledEditButton = styled("img")(() => ({
   position: "absolute",
   bottom: 0,
   right: "-5px",
-  curosor: "pointer",
+  cursor: "pointer",
 }))
 
 const StyledSideWrap = styled("div")(() => ({
