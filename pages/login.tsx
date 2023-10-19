@@ -145,17 +145,6 @@ const Login: NextPage = (props: any) => {
       ory
         .getLoginFlow({ id: String(flowId) })
         .then(({ data }) => {
-          const requestUrl = data?.oauth2_login_request?.request_url
-          if (requestUrl) {
-            const queryStr = requestUrl.split("return_to=")[1]
-            console.log("@debug queryStr", queryStr)
-            router.replace(
-              `/login?${queryString.stringify({
-                flow: flowId,
-                return_to: queryStr,
-              })}`,
-            )
-          }
           setFlow(data)
         })
         .catch(handleGetFlowError(router, "login", setFlow, lang))
